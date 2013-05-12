@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
+ <fields>
+  <field name="inn">			<value> {{ data.inn }} </value>	</field>
+  <field name="kpp">			<value> {{ data.kpp }} </value>	</field>
+  <field name="kno">			<value> {{ data.kno }} </value>	</field>
+  <field name="app_sign">		<value> {{ data.app_sign }} </value>	</field>
+  <field name="org_name_1">		<value> {{ data.org_name|slice:":40" }} </value>	</field>
+  <field name="org_name_2">		<value> {{ data.org_name|slice:"40:80" }} </value>	</field>
+  <field name="org_name_3">		<value> {{ data.org_name|slice:"80:120" }} </value>	</field>
+  <field name="org_name_4">		<value> {{ data.org_name|slice:"120:160" }} </value>	</field>
+  <field name="chg_type">		<value> {{ data.chg_type }} </value>	</field>
+  <field name="chg_year_1">		<value> {{ data. }} </value>	</field>
+  <field name="chg_mon">		<value> {{ data. }} </value>	</field>
+  <field name="chg_year_2">		<value> {{ data. }} </value>	</field>
+  <field name="tax_obj">		<value> {{ data.tax_obj }} </value>	</field>
+  <field name="petition_year">		<value> {{ data. }} </value>	</field>
+  <field name="income">			<value> {{ data.income }} </value>	</field>
+  <field name="workers">		<value> {{ data.workers }} </value>	</field>
+  <field name="property">		<value> {{ data.property }} </value>	</field>
+  <field name="phone">			<value> {{ data.phone }} </value>	</field>
+  <field name="app_type">		<value> {{ data.app_type }} </value>	</field>
+  <field name="delegate_name_1">	<value> {{ data. }} </value>	</field>
+  <field name="delegate_name_2">	<value> {{ data. }} </value>	</field>
+  <field name="delegate_name_3">	<value> {{ data. }} </value>	</field>
+  <field name="delegate_date_d">	<value> {{ data. }} </value>	</field>
+  <field name="delegate_date_m">	<value> {{ data. }} </value>	</field>
+  <field name="delegate_date_y">	<value> {{ data. }} </value>	</field>
+  <field name="delegate_doc_1">		<value> {{ data. }} </value>	</field>
+  <field name="delegate_doc_2">		<value> {{ data. }} </value>	</field>
+ </fields>
+</xfdf>
