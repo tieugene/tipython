@@ -1,0 +1,18 @@
+<!-- Address.Browse.Short -->
+{% extends "base.html" %}
+{% block body_main %}
+    <style>
+    #table-main tbody tr td input{
+        width: 700px !important;
+    }
+    </style>
+<p> DocType: {{ doctype }} </p>
+<form action="." method="post">
+	{% csrf_token %}
+	<input type="submit" value="Сохранить"/>
+	<input type="button" value="Отмена" onClick="window.location.href='{% url views.doctype_detail doctype.pk %}'"/>
+	<table border="1" cellspacing="0" id="table-main"> {{ form.as_table }} </table>
+	<input type="submit" value="Сохранить"/>
+	<input type="button" value="Отмена" onClick="window.location.href='{% url views.doctype_detail doctype.pk %}'"/>
+</form>
+{% endblock %}

@@ -1,0 +1,5 @@
+{# /Contacts #}
+{% extends "base.html" %}
+{% block title %} {{ block.super }} Core {% endblock %}
+{% block onload_js %} {{ block.super }} setmenu("menu_contact"); {% endblock %}
+{% block topmenu %} {{ block.super }} {% include "contact/menu.html" %} {% endblock %}

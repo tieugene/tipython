@@ -1,0 +1,1099 @@
+<html>
+<head>
+<title>Модуль mod_dav. Введение в WebDAV</title>
+<link rel="stylesheet" href="/css/citforum.css">
+<style>
+
+</style>
+
+<meta http-equiv="content-type" content="text/html; charset=Windows-1251">
+</head>
+<body bgcolor=#FFFFFF link=#006890 vlink=#003860 alink=#800000 text=#000000 topmargin="0" marginheight="0">
+<a name=top></a>
+
+
+
+
+
+<!-- counters -->
+<table cellpadding=0 cellspacing=0 border=0>
+<tr>
+<td><!--TopList COUNTER--><script language="JavaScript"><!--
+d=document;js=10;a=';r='+escape(d.referrer)
+//--></script><script language="JavaScript1.1"><!--
+js=11;a+=';j='+navigator.javaEnabled()
+//--></script><script language="JavaScript1.2"><!--
+js=12;s=screen;a+=';s='+s.width+'*'+s.height
+a+=';d='+(s.colorDepth?s.colorDepth:s.pixelDepth)
+//--></script><script language="JavaScript1.3"><!--
+js=13//--></script><script language="JavaScript"><!--
+d.write('<img src="http://top.list.ru/counter'+
+'?id=26978;js='+js+a+'" alt="" height=1 width=1>')
+if(js>11)d.write('<'+'!-- ')//--></script><noscript><img
+src="http://top.list.ru/counter?js=na;id=26978"
+height=1 width=1 alt=""></noscript><script language="JavaScript"><!--
+if(js>11)d.write('--'+'>')
+//--></script><!--TopList COUNTER--></td>
+<td><!--LiveInternet counter--><script language="JavaScript"><!--
+document.write('<img src="http://counter.yadro.ru/hit?r'+
+escape(document.referrer)+((typeof(screen)=='undefined')?'':
+';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+';u'+escape(document.URL)+
+';i'+escape('Жж'+document.title)+';'+Math.random()+
+'" width=1 height=1 alt="">')//--></script><!--/LiveInternet--></td>
+<td><img src="http://counter.rambler.ru/top100.cnt?13078" alt="" width=1 height=1 border=0></td>
+</tr></table>
+<!-- end of counters -->
+
+
+
+<center><table width=990 cellpadding=0 cellspacing=0>
+<tr><td>
+
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr valign=bottom>
+  <td align="left"><a href=/><img src=/pictures/logos/citlogo8.gif width=140 height=44 border=0 alt=Logo></a></td>
+  <td align="left" style="padding-left: 50px; padding-bottom: 10px"><nobr><img src="/pictures/logos/cd1.gif" border="0" alt="CitForum" width="21" height="21">
+      <font size="2"><a href="/cdrom.shtml"><b>CITForum на CD</b></a></font></nobr></td>
+      <td align="left" style="padding-left: 50px; padding-bottom: 10px"><font size="2"><a class=head href=http://forum.citforum.ru/>Форумы</a></font></td>
+      <td align="left" style="padding-left: 50px; padding-bottom: 10px"><font size="2"><a class=head href=http://citforum.ru/gazeta/>Газета</a></font></td>
+      <td align="right" width="100%" style="padding-bottom: 10px"><nobr><font size=2><b>Море(!) аналитической информации!</b></font></nobr></td>
+    </tr>
+    </table>
+
+
+
+
+<center style="margin-top: 3px"><!--  AdRiver code START. Type:728x90 Site: citforum PZ: 0 BN: 1 -->
+<script language="javascript" type="text/javascript"><!--
+var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+document.write(
+'<iframe src="http://ad.adriver.ru/cgi-bin/erle.cgi?'
++ 'sid=137295&bn=1&target=blank&bt=36&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail
++ '" frameborder=0 vspace=0 hspace=0 width=728 height=90 marginwidth=0'
++ ' marginheight=0 scrolling=no></iframe>');
+//--></script>
+<noscript>
+<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=137295&bn=1&bt=36&pz=0&rnd=1013420086" target=_blank>
+<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=137295&bn=1&bt=36&pz=0&rnd=1013420086" alt="-AdRiver-" border=0 width=728 height=90></a>
+</noscript>
+<!--  AdRiver code END  -->
+</center>
+
+
+</td></tr>
+<tr><td>
+
+<table cellpadding=0 cellspacing=0 border=0 width=100% style="padding-top: 3px">
+<tr><td>
+<table   cellspacing=0 cellpadding=0 border=0 width=100%>
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=931 height=1 alt="" border=0></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 alt="" border=0></td></tr>
+<tr><td bgcolor=#008080>
+
+<table cellspacing=1 cellpadding=3 border=0 width=100%>
+<tr>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/consulting/>IT-консалтинг</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/SE/>Software Engineering</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/programming/>Программирование</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/database/>СУБД</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/security/>Безопасность</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/internet/>Internet</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/nets/>Сети</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/operating_systems/>Операционные системы</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/hardware/>Hardware</a></font></td>
+<!--
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/faq/>FAQ (ЧаВО)</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/howto/>HOWTO</a></font></td>
+--> 
+</tr>
+</table>
+
+</td></tr>
+</table>
+
+</td></tr>
+<tr><td>
+<table cellpadding=0 cellspacing=0 border=0 width=100% style="padding-top: 3px">
+<tr valign=top>
+
+
+<td width=140 valign=top>
+<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<!--date-->
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 border=0 alt=""></td></tr>
+<tr><td bgcolor=#008080>
+<table   cellpadding=0 cellspacing=1 border=0 width=100%>
+<tr><td bgcolor=#F4F9F3>
+<p class=topic1 align=center><b>10.04.2011</b>
+</td></tr>
+</table>
+</td></tr>
+<!--/date-->
+
+
+
+
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 border=0 alt=""></td></tr>
+<tr><td bgcolor=#008080><table cellpadding=1 cellspacing=1 border=0 width=100%><tr><td bgcolor=#ffffff align=center>
+<FORM method=GET action=http://www.google.ru/custom>
+<table cellspacing=0 cellpadding=1 border=0>
+  <tr valign=bottom>
+    <td><A HREF=http://www.google.ru/search><IMG SRC=/pictures/logos/google_75x32.gif width=75 height=32 border=0 ALT=Google align=middle></A></td>
+    <td><INPUT type=submit name=sa VALUE="Поиск"></td>
+  </tr>
+  <tr>
+    <td colspan=2><INPUT TYPE=text name=q style="width: 130px" maxlength=255 value=""></td>
+  </tr>
+  <tr>
+    <td colspan=2>
+      <input type=radio name=sitesearch value="">WWW
+      <nobr><input type=radio name=sitesearch value="citforum.ru" checked>CITForum.ru</nobr>
+    </td>
+  </tr>
+</table>
+<INPUT type=hidden name=cof VALUE="LW:140;ALC:#800000;L:http://www.citforum.ru/pictures/logos/citlogo8.gif;LC:#006890;LH:44;AH:left;VLC:#003860;S:http://www.citforum.ru/;AWFID:a524ad3720194500;">
+<input type=hidden name=domains value="citforum.ru">
+</FORM>
+</td></tr></table>
+</td></tr>
+
+
+
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 border=0 alt=""></td></tr>
+<tr><td bgcolor=#008080>
+<table cellpadding=8 cellspacing=1 border=0 width=100%>
+
+<tr><td bgcolor=#ffffff>
+<font size=2>
+<p><b>Новости мира IT:</b>
+<ul class=column>
+<!--<b><a target=_blank href=http://citcity.ru/20070/>4&#x2013;5 декабря пройдёт &#xab;Платформа 2009&#xbb;</a></b>
+<hr>-->
+
+<li>08.04 - <a href=http://citforum.ru/news/26016/>Microsoft подготовила гигантскую порцию &#xab;заплаток&#xbb;</a><li>08.04 - <a href=http://citforum.ru/news/26015/>iPhone, возможно, получит вспомогательный многосегментный дисплей</a><li>08.04 - <a href=http://citforum.ru/news/26014/>Linux Foundation объявила об очередном конкурсе на лучший видеоролик про Linux</a><li>08.04 - <a href=http://citforum.ru/news/26013/>Apple задумалась об открытии магазина в Москве</a><li>08.04 - <a href=http://citforum.ru/news/26012/>Google вложит 100 миллионов долларов в новые каналы на YouTube</a><li>08.04 - <a href=http://citforum.ru/news/26011/>Общественная палата РФ вступилась за Живой журнал</a><li>08.04 - <a href=http://citforum.ru/news/26010/>Организация Linux Foundation выпустила первый релиз платформы Yocto</a><li>08.04 - <a href=http://citforum.ru/news/26009/>Вице-президент Google развеял мифы об ограниченной открытости платформы Android</a><li>08.04 - <a href=http://citforum.ru/news/26007/>Национальной доменной зоне .ru исполнилось 17 лет</a><li>08.04 - <a href=http://citforum.ru/news/26006/>HTC обошла по капитализации компанию Nokia</a><li>08.04 - <a href=http://citforum.ru/news/26005/>Оценена информационная нагрузка на бизнес-серверы</a><li>08.04 - <a href=http://citforum.ru/news/26004/>Toyota и Microsoft займутся &#xab;облачными&#xbb; телематическими сервисами</a><li>07.04 - <a href=http://citforum.ru/news/26008/>Novell выпустила Mono для платформы Android</a><li>07.04 - <a href=http://citforum.ru/news/26002/>Официально вышел релиз GNOME 3.0</a><li>07.04 - <a href=http://citforum.ru/news/26001/>Nokia делает Symbian закрытым проектом</a><li>07.04 - <a href=http://citforum.ru/news/26000/>Вышла бета-версия Skype 2.2 для Linux</a><li>07.04 - <a href=http://citforum.ru/news/25999/>В 2011 году Apple может занять более 70 процентов рынка планшетов</a><li>07.04 - <a href=http://citforum.ru/news/25998/>Правительство РФ одобрило проект &#xab;национальной ОС&#xbb;</a><li>06.04 - <a href=http://citforum.ru/news/25997/>Стартует первый Всероссийский Кубок по Программированию</a><li>06.04 - <a href=http://citforum.ru/news/25996/>"Лаборатория Касперского" подвела итоги вирусной активности  в марте</a><li>06.04 - <a href=http://citforum.ru/news/25995/>Apple избавили от необходимости платить многомиллионный штраф</a><li>06.04 - <a href=http://citforum.ru/news/25994/>AMD начала поставки первых гибридных процессоров Llano</a><li>06.04 - <a href=http://citforum.ru/news/25993/>Определены зоны для тестирования сетей LTE</a><li>06.04 - <a href=http://citforum.ru/news/25992/>В зоне .рф зарегистрирован восьмисоттысячный домен</a><li>06.04 - <a href=http://citforum.ru/news/25991/>AMD представила видеоадаптер среднего класса Radeon HD 6790</a><li>06.04 - <a href=http://citforum.ru/news/25990/>Google готова купить пакет патентов Nortel за 900 миллионов долларов</a><li>05.04 - <a href=http://citforum.ru/news/25989/>Intel расширила линейку процессоров Xeon</a><li>05.04 - <a href=http://citforum.ru/news/25988/>Выпуск пятой версии Firefox намечен на июнь</a><li>05.04 - <a href=http://citforum.ru/news/25987/>Планшеты на платформе Intel Oak Trail дебютируют в мае</a><li>05.04 - <a href=http://citforum.ru/news/25986/>Net Applications: Браузеры Chrome и Safari набирают популярность</a>
+
+</ul>
+<p><a target=_blank href=http://citforum.ru/news/><b>Архив новостей</b></a>
+</font>
+<p align=right><a href=http://citforum.ru/news/rss/news.xml><img src=/pictures/xml_rss.gif border=0 width=36 height=14></a>
+</td></tr>
+</table>
+</td></tr>
+
+
+
+
+</table>
+</td>
+
+
+<td width=98% style="padding: 0 5px">
+ 
+<center><!--MaxLab START-->
+<!--Лаборатория "MaxLab"-->
+<!--Сайт: On-line библиотека ИТ-тематики-->
+<!--Категория: Компьютеры и программы-->
+<!--Тип баннера: 600x120-->
+<script type="text/javascript">
+<!--
+if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+if (typeof(document.referrer) != 'undefined') {
+  if (typeof(afReferrer) == 'undefined') {
+    afReferrer = escape(document.referrer);
+  }
+} else {
+  afReferrer = '';
+}
+var addate = new Date();
+document.write('<scr' + 'ipt type="text/javascript" src="http://ads.maxlab.ru/prepareCode?p1=bcmp&p2=dgbw&pucn=a&pfc=a&pfb=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&py=a&prr=' + afReferrer + '"><\/scr' + 'ipt>');
+// -->
+</script>
+<!--MaxLab END-->
+</center>
+<center style="margin: 5px"><a style=font-family:helvetica,arial;font-size:18px;font-weight:bold href=http://citforum.ru/seminars/cbd2011/>Шестнадцатая техническая конференция <nobr>«Корпоративные базы данных-2011»</nobr><br>Москва, 14–15 апреля</a></center>
+
+
+
+<div class=document>
+<!--B2BCONTEXT_CONTENT_BEGIN-->
+
+<div align="right"><i>2006 г.</i></div>
+
+<h3>Модуль mod_dav. Введение в WebDAV</h3>
+<i><a href="mailto:info@apachedev.ru?subject=citforum">Сипягин Максим</a>, <a target="_blank" href="http://apachedev.ru/2006/03/13/modul-mod_dav-vvedenie-v-webdav/" title="ApacheDev.ru Программирование под Apache.">www.apachedev.ru</a></i>
+<div align="justify">
+
+<h4>1. Введение</h4>
+
+<p>Если посмотреть на <a target="_blank" href="http://www.securityspace.com/s_survey/data/man.200602/apachemods.html" title="Статистика модулей Apache (Март 2006)">статистику</a> сайта SecuritySpace.com, то можно увидеть, что вот уже 5 лет в десятку самых используемых модулей сервера Apache входит модуль <b><i>mod_dav</i></b>. Однако, как ни странно, данное обстоятельство никоим образом не повлияло на количество материалов о <b><i>mod_dav</i></b> в русскоязычной части сети. Хотя такие парадоксы происходят у нас нередко. Что ж, попытаемся устранить этот пробел. Тем более, что модуль действительно заслуживает самого пристального внимания.
+
+<p>Статья, которую Вы читаете, является первой из серии статей про модуль <b><i>mod_dav</i></b>. Сама серия состоит из трех статей. Первая статья расскажет об основной задачи модуля, а именно о протоколе <abbr title="Web-based Distributed Authoring and Versioning">WebDAV</abbr>. Вторая статья расскажет о том, как протокол реализован в Apache и как настроить сервер на работу с ним. А третья статья рассмотрит детали реализации модуля <b><i>mod_dav</i></b>. Итак, начнем.
+
+
+<h4>2. Что такое WebDAV?</h4>
+
+<p>А начнем мы с названия. И что же означает "dav" в названии <b><i>mod_dav</i></b>? Такое название модуль получил потому, что основная его задача - реализация протокола WebDAV. С вопросом <i>"что такое WebDAV?"</i> обратимся к <a target="_blank" href="http://ru.wikipedia.org/wiki/WebDAV" title="О WebDav на Wikipedia">статье</a> на Wikipedia.org:<br>
+<BLOCKQUOTE><i>"WebDAV - это современный и защищённый сетевой протокол высокого уровня, работающий поверх HTTP для доступа к объектам и коллекциям объектов. Сокращение от Web-based Distributed Authoring and Versioning."</i></BLOCKQUOTE>
+
+<p>Не знаю как вам, а мне данное определение ясности в назначении протокола не дало. Но попробуем все же разобраться.
+
+
+<p>Начнем с задач протокола. Как ясно из определения, протокол позволяет работать с документами на удаленном сервере. Однако, это слишком общее определение протокола, и не дает
+никакого представления об его особенностях. А особенностей у него довольно много. Перечислим основные из них:
+
+<ul>
+<li>Выполнение основных файловых операций над объектами на удаленном сервере;</li>
+
+<li>Выполнение расширенных файловых операций (блокировки, поддержка версий);</li>
+
+<li>Работа с любым типом объектов (не только файлы);</li>
+
+<li>Поддержка метаданных (свойств) объектов;</li>
+
+<li>Поддержка одновременной работы над объектами.</li>
+</ul>
+
+<p>Как видите, протокол предоставляет довольно много интересных возможностей. Теперь осталось разобраться, где эти возможности протокола будут востребованы.
+
+<p>Вот основные сценарии применения протокола WebDAV:
+
+<ul>
+<li>Совместная работа с веб-документами;</li>
+
+<li>Сетевая файловая система;</li>
+
+<li>Распределенная разработка программного обеспечения;</li>
+
+<li>Унифицированный доступ к произвольному хранилищу.</li>
+</ul>
+
+<p>И в качестве доказательства полезности протокола приведем примеры его реального использования. Вот только некоторые из них:
+
+<ol>
+<li><a target="_blank" href="http://subversion.tigris.org/" title="Subversion: Version control system">Subversion</a>. Использует WebDAV для совместной работы при разработке программного
+обеспечения.</li>
+
+<li><a target="_blank" href="http://www.microsoft.com/windows2000/en/server/iis/htm/core/wcwdcp.htm" title="Microdoft about WebDAV">Microsoft Explorer/Office/Outlook</a>. Протокол WebDAV
+используется для возможности работы с документами на удаленном сервере.</li>
+
+<li><a target="_blank" href="http://www.adobe.com/products/golive/main.html" title="Adobe GoLive">Adobe GoLive</a>. Протокол используется для совместной работы с веб-документами.</li>
+
+<li><a target="_blank" href="http://httpd.apache.org" title="Сайт сервера Apache">Apache</a>. Реализует поддержку WebDAV в модуле <b><i>mod_dav</i></b>.</li>
+
+<li><a target="_blank" href="http://www.zope.org/" title="Сообщество Zope">Zope</a> и <a target="_blank" href="http://tomcat.apache.org/" title="Apache Tomcat">Tomcat</a>. WebDAV используется для управления
+контентом.</li>
+</ol>
+
+<p><b>Примечание:</b> <i>Работа WebDAV регулируется следующими стандартами:</i>
+
+<ul>
+<li>"Requirements for a Distributed Authoring and Versioning Protocol for the World Wide Web" RFC 2291 (<a target="_blank" href="http://www.ietf.org/rfc/rfc2291.txt" title="RFC 2291">http://www.ietf.org/rfc/rfc2291.txt</a>)</li>
+<li>"HTTP Extensions for Distributed Authoring - WEBDAV" RFC 2518 (<a target="_blank" href="http://www.ietf.org/rfc/rfc2518.txt"  title="RFC 2518">http://www.ietf.org/rfc/rfc2518.txt</a>)</li>
+<li>"Web Distributed Authoring and Versioning (WebDAV) Ordered Collections Protocol" RFC 3648 (<a target="_blank" href="http://www.ietf.org/rfc/rfc3648.txt" title="RFC 3648">http://www.ietf.org/rfc/rfc3648.txt</a>)</li>
+<li>"Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol" RFC 3744 (<a target="_blank" href="http://www.ietf.org/rfc/rfc3744.txt"  title="RFC3744">http://www.ietf.org/rfc/rfc3744.txt</a>)</li>
+</ul>
+
+<h4>3. Как работает WebDAV?</h4>
+
+<p>Как уже говорилось выше, WebDAV является расширением протокола HTTP/1.1. WebDAV добавил в HTTP/1.1 несколько новых заголовков и методов, а также изменил существующие методы
+HTTP.
+
+<p>Были добавлены следующие заголовки:
+
+<ol>
+<li><b><i>DAV:</i></b></li>
+<li><b><i>If:</i></b></li>
+<li><b><i>Depth:</i></b></li>
+<li><b><i>Overwrite:</i></b></li>
+<li><b><i>Destination:</i></b></li>
+<li><b><i>Lock-Token:</i></b></li>
+<li><b><i>Timeout:</i></b></li>
+<li><b><i>Status-URI:</i></b></li>
+</ol>
+
+<p>И следующие методы:
+
+<ol>
+<li><b><i>PROPFIND;</i></b></li>
+<li><b><i>PROPPATCH;</i></b></li>
+<li><b><i>MKCOL;</i></b></li>
+<li><b><i>LOCK UNLOCK;</i></b></li>
+<li><b><i>COPY/MOVE.</i></b></li>
+</ol>
+
+<p>Для того чтобы понять принцип работы протокола, рассмотрим каждый метод подробнее.
+
+<h5>3.1 Метод PROPFIND</h5>
+
+<p>Метод <b><i>PROPFIND</i></b> является одним из основных методов протокола. Он предназначается для получения свойств ресурса или коллекции. Требуемый ресурс (коллекция) задается в методе с помощью <abbr title="Uniform Resource Identifier">URI</abbr>. Если URI идентифицирует коллекцию, то метод возвращает свойства всех ресурсов, принадлежащих этой
+коллекции. Данный метод бывает трех типов:
+
+<ol>
+<li>&lt;prop&gt; - возвращает значение заданных свойств;</li>
+<li>&lt;allprop&gt; - возвращает имена и значение всех свойств ресурса;</li>
+<li>&lt;propname&gt; - возвращает имена свойств ресурса.</li>
+</ol>
+
+<p>Для наглядности рассмотрим каждый вид метода на примере.
+
+<h6>Тип PROP метода PROPFIND</h6>
+
+<p>Данный тип метода <b><i>PROPFIND</i></b> предназначен для запроса значений определенных свойств ресурса или коллекции. Для получения этих значений, клиент должен
+указать в запросе серверу имена всех необходимых ему свойств.
+
+<p>Вот так выглядит запрос клиента серверу:
+<pre>
+  PROPFIND /file HTTP/1.1
+  Host: www.foo.bar
+  Content-type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0"> encoding="utf-8" ?&gt;
+  &lt;D:propfind xmlns:D="DAV:"&gt;
+    &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/">&gt;
+      &lt;R:bigbox/&gt;
+      &lt;R:author/&gt;
+      &lt;R:DingALing/&gt;
+      &lt;R:Random/&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:propfind&gt;
+</pre>
+
+<p>В этом запросе клиент запрашивает значения свойств: <b><i>bigbox</i></b>, <b><i>author</i></b>, <b><i>DingALing</i></b>, <b><i>Random</i></b> для ресурса (не коллекции) <b><i>http://www.foo.bar/file</i></b>.
+
+<p><b>Примечание:</b> <i>URI коллекции обязательно должен содержать символ <b><i>"/"</i></b> в качестве завершающего символа. Пример: <b><i>http://www.foo.bar/bar/</i></b></i>
+
+<p>А вот так выглядит ответ сервера клиенту на данный запрос:
+
+<pre>
+  HTTP/1.1 207 Multi-Status
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;D:multistatus xmlns:D="DAV:"&gt;
+    &lt;D:response&gt;
+      &lt;D:href&gt;http://www.foo.bar/file&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+        &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/"&gt;
+          &lt;R:bigbox&gt;
+            &lt;R:BoxType&gt;Box type A&lt;/R:BoxType&gt;
+          &lt;/R:bigbox&gt;
+          &lt;R:author&gt;
+            &lt;R:Name&gt;J.J. Johnson&lt;/R:Name&gt;
+          &lt;/R:author&gt;
+        &lt;/D:prop&gt;
+        &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;D:propstat&gt;
+        &lt;D:prop&gt;
+          &lt;R:DingALing/&gt;
+          &lt;R:Random/&gt;
+        &lt;/D:prop&gt;
+        &lt;D:status&gt;HTTP/1.1 403 Forbidden&lt;/D:status&gt;
+        &lt;D:responsedescription&gt;
+          The user does not have access to the DingALing property.
+        &lt;/D:responsedescription&gt;
+      &lt;/D:propstat&gt;
+    &lt;/D:response&gt;
+    &lt;D:responsedescription&gt;
+      There has been an access violation error.
+    &lt;/D:responsedescription&gt;
+  &lt;/D:multistatus&gt;
+</pre>
+
+<p>Данный ответ возвращает значения свойств <b><i>bigbox</i></b>, <b><i>author</i></b>, а также описание того, что данный пользователь не имеет доступа к свойствам <b><i>DingALing</i></b> и <b><i>Random.</i></b>
+
+<p><b>Примечание:</b> <i>В случае, если хоть одно свойство вернет значение отличное от <b><i>HTTP/1.1 200 OK</i></b>, то запрос считается неуспешным</i> (<b><i>&lt;D:responsedescription&gt; There has been an access violation error. &lt;/D:responsedescription&gt;</i></b>).
+
+<h6>Тип ALLPROP метода PROPFIND</h6>
+
+<p>Тип <b><i>ALLPROP</i></b> предназначен для запроса всех значений всех имеющихся свойств ресурса или коллекции. Для формирования метода этого типа клиенту необходимо только указать URI ресурса (коллекции).
+
+
+<p>Так выглядит запрос клиента серверу:
+
+<pre>
+  PROPFIND /container/ HTTP/1.1
+  Host: www.foo.bar
+  Depth: 1
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;D:propfind xmlns:D="DAV:"&gt;
+    &lt;D:allprop/&gt;
+  &lt;/D:propfind&gt;
+</pre>
+
+<p>Вот ответ сервера клиенту на данный запрос:
+
+<pre>  HTTP/1.1 207 Multi-Status
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;D:multistatus xmlns:D="DAV:"&gt;
+    &lt;D:response&gt;
+      &lt;D:href&gt;http://www.foo.bar/container/&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+        &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/"&gt;
+          &lt;R:bigbox&gt;
+            &lt;R:BoxType&gt;Box type A&lt;/R:BoxType&gt;
+          &lt;/R:bigbox&gt;
+          &lt;R:author&gt;
+            &lt;R:Name&gt;Hadrian&lt;/R:Name&gt;
+          &lt;/R:author&gt;
+          &lt;D:creationdate&gt;
+            1997-12-01T17:42:21-08:00
+          &lt;/D:creationdate&gt;
+          &lt;D:displayname&gt;
+            Example collection
+          &lt;/D:displayname&gt;
+          &lt;D:resourcetype&gt;
+            &lt;D:collection/&gt;
+          &lt;/D:resourcetype&gt;
+        &lt;/D:prop&gt;
+        &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+    &lt;/D:response&gt;
+    &lt;D:response&gt;
+      &lt;D:href&gt;http://www.foo.bar/container/front.html&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+        &lt;D:prop xmlns:R="http://www.foo.bar/boxschema/">&gt;
+          &lt;R:bigbox&gt;
+            &lt;R:BoxType&gt;Box type B&lt;/R:BoxType&gt;
+          &lt;/R:bigbox&gt;
+          &lt;D:creationdate&gt;
+            1997-12-01T18:27:21-08:00
+          &lt;/D:creationdate&gt;
+          &lt;D:displayname&gt;
+            Example HTML resource
+          &lt;/D:displayname&gt;
+          &lt;D:getcontentlength&gt;
+            4525
+          &lt;/D:getcontentlength&gt;
+          &lt;D:getcontenttype&gt;
+            text/html
+          &lt;/D:getcontenttype&gt;
+          &lt;D:getetag&gt;
+            zzyzx
+          &lt;/D:getetag&gt;
+          &lt;D:getlastmodified&gt;
+            Monday, 12-Jan-98 09:25:56 GMT
+          &lt;/D:getlastmodified&gt;
+        &lt;/D:prop&gt;
+        &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+    &lt;/D:response&gt;
+  &lt;/D:multistatus&gt;
+</pre>
+
+<p>Ответ сервера возвращает все свойства (<b><i>bigbox</i></b>, <b><i>author</i></b>, <b><i>creationdate</i></b>, <b><i>displayname</i></b>, <b><i>resourcetype</i></b>) коллекции <b><i>http://www.foo.bar/container/</i></b> и все свойства вложенных в эту коллекцию ресурсов. В нашем случае таким ресурсом является файл <b><i>http://www.foo.bar/container/front.html</i></b>, который обладает следующими свойствами: <b><i>bigbox</i></b>, <b><i>creationdate</i></b>, <b><i>displayname</i></b>, <b><i>getcontentlength</i></b>, <b><i>getcontenttype</i></b>, <b><i>getetag</i></b>, <b><i>getlastmodified</i></b>.
+
+
+<h6>Тип PROPNAME метода PROPFIND</h6>
+
+<p>И последним типом метода <b><i>PROPFIND</i></b> является тип <b><i>PROPNAME</i></b>. Этот тип метода предназначен для получения имен всех свойств указанного ресурса (коллекции).
+
+<p>Так выглядит запрос этого типа:
+
+<pre>
+  PROPFIND /container/ HTTP/1.1
+  Host: www.foo.bar
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;propfind xmlns="DAV:"&gt;
+    &lt;propname/&gt;
+  &lt;/propfind&gt;
+</pre>
+
+<p>В нем клиент запрашивает имена всех свойств коллекции <b><i>/container/</i></b>, а также имена свойств всех вложенных в этот контейнер ресурсов.
+
+<p>Так выглядит ответ сервера на данный запрос:
+
+<pre>
+  HTTP/1.1 207 Multi-Status
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;multistatus xmlns="DAV:"&gt;
+    &lt;response&gt;
+      &lt;href&gt;http://www.foo.bar/container/&lt;/href&gt;
+      &lt;propstat&gt;
+        &lt;prop xmlns:R="http://www.foo.bar/boxschema/"&gt;
+          &lt;R:bigbox/&gt;
+          &lt;R:author/&gt;
+          &lt;creationdate/&gt;
+          &lt;displayname/&gt;
+          &lt;resourcetype/&gt;
+        &lt;/prop&gt;
+        &lt;status&gt;HTTP/1.1 200 OK&lt;/status&gt;
+      &lt;/propstat&gt;
+    &lt;/response&gt;
+    &lt;response&gt;
+      &lt;href&gt;http://www.foo.bar/container/front.html&lt;/href&gt;
+      &lt;propstat&gt;
+        &lt;prop xmlns:R="http://www.foo.bar/boxschema/">&gt;
+          &lt;R:bigbox/&gt;
+          &lt;creationdate/&gt;
+          &lt;displayname/&gt;
+          &lt;getcontentlength/&gt;
+          &lt;getcontenttype/&gt;
+          &lt;getetag/&gt;
+          &lt;getlastmodified/&gt;
+        &lt;/prop&gt;
+        &lt;status&gt;HTTP/1.1 200 OK&lt;/status&gt;
+      &lt;/propstat&gt;
+    &lt;/response&gt;
+  &lt;/multistatus&gt;
+</pre>
+
+<p>Данный ответ показывает, что у коллекции <b><i>http://www.foo.bar/container/</i></b> есть пять свойств: <b><i>bigbox</i></b>, <b><i>author</i></b>, <b><i>creationdate</i></b>, <b><i>displayname</i></b>, <b><i>resourcetype</i></b>. А вложенный ресурс <b><i>http://www.foo.bar/container/front.html</i></b> обладает следующими свойствами: <b><i>bigbox</i></b>, <b><i>creationdate</i></b>, <b><i>displayname</i></b>, <b><i>getcontentlength</i></b>, <b><i>getcontenttype</i></b>, <b><i>getetag</i></b>, <b><i>getlastmodified</i></b>.
+
+
+<h5>3.2 Метод PROPPATCH</h5>
+
+<p>Как видно из названия метода <b><i>PROPPATCH</i></b> он предназначен для изменения свойств ресурсов, а именно для добавления, удаления или изменения свойств ресурса, заданного в URI.
+
+<p>Рассмотрим пример такого запроса:
+
+<pre>
+  PROPPATCH /bar.html HTTP/1.1
+  Host: www.foo.com
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;D:propertyupdate xmlns:D="DAV:"
+                 xmlns:Z="http://www.w3.com/standards/z39.50/"&gt;
+    &lt;D:set&gt;
+      &lt;D:prop&gt;
+        &lt;Z:authors&gt;
+          &lt;Z:Author&gt;Jim Whitehead&lt;/Z:Author&gt;
+          &lt;Z:Author&gt;Roy Fielding&lt;/Z:Author&gt;
+        &lt;/Z:authors&gt;
+      &lt;/D:prop&gt;
+    &lt;/D:set&gt;
+    &lt;D:remove&gt;
+      &lt;D:prop&gt;
+        &lt;Z:Copyright-Owner/&gt;
+      &lt;/D:prop&gt;
+    &lt;/D:remove&gt;
+  &lt;/D:propertyupdate&gt;
+</pre>
+
+<p>В этом запросе клиент пытается создать для ресурса <b><i>http://www.foo.com/bar.html</i></b> свойство <b><i>authors</i></b> и удалить свойство <i>Copyright-Owner.</i>
+
+<p>А вот так выглядит ответ сервера клиенту на этот запрос:
+
+<pre>
+  HTTP/1.1 207 Multi-Status
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;D:multistatus xmlns:D="DAV:"
+                 xmlns:Z="http://www.w3.com/standards/z39.50"&gt;
+    &lt;D:response&gt;
+      &lt;D:href&gt;http://www.foo.com/bar.html&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+        &lt;D:prop&gt;
+          &lt;Z:Authors/&gt;
+        &lt;/D:prop&gt;
+        &lt;D:status&gt;HTTP/1.1 424 Failed Dependency&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;D:propstat&gt;
+        &lt;D:prop&gt;
+          &lt;Z:Copyright-Owner/&gt;
+        &lt;/D:prop&gt;
+        &lt;D:status&gt;HTTP/1.1 409 Conflict&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;D:responsedescription&gt;
+        Copyright Owner can not be deleted or altered.
+      &lt;/D:responsedescription&gt;
+    &lt;/D:response&gt;
+  &lt;/D:multistatus&gt;
+</pre>
+
+<p>Сервер показывает, что свойство <b><i>Copyright-Owner</i></b> не может быть удалено, поэтому ни одно свойство не будет изменено.
+
+
+<p>Ответ <i>424 Failed Dependency</i> показывает, что операция над свойством <b><i>Authors</i></b> была бы выполнена успешно, если не произошел бы конфликт с удалением <i>Copyright-Owner</i>.
+
+<h5>3.3 Метод MKCOL</h5>
+
+<p>Метод <b><i>MKCOL</i></b> является одним из самых простых методов WebDAV и предназначен для создания новой коллекции.
+
+<p>В этом примере клиент запрашивает сервер создать коллекцию <b><i>/webdisc/xfiles/</i></b>:
+
+
+<pre>
+  MKCOL /webdisc/xfiles/ HTTP/1.1 
+  Host: www.server.org
+</pre>
+
+<p>В ответе сервер сообщает, что коллекция создана:
+
+<pre>
+  HTTP/1.1 201 Created
+</pre>
+
+<h5>3.4 Метод LOCK</h5>
+
+<p>Метод <b><i>LOCK</i></b> предназначен для создания блокировки доступа любого типа. Блокировки влияют и на ресурсы, и на коллекции. Если заблокирован ресурс, то и все его свойства также являются заблокированными.
+
+<p>Данный пример запроса пытается наложить эксклюзивную блокировку на изменения ресурса <b><i>/file.html</i></b>
+
+<pre>
+  LOCK /file.html HTTP/1.1
+  Host: www.host.com
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxx
+  &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  &lt;D:lockinfo xmlns:D="DAV:"&gt;
+    &lt;D:lockscope&gt;
+      &lt;D:exclusive/&gt;
+    &lt;/D:lockscope&gt;
+    &lt;D:locktype&gt;
+      &lt;D:write/&gt;
+    &lt;/D:locktype&gt;
+  &lt;/D:lockinfo&gt;
+</pre>
+
+<p>Сервер показывает, что блокировка успешно создана. Ответ сервера также содержит значение <b><i>opaquelocktoken</i></b>, которое является уникальным идентификатором блокировки.
+
+<pre>
+  HTTP/1.1 200 OK
+  Content-Type: text/xml; charset="utf-8"
+  Content-Length: xxx
+  &lt;?xml version="1.0" encoding="utf-8"?&gt;
+  &lt;D:prop xmlns:D="DAV:"&gt;
+    &lt;D:lockdiscovery&gt;
+      &lt;D:activelock&gt;
+        &lt;D:locktype&gt;
+          &lt;D:write/&gt;
+        &lt;/D:locktype&gt;
+        &lt;D:lockscope&gt;
+          &lt;D:exclusive/&gt;
+        &lt;/D:lockscope&gt;
+        &lt;D:locktoken&gt;
+          &lt;D:href&gt;
+            opaquelocktoken: e71d4fae-5dec-22d6-fea5-00a0c91e6be4
+          &lt;/D:href&gt;
+        &lt;/D:locktoken&gt;
+      &lt;/D:activelock&gt;
+    &lt;/D:lockdiscovery&gt;
+  &lt;/D:prop&gt;
+</pre>
+
+<h5>3.5 Метод UNLOCK</h5>
+
+<p>Метод <b><i>UNLOCK</i></b> предназначен для снятия блокировки с ресурса. Для формирования запроса требуется URI ресурса и значение <b><i>opaquelocktoken</i></b> созданной ранее блокировки.
+
+<p>Пример снятия блокировки:
+
+<pre>
+  UNLOCK /1234.html HTTP/1.1
+  Host: www.host.ru
+  Lock-Token: &lt;opaquelocktoken:e71d4fae-5dec-22d6-fea5-00a0c91e6be4&gt;
+</pre>
+
+<p>Данный запрос пытается снять блокировку (<b><i>opaquelocktoken:e71d4fae-5dec-22d6-fea5-00a0c91e6be4</i></b>) с ресурса <b><i>1234.html</i></b>.
+
+<p>Ответ сервера показывает, что блокировка была успешно снята:
+
+<pre>
+  HTTP/1.1 204 No Content
+</pre>
+
+<i>Использование кода 204 (No Content) вместо 200 (OK) происходит, потому что сообщение ответа не содержит тела.</i>
+
+<h5>3.6 Методы COPY/MOVE</h5>
+
+<p>Метод <b><i>COPY</i></b> предназначен для создания копии ресурса, заданного с помощью URI. А URI копии ресурса задается в заголовке <b><i>Destination</i></b>. Метод копирует как ресурсы, так и коллекции (в зависимости от значения заголовка <b><i>Depth</i></b>).
+
+<p>В этом примере клиент пытается скопировать ресурс <b><i>/~fielding/index.html</i></b> и переписать им ресурс <b><i>http://www.ics.uci.edu/users/f/fielding/index.html</i></b>
+
+<pre>
+  COPY /~fielding/index.html HTTP/1.1
+  Host: www.ics.uci.edu
+  Destination: http://www.ics.uci.edu/users/f/fielding/index.html
+</pre>
+
+<p>Ответ сервера <b><i>204 No Content</i></b> показывает, что ресурс <b><i>http://www.ics.uci.edu/users/f/fielding/index.html</i></b> был успешно перезаписан ресурсом <b><i>/~fielding/index.html</i></b>
+
+<pre>
+  HTTP/1.1 204 No Content
+</pre>
+
+<p>Метод <b><i>MOVE</i></b> функционирует аналогично методу <b><i>COPY</i></b> за исключением того, что после копирования ресурс удаляется.
+
+<p>Пример запроса:
+<pre>
+  MOVE /~fielding/index.html HTTP/1.1
+  Host: www.ics.uci.edu
+  Destination: http://www.ics.uci.edu/users/f/fielding/index.html
+</pre>
+
+<p>Ответ сервера <b><i>201 Created</i></b> показывает, что ресурс <b><i>http://www.ics.uci.edu/users/f/fielding/index.html</i></b> не существовал до копирования.
+
+<pre>
+  HTTP/1.1 201 Created
+  Location: http://www.ics.uci.edu/users/f/fielding/index.html
+</pre>
+
+<p><b>Примечание:</b> <i>Помимо рассмотренных выше новых методов, протокол WebDAV переопределяет семантику методов HTTP/1.1: <b><i>GET</i></b>, <b><i>HEAD</i></b>, <b><i>POST</i></b>, <b><i>DELETE</i></b>. Значение методов осталось то же, но теперь они стали работать с ресурсами, коллекциями и свойствами.</i>
+
+<p>Вот и все, что я хотел рассказать вам про протокол WebDAV. Информации, полученной из данной статьи, вполне достаточно, чтобы приступить к нашей основной цели, а именно, к изучению работы модуля <b><i>mod_dav</i></b>. Чем мы и займемся в следующей статье.
+
+<p><i>Более подробно про протокол WebDAV вы можете узнать в книге "WebDAV: Next-Generation Collaborative Web Authoring".</i>
+
+<h4>Ссылки</h4>
+<ul>
+<li><a target="_blank" href="http://www.webdav.org/" title="WebDAV Resources">http://www.webdav.org/</a></li>
+<li><a target="_blank" href="http://www.ics.uci.edu/~ejw/authoring/" title="IETF WEBDAV Working Group">http://www.ics.uci.edu/~ejw/authoring/</a></li>
+<li>Книга "WebDAV: Next-Generation Collaborative Web Authoring" (автор - Lisa Dusseault, издательство Prentice Hall, 2003, ISBN: 0130652083)</li>
+</ul>
+
+</div>
+
+</div>
+
+<center><!--  AdRiver code START. Type:468x60 Site: citforum PZ: 0 BN: 1 -->
+<script language="javascript" type="text/javascript"><!--
+var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+document.write(
+'<iframe src="http://ad.adriver.ru/cgi-bin/erle.cgi?'
++ 'sid=137295&bn=1&target=blank&bt=1&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail
++ '" frameborder=0 vspace=0 hspace=0 width=468 height=60 marginwidth=0'
++ ' marginheight=0 scrolling=no></iframe>');
+//--></script>
+<noscript>
+<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=137295&bn=1&bt=1&pz=0&rnd=391819127" target=_blank>
+<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=137295&bn=1&bt=1&pz=0&rnd=391819127" alt="-AdRiver-" border=0 width=468 height=60></a>
+</noscript>
+<!--  AdRiver code END  -->
+</center>
+<center>
+
+
+</center>
+
+</td>
+
+
+<td>
+
+<table cellspacing=0 cellpadding=0 border=0 width="100%" align=right><tr>
+<td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0></td>
+<td bgcolor=#daecd7><img src=/pictures/1x1.gif width=2 height=1 border=0></td>
+<td>
+
+<table cellpadding=0 cellspacing=0 border=0>
+ 
+<tr><td align="center"><!-- Soloway 240x400 code START-->
+<script language="javascript" type="text/javascript"><!--
+if(typeof(ar_cn)=="undefined") var ar_cn=1;
+var ar_Tail=document.referrer ? escape(document.referrer) : 'unknown';
+var ar_link="http://ad.adriver.ru/cgi-bin/erle.cgi?sid=126751&bt=49&target=blank&tail256=" + ar_Tail;
+document.write('<div style="visibility:hidden;height:0px;"><iframe id="ar_container_'+ar_cn+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div><div id="ad_ph_'+ar_cn+'"><\/div>');
+function ar_getDoc(t,n,l){var doc;if(t<100){if(document.all && !window.opera){doc = window.frames['ar_container_'+n].document}
+else if(document.getElementById){doc=document.getElementById('ar_container_'+n).contentDocument}
+if(!doc){setTimeout('ar_getDoc('+(++t)+','+n+',"'+l+'")', 100)}else {var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+doc.write ('<sc'+'ript language="JavaScript" type="text/javascript">var ar_bnum='+n+';<\/sc'+'ript>');
+doc.write ('<sc'+'ript language="JavaScript" type="text/javascript" src="'+l+'&rnd='+RndNum4NoCash+'"><\/sc'+'ript>');}}}
+(function(num,link){function addEvent(e,t,f){if(e.addEventListener)e.addEventListener(t,f,false);else if(e.attachEvent)e.attachEvent('on'+t,f)}
+function removeEvent(e,t,f){if(e.removeEventListener)e.removeEventListener(t,f,false);else if(e.detachEvent)e.detachEvent('on'+t,f)}
+var BannerLoader={top:0,height:400,cm:document.compatMode=="CSS1Compat",
+scroll:function(){var ch=self.innerHeight||this.cm&&document.documentElement.clientHeight||document.body.clientHeight;
+var st=self.pageYOffset||this.cm&&document.documentElement.scrollTop||document.body.scrollTop;
+var sh=self.scrollHeight||this.cm&&document.documentElement.scrollHeight||document.body.scrollHeight;
+if((st-this.top<=this.height*0.2&&st+ch-this.top>=this.height*0.8)||(sh-this.top<=this.height*0.8&&(sh-st-ch<1||sh<ch))){
+removeEvent(window,'scroll',this.sfunc);ar_getDoc(0,num,link)}},
+sfunc: function(){BannerLoader.scroll()},init:function(){var t=this,obj=document.getElementById('ad_ph_'+num);
+if(obj){while(obj.offsetParent){t.top += obj.offsetTop; obj = obj.offsetParent}
+addEvent(window,'scroll',this.sfunc);t.scroll()}}};addEvent(window, 'load', function(){BannerLoader.init()})})(ar_cn++,ar_link);
+//--></script>
+<!-- Soloway 240x400 code END -->
+</td></tr>
+
+
+
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 border=0 alt=""></td></tr>
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr>
+<tr><td style="padding-left: 5px; min-width: 240px"><p><b>Последние комментарии:</b>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/25180/#comments>Совет при президенте РФ обсудил "национальную ОС" и технопарки</a>&nbsp;(162)<br>
+		<div class=comments_menu_date>10 Апрель, 18:34		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/26016/#comments>Microsoft подготовила гигантскую порцию &#xab;заплаток&#xbb;</a>&nbsp;(50)<br>
+		<div class=comments_menu_date>10 Апрель, 18:32		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/26008/#comments>Novell выпустила Mono для платформы Android</a>&nbsp;(4)<br>
+		<div class=comments_menu_date>10 Апрель, 18:12		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/26002/#comments>Официально вышел релиз GNOME 3.0</a>&nbsp;(28)<br>
+		<div class=comments_menu_date>10 Апрель, 16:42		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/26013/#comments>Apple задумалась об открытии магазина в Москве</a>&nbsp;(9)<br>
+		<div class=comments_menu_date>10 Апрель, 16:31		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/26001/#comments>Nokia делает Symbian закрытым проектом</a>&nbsp;(34)<br>
+		<div class=comments_menu_date>10 Апрель, 16:28		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/24974/#comments>В корпоративном секторе наблюдается значительный рост интереса к Linux</a>&nbsp;(252)<br>
+		<div class=comments_menu_date>10 Апрель, 16:15		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/gazeta/165/#comments>Почему объектно-ориентированное программирование провалилось?</a>&nbsp;(650)<br>
+		<div class=comments_menu_date>10 Апрель, 15:58		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/26014/#comments>Linux Foundation объявила об очередном конкурсе на лучший видеоролик про Linux</a>&nbsp;(14)<br>
+		<div class=comments_menu_date>10 Апрель, 15:33		</div>
+	</div>	<div class=comments_menu>
+		<a href=http://citforum.ru/news/25999/#comments>В 2011 году Apple может занять более 70 процентов рынка планшетов</a>&nbsp;(2)<br>
+		<div class=comments_menu_date>10 Апрель, 12:59		</div>
+	</div></td></tr>
+
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 border=0 alt=""></td></tr>
+<tr><td bgcolor=#008080>
+<!--subscribe small-->
+   <table cellpadding=1 cellspacing=1 border=0 width=100%>
+   <form action="http://citforum.ru/anketa/subscribe.php" method="post">
+   <tr><td bgcolor=#ffffff>
+    <center>
+     <table cellspacing=0 cellpadding=1 border=0>
+     <tr><td align=center>
+      <font size=2><p><b>Подписка на новости CITForum.ru</b><br>
+      <p><input type="text" name="e_mail" size=15 value="e@mail"><input type=submit value="OK">
+     </td></tr>
+     </table>
+    </center>
+   </td></tr>
+   </form>
+   </table>
+<!--/subscribe small-->
+</td></tr>
+
+<tr><td style="padding-left: 5px; min-width: 240px">
+<font size=2>
+<font size=2>
+<p><b>Новые публикации:</b>
+
+<p><b>16 марта</b>
+<p><li><b><a href=/consulting/iso20000_guide/>Методическое руководство для подготовки к профессиональным экзаменам ISO 20000 Foundation / ISO 20000 Foundation Bridge</a></b>
+<p><li><a href=/operating_systems/windows/nt_history/>Становление Windows NT</a>
+<p>Обзоры журнала <b><a href=/computer/>Computer:</a></b>
+<ul><li><a href=/computer/2010-12/>Компьютерные потребности финансовой индустрии</a>
+<li><a href=/computer/2011-01/>От микропроцессоров к нанохранилищам данных</a></ul>
+
+<p><b>24 февраля</b>
+<p><li><a href=/database/articles/bst/>Использование префиксного дерева для хранения и поиска строк во внешней памяти</a>
+<p><li><a href=/database/articles/twitter_kw_extraction/>Извлечение ключевых терминов из сообщений микроблогов с помощью Википедии</a>
+<p><li><a href=/internet/perl/vim_devel_cover/>VIM + Devel::Cover - оценка степени покрытия Perl-кода тестами в одно касание</a>
+<p><li><a href=/hardware/cd/cd_dvd_recovery/>Восстановление данных с DVD и CD дисков</a>
+<p><li><a href=/hardware/data/hdd_inside/>Устройство жесткого диска</a>
+
+<p><b>22 декабря</b>
+<p><li><b><a href=/database/articles/kuz_oltp_2010/>Транзакционные параллельные СУБД: новая волна</a></b>
+<p>Обзоры журнала <b><a href=/computer/>Computer:</a></b>
+<ul><li><a href=/computer/2010-11/>Общественная жизнь с использованием Internet-технологий</a>
+<li><a href=/computer/2010-10/>Макропроблемы микроустройств</a>
+<li><a href=/computer/2010-09/>Пути к решению неразрешимой проблемы</a></ul>
+<p><b><a href=http://citforum.ru/gazeta/>Газета:</a></b>
+<p><li><a href=http://citforum.ru/gazeta/171/>Гнусные цифры</a>
+
+<p><b>17 ноября</b>
+<p><li><a href=/database/articles/ailamaki_vldb2010/>Выполнение транзакций, ориентированное на данные</a>
+<p><li><a href=/programming/digest/lspv/>Об одном примере нарушения принципа подстановки Лисков</a>
+<p><b><a href=http://citforum.ru/gazeta/>Газета:</a></b>
+<p><li>Майкл Стоунбрейкер: <a href=http://citforum.ru/gazeta/169/>Уточнения по поводу теоремы CAP и ошибок, связанных с данными</a>
+<p><li><a href=http://citforum.ru/gazeta/170/>MySQL "на стероидах"</a>
+
+
+<div style="padding: 5px"><script type="text/javascript">
+var uri = 'http://anet.tradedoubler.com/anet?type(js)loc(13984)' + new String (Math.random()).substring (2, 11);
+document.write('<sc'+'ript type="text/javascript" src="'+uri+'" charset="ISO-8859-1"></sc'+'ript>');
+</script></div>
+
+
+<p><b>28 октября</b>
+<p><li><a href=/database/articles/madden_vldb2010/>Schism: управляемый рабочей нагрузкой подход к репликации и разделению баз данных</a>
+<p><li><a href=/database/articles/ref_vs_nav_models/>Развитие логических моделей данных</a>
+<ul><li><a href=/database/articles/dont_comp_incomp/>Не сравнивайте несравнимое!</a></ul>
+<p><li><a href=/database/oracle/timesten_clusterware/>Новые возможности Oracle TimesTen 11g - интеграция с Oracle Clusterware</a>
+<p>Обзоры журнала <b><a href=/computer/>Computer:</a></b>
+<ul><li><a href=/computer/2010-08/>Социальные сети: новые радости и горести</a>
+<li><a href=/computer/2010-07/>Социальные сети больных и немощных</a>
+<li><a href=/computer/2010-06/>Творцы виртуальной Земли</a></ul>
+
+<p><b>14 октября</b>
+<p><li><b><a href=/SE/project/selikhovkin/>Управление ИТ-проектом. Эффективная система "с нуля" в любой организации</a></b>
+<p><li><a href=/database/articles/abadi_vldb2010/>Доводы в пользу детерминизма в системах баз данных</a>
+<p><b><a href=http://citforum.ru/gazeta/>Газета:</a></b>
+<p><li><a href=http://citforum.ru/gazeta/168/>Социальный поиск: будущее уже сегодня</a>
+<p>Майкл Стоунбрейкер: <li><a href=http://citforum.ru/gazeta/166/>Моя десятка основных утверждений о хранилищах данных</a>
+<li><a href=http://citforum.ru/gazeta/167/>Почему предприятия не заинтересованы в NoSQL?</a>
+
+
+<p><b>23 сентября</b>
+<p><li><a href=/database/articles/kossmann_sigmod_2010/>Анализ альтернативных архитектур управления транзакциями в "облачной" среде</a>
+<p><li><a href=/database/articles/tempo_eis/>Темпоральная организация данных для решения проблем КИС</a>
+<p><b><a href=http://citforum.ru/gazeta/>Газета:</a></b>
+<p><li><a href=http://citforum.ru/gazeta/164/>Проблемы с ACID, и как их устранить, не прибегая к использованию NoSQL</a>
+<p><li><a href=http://citforum.ru/gazeta/165/>Почему объектно-ориентированное программирование провалилось?</a>
+
+<p><b>9 сентября</b>
+<p><li><a href=/database/articles/teradata_hadoop/>Интеграция Hadoop и параллельной СУБД</a>
+<p><li><a href=/database//articles/dis-evolution/>Эволюция систем, насыщенных данными</a>
+
+<p><li><a href=/database/oracle/cost-based_query_tr/>Преобразование запросов, основанное на стоимости</a>
+<p><li><a href=/database/oracle/subquery_opt/>Расширенная оптимизация подзапросов в Oracle</a>
+
+<p><li><a href=/database/oracle/editions/>Редакции объектов БД в Oracle как средство внесения изменений в приложение</a>
+
+<p><b>7 июля</b>
+<p><li><a href=/database/articles/h-store-sigmod2010/>Управление параллелизмом с низкими накладными расходами для разделенных баз данных в основной памяти</a>
+<p><li><a href=/database/oracle/recursive/>Рекурсивные запросы в Oracle</a>
+<p><li><a href=/operating_systems/linux/4k_hdd/>Жесткий диск WD10EARS с сектором 4 КБ. Подготовка к эксплуатации в Linux.</a>
+<p>Обзоры журнала <b><a href=/computer/>Computer:</a></b>
+<ul><li><a href=/computer/2010-05/>Критические проблемы критических систем</a>
+<li><a href=/computer/2010-04/>На чем бы сэкономить в облаках?</a>
+<li><a href=/computer/2010-03/>Аппаратный параллелизм и программисты: кто кого сборет?</a>
+</ul>
+<p><b><a href=http://citforum.ru/gazeta/>Газета:</a></b>
+<p><li><a href=http://citforum.ru/gazeta/162/>Московские пробки - исследование IBM</a>
+<p><li><a href=http://citforum.ru/gazeta/163/>От Osborne до iPad: эволюция портативных компьютеров</a>
+
+<p align="right"><b><a href="/news.shtml">Все публикации</a> &gt;&gt;&gt;</b>
+
+</font>
+<hr size=1>
+
+</font>
+</td></tr>
+
+<tr><td style="padding-left:5px;">
+
+
+
+
+
+</td></tr>
+
+</table>
+
+</td>
+<td bgcolor=#daecd7><img src=/pictures/1x1.gif width=2 height=1 border=0></td>
+<td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0></td>
+</tr></table>
+
+</td>
+ <!--no_right-->
+
+</tr>
+</table>
+</td>
+
+</tr></table>
+
+<p>
+<table   cellspacing=0 cellpadding=0 border=0 width=100%>
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=931 height=1 alt="" border=0></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 alt="" border=0></td></tr>
+<tr><td bgcolor=#008080>
+
+<table cellspacing=1 cellpadding=3 border=0 width=100%>
+<tr>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/consulting/>IT-консалтинг</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/SE/>Software Engineering</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/programming/>Программирование</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/database/>СУБД</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/security/>Безопасность</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/internet/>Internet</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/nets/>Сети</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/operating_systems/>Операционные системы</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/hardware/>Hardware</a></font></td>
+<!--
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/faq/>FAQ (ЧаВО)</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/howto/>HOWTO</a></font></td>
+--> 
+</tr>
+</table>
+
+</td></tr>
+</table>
+
+<p>
+
+<table width=100%>
+<tr><td>
+<a href=/about/><font size=2>Информация для рекламодателей</font></a> 
+</td><td><font size=2>PR-акции, размещение рекламы &mdash; <a href="mailto:adv@citforum.ru">adv@citforum.ru</a>,
+<br>тел. +7 495 6608306, ICQ 232284597</font>
+</td><td align=right><font size=2>Пресс-релизы &mdash; <a href=mailto:pr@citforum.ru>pr@citforum.ru</a></font>
+</td></tr></table>
+
+
+<table cellspacing=0 cellpadding=0 border=0 width="100%"><tr><td><img src=/pictures/1x1.gif width=1 height=5 border=0 alt=""></td></tr>
+<tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr>
+<tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 border=0 alt=""></td></tr></table>
+
+<table cellspacing=0 cellpadding=4 border=0 width=100%><tr>
+<td><font size=2>
+<a href=http://www.citforum.ru/feedback.php?page=/internet/webservers/webdav/&server=citforum.ru>Послать комментарий</a><br>
+<a href=/how.shtml>Информация для авторов</a>
+
+</font></td>
+<td><a href=http://top100.rambler.ru/cgi-bin/stats_top100.cgi?13078><img src="/pictures/logos/banner-88x31-rambler-darkblue2.gif" width=88 height=31 border=0 alt="Rambler's Top100"></a></td>
+<td><!--TopList LOGO--><a target=_top href="http://top.list.ru/jump?from=26978"><img src="http://top.list.ru/counter?id=26978;t=54;l=1" border=0 height=31 width=88 alt="TopList"></a><!--TopList LOGO--></td>
+<td>
+<!--LiveInternet logo--><a href="http://www.liveinternet.ru/click" target=_blank><img
+src="http://counter.yadro.ru/logo?12.6" border=0
+alt="liveinternet.ru: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня"
+width=88 height=31></a><!--/LiveInternet-->
+</td>
+<td align=right valign=bottom><FONT SIZE=1 face="Arial, sans-serif">This Web server launched on February 24, 1997<br>
+Copyright &copy; 1997-2000 CIT, &copy; 2001-2009 <a href=/info.shtml>CIT Forum</a></font></td>
+</tr></table>
+
+<table cellspacing=0 cellpadding=0 border=0 width=100%><tr><td bgcolor=#daecd7><img src=/pictures/1x1.gif width=1 height=3 border=0 alt=""></td></tr><tr><td bgcolor=#008080><img src=/pictures/1x1.gif width=1 height=1 border=0 alt=""></td></tr></table>
+<table cellspacing=0 cellpadding=0 border=0 width=100%><tr><td align=center><font size=1 face="Arial, sans-serif"><b>Внимание!</b> Любой из материалов, опубликованных на этом сервере, не может быть  воспроизведен в какой бы то ни было форме и какими бы то ни было средствами без письменного разрешения владельцев авторских прав. <a href=/copyright.shtml>Подробнее...</a></td></tr></table>
+
+
+<hr>
+<style><!--
+.d {color:grey;font-size:10px}
+.d a {text-decoration:none}
+--></style>
+<table class=d width=100%>
+<tr><td>
+
+Качественная <a href="http://almaznaya-rezka-ceny.montazhprom.ru/">алмазная резка цены</a> снижены.<br><br>
+
+</td></tr>
+</table>
+
+
+
+</table></center>
+
+
+<!-- AdGravity Javascript code START-->
+<script language="javascript" type="text/javascript"><!--
+var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+document.write('<sc' + 'ript language="JavaScript" src="http://ad.adriver.ru/cgi-bin/erle.cgi?sid=126751&bt=16&target=blank&tail256="' + ar_Tail + '"></sc' + 'ript>');
+//--></script>
+<!-- AdGravity Javascript code END -->
+
+<script type="text/javascript" src="http://b2bvideo.ru/js/video.js.php?a=268" charset="UTF-8"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+#summary Coding Style.
+
+= Project structure =
+
+To be continued
+
+= Python sources =
+Код - PEP 8 (http://www.python.org/dev/peps/pep-0008/)
+Документация: PEP 257
+
+  * Ведущие отступы - 4 пробела
+  * Строка заканчивается значимым символом (НЕ пробелом/табом)
+  * Перед каждым классом - 2 пустых строки
+  * Перед каждой функцией (в т.ч. внутри класса) - 1 пустая строка
+  * После каждой "," - 1 пробел
+  * табличные данные (списки - e.g. urls) выровнены на границу 4 пробелов)
+  * названия функций и классов начинаются с 8-й позиции после начала объявления (def/class)
+
+= HTML =
+HTML_Coding_Conventions
+
+  * отступы - 4 пробела
+  * все шаблоны - только xhtml (не html)
+  * все шаблоны после рендеринга должны проходить валидацию - молча
+  * между тегами (в ряд) - 1 пробел
+  * html-теги отделяются от внутренностей 1 пробелом
+  * внутренности django-тегов отделяются от скобок 1 пробелом (e.g. {% url tratata %})
+  * каждый вложенный тег (html или django) - с новой строки с отступом - если в одну строку - плохо читабельно.
+  * закрывающие теги стоят на том же уровне, что и открывающие.
+
+= Размещение =
+
+tidjango:
+  * apps/
+    * core
+      * views
+      * ...
+    * bits (phone, email, www, im, address)
+      * ...
+    * <app1> (e.g. - contacts)
+      * ...
+----
+HttpResponseRedirect(reverse('gw.views.todo_list')):
+	redirect('gw.views.todo_index')
+HttpResponseRedirect(reverse('gw.views.todocat_view', kwargs = {'object_id': cat.id}))
+	redirect('gw.views.todo_detail', object_id = object_id)

@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Easy Free Multilevel javascript Menu</title>
+
+<script type="text/javascript" src="js/menu.js"></script>
+<script type="text/javascript" src="js/browser.js"></script>
+
+<link href="css/menu.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+
+<script>
+    function chCaptcha(){
+	    var NewImg = new Image();
+	    NewImg.src = '/lib/captcha2/captcha.php?'+Math.random();
+
+	    document.getElementById('captcha_img').src= NewImg.src;
+	    //document.getElementById('captcha-form').focus();
+	}
+</script>
+
+</head>
+
+<body>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-7897021-2");
+        pageTracker._trackPageview();
+    } catch(err) { var the_err = err; }
+</script>
+<div id="topPan">
+<div>
+    Back to <a href="http://www.hernanmarino.com/" title="php developer">HernanMarino.com</a>
+</div>
+    <!--START MENU-->
+        <ul id="Menu1" style="display:none;">
+            <li>Option One
+                <ul>
+                    <li><a href="http://www.example.com/" title="Go to Example.com">Example Link</a></li>
+                 </ul>
+            </li>
+            <li>A more long Option
+                <ul>
+                    <li>Sub Option (no link)</li>
+                    <li>More Sub (no link)</li>
+                    <li><p><b><u><a href="http://www.google.com/" title="Google">A really really long option (with link to G)</a></u></b></p>
+                        <ul>
+                            <li>Another sub</li>
+                            <li>A sub with more subs
+                                <ul><li>Subsub</li>
+                                    <li>Too much subs</li>
+                                    <li>Another...</li>
+                                </ul>
+                            </li>
+                            <li><a href="http://www.sistemasdinamicos.com.ar/" title="The Great SD">Another 1</a>
+                                <ul>
+                                    <li>More and more...</li>
+                                </ul>
+                            </li>
+                            <li>Another 2</li>
+                            <li>Another three
+                                <ul>
+                                    <li>Another 3 (1)</li>
+                                </ul>
+                            </li>
+                            <li>Another 3 -6</li>
+                            <li>Another 3 - 7</li>
+                        </ul>
+                    </li>
+                    <li>Sub 4</li>
+                </ul>
+            </li>
+            <li>A Heading
+                <ul>
+                    <li>And more subs...</li>
+                </ul>
+            </li>
+            <li><a href="http://www.yahoo.com/">An item</a>
+                <ul>
+                    <li>and a sub item...</li>
+                </ul>
+            </li>
+            <li><a href="mailto:admin@example.com">Contact Us</a></li>
+        </ul>
+    <!--END MENU-->
+</div>
+<div align="center">
+        <div id="MenuContent" style="background-color:black; width:380px; height:27px;"></div>
+</div>
+
+<div id="bodyPan">
+    <br /><br />
+    <h2>How to use the menu ?</h2>
+    <p>It is tested in Firefox, IE6 and IE7, Opera and Safari</p>
+    <p>Search Engine friendly, it parses a raw ul and li structure (see below)</p>
+    <p>First <a href="menu.tar.gz">download</a> it.</p><br />
+    <p>Extract it, then in your html page, create a structure like this:</p>
+    <div style="color:navy;">
+    &lt;!--START MENU--&gt;<br />
+        &lt;ul id=&quot;Menu1&quot; style=&quot;display:none;&quot;&gt;<br />
+            &lt;li&gt;An Option without link&lt;/li&gt;<br />
+            &lt;li&gt;&lt;a href=&quot;http://www.google.com/&quot;&gt;An option with link&lt;/a&gt;<br />
+                &lt;ul&gt;<br />
+                    &lt;li&gt;A sub option&lt;/li&gt;<br />
+                &lt;/ul&gt;<br />
+            &lt;/li&gt;<br />
+        &lt;/ul&gt;<br />
+    &lt;!--END MENU--&gt;<br />
+
+   <p>Then the divs that holds the js menu:</p>
+   
+   &lt;div align=&quot;center&quot;&gt;<br />
+        &lt;div id=&quot;MenuContent&quot; style=&quot;background-color:black; width:380px; height:27px;&quot;&gt;&lt;/div&gt;<br />
+    &lt;/div&gt;<br />
+
+    </div>
+
+    <p>Its important for browsers like IE that the div holding the menu, in this case "MenuContent", is not contained in styled divs, for example divs with style="width:200px". This is because in some browsers the method that reads the parent's position gets disaligned.</p>
+    <br />
+    <br />
+    <h2>User Comments:</h2>
+    <p><strong>siwapol</strong> commented:</p><p>...</p><br /><br /><p><strong>muhammad roohan</strong> commented:</p><p>i very like to download this.</p><br /><br /><p><strong>roohan</strong> commented:</p><p>i like very much this software</p><br /><br /><p><strong>muhammad roohan</strong> commented:</p><p>how this software will help me?</p><br /><br /><p><strong>test</strong> commented:</p><p>kdkdk</p><br /><br /><p><strong>dsdf</strong> commented:</p><p>kdk</p><br /><br /><p><strong>Walter</strong> commented:</p><p>I liked the menu</p><br /><br />
+    <br />
+    <br />
+    <br />
+    <a name="tf"></a>
+    <p style="color:red;"></p>
+    <h2>Ask questions or leave comments:</h2>
+    <br />
+    <form method="POST" action="">
+        <input type="hidden" name="wInComment" value="Y" />
+        <h3>Name:</h3>
+        <input type="text" name="wName" />
+        <h3>Email:</h3>
+        <input type="text" name="wEmail" />
+        <h3>Comment:</h3>
+        <textarea name="wComment" cols="40" rows="5"></textarea>
+        <br />
+        <img src="/lib/captcha2/captcha.php" id="captcha_img" ><br />
+        <input type="text" name="wCaptcha" value="" />
+        <a href="#" onclick="chCaptcha(); return false;" id="change-image" style="text-decoration:underline;">click here to change the graphic word</a>
+        <br />
+        <input type="submit" name="wSub" value="Submit" />
+        
+    </form>
+    <br />
+    <br />
+</div>
+
+<div id="footermainPan">
+  <div id="footerPan">
+  	
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!-- Jobrole -->
+{% extends "contact/jobrole_base.html" %}
+{% block body_main %}
+<table class="itemlist">
+	<caption>
+		<div style="position: relative;">
+			<div>
+				<a href="{% url apps.contact.views.jobrole_add %}"> <button title="Добавить новую Должность" style="float:left"> + </button> </a>
+				<div id="dropdown0" class="dropdown" style="float:left">
+					<button title="Всякие действия"> Действия &#9663; </button>
+				</div>
+			</div>
+			<div style="position: absolute; right:0; top: 0;">
+				{% include "paginator.html" %}
+			</div>
+		</div>
+		<div>
+			{% for abc in abc_list %}
+				<span class="abc"> <a href="{% url apps.contact.views.jobrole_setabc abc.u %}" {% ifequal abc.f 1 %} class="active" {% endifequal %}> {{ abc.c }} </a> </span>
+			{% endfor %}
+		</div>
+	</caption>
+	<thead>
+		<tr>
+			<th> {% with "selecttodo" as id %} {# include "selectmenu.html" #} {% endwith %} </th>
+			<th> Наименование </th>
+			<th> Комментарии </th>
+		</tr>
+	</thead>
+	<form id="itemform" method="post" action="{# url apps.contact.views.jobrole_del_selected #}">
+	<tbody>
+	{% for object in object_list %}
+		<tr bgcolor={% cycle 'lightcyan' 'white' %}>
+			<td nowrap> <input type="checkbox" name="jobrole" value="{{ object.id }}"/> </td>
+			<td> <a href="{{ object.get_absolute_url }}"> {{ object.name }} </a> </td>
+			<td> <a href="{{ object.get_absolute_url }}"> {{ object.comments }} </a> </td>
+		</tr>
+	{% endfor %}
+	</tbody>
+	</form>
+<table>
+{% endblock %}

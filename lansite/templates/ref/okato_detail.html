@@ -1,0 +1,20 @@
+<!-- OKATO -->
+{% extends "ref/base.html" %}
+{% block title %} ОКАТО {% endblock %}
+{% block topbar %} <a href="{% url apps.ref.views.okato_list %}"> ОКАТО </a> {% endblock %}
+{% block body_main %}
+{% for i in item.get_ancestors %}
+	<p> {{ i.id }}: <a href="{% url apps.ref.views.okato_view i.id %}"> {{ i.name }} </a> </p> <BLOCKQUOTE>
+{% endfor %}
+<p> {{ item.id }}: {{ item.name }} </p> <BLOCKQUOTE>
+{% for i in item.get_children %}
+	<p>
+		{{ i.id }}:
+		{% if i.get_children_count %}
+			<a href="{% url apps.ref.views.okato_view i.id %}"> {{ i.name }} </a>
+		{% else %}
+			{{ i.name }}
+		{% endif %}
+	</p>
+{% endfor %}
+{% endblock %}

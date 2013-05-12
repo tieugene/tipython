@@ -1,0 +1,27 @@
+div.dropdown button {
+	margin:0 auto;
+}
+
+div.dropdown div {
+	margin:0;
+	padding:0;
+	position:absolute;
+	z-index:2;
+	display:none;
+	background-color: lightgrey;
+}
+
+div.dropdown ul {
+	list-style-type:none;
+	background-color: lightgrey;
+	margin:0;
+	padding:0;
+}
+
+div.dropdown a {
+	text-decoration: none;
+}
+
+div.dropdown li:hover {
+	background-color: yellow;
+}

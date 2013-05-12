@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body_main %}
+<p> <a href="{% url views.doctype_detail object.type.pk %}"> {{ object.type }} </a>: {{ object.name }} </p>
+{% block body_menu_top %}
+<table border="0"> <tr>
+	<td> <a href="{% url views.doc_edit object.pk %}"> <button> Изменить </button> </a> </td>
+	<td> <a href="{% url views.doc_del object.pk %}"> <button> Удалить </button> </a> </td>
+	<td> <form action="." method="post">
+		{% csrf_token %}
+		<select name="import">
+			{% for i in object.type.odftype.odfexport_set.all %}
+			<option value="{{ i.pk }}"> {{ i.name }} (.{{i.ext}}) </option>
+			{% endfor %}
+		</select>
+		<input type="submit" value="Импорт"/>
+	</form> </td>
+</tr> </table>
+{% endblock %}
+<table border="1">
+	<thead>
+		<tr> <th> Параметр </th> <th> Значение </th> </tr>
+	</thead>
+	<tbody>
+		{% block details %}
+		{% endblock %}
+	</tbody>
+</table>
+{% block body_menu_bottom %}
+<table border="0"> <tr>
+	<td> <a href="{% url views.doc_edit object.pk %}"> <button> Изменить </button> </a> </td>
+	<td> <a href="{% url views.doc_del object.pk %}"> <button> Удалить </button> </a> </td>
+	<td> <form action="." method="post">
+		{% csrf_token %}
+		<select name="import">
+			{% for i in object.type.odftype.odfexport_set.all %}
+			<option value="{{ i.pk }}"> {{ i.name }} (.{{i.ext}}) </option>
+			{% endfor %}
+		</select>
+		<input type="submit" value="Импорт"/>
+	</form> </td>
+</tr> </table>
+{% endblock %}
+{% endblock %}

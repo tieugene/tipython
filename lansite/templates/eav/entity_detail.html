@@ -1,0 +1,149 @@
+{% extends "eav/base.html" %}
+{% block body_main %}
+
+    <script>
+    $(function(){
+    $('#set_tags').hide()})
+        function saveTags(){
+            if($('option[req="true"]').length==0){
+            var tagsarr=[];
+            $(".val").each(function(obj){
+             var item = $('*',this);
+//                alert(item.html()+' '+item.val())
+                if(item.is('[type="checkbox"]')){
+                    if(item.is(':checked')){
+                        tagsarr.push('{"id":'+item.attr('id')+',"value":"check"}')
+                    }else{
+                        tagsarr.push('{"id":'+item.attr('id')+',"value":"uncheck"}')
+                    }
+                }else{
+                    if(item.val()){
+                    tagsarr.push('{"id":'+item.attr('id')+',"value":"'+item.val()+'"}')
+                    }else{
+                        item=$('.obj_sel',item)
+                        tagsarr.push('{"id":'+item.attr('id')+',"value":"'+item.val()+'"}')
+
+                    }
+                }
+             })
+//            alert(tagsarr)
+            $.post(".","["+tagsarr+"]",function(data){
+//                alert(data)
+                window.location='{% url apps.tagged.views.to_view to.object.id %}'
+            },function(){
+            alert('Error!')
+        })
+            }else{
+                alert('Остались обязательные атрибуты!')
+
+            }
+        }
+        function changeControl(){
+            if($('#tagtype').val()!='---'){
+                $('#newdiv').load('{% url apps.views.index %}to/getinput/'+$('#tagtype').val(),function(){
+                    $('#newdiv *').attr('id','newvalue')
+                $('#newvalue[class="date"]').datepicker({dateFormat: 'dd.mm.yy', changeMonth: true,}).datepicker($.datepicker.regional['ru']);
+                })
+            }
+
+        }
+            function addTag(){
+                $.post('newtag','{"type":"'+$('#tagtype').val()+'","value":"'+$('#newvalue').val().replace(/;|'/g,'')+'"}',function(data){
+//                    alert(data)
+                location.reload()
+                })
+        }
+    function goBack(){
+        if($('option[req="true"]').length==0){
+        window.location='{% url apps.tagged.views.to_view to.object.id %}'
+        }else{
+
+            alert('Остались обязательные атрибуты!')
+
+        }
+
+    }
+    </script>
+<h3>
+    <a href='{{ to.object.get_absolute_url }}'>{{ to }}</a> </h3>
+
+    {% if edit %}
+        <h4>Новый тэг</h4>
+        {% if tags_all %}
+        <form action="newtag" method="post">
+<select onChange="changeControl()" id="tagtype">
+    <option>---</option>
+{% for tag in tags_all %}
+  <option value="{{ tag.id }}" {% if tag.required %}req="true"> * {% else %}>{% endif %}{{ tag }}</option>
+{% endfor %}
+</select>
+
+{#        <label for="newvalue">Значение</label>#}
+        <div id="newdiv">
+        </div>
+            <input type="button" value="Добавить" onclick="addTag()"/>
+        </form>
+            {% else %}
+            Нет подходящих тэгов.
+            <input type="button" value="Добавить" onclick="window.location='{% url apps.tagged.views.to_tagtype_add %}'"/>
+            {% endif %}
+        <hr>
+    {% endif %}
+{% if edit %}
+    <h4>Список тэгов</h4>
+    {% if tags %}
+    <table id="tags" width="400">
+    {% for tag in tags %}
+        <tr>
+    <td colspan="2">{{ tag.type }} : </td>
+        </tr>
+        <tr>
+            <td>
+        <label for="{{ tag.tag.object_ptr_id }}">Значение</label>
+            </td>
+            {% autoescape off %}
+{#            {{ tag.get_control }}#}
+                <td class="val">
+                    {% ifequal tag.type.type_class 'object' %}
+                        <table>
+                        {{ tag.tag.form }}
+                        </table>
+                        <script>$('.val #id_object').attr('id',{{ tag.tag.object_ptr_id }}).attr('class','obj_sel')</script>
+                    {% else %}
+                <input type="{% ifequal tag.type.type_class 'bool' %}checkbox{% else %}text{% endifequal %}" id="{{ tag.tag.object_ptr_id }}" class="{{ tag.type.type_class }}" >{% endifequal %}
+                </td>
+                <td>
+                <input type='button' value='X' onclick="window.location='{% url gw.tagged.views.to_edit_deltag to.object.id tag.tag.object_ptr_id %}'">
+                </td>
+
+                {% ifequal tag.type.type_class 'date' %}
+                <script>$('input#{{ tag.tag.object_ptr_id }}').val('{{ tag.tag.value|date:"d.m.Y" }}')</script>
+                {% else %}
+                    {% if tag.type.type_class == "bool" and tag.tag.value %}
+                    <script>$('input#{{ tag.tag.object_ptr_id }}').attr('checked',true)</script>
+                        {% else %}
+                        <script>$('input#{{ tag.tag.object_ptr_id }}').val('{{ tag.tag.value }}')</script>
+                    {% endif %}
+                {% endifequal %}
+            {% endautoescape %}
+            </tr>
+
+
+    {% endfor %}
+    </table>
+    {% else %}
+        Нет тэгов.
+    {% endif %}
+    {% else %}
+    {% load gw_extras %}
+    {% taglist to.object %}
+{% endif %}
+    <hr>
+    <input type='button' value='Удалить' onclick="confirmDelete('{% url gw.tagged.views.to_del to.object.id %}')">
+    {% if edit %}
+        <input type='button' value='Вернуться' onclick="goBack()">
+        <input type='button' value='Сохранить' onclick="saveTags()">
+        {% else %}
+        <input type='button' value='Редактировать' onclick="window.location='{% url gw.tagged.views.to_edit to.object.id %}'">
+    {% endif %}
+{% endblock %}

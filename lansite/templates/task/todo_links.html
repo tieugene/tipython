@@ -1,0 +1,33 @@
+{% extends "task/todo_base.html" %}
+{% block onload_js %} {{ block.super }} setmenu("menu_task_todo_links"); {% endblock %}
+{% block body_main %}
+<table style="border: 2px solid #A0A0FF; padding: 0; margin: 0;"> <tr>
+	<td valign="top">
+		<table>
+			<caption> Блокируемые задачи: </caption>
+			{% for i in object.lefts.all %}
+				<tr>
+					<td> <a href="{{ i.left.get_absolute_url }}"> {{ i.left }} </a> </td>
+				</tr>
+			{% endfor %}
+		</table>
+	</td>
+	<td valign="top">
+		<table>
+			<caption> Блокирующие задачи: </caption>
+			{% for i in object.rights.all %}
+				<tr>
+					<td> <a href="{{ i.right.get_absolute_url }}"> {{ i.right }} </a> </td>
+					<td> <a href="{% url apps.task.views.todo_sub_del i.id %}"> x </a> </td>
+				</tr>
+			{% endfor %}
+			<form action="{% url apps.task.views.todo_sub_add object.id %}" method="post">
+				<tr>
+					<td> {{ master_form.as_p }} </td>
+					<td> <button type="submit"> + </button> </td>
+				</tr>
+			</form>
+		</table>
+	</td>
+</tr> </table>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "task/todo_base.html" %}
+{% block body_main %}
+<p> Загрузка iCalendar </p>
+<form enctype="multipart/form-data" action="{% url apps.task.views.todo_ical_import2 %}" method="post">
+	<table>
+		{{ form.as_p }}
+	</table>
+	<button type="submit"> OK </button>
+	<a href="{% url apps.task.views.todo_index %}"> <button> Отказаться </button> </a>
+</form>
+{% if result %}
+	<p> Result: </p>
+	{% for i in result %}
+		<p> {{ i }} </p>
+	{% endfor %}
+{% endif %}
+{% endblock %}

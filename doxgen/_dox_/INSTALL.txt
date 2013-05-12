@@ -1,0 +1,16 @@
+All:
+	* django python-wkhtmltopdf
+	* svn ...
+	* wkhtmltopdf-static
+	* ln
+	* mkdir -p /mnt/shares/doxgen && chmod -R a+rwX /mnt/shares/doxgen
+	* ./manage.py syncdb
+Devel:
+	* 
+Production:
+	* httpd
+	* svn ...
+	* chmod -R ...
+	* ./manage.py syncdb
+
+Note: ln -s /usr/share/doxgen/static/admin /usr/lib/python2.7/site-packages/django/contrib/admin/static/admin

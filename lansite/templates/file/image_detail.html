@@ -1,0 +1,26 @@
+<!-- File.Detail -->
+{% extends "file/base.html" %}
+{% block body_main %}
+<h1> {{ object }} </h1>
+<p>
+	<a href="{{ object.get_edit_url }}"> <button> Изменить </button> </a>
+	<a href="{% url apps.file.views.file_dl object.id %}"> <button> Слить </button> </a>
+	<button onClick="confirmDelete('{{ object.get_del_url }}')"> Удалить </button>
+</p>
+<table>
+	<tr> <td> File name: </td>	<td> {{ object.name }} </td> </tr>
+	<tr> <td> MIME: </td>		<td> {{ object.mime }} </td> </tr>
+	<tr> <td> Saved: </td>		<td> {{ object.saved|date }} </td> </tr>
+	<tr> <td> File Size: </td>	<td> {{ object.size }} </td> </tr>
+	<tr> <td> MD5: </td>		<td> {{ object.md5 }} </td> </tr>
+	<tr> <td> Image Size: </td>	<td> {{ object.width }} x {{ object.height }} </td> </tr>
+	<tr> <td> Pages: </td>		<td> {{ object.pages }} </td> </tr>
+</table>
+<hr/>
+{# load gw_extras #}
+{# taglist object #}
+<hr/>
+{% for i in object.getthumbs %}
+	<img src="/media/{{ i }}"  alt="{{ object.name }}" border="1"/>
+{% endfor %}
+{% endblock %}

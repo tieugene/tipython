@@ -1,0 +1,52 @@
+{% extends "gw/bits/base.html" %}
+{% block body_main %}
+<table class="itemlist">
+	<caption> 
+		Logentry
+	</caption>
+	<thead>
+		<tr>
+			<th nowrap> Param </th>
+			<th nowrap> Value </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr> <th nowrap> Date </th>		<td nowrap> {{ object.action_time|date }} </td> </tr>
+		<tr> <th nowrap> Time </th>		<td nowrap> {{ object.action_time|time:"H:i:s" }} </td> </tr>
+		<tr> <th nowrap> User </th>		<td nowrap> {{ object.user }} </td> </tr>
+		<tr> <th nowrap> Type </th>		<td nowrap> {{ object.content_type }} </td> </tr>
+		<tr> <th nowrap> Object_id </th>	<td nowrap> {{ object.object_id }} </td> </tr>
+		<tr> <th nowrap> Object </th>		<td nowrap> {{ object.object_repr }} </td> </tr>
+		<tr> <th nowrap> Action </th>		<td nowrap> {{ object.action_flag }} </td> </tr>
+		<tr> <th nowrap> Comments </th>		<td nowrap> {{ object.change_message }} </td> </tr>
+	</tbody>
+</table>
+{% if object.logentryfield_set.count %}
+	<hr/>
+	<table class="itemlist">
+		<caption>
+			<a href="#" title="Previous change of object"> &lt; </a>
+			Детали:
+			<a href="#" title="Next change of object"> &gt; </a>
+		</caption>
+		<thead>
+			<tr>
+				<th> Поле </th>
+				<th> Значение </th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in fields %}
+				<tr>
+					<th> {{ i.title }} </th>
+					{% if i.show %}
+						<td> {{ i.value }} </td>
+					{% else %}
+						<td/>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	
+{% endif %}
+{% endblock %}

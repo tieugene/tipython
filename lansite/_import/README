@@ -1,0 +1,5 @@
+0. dump current db (./dothis dump)
+1. export to sqlite (sql2sqlite <dumpfile>
+2. tune: cat postsqlite.sql | sqlite3 data.db
+3. convert: cat convert.sql | sqlite3 data.db
+4. import: cd .. && ./dothis drop && ./dothis sync && ./import.py _import/data.db

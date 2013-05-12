@@ -1,0 +1,58 @@
+{% load pymorphy_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
+<title> УСН </title>
+<style type="text/css">
+	@page { size: 21.59cm 27.94cm; margin: 1cm; }
+	p { margin: 0; }
+	hr { margin: 0; }
+	p.main { font-family: "Times New Roman", serif; font-size: 10pt; margin-top: 3pt;}
+	.j { text-align: justify; }
+	td.b { border-bottom: 1px solid black; }
+</style>
+</head>
+<body>
+<div align="right">
+<p class="main">Приложение №1<br/>
+<br/>
+УТВЕРЖДЕНО<br/>
+приказом МНС России<br/>
+от 19.09.2002 N ВГ-3-22/495<br/>
+(в редакции приказа МНС России<br/>
+от 7 июля 2004 года №САЭ-3-22/414@ -<br/>
+см. предыдущую редакцию)</p>
+</div>
+<p class="main" align="right" style="margin-top: 12pt; margin-bottom: 12pt;"><b>ФОРМА №26.2-1</b></p>
+<div style="margin-left: 50%;" align="left">
+<p class="main"><b>В Инспекцию Федеральной налоговой службы № по Санкт-Петербургу</b></p>
+<p class="main">от <b>{{ org_fokopf|inflect_nom:"рд" }} {{ org_name }}</b></p>
+<p class="main"><b>{{ org_addr }}</b></p>
+</div>
+<p class="main" align="center" style="margin-top: 12pt; margin-bottom: 12pt;"><b>ЗАЯВЛЕНИЕ<br/>о переходе на упрощенную систему налогообложения</b></p>
+<p class="main j">В соответствии с положениями 346.13 главы 26.2 Налогового кодекса Российской Федерации <b><u>{{ org_fname }}</u></b> переходит на упрощенную систему налогообложения с «____» ________ 20__ года.</p>
+<p class="main j">В качестве объекта налогообложения выбраны <b><u>Доходы (6%)</u></b>.</p>
+<p class="main j">Получено доходов от реализации товаров (работ, услуг) за девять месяцев 20 <u> --//-- </u> года (без учета налога на добавленную стоимость и налога с продаж) <u> --//-- </u> рублей.</p>
+<p class="main j">Средняя численность работников за налоговый (отчетный) период 20 <u> --//-- </u> года составляет <u> --//-- </u> человек.</p>
+<p class="main j">Стоимость амортизируемого имущества, находящегося в собственности организации на дату подачи настоящего заявления, составляет <u> --//-- </u> рублей.</p>
+<p class="main j">Участие в соглашениях о разделе продукции <u> --//-- </u> </p>
+<p class="main j">Иные условия и ограничения, предусмотренные  статьей 346.12 Налогового кодекса Российской Федерации, соблюдены.</p>
+<p class="main j">Ранее упрощенная система налогообложения, предусмотренная главой 26.2 Налогового кодекса Российской Федерации, применялась в <u> --//-- </u> году.</p>
+<p class="main" style="margin-top: 24pt;"> <b><u>Руководитель организации</u></b> ________________ <b><u>{{ founder_sfio }}</u></b></p>
+<p class="main" style="margin-top: 24pt;">"__" _________ 20__ года </p>
+<p class="main" style="margin-top: 24pt;"> М.П. </p>
+<p class="main" style="margin-top: 24pt;">Отметка о регистрации заявления:</p>
+<p class="main" style="margin-top: 24pt;">"__" _________ 20__ года, входящий номер _________________________________ </p>
+<table border="0" width="100%" style="margin-top: 24pt;">
+	<tr height="12pt">
+		<td class="b"/>
+		<td class="b"/>
+		<td rowspan="2" width="40%"> <p class="main" align="center"> штамп налогового органа </p> </td>
+	</tr>
+	<tr>
+		<td> <p class="main" align="center"> (подпись) </p> </td>
+		<td> <p class="main" align="center"> (фамилия, инициалы должностного лица налогового органа) </p> </td>
+	</tr>
+</table>
+</body>
+</html>

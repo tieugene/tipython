@@ -1,0 +1,17 @@
+#summary ОКАТО - Общероссийский классификатор объектов административно-территориального деления.
+
+[Ref_TOC TOC]
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+|| id || ID || = int(RPAD(code, 11, '0')) ||
+|| code || str(11) || Код ||
+|| crc || int(6) || CRC ||
+|| name || str(512) || Наименование ||
+|| comments || str(128) || Доп. инфо ||
+|| parent || IDREF || Папа ||

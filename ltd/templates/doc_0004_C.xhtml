@@ -1,0 +1,45 @@
+{% load pymorphy_tags %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
+<title> Список участников </title>
+<style type="text/css">
+                @page { size: 29.7cm 21cm; margin-left: 2cm; margin-right: 2cm; margin-top: 1.27cm; margin-bottom: 1.5cm }
+                P { font-family: "Times New Roman", serif; font-size: 12pt; margin: 0; }
+                P.main {  }
+		table { border-collapse: collapse; }
+		th { border: 1px solid black; padding: 0.2cm; text-align: center; }
+		td { border: 1px solid black; padding: 0.2cm; text-align: left; }
+</style>
+</head>
+<body>
+<p class="main" align="center" style="font-size: 14pt; margin: 0.5cm;"><u><b>Список участников {{ org_fokopf|inflect_nom:"рд" }} {{ org_name }}</b></u></p>
+<table width="1022">
+	<tr>
+		<th width="21"> <p class="main" align="center">№ п/п</p> </th>
+		<th width="246"> <p class="main" align="center">ФИО участника общества (полностью)</p> </th>
+		<th width="108"> <p class="main" align="center">Место жительства</p> </th>
+		<th width="75"> <p class="main" align="center">Уставной капитал общества (сумма)</p> </th>
+		<th width="89"> <p class="main" align="center">Размер оплаченной доли Уставного капитала участником общества</p> </th>
+		<th width="87"> <p class="main" align="center">Дата перехода доли</p> </th>
+		<th width="107"> <p class="main" align="center">Основание для перехода доли</p> </th>
+		<th width="175"> <p class="main" align="center">Статус</p> </th>
+	</tr>
+	<tr>
+		<td> <p class="main" align="center">1</p> </td>
+		<td> <p class="main">{{ founder_f }} {{ founder_i }} {{ founder_o }}, {{ founder_doc }}</p> </td>
+		<td> <p class="main">{{ founder_addr }}</p> </td>
+		<td> <p class="main" align="center">{{ org_fund }} рублей</p> </td>
+		<td> <p class="main" align="center">100 % - вещевой вклад</p> </td>
+		<td/>
+		<td/>
+		<td> <p class="main" align="center">Является учредителем общества</p> </td>
+	</tr>
+</table>
+<p class="main" style="font-size: 14pt; margin: 0.5cm;"><b>Список составлен на дату : {{ org_date_reg }} </b></p>
+<p class="main" style="font-size: 15pt; margin: 0.5cm;"><b>Генеральный директор ФИО: {{ founder_ffio }} __________</b></p>
+<p class="main" style="font-size: 14pt; margin: 0.5cm;" align="center"><b>М.П.</b></p>
+</body>
+</html>

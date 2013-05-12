@@ -1,0 +1,17 @@
+{% extends "contact/person_base.html" %}
+{% block body_main %}
+<p> Загрузка vCard </p>
+<form enctype="multipart/form-data" action="{% url apps.contact.views.person_vcard_import %}" method="post">
+	<table>
+		{{ form.as_p }}
+	</table>
+	<button type="submit"> OK </button>
+	<a href="{% url apps.contact.views.person_index %}"> <button> Отказаться </button> </a>
+</form>
+{% if result %}
+	<p> Result: </p>
+	{% for i in result %}
+		<p> {{ i }} </p>
+	{% endfor %}
+{% endif %}
+{% endblock %}

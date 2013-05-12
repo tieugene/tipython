@@ -1,0 +1,15 @@
+<!-- Email -->
+{% extends "core/email_base.html" %}
+{% block body_main %}
+<p> Новый Email </p>
+<form action=".?next={{ next }}" method="post">
+	<table>
+		<caption>
+			Новый Email
+		</caption>
+		{{ form.as_table }}
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{% url apps.core.views.email_index %}"> <button> Отказаться </button> </a>
+</form>
+{% endblock %}

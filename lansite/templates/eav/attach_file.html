@@ -1,0 +1,13 @@
+{% extends "eav/base.html" %}
+{% block body_main %}
+<h4>Прикрепление файла</h4>
+{#    tagtype, existfile, [new file]<br>#}
+    <form action="." method="post">
+    <table>
+    {{ form }}
+    {{ oform }}
+    </table>
+            <input type="submit" value="Прикрепить"/>
+    </form>
+{#    <input type="button" value="Прикрепить" onclick=""/>#}
+{% endblock %}

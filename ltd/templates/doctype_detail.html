@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body_main %}
+<p> DocType: {{ object }} </p>
+<table class="itemlist" border="1">
+	<caption>
+		<a href="{% url views.doc_add object.pk %}"> <button title="Добавить новый документ" style="float:left"> + </button> </a>
+		{% include "paginator.html" %}
+	</caption>
+	<thead>
+		<tr>
+			<th> Наименование </th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for item in object.docentity_set.all %}
+		<tr>
+			<!--td> <a href="{# object.get_absolute_url #}"> {{ object }} </a> </td-->
+			<td> <a href="{% url views.doc_detail item.pk %}"> {{ item.name }} </a> </td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

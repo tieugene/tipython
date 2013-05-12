@@ -1,0 +1,1142 @@
+
+digraph name {
+  fontname = "Helvetica"
+  fontsize = 8
+  size="100,100"
+
+  node [
+    fontname = "Helvetica"
+    fontsize = 8
+    shape = "plaintext"
+  ]
+  edge [
+    fontname = "Helvetica"
+    fontsize = 8
+  ]
+
+
+
+
+
+  
+    apps_gw_models_GwUser [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >GwUser</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_UserSetting [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >UserSetting</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Object [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Object<BR/>&lt;<FONT FACE="Helvetica Italic">PolymorphicModel</FONT>&gt;</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ObjectLink [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ObjectLink</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_AddrShort [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >AddrShort</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_AddrType [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >AddrType</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Address [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Address<BR/>&lt;<FONT FACE="Helvetica Italic">AL_Node</FONT>&gt;</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_AddrKladr [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >AddrKladr</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_PhoneType [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >PhoneType</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Phone [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Phone</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Phone2Type [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Phone2Type</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_WWW [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >WWW</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Email [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Email</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_IMType [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >IMType</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_IM [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >IM</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Contact [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Contact</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ContactAddrType [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ContactAddrType</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ContactAddr [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ContactAddr</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Contact2AddrType [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Contact2AddrType</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ContactPhone [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ContactPhone</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ContactWWW [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ContactWWW</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ContactEmail [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ContactEmail</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ContactIM [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ContactIM</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Okato [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Okato</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Okopf [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Okopf<BR/>&lt;<FONT FACE="Helvetica Italic">AL_Node</FONT>&gt;</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Okved [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Okved<BR/>&lt;<FONT FACE="Helvetica Italic">AL_Node</FONT>&gt;</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Speciality [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Speciality</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Skill [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Skill</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Role [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Role</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Person [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Person</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_PersonSkill [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >PersonSkill</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Course [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Course</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Org [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Org</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_OrgOkved [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >OrgOkved</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_OrgStuff [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >OrgStuff</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Category [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Category</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_Task [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >Task</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_TaskCat [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >TaskCat</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_vCal [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >vCal</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_vToDo [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >vToDo</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_vEvent [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >vEvent</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_File [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >File<BR/>&lt;<FONT FACE="Helvetica Italic">RenameFilesModel</FONT>&gt;</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_ImageFile [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >ImageFile</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_TaggedObjectType [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >TaggedObjectType</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_TaggedObjectTagType [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >TaggedObjectTagType</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_TaggedObject [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >TaggedObject</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+    apps_gw_models_TaggedObjectTag [label=<
+    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+     <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+     ><FONT FACE="Helvetica Bold" COLOR="white"
+     >TaggedObjectTag</FONT></TD></TR>
+
+    
+    </TABLE>
+    >]
+  
+
+
+
+
+  
+    
+    
+    django_contrib_auth_models_User [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >User</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_GwUser -> django_contrib_auth_models_User
+    [label="user"] ;
+    
+  
+    
+    
+    django_contrib_auth_models_User [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >User</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_UserSetting -> django_contrib_auth_models_User
+    [label="user"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Object -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+  
+    
+    
+    apps_gw_models_ObjectLink -> apps_gw_models_Object
+    [label="left"] ;
+    
+    
+    apps_gw_models_ObjectLink -> apps_gw_models_Object
+    [label="right"] ;
+    
+  
+    
+  
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Address -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_Address -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_Address -> apps_gw_models_AddrShort
+    [label="type"] ;
+    
+    
+    apps_gw_models_Address -> apps_gw_models_Address
+    [label="parent"] ;
+    
+  
+    
+    
+    apps_gw_models_AddrKladr -> apps_gw_models_Address
+    [label="address"] ;
+    
+    
+    apps_ref_models_Kladr [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >Kladr</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_AddrKladr -> apps_ref_models_Kladr
+    [label="kladr"] ;
+    
+  
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Phone -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_Phone -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+  
+    
+    
+    apps_gw_models_Phone2Type -> apps_gw_models_PhoneType
+    [label="type"] ;
+    
+    
+    apps_gw_models_Phone2Type -> apps_gw_models_Phone
+    [label="phone"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_WWW -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_WWW -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Email -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_Email -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+  
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_IM -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_IM -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_IM -> apps_gw_models_IMType
+    [label="type"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Contact -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_Contact -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+  
+    
+  
+    
+    
+    apps_gw_models_ContactAddr -> apps_gw_models_Contact
+    [label="contact"] ;
+    
+    
+    apps_gw_models_ContactAddr -> apps_gw_models_Address
+    [label="addr"] ;
+    
+  
+    
+    
+    apps_gw_models_Contact2AddrType -> apps_gw_models_ContactAddrType
+    [label="type"] ;
+    
+    
+    apps_gw_models_Contact2AddrType -> apps_gw_models_ContactAddr
+    [label="caddr"] ;
+    
+  
+    
+    
+    apps_gw_models_ContactPhone -> apps_gw_models_Contact
+    [label="contact"] ;
+    
+    
+    apps_gw_models_ContactPhone -> apps_gw_models_Phone
+    [label="phone"] ;
+    
+  
+    
+    
+    apps_gw_models_ContactWWW -> apps_gw_models_Contact
+    [label="contact"] ;
+    
+    
+    apps_gw_models_ContactWWW -> apps_gw_models_WWW
+    [label="www"] ;
+    
+  
+    
+    
+    apps_gw_models_ContactEmail -> apps_gw_models_Contact
+    [label="contact"] ;
+    
+    
+    apps_gw_models_ContactEmail -> apps_gw_models_Email
+    [label="email"] ;
+    
+  
+    
+    
+    apps_gw_models_ContactIM -> apps_gw_models_Contact
+    [label="contact"] ;
+    
+    
+    apps_gw_models_ContactIM -> apps_gw_models_IM
+    [label="im"] ;
+    
+  
+    
+  
+    
+    
+    apps_gw_models_Okopf -> apps_gw_models_Okopf
+    [label="parent"] ;
+    
+  
+    
+    
+    apps_gw_models_Okved -> apps_gw_models_Okved
+    [label="parent"] ;
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Person -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_Person -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_Person -> apps_gw_models_Contact
+    [label="contact_ptr"] ;
+    
+    
+    django_contrib_auth_models_User [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >User</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Person -> django_contrib_auth_models_User
+    [label="user"] ;
+    
+  
+    
+    
+    apps_gw_models_PersonSkill -> apps_gw_models_Person
+    [label="person"] ;
+    
+    
+    apps_gw_models_PersonSkill -> apps_gw_models_Speciality
+    [label="speciality"] ;
+    
+    
+    apps_gw_models_PersonSkill -> apps_gw_models_Skill
+    [label="skill"] ;
+    
+  
+    
+    
+    apps_gw_models_Course -> apps_gw_models_PersonSkill
+    [label="personskill"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Org -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_Org -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_Org -> apps_gw_models_Contact
+    [label="contact_ptr"] ;
+    
+    
+    apps_gw_models_Org -> apps_gw_models_Okopf
+    [label="okopf"] ;
+    
+    
+    apps_gw_models_Org -> apps_gw_models_Okato
+    [label="okato"] ;
+    
+    
+    django_contrib_auth_models_User [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >User</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Org -> django_contrib_auth_models_User
+    [label="user"] ;
+    
+  
+    
+    
+    apps_gw_models_OrgOkved -> apps_gw_models_Org
+    [label="org"] ;
+    
+    
+    apps_gw_models_OrgOkved -> apps_gw_models_Okved
+    [label="okved"] ;
+    
+  
+    
+    
+    apps_gw_models_OrgStuff -> apps_gw_models_Org
+    [label="org"] ;
+    
+    
+    apps_gw_models_OrgStuff -> apps_gw_models_Role
+    [label="role"] ;
+    
+    
+    apps_gw_models_OrgStuff -> apps_gw_models_Person
+    [label="person"] ;
+    
+  
+    
+    
+    apps_gw_models_Category -> apps_gw_models_GwUser
+    [label="user"] ;
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Category -> django_contrib_contenttypes_models_ContentType
+    [label="app"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_Task -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_Task -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_Task -> apps_gw_models_GwUser
+    [label="user"] ;
+    
+  
+    
+    
+    apps_gw_models_TaskCat -> apps_gw_models_Task
+    [label="task"] ;
+    
+    
+    apps_gw_models_TaskCat -> apps_gw_models_Category
+    [label="cat"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_vCal -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_vCal -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_vCal -> apps_gw_models_GwUser
+    [label="user"] ;
+    
+    
+    apps_gw_models_vCal -> apps_gw_models_Task
+    [label="task_ptr"] ;
+    
+    
+    apps_gw_models_vCal -> apps_gw_models_GwUser
+    [label="attendee"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_vToDo -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_vToDo -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_vToDo -> apps_gw_models_GwUser
+    [label="user"] ;
+    
+    
+    apps_gw_models_vToDo -> apps_gw_models_Task
+    [label="task_ptr"] ;
+    
+    
+    apps_gw_models_vToDo -> apps_gw_models_GwUser
+    [label="attendee"] ;
+    
+    
+    apps_gw_models_vToDo -> apps_gw_models_vCal
+    [label="vcal_ptr"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_vEvent -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_vEvent -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_vEvent -> apps_gw_models_GwUser
+    [label="user"] ;
+    
+    
+    apps_gw_models_vEvent -> apps_gw_models_Task
+    [label="task_ptr"] ;
+    
+    
+    apps_gw_models_vEvent -> apps_gw_models_GwUser
+    [label="attendee"] ;
+    
+    
+    apps_gw_models_vEvent -> apps_gw_models_vCal
+    [label="vcal_ptr"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_File -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_File -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_ImageFile -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_ImageFile -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_ImageFile -> apps_gw_models_File
+    [label="file_ptr"] ;
+    
+  
+    
+  
+    
+    
+    apps_gw_models_TaggedObjectTagType -> apps_gw_models_TaggedObjectType
+    [label="tot"] ;
+    
+  
+    
+    
+    apps_gw_models_TaggedObject -> apps_gw_models_Object
+    [label="object"] ;
+    
+    
+    apps_gw_models_TaggedObject -> apps_gw_models_TaggedObjectType
+    [label="tot"] ;
+    
+  
+    
+    
+    django_contrib_contenttypes_models_ContentType [label=<
+        <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4"
+        ><FONT FACE="Helvetica Bold" COLOR="white"
+        >ContentType</FONT></TD></TR>
+        </TABLE>
+        >]
+    
+    apps_gw_models_TaggedObjectTag -> django_contrib_contenttypes_models_ContentType
+    [label="polymorphic_ctype"] ;
+    
+    
+    apps_gw_models_TaggedObjectTag -> apps_gw_models_Object
+    [label="object_ptr"] ;
+    
+    
+    apps_gw_models_TaggedObjectTag -> apps_gw_models_TaggedObject
+    [label="object"] ;
+    
+    
+    apps_gw_models_TaggedObjectTag -> apps_gw_models_TaggedObjectTagType
+    [label="type"] ;
+    
+  
+
+
+}
+

@@ -1,0 +1,10 @@
+{% include "task/menu.html" %}
+{% if object %}
+<ul idref="menu_task_todo" class="l4">
+	<li id="menu_task_todo_detail">	<a href="{% url apps.task.views.todo_detail object.id %}">	Основное	</a> </li>
+	<li id="menu_task_todo_links">	<a href="{% url apps.task.views.todo_links object.id %}">	Связи		</a> </li>
+	<li id="menu_task_todo_perms">	<a href="{% url apps.task.views.todo_perm_view object.id %}">	Права		</a> </li>
+	<li id="menu_task_todo_log">	<a href="{% url apps.task.views.todo_log object.id %}">	История		</a> </li>
+	<li id="menu_task_todo_tags">	<a href="{% url apps.task.views.todo_tags object.id %}">	Tags		</a> </li>
+</ul>
+{% endif %}

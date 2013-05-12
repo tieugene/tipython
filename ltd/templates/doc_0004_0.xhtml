@@ -1,0 +1,2116 @@
+{% load templatetags %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <style type="text/css" >
+	@page {
+		margin: 1cm;
+		font:10pt "Times New Roman", serif;
+	}
+	body {
+		font:10pt "Times New Roman", serif;
+	}
+	table.stamp {
+		table-layout: fixed;
+		width: 7cm;
+		border: none;
+		border-collapse: collapse;
+		border: 0;
+	}
+	table.stamp tr td.l {
+		border-left: 1px solid black;
+	}
+	table.stamp tr td.r {
+		border-right: 1px solid black;
+	}
+	table.stamp tr td.t {
+		border-top: 1px solid black;
+	}
+	table.stamp tr td.b {
+		border-bottom: 1px solid black;
+	}
+	table.main {
+		table-layout: fixed;
+		width: 18cm;
+		border: none;
+		border-collapse: collapse;
+		margin-top: 3pt;
+	}
+	table.main tr td {
+		border: 1px solid black;
+		padding: 2pt;
+	}
+	table.main tr td.nl {
+		border-left: 0;
+	}
+	table.main tr td.nr {
+		border-right: 0;
+	}
+	table.main tr td.nt {
+		border-top: 0;
+	}
+	table.main tr td.nb {
+		border-bottom: 0;
+	}
+	p {
+		font: 10pt "Times New Roman", serif;
+		margin: 2pt;
+		<!--padding: 0;-->
+	}
+	p.head {
+		text-align: right;
+		height: 6mm;
+	}
+	.font1 { font:9pt "Tahoma", sans-serif; }
+	.font4 { font:7pt "Times New Roman", serif; }
+	.font5 { font:8pt "Times New Roman", serif; }
+	.font6 { font:9pt "Times New Roman", serif; }
+	.font7 { font:9pt "Times New Roman", serif; }
+	.font8 { font:10pt "Times New Roman", serif; }
+	.font9 { font:11pt "Times New Roman", serif; }
+	.font11 { font:25pt "Times New Roman", serif; }
+	.break { page-break-after: always; }
+	.box {
+		border: 1px solid black;
+		text-align: center;
+		height: 0.5cm;
+	}
+	div.lbox {
+		border-top: 1px solid black;
+		border-bottom: 1px solid black;
+		border-left: 1px solid black;
+	}
+	div.lbox div {
+		border-right: 1px solid black;
+		text-align: center;
+		float:left;
+		width: 0.7cm;
+		height: 0.5cm;
+		float: left;
+	}
+	p.box span {
+		border: 1px solid black;
+		text-align: center;
+		margin: 0;
+		padding: 0.05cm 0.25cm;
+		width: 1cm;
+	}
+  </style>
+  <title> Форма 11001 </title>
+</head>
+
+<body>
+
+<table class="stamp">
+ <col width="1cm"/>
+ <col width="5cm"/>
+ <col width="1cm"/>
+ <tr style="height: 0.5cm"> <td class="l t"/> <td/> <td class="r t"/> </tr>
+ <tr style="height: 1cm"> <td/> <td/> <td/> </tr>
+ <tr style="height: 0.5cm"> <td class="l b"/> <td/> <td class="r b"/> </tr>
+</table>
+
+<p align="right"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<table border="0" width="100%">
+<col width="1cm"/>
+<col/>
+<col/>
+<tr>
+<td> <p> В </p> </td>
+<td align="center">   <p> <u> В Межрайонную Инспекцию ФНС России № 15 по Санкт-Петербургу</u> </p> </td>
+<td align="right"> <div class="box" style="width: 42mm">78086</div> </td>
+</tr>
+<tr>
+ <td/>
+ <td align="center" style="padding: 0;"> <p class="font6" style="margin: 0;"> (наименование регистрирующего органа) </p> </td>
+ <td align="center" style="padding: 0;"> <p class="font6" style="margin: 0;"> (код) </p> </td>
+</tr> </table>
+<p class="font9" style="font-weight:bold;" align="center">Заявление</p>
+<p class="font9" style="font-weight:bold;" align="center">о государственной регистрации юридического лица при создании</p>
+<table class="main">
+   <col width="1cm"/>
+   <col width="7cm"/>
+   <col width="10cm"/>
+    <tr>
+      <td>
+        <p>1</p>
+      </td>
+
+      <td>
+        <p>Организационно-правовая форма юридического лица</p>
+      </td>
+
+      <td>
+        <p>Общество с ограниченной ответственностью</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>2</p>
+      </td>
+
+      <td colspan="2">
+        <p>Наименование юридического лица</p>
+        <p>Фирменное наименование - в отношении коммерческих организаций</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>2.1</p>
+      </td>
+
+      <td colspan="2">
+        <p>На русском языке</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.1.1. Полное</p>
+      </td>
+
+      <td>
+        <p> {{ org_fname }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.1.2. Сокращенное</p>
+      </td>
+
+      <td>
+        <p> {{ org_sname }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>2.2</p>
+      </td>
+
+      <td colspan="2">
+        <p>На языке народов Российской Федерации</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.2.1. Полное</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.2.2. Сокращенное</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.2.3. Указать на каком языке</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>2.3</p>
+      </td>
+
+      <td colspan="2">
+        <p>На иностранном языке</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.3.1. Полное</p>
+      </td>
+
+      <td>
+        <p> {{ org_ffname }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.3.2. Сокращенное</p>
+      </td>
+
+      <td><p> {{ org_fsname }} </p></td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>2.3.3. Указать на каком языке</p>
+      </td>
+
+      <td></td>
+    </tr>
+  </table>
+
+<table class="main">
+   <col width="1cm"/>
+   <col width="8cm"/>
+   <col width="5cm"/>
+   <col width="4cm"/>
+    <tr>
+      <td>
+        <p>3</p>
+      </td>
+
+      <td colspan="3">
+        <p>Адрес (место нахождения)</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="4"> <p>3.1</p>      </td>
+      <td colspan="2" class="nr nb"> <p> Постоянно действующего исполнительного органа </p> </td>
+      <td align="center" class="nl nb"> <div class="box" style="width: 1cm;"> <p> V </p> </div> </td>
+    </tr>
+ <tr>
+   <td colspan="2" class="nr nt nb"> <p> Иного органа </p> </td>
+   <td align="center" class="nl nt nb"> <div class="box" style="width: 1cm;"> <p> &nbsp; </p> </div> </td>
+ </tr>
+ <tr>
+   <td colspan="2" class="nr nt nb"><p> Лица, имеющего право действовать от имени юридического лица без доверенности </p> </td>
+   <td align="center" class="nl nt nb"> <div class="box" style="width: 1cm;"> <p> &nbsp; </p> </div> </td>
+ </tr>
+ <tr>
+        <td colspan="3" class="nt"><p class="font6" align="center">(нужное отметить знаком "V")</p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3.2</p>
+      </td>
+
+      <td>
+        <p> Наименование органа </p>
+      </td>
+
+      <td colspan="2">
+        <p> Генеральный директор </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="9">
+        <p>3.3</p>
+      </td>
+
+      <td>
+        <p>3.3.1. Почтовый индекс</p>
+      </td>
+
+      <td colspan="2" align="center">
+        <div class="lbox" style="float: left"> {{ org_addr_zip|letterbox|safe }} </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3.3.2. Субъект Российской Федерации</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ org_addr_subj }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3.3.3. Район</p>
+      </td>
+
+      <td colspan="2"><p> {{ org_addr_distinct }} </p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3.3.4. Город</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ org_addr_city }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3.3.5. Населенный пункт</p>
+      </td>
+
+      <td colspan="2"><p> {{ org_addr_locality }} </p></td>
+    </tr>
+
+    <tr>
+      <td> <p> 3.3.6. Улица (проспект, переулок и т.п. - указать нужное с наименованием)</p>       </td>
+      <td colspan="2"> <p> {{ org_addr_street }} </p>  </td>
+    </tr>
+
+    <tr>
+      <td> <p> 3.3.7. Дом (владение и т.п. -  указать нужное) </p> </td>
+      <td align="center" class="nr"> <p> <u> {{ org_addr_building_type }} </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;"> {{ org_addr_building }} </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td> <p> 3.3.8. Корпус (строение и т.п. - указать нужное) </p> </td>
+      <td align="center" class="nr"> <p> <u> {{ org_addr_housing_type }} </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;"> {{ org_addr_housing }} </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td> <p> 3.3.9. Квартира (офис и т.п. - указать нужное) </p> </td>
+      <td align="center" class="nr"> <p> <u> {{ org_addr_office_type }} </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;"> {{ org_addr_office }} </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+</table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>0</div><div>2</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<table class="main">
+  <col width="1cm"/>
+  <col width="7cm"/>
+  <col width="10cm"/>
+    <tr>
+      <td>
+        <p>3.4</p>
+      </td>
+
+      <td colspan="2">
+        <p>Контактный телефон</p>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+
+      <td>
+        <p>3.4.1 Код города</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>3.4.2 Телефон</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>3.4.3 Факс</p>
+      </td>
+
+      <td></td>
+    </tr>
+  </table>
+
+<table class="main">
+  <col width="1cm"/>
+  <col width="7cm"/>
+  <col width="2cm"/>
+  <col width="8cm"/>
+    <tr>
+      <td>
+        <p>4</p>
+      </td>
+      <td colspan="2" class="nr">
+        <p>Количество учредителей юридического лица *</p>
+      </td>
+      <td align="center" class="nl"> <div class="box" style="width: 2cm"> 1 </div> </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td colspan="3">
+        <p>Учредителями являются(нужное отметить знаком - V)</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <p>4.1</p> </td>
+      <td class="nr"> <p> юридические лица </p> </td>
+      <td align="center" class="nl nr"> <div class="box" style="width: 1cm"> &nbsp; </div> </td>
+      <td class="nl"> <p> сведения указываются в листе А заявления <br/> количество листов А </p> </td>
+    </tr>
+    <tr>
+      <td> <p>4.2</p> </td>
+      <td class="nr"> <p> физические лица </p> </td>
+      <td align="center" class="nl nr"> <div class="box" style="width: 1cm"> V </div> </td>
+      <td class="nl"> <p> сведения указываются в листе Б заявления <br/> количество листов Б </p> </td>
+    </tr>
+    <tr>
+      <td> <p> 4.3 </p> </td>
+      <td class="nr"> <p> Российская Федерация, субъект Российской Федерации, муниципальное образование </p> </td>
+      <td align="center" class="nl nr"> <div class="box" style="width: 1cm"> &nbsp; </div> </td>
+      <td class="nl"> <p> сведения указываются в листе В заявления <br/> количество листов В </p> </td>
+    </tr>
+    <tr>
+      <td> <p> 4.4 </p> </td>
+      <td class="nr"> <p> учредители - владельцы инвестиционных паев паевого инвестиционного фонда </p> </td>
+      <td align="center" class="nl nr"> <div class="box" style="width: 1cm"> &nbsp; </div> </td>
+      <td class="nl"> <p> сведения указываются в листе Г заявления <br/> количество листов Г </p> </td>
+    </tr>
+</table>
+
+<table class="main">
+  <col width="1cm"/>
+  <col width="9cm"/>
+  <col width="8cm"/>
+    <tr>
+      <td>         <p>5</p>       </td>
+      <td class="nr"> <p>Сведения о держателе реестра акционеров акционерного общества</p> </td>
+      <td class="nl"> <p> указываются в листе Д заявления </p> </td>
+    </tr>
+</table>
+
+<table class="main">
+ <col width="1cm"/>
+ <col width="4cm"/>
+ <col width="4.5cm"/>
+ <col width="8.5cm"/>
+ <tr>
+      <td rowspan="5">
+        <p>6</p>
+      </td>
+
+      <td colspan="3" class="nb">
+        <p>Сведения об уставном капитале (складочном капитале, уставном фонде, паевом фонде) **</p>
+        <p class="font6">(нужное отметить знаком - V)</p>
+  </td>
+ </tr>
+<tr> <td class="nr nt nb"> <p> Уставный капитал </p> </td> <td align="right" class="nl nr nt nb"> <p class="box" style="width: 7mm"> V </p> </td> <td class="nl nt nb"/> </tr>
+<tr> <td class="nr nt nb"> <p> Складочный капитал </p> </td> <td align="right" class="nl nr nt nb"> <p class="box" style="width: 7mm"> &nbsp; </p> </td> <td class="nl nt nb"/> </tr>
+<tr> <td class="nr nt nb"> <p> Уставный фонд </p> </td> <td align="right" class="nl nr nt nb"> <p class="box" style="width: 7mm"> &nbsp; </p> </td> <td class="nl nt nb"/> </tr>
+<tr> <td class="nr nt"> <p> Паевой фонд </p> </td> <td align="right" class="nl nr nt"> <p class="box" style="width: 7mm"> &nbsp; </p> </td> <td class="nl nt"/> </tr>
+<tr>
+      <td>
+        <p>6.1</p>
+      </td>
+
+      <td class="nr">
+        <p>Размер</p>
+      </td>
+    <td align="right" class="nl nr"> <p class="box" style="width: 4cm"> {{ org_fund }} </p> </td> <td class="nl"> <p> рублей </p> </td>
+    </tr>
+</table>
+
+<table class="main">
+ <col width="1cm"/>
+ <col width="7.5cm"/>
+ <col width="2cm"/>
+ <col width="7.5cm"/>
+    <tr>
+      <td>
+        <p>7</p>
+      </td>
+
+      <td class="nr">
+        <p>Количество лиц, имеющих право без доверенности действовать от имени юридического лица</p>
+      </td>
+ <td align="right" class="nl nr"> <p class="box" style="width: 1.5cm"> 1 </p> </td>
+      <td class="nl">
+        <p>1 сведения указываются в листе Е заявления</p>
+      </td>
+    </tr>
+</table>
+
+<table class="main">
+ <col width="1cm"/>
+ <col width="9cm"/>
+ <col width="8cm"/>
+ <tr>
+      <td>
+        <p>8</p>
+      </td>
+
+      <td class="nr">
+        <p>Сведения об управляющей организации</p>
+      </td>
+      <td class="nl"> <p> указываются в листе Ж заявления </p> </td>
+    </tr>
+</table>
+
+<table class="main">
+ <col width="1cm"/>
+ <col width="9cm"/>
+ <col width="8cm"/>
+ <tr>
+      <td>
+        <p>9</p>
+      </td>
+
+      <td class="nr">
+        <p>Сведения об управляющем - индивидуальном предпринимателе</p>
+</td>
+<td class="nl">
+        <p> указываются в листе З заявления </p>
+      </td>
+    </tr>
+</table>
+
+<table class="main">
+ <col width="1cm"/>
+ <col width="6cm"/>
+ <col width="2cm"/>
+ <col width="9cm"/>
+    <tr>
+      <td>
+        <p>10</p>
+      </td>
+
+      <td colspan="3">
+        <p>Количество обособленных подразделений юридического лица</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>10.1</p>
+      </td>
+
+      <td class="nr">
+        <p>филиалов</p>
+      </td>
+
+      <td align="center" class="nl nr"><p class="box" style="width: 1.5cm"> &nbsp; </p></td>
+
+      <td class="nl">
+        <p>сведения указываются в листе И заявления</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>10.2</p>
+      </td>
+
+      <td class="nr">
+        <p>представительств</p>
+      </td>
+
+      <td align="center" class="nl nr"><p class="box" style="width: 1.5cm"> &nbsp; </p></td>
+
+      <td class="nl">
+        <p>сведения указываются в листе К заявления</p>
+      </td>
+    </tr>
+</table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>0</div><div>3</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<table class="main">
+ <col width="1cm"/>
+ <col width="7cm"/>
+ <col width="2cm"/>
+ <col width="8cm"/>
+ <tr>
+      <td>
+        <p>11</p>
+      </td>
+
+      <td class="nr">
+        <p> Количество крестьянских (фермерских) хозяйств, на базе имущества которых создаетеся производственный кооператив или хозяйственное товарищество </p>
+      </td>
+
+      <td align="center" class="nl nr">
+        <p class="box" style="width: 1.5cm"> &nbsp; </p>
+      </td>
+
+      <td class="nl">
+        <p>сведения указываются в листе Л заявления</p>
+      </td>
+    </tr>
+</table>
+
+<table class="main">
+ <col width="1cm"/>
+ <col width="7cm"/>
+ <col width="2cm"/>
+ <col width="8cm"/>
+ <tr>
+      <td>
+        <p>12</p>
+      </td>
+
+      <td class="nr">
+        <p>Количество видов экономической деятельности</p>
+      </td>
+
+      <td align="center" class="nl nr">
+        <p class="box" style="width: 1.5cm">{{ org_okveds }}</p>
+      </td>
+
+      <td class="nl">
+        <p>сведения указываются в листе М заявления</p>
+      </td>
+    </tr>
+</table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>0</div><div>4</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right">Лист Б заявления</p>
+<p class="font9" align="center"> Сведения об учредителе - физическом лице *</p>
+<p align="center"><u> {{ org_fname }} </u></p>
+<p class="font6" align="center">(наименование создаваемого юридического лица на русском языке)</p>
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td>
+        <p>1</p>
+      </td>
+
+      <td>
+        <p>Фамилия</p>
+      </td>
+
+      <td>
+        <p> {{ founder_f }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>2</p>
+      </td>
+
+      <td>
+        <p>Имя</p>
+      </td>
+
+      <td>
+        <p>{{ founder_i }}</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3</p>
+      </td>
+
+      <td>
+        <p>Отчество</p>
+      </td>
+
+      <td>
+        <p>{{ founder_o }}</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>4</p>
+      </td>
+
+      <td>
+        <p> Дата рождения </p>
+      </td>
+
+      <td>
+        <p> {{ founder_birthdate }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>5</p>
+      </td>
+
+      <td>
+        <p>Место рождения</p>
+      </td>
+
+      <td>
+        <p>{{ founder_birthplace }}</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>6</p>
+      </td>
+
+      <td>
+        <p>ИНН (при наличии)</p>
+      </td>
+      <td>
+        <p><div class="lbox" style="float: left"> {{ founder_inn|letterbox|safe }} </div></p>
+      </td>
+    </tr>
+</table>
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td>
+        <p>7</p>
+      </td>
+
+      <td colspan="2">
+        <p>Данные документа, удостоверяющего личность</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>7.1</p>
+      </td>
+
+      <td>
+        <p>Вид документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_type }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>7.2</p>
+      </td>
+
+      <td>
+        <p>Серия документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_series }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>7.3</p>
+      </td>
+
+      <td>
+        <p>Номер документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_no }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>7.4</p>
+      </td>
+
+      <td>
+        <p>Дата выдачи</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_date }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>7.5</p>
+      </td>
+
+      <td>
+        <p>Кем выдан</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_who }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>7.6</p>
+      </td>
+
+      <td>
+        <p>Код подразделения</p>
+      </td>
+
+      <td>
+        <p><div class="lbox" style="float: left"> {{ founder_doc_kp|letterbox|safe }} </div></p>
+      </td>
+    </tr>
+</table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="5.5cm"/>
+<col width="4cm"/>
+    <tr>
+      <td>
+        <p>8</p>
+      </td>
+
+      <td colspan="3">
+        <p>Адрес места жительства</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="10">
+        <p>8.1</p>
+      </td>
+
+      <td colspan="3">
+        <p>В Российской Федерации (при отсутствии указывается место пребывания)</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1.1. Почтовый индекс</p>
+      </td>
+
+      <td colspan="2">
+        <p><div class="lbox" style="float: left"> {{ founder_addr_zip|letterbox|safe }} </div> </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1.2. Субъект Российской Федерации</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_subj }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1.3. Район</p>
+      </td>
+
+      <td colspan="2"><p> {{ founder_addr_distinct }} </p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1.4. Город</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_city }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1.5. Населенный пункт</p>
+      </td>
+
+      <td colspan="2"> <p> {{ founder_addr_location }} </p> </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1.6. Улица (проспект, переулок и т.п. - указать нужное с наименованием)</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_street }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="nr">
+        <p>8.1.7. Дом (владение и т.п. - указать нужное) </p>
+      </td>
+      <td align="center" class="nl nr"> <p> <u> {{ founder_addr_building_type }} </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;"> {{ founder_addr_building }} </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td class="nr">
+        <p>8.1.8. Корпус (строение и т.п. - указать нужное)</p>
+      </td>
+      <td align="center" class="nl nr"> <p> {{ founder_addr_housing_type }} </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;"> {{ founder_addr_housing }} </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td class="nr">
+        <p>8.1.9. Квартира (офис и т.п. - указать нужное)</p>
+      </td>
+      <td align="center" class="nl nr"> <p> <u> {{ founder_addr_office_type }} </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;">  {{ founder_addr_office }}  </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td rowspan="3">
+        <p>8.2</p>
+      </td>
+
+      <td colspan="3">
+        <p> За пределами территории Российской Федерации </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.2.1. Страна места жительства</p>
+      </td>
+
+      <td colspan="2"></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.2.2. Адрес места жительства</p>
+      </td>
+
+      <td colspan="2"></td>
+    </tr>
+  </table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td>
+        <p>9</p>
+      </td>
+
+      <td colspan="2">
+        <p>Контактный телефон</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>9.1. Код города</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>9.2. Телефон</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>9.3. Факс</p>
+      </td>
+
+      <td></td>
+    </tr>
+  </table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>0</div><div>5</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right">Лист Б заявления <br/> страница 2</p>
+<table class="main">
+ <col width="1cm"/>
+ <col width="5cm"/>
+ <col width="12cm"/>
+ <tr> <td> <p> 10 </p> </td> <td colspan="2"> <p>Доля в уставном капитале (складочном капитале, уставном фонде, паевом фонде)</p> </td> </tr>
+ <tr>
+  <td>     <p> 10.1 </p>   </td>
+ <td> <p>Номинальная стоимость</p> </td>
+ <td> <div class="box" style="float: left; width: 7cm;"> <p align="right">{{ org_fund }}</p> </div> <p> рублей</p> </td>
+</tr>
+ <tr>
+  <td rowspan="4">     <p>10.2</p>   </td>
+  <td colspan="2">
+  <p>Размер *</p>
+  <p class="font6">(указывается в процентах или в виде дроби - десятичной или простой)</p>
+  </td>
+</tr>
+ <tr>
+  <td>
+    <p>10.2.1.&nbsp;Проценты</p>
+  </td>
+  <td> <p align="right"> <div class="lbox" style="float: left"><div>1</div><div>0</div><div>0</div><div>,</div><div>0</div><div>0</div><div></div><div></div></div></p> </td>
+</tr>
+ <tr>
+  <td>
+    <p>10.2.2.&nbsp;Десятичная дробь</p>
+  </td>
+  <td> <p align="right"> <div class="lbox" style="float: left"><div></div><div>,</div><div></div><div></div><div></div><div></div><div></div><div></div></div></p> </td>
+</tr>
+ <tr>
+  <td>
+    <p>10.2.3.&nbsp;Простая дробь</p>
+  </td>
+  <td> <p align="right"> <div class="lbox" style="float: left"><div></div><div></div><div></div><div>/</div><div></div><div></div><div></div><div></div></div></p> </td>
+</tr>
+</table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>0</div><div>6</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right"> Лист Е заявления </p>
+<p class="font9" align="center"> <b> Сведения о лице, имеющем право без доверенности действовать от имени юридического лица </b> </p>
+<p class="font9" align="center"> <u> {{ org_fname }} </u> </p>
+<p class="font6" align="center">(наименование создаваемого юридического лица на русском языке)</p>
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td>
+        <p>1</p>
+      </td>
+
+      <td>
+        <p>Фамилия</p>
+      </td>
+
+      <td>
+        <p> {{ founder_f }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>2</p>
+      </td>
+
+      <td>
+        <p>Имя</p>
+      </td>
+
+      <td>
+        <p> {{ founder_i }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3</p>
+      </td>
+
+      <td>
+        <p>Отчество</p>
+      </td>
+
+      <td>
+        <p> {{ founder_o }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>4</p>
+      </td>
+
+      <td>
+        <p>Дата рождения</p>
+      </td>
+
+      <td>
+        <p> {{ founder_birthdate }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>5</p>
+      </td>
+
+      <td>
+        <p>Место рождения</p>
+      </td>
+
+      <td>
+        <p> {{ founder_birthplace }} </p>
+      </td>
+    </tr>
+</table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td>
+        <p>6</p>
+      </td>
+
+      <td>
+        <p>Должность</p>
+      </td>
+
+      <td>
+        <p>Генеральный директор</p>
+      </td>
+    </tr>
+</table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td>
+        <p>7</p>
+      </td>
+      <td>
+        <p>ИНН (при наличии)</p>
+      </td>
+      <td> <p><div class="lbox" style="float: left"> {{ founder_inn|letterbox|safe }} </div></p> </td>
+</tr>
+</table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td>
+        <p>8</p>
+      </td>
+
+      <td colspan="2">
+        <p>Данные документа, удостоверяющего личность</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1</p>
+      </td>
+
+      <td>
+        <p>Вид документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_type }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.2</p>
+      </td>
+
+      <td>
+        <p>Серия документа</p>
+      </td>
+
+      <td>
+        <p>  {{ founder_doc_series }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.3</p>
+      </td>
+
+      <td>
+        <p>Номер документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_no }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.4</p>
+      </td>
+
+      <td>
+        <p>Дата выдачи</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_date }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.5</p>
+      </td>
+
+      <td>
+        <p>Кем выдан</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_who }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.6</p>
+      </td>
+
+      <td>
+        <p>Код подразделения</p>
+      </td>
+
+      <td><p><div class="lbox" style="float: left"> {{ founder_doc_kp|letterbox|safe }} </div></p></td>
+    </tr>
+</table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="5.5cm"/>
+<col width="4cm"/>
+    <tr>
+      <td>
+        <p>9</p>
+      </td>
+
+      <td colspan="3">
+        <p>Адрес места жительства</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="10">
+        <p>9.1</p>
+      </td>
+
+      <td colspan="3">
+        <p>В Российской Федерации (при отсутствии указывается место пребывания)</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.1. Почтовый индекс</p>
+      </td>
+      <td colspan="2"><p><div class="lbox" style="float: left"> {{ founder_addr_zip|letterbox|safe }} </div></p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.2. Субъект Российской Федерации</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_subj }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.3. Район</p>
+      </td>
+
+      <td colspan="2"> <p>  {{ founder_addr_distinct }} </p> </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.4. Город</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_city }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.5. Населенный пункт</p>
+      </td>
+
+      <td colspan="2"> <p>  {{ founder_addr_location }} </p> </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.6. Улица (проспект, переулок и т.п. - указать нужное с наименованием)</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_street }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="nr"> <p>9.1.7. Дом (владение и т.п. - указать нужное) </p>     </td>
+      <td align="center" class="nl nr"> <p> <u>  {{ founder_addr_building_type }}  </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;">  {{ founder_addr_building }}  </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td class="nr">        <p>9.1.8. Корпус (строение и т.п. - указать нужное)</p> </td>
+      <td align="center" class="nl nr"> <p> <u>  {{ founder_addr_housing_type }}  </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;">  {{ founder_addr_housing }}  </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td class="nr">        <p>9.1.9. Квартира (офис и т.п. - указать нужное)</p></td>
+      <td align="center" class="nl nr"> <p> <u>  {{ founder_addr_office_type }} </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;">  {{ founder_addr_office }} </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+</table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>0</div><div>7</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right">Лист Е заявления <br/> страница 2</p>
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td rowspan="3">
+        <p>9.2</p>
+      </td>
+
+      <td colspan="2">
+        <p>За пределами территории Российской Федерации </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.2.1. Страна места жительства</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.2.2. Адрес места жительства</p>
+      </td>
+
+      <td></td>
+    </tr>
+</table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="7.5cm"/>
+<col width="9.5cm"/>
+    <tr>
+      <td rowspan="4">
+        <p>10</p>
+      </td>
+
+      <td colspan="2">
+        <p>Контактный телефон</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>10.1. Код города</p>
+      </td>
+
+      <td>
+        <p>-</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>10.2. Телефон</p>
+      </td>
+
+      <td>
+        <p>-</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>10.3. Факс</p>
+      </td>
+
+      <td>
+        <p>-</p>
+      </td>
+    </tr>
+</table>
+
+{% for k, v, pb in org_okved %}
+ {% if pb %}
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>0</div><div>8</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right"> Лист М заявления </p>
+<p class="font9" align="center"> Сведения о видах экономической деятельности </p>
+<p align="center"><u> {{ org_fname }} </u></p>
+<p class="font6" align="center"> (наименование создаваемого юридического лица на русском языке) </p>
+<table class="main">
+<col width="1cm"/>
+<col width="6cm"/>
+<col width="11cm"/>
+    <tr>
+      <td>
+        <p>№</p>
+      </td>
+
+      <td>
+        <p align="center"> Код по ОКВЭД </p>
+      </td>
+
+      <td>
+        <p align="center"> Наименование вида деятельности </p>
+      </td>
+    </tr>
+ {% endif %}
+    <tr style="height: 2cm">
+	<td> <p> {{ forloop.counter }} </p> </td>
+	<td> <p> <div class="lbox" style="float: left"> {{ k|letterbox:"8"|safe }} </div> </p> </td>
+	<td> <p> {{ v }} </p> </td>
+    </tr>
+{% endfor %}
+</table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>1</div><div>0</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right"> Лист Н заявления </p>
+<p class="font9" align="center"><b> Сведения о заявителе </b></p>
+<p class="font6" align="center"><u> {{ org_fname }} </u></p>
+<p class="font5" align="center">(наименование создаваемого юридического лица на русском языке)</p>
+<table class="main">
+ <col width="1cm"/>
+ <col width="1cm"/>
+ <col width="14.5cm"/>
+ <col width="1.5cm"/>
+    <tr>
+      <td rowspan="4">
+        <p>1</p>
+      </td>
+      <td colspan="3" class="nb">
+        <p>Заявителем является (нужное отметить знаком - V)</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="nr nt nb">
+        <p>1.1.</p>
+      </td>
+
+      <td class="nl nr nt nb">
+        <p>Учредитель юридического лица - физическое лицо</p>
+      </td>
+
+      <td class="nl nt nb"> <p class="box" style="width: 7mm"> V </p> </td>
+    </tr>
+
+    <tr>
+      <td class="nr nt nb">
+        <p>1.2.</p>
+      </td>
+
+      <td class="nl nr nt nb">
+        <p>Руководитель юридического лица - учредителя</p>
+        <p class="font5">(наименование юридического лица на русском языке)</p>
+      </td>
+      <td class="nl nt nb">        <p class="box" style="width: 7mm">&nbsp;</p>       </td>
+    </tr>
+    <tr>
+      <td class="nr nt">
+        <p>1.3.</p>
+      </td>
+
+      <td class="nl nr nt">
+        <p> Лицо, действующее на основании полномочия, предусмотренного федеральным законом, актом специально уполномоченного на то государственного органа или актом органа местного самоуправления</p>
+      </td>
+      <td class="nl nt">        <p class="box" style="width: 7mm">&nbsp;</p>       </td>
+    </tr>
+
+</table>
+<table class="main">
+<col width="1cm"/>
+<col width="8cm"/>
+<col width="9cm"/>
+    <tr>
+      <td>
+        <p>2</p>
+      </td>
+
+      <td>
+        <p>Фамилия</p>
+      </td>
+
+      <td>
+        <p> {{ founder_f }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>3</p>
+      </td>
+
+      <td>
+        <p>Имя</p>
+      </td>
+
+      <td>
+        <p> {{ founder_i }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>4</p>
+      </td>
+
+      <td>
+        <p>Отчество</p>
+      </td>
+
+      <td>
+        <p> {{ founder_o }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>5</p>
+      </td>
+
+      <td>
+        <p>Дата рождения</p>
+      </td>
+
+      <td>
+        <p> {{ founder_birthdate }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>6</p>
+      </td>
+
+      <td>
+        <p>Место рождения</p>
+      </td>
+
+      <td>
+        <p> {{ founder_birthplace }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>7</p>
+      </td>
+
+      <td>
+        <p> ИНН (при наличии) </p>
+      </td>
+
+      <td><p><div class="lbox" style="float: left"> {{ founder_inn|letterbox:"12"|safe }} </div></p></td>
+    </tr>
+</table>
+<table class="main">
+<col width="1cm"/>
+<col width="8cm"/>
+<col width="9cm"/>
+    <tr>
+      <td>
+        <p>8</p>
+      </td>
+
+      <td colspan="2">
+        <p>Данные документа, удостоверяющего личность</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.1</p>
+      </td>
+
+      <td>
+        <p>Вид документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_type }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.2</p>
+      </td>
+
+      <td>
+        <p>Серия документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_series }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.3</p>
+      </td>
+
+      <td>
+        <p>Номер документа</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_no }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.4</p>
+      </td>
+
+      <td>
+        <p>Дата выдачи</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_date }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.5</p>
+      </td>
+
+      <td>
+        <p>Кем выдан</p>
+      </td>
+
+      <td>
+        <p> {{ founder_doc_who }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>8.6</p>
+      </td>
+
+      <td>
+        <p>Код подразделения</p>
+      </td>
+     <td><p><div class="lbox" style="float: left"> {{ founder_doc_kp|letterbox|safe }} </div></p></td>
+    </tr>
+</table>
+<table class="main">
+<col width="1cm"/>
+<col width="8cm"/>
+<col width="5cm"/>
+<col width="4cm"/>
+    <tr>
+      <td>
+        <p>9</p>
+      </td>
+
+      <td colspan="3">
+        <p>Адрес места жительства</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="10">
+        <p>9.1</p>
+      </td>
+
+      <td colspan="3">
+        <p>В Российской Федерации (при отсутствии указывается место пребывания)</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.1. Почтовый индекс</p>
+      </td>
+
+      <td colspan="2">
+        <p><div class="lbox" style="float: left"> {{ founder_addr_zip|letterbox|safe }} </div></p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.2. Субъект Российской Федерации</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_subj }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.3. Район</p>
+      </td>
+
+      <td colspan="2"> <p>  {{ founder_addr_distinct }}  </p> </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.4. Город</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_city }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.5. Населенный пункт</p>
+      </td>
+
+      <td colspan="2"> <p>  {{ founder_addr_location }}  </p> </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.1.6. Улица (проспект, переулок и т.п. -</p>
+
+        <p>указать нужное с наименованием)</p>
+      </td>
+
+      <td colspan="2">
+        <p> {{ founder_addr_street }} </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="nr">
+        <p>9.1.7. Дом (владение и т.п. - указать нужное) </p>
+      </td>
+      <td align="center" class="nl nr"> <p> <u>  {{ founder_addr_building_type }}  </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;">  {{ founder_addr_building }}  </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td class="nr">
+        <p>9.1.8. Корпус (строение и т.п. - указать нужное)</p>
+      </td>
+      <td align="center" class="nl nr"> <p> <u>  {{ founder_addr_housing_type }}  </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;">  {{ founder_addr_housing }}  </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+
+    <tr>
+      <td class="nr">
+        <p>9.1.9. Квартира (офис и т.п. - указать нужное)</p>
+      </td>
+      <td align="center" class="nl nr"> <p> <u>  {{ founder_addr_office_type }}  </u> </p> </td>
+      <td align="center" class="nl"> <p> <div class="box" style="width: 2.5cm;">  {{ founder_addr_office }}  </div> </p> <p class="font6">номер</p> </td>
+    </tr>
+</table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>1</div><div>1</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right">Лист Н заявления <br/> страница 2</p>
+<table class="main">
+<col width="1cm"/>
+<col width="8cm"/>
+<col width="9cm"/>
+    <tr>
+      <td rowspan="3">
+        <p>9.2</p>
+      </td>
+
+      <td colspan="2">
+        <p>За пределами территории Российской Федерации </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.2.1. Страна места жительства</p>
+      </td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>9.2.2. Адрес места жительства</p>
+      </td>
+
+      <td></td>
+    </tr>
+  </table>
+
+<table class="main">
+<col width="1cm"/>
+<col width="8cm"/>
+<col width="9cm"/>
+    <tr>
+      <td>
+        <p>10</p>
+      </td>
+
+      <td colspan="2">
+        <p>Контактный телефон</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>10.1. Код города</p>
+      </td>
+
+      <td>
+        <p>-</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>10.2. Телефон</p>
+      </td>
+
+      <td>
+        <p>-</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+
+      <td>
+        <p>10.3. Факс</p>
+      </td>
+
+      <td>
+        <p>-</p>
+      </td>
+    </tr>
+  </table>
+
+<table class="main">
+ <col width="1cm"/>
+ <col width="4cm"/>
+ <col width="7cm"/>
+ <col width="6cm"/>
+ <tr>
+      <td>
+        <p>11</p>
+      </td>
+
+      <td colspan="3">
+        <p>Согласование создания юридического лица на территории закрытого административно-территориального образования </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>11.1</p>
+      </td>
+      <td colspan="3" style="height: 4cm"/>
+    </tr>
+
+    <tr>
+      <td>
+        <p>11.2</p>
+      </td>
+
+      <td colspan="3">
+        <p>Данные должностного лица</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td rowspan="7"></td>
+
+      <td>
+        <p>11.2.1. Должность</p>
+      </td>
+
+      <td colspan="2"></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>11.2.2. Фамилия</p>
+      </td>
+
+      <td colspan="2"></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>11.2.3. Имя</p>
+      </td>
+
+      <td colspan="2"></td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>11.2.4. Отчество</p>
+      </td>
+
+      <td colspan="2"></td>
+    </tr>
+
+    <tr>
+    <td colspan="3" class="nb"> &nbsp; </td>
+    </tr>
+
+    <tr>
+    <td colspan="2" class="nt nb"/>
+    <td> &nbsp; </td>
+    </tr>
+
+    <tr>
+    <td class="nr nt"/>
+    <td align="right" class="nl nr nt"> <p> МП. </p> </td>
+    <td align="center" class="nl"> <p> (подпись) </p> </td>
+    </tr>
+  </table>
+
+<div class="break"/>
+<p class="head"> Страница <div class="lbox" style="float: right"><div>1</div><div>2</div></div></p>
+<p class="head"> Форма № <div class="lbox" style="float: right"><div>P</div><div>1</div><div>1</div><div>0</div><div>0</div><div>1</div></div></p>
+<p align="right">Лист Н заявления <br/> страница 3 </p>
+<table class="main">
+  <col width="1cm"/>
+  <col width="11cm"/>
+  <col width="6cm"/>
+    <tr>
+      <td rowspan="3">
+        <p>12</p>
+      </td>
+      <td colspan="2" class="nb">
+        <p>Мну подтверждается, щито:</p> <ul>
+        <li> <p>представленные учредительные документы <s> - беспалева </s> соответствуют установленным законодательством Российской Федерации требованиям к учредительным документам юридического лица данной организационно-правовой формы (ОПФ);</p> </li>
+        <li> <p><s> За базар - отвечаю </s>сведения, содержащиеся в этих учредительных документах, иных представленных для государственной регистрации документах, заявлении о государственной регистрации, достоверны;</p> </li>
+        <li> <p><s> фсьо чики </s> при создании юридического лица соблюден установленный для юридических лиц данной ОПФ порядок их учреждения, в том числе оплаты уставного капитала (уставного фонда, складочного капитала, паевого фонда), на момент государственной регистрации;</p> </li>
+        <li> <p><s> лавэ занёс </s>в установленных законом случаях вопросы создания юридического лица согласованы с соответствующими государственными органами и (или) органами местного самоуправления.</p> </li>
+      </ul>
+        <p>Мне известно, что в случае <s> палева - оторвут ... </s> представления в регистрирующий орган недостоверных сведений, я несу ответственность, установленную законодательством Российской Федерации.</p>
+	<br/>
+      </td>
+    </tr>
+    <tr>
+      <td align="right" class="nt nb">
+        <p>Заявитель</p>
+      </td>
+
+      <td/>
+    </tr>
+
+    <tr>
+      <td class="nt nr"/>
+      <td align="center" class="nl">
+        <p>(подпись)</p>
+      </td>
+    </tr>
+  </table>
+
+<table class="main">
+  <col width="1cm"/>
+  <col width="7cm"/>
+  <col width="10cm"/>
+    <tr>
+      <td>
+        <p>13</p>
+      </td>
+
+      <td colspan="2">
+        <p>Свидетельствование подлинности подписи уполномоченного лица (заявителя) в нотариальном порядке </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>13.1</p>
+      </td>
+
+      <td colspan="2" style="height: 11cm"/>
+    </tr>
+
+    <tr>
+      <td>
+        <p>13.2</p>
+      </td>
+
+      <td>
+        <p>ИНН лица, засвидетельствовавшего подлинность подписи заявителя</p>
+      </td>
+
+      <td> <p><div class="lbox" style="float: left"><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/></div></p> </td>
+    </tr>
+
+  </table>
+
+</body>
+</html>

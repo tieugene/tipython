@@ -1,0 +1,14 @@
+<!-- IM -->
+{% extends "core/im_base.html" %}
+{% block body_main %}
+<form action=".?next={{ next }}" method="post">
+	<table>
+		<caption>
+			Новый IM
+		</caption>
+		{{ form.as_table }}
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{% url apps.core.views.im_index %}"> <button> Отказаться </button> </a>
+</form>
+{% endblock %}

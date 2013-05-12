@@ -1,0 +1,34 @@
+<!-- Phone -->
+{% extends "core/phone_base.html" %}
+{% block body_main %}
+<table class="itemlist">
+	<caption>
+		<a href="{% url apps.core.views.phone_add %}"> <button title="Добавить новый телефон" style="float:left"> + </button> </a>
+		<div id="dropdown0" class="dropdown" style="float:left">
+			<button title="Всякие действия"> Действия &#9663; </button>
+			<!--div>
+				<ul>
+					<li> <a href="#del_cat"> Удалить </a> </li>
+				</ul>
+			</div-->
+		</div>
+		{% include "paginator.html" %}
+	</caption>
+	<thead>
+		<tr>
+			<th> {% with "selecttodo" as id %} {# include "selectmenu.html" #} {% endwith %} </th>
+			<th> № </th>
+		</tr>
+	</thead>
+	<form id="itemform" method="post" action="{# url apps.core.views.phone_del_selected #}">
+	<tbody>
+	{% for object in object_list %}
+		<tr>
+			<td nowrap> <input type="checkbox" name="phone" value="{{ object.id }}"/> </td>
+			<td> <a href="{{ object.get_absolute_url }}"> {{ object }} </a> </td>
+		</tr>
+	{% endfor %}
+	</tbody>
+	</form>
+</table>
+{% endblock %}

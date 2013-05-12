@@ -1,0 +1,23 @@
+a.dropdown, a.dropdown:visited, div.dropdown
+{
+	display: block;
+	width:   100px;
+	border:  1px solid black;
+}
+
+a.dropdown, a.dropdown:visited {
+	border-bottom: none;
+}
+
+div#menu_child {
+	border-bottom: 1px solid black;
+}
+
+form.dropdown {
+	border:  1px solid black;
+	padding: 0px 5px 2px 5px;
+}
+
+input.dropdown {
+	margin: 1px 0px; width: 170px;
+}
