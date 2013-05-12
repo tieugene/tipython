@@ -1,0 +1,80 @@
+{% extends "base_dox.html" %}
+{% block js %}
+	{{ block.super }}
+{% endblock %}
+{% block jsready %}
+	{{ block.super }}
+	$('li.section>div').hide();
+	$('li.section>p>button').click(function() {
+		var div = $(">div", $(this).parent().parent());
+		if (div.css("display") == 'none') {
+			$(this).html("-");
+			div.show();
+		} else {
+			$(this).html("+");
+			div.hide();
+		};
+	});
+{% endblock %}
+{% block css %}
+	{{ block.super }}
+	ul#okved {
+		list-style-type: none;
+	}
+{% endblock %}
+{% block body_main %}
+	<H1> Форма 21001 </H1>
+	<div class="table">
+	<div class="cell">
+	<form id="AutoForm" action="." method="post">
+		{% csrf_token %}
+		<input type="submit" value="{% if user.is_authenticated %} Сохранить {% else %} Печать {% endif %}"/>
+		<a href={{ cancel_url }}> <input type="button" value="Cancel"/> </a>
+		<table border="1">
+		{{ form.as_table }}
+		</table>
+		{% for k, formset in formlist.iteritems %}
+			<table id="{{k}}" border="1">
+				<caption> {{ k }} </caption>
+				<tbody>
+				{% for form in formset.forms %}
+					<tr> <td> <table border="0">
+					{{ form.as_table }}
+					</table> </td> </tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			{{ formset.management_form }}
+			<script type="text/javascript">
+				$(function() {
+					$('#{{k}} > tbody > tr').formset({
+						prefix: '{{ formset.prefix }}',
+					});
+				})
+			</script>
+		{% endfor %}
+	</form>
+	</div>
+	<div class="cell">
+		<p> ОКВЭДы: </p>
+		<button> Добавить </button>
+		<!--
+		1. find all selected okveds
+		2. find last (or 1st empty) input fieldset
+		3. add values (id_okved-0-code, id_okved-0-name, add_another())
+		4. patch okved-TOTAL_FORMS, okved-INITIAL_FORMS, 
+		4. add empty fieldset
+		X. remove checks
+		or
+		1. add on selection
+		2. remove on unselection
+		-->
+		<div>
+			<ul id="okved">
+				{% include "form/z0003_okved.html" %}
+			</ul>
+		</div>
+	</div>
+	</div>
+	<!--script type="text/javascript"> $(function() { $('#myForm tbody tr').formset(); }) </script-->
+{% endblock %}

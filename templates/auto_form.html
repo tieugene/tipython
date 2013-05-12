@@ -1,0 +1,32 @@
+{% extends "base_dox.html" %}
+{% block body_main %}
+	<H1> Документ </H1>
+	<form id="AutoForm" action="." method="post">
+		{% csrf_token %}
+		<input type="submit" value="{% if user.is_authenticated %} Сохранить {% else %} Печать {% endif %}"/>
+		<a href={{ cancel_url }}> <input type="button" value="Cancel"/> </a>
+		<table border="1">
+		{{ form.as_table }}
+		</table>
+		{% for k, formset in formlist.iteritems %}
+			<table id="{{ k }}" border="1">
+				<caption> {{ k }} </caption>
+				<tbody>
+				{% for form in formset.forms %}
+					<tr> <td> <table border="0">
+					{{ form.as_table }}
+					</table> </td> </tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			{{ formset.management_form }}
+			<script type="text/javascript">
+				$(function() {
+					$('#{{k}} > tbody > tr').formset({
+						prefix: '{{ formset.prefix }}',
+					});
+				})
+			</script>
+		{% endfor %}
+	</form>
+{% endblock %}

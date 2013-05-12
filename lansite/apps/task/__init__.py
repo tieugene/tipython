@@ -1,3 +1,0 @@
-'''
-lansite.apps.task
-'''

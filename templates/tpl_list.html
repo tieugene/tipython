@@ -1,0 +1,9 @@
+{% extends "base_dox.html" %}
+{% block jsready %}
+	$("#tm_dox").addClass("active");
+{% endblock %}
+{% block body_main %}
+{% for k, v in data.iteritems %}
+	<p class="{% cycle 'even' 'odd' %}"> <a href="{% if user.is_authenticated %} {% url dox.views.doc_l k %} {% else %} {% url dox.views.doc_a k %} {% endif %}" {% if v.m.DATA.c %} title="{{ v.m.DATA.c }}" {% endif %}> {{ v.m.DATA.n }} </a> </p>
+{% endfor %}
+{% endblock %}
