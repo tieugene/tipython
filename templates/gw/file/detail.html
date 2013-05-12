@@ -1,0 +1,16 @@
+<!-- File.Detail -->
+{% extends "gw/file/base.html" %}
+{% block title %} Файл {% endblock %}
+{% block topbar %} <a href="{% url gw.views.file_index %}"> Файлы </a> {% endblock %}
+{% block body_detail %}
+<table>
+	<tr> <td> File name: </td>	<td> <a href="{% url gw.views.file_dl item.id %}" title="Download">  {{ item.name }} </a> </td> </tr>
+	<tr> <td> MIME: </td>		<td> {{ item.mime }} </td> </tr>
+	<tr> <td> Saved: </td>		<td> {{ item.saved }} </td> </tr>
+	<tr> <td> Size: </td>		<td> {{ item.size }} </td> </tr>
+	<tr> <td> MD5: </td>		<td> {{ item.md5 }} </td> </tr>
+</table>
+    <hr/>
+     {% load gw_extras %}
+    {% taglist item %}
+{% endblock %}

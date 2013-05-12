@@ -1,0 +1,45 @@
+{% extends "gw/task/todo_base.html" %}
+{% block tabbar %}
+<table class="tabbed">
+	<tr>
+		<td class="tabactive"> <a href="{% url gw.views.todo_index %}"> ToDo </a> </td>
+		<td class="tabinactive"> Календарь </td>
+		<td class="tabinactive"> Все задачи </td>
+	</tr>
+</table>
+{% endblock %}
+{% block body_main %}
+<table border="1">
+	<!-- Task -->
+	<tr> <th> Пользователь: </th>	<td> {{ item.user }} </td> </tr>
+	<tr> <th> Создано: </th>	<td> {{ item.created|date }} </td> </tr>
+	<tr> <th> Изменено: </th>	<td> {{ item.updated|date }} </td> </tr>
+	<tr> <th> Тема: </th>		<td> {{ item.summary }} </td> </tr>
+	<tr> <th> Состояние: </th>	<td> {{ item.getstatusname|default_if_none:"" }} </td> </tr>
+	<tr> <th> Видимость: </th>	<td> {{ item.getrestrictionname|default_if_none:"" }} </td> </tr>
+	<tr> <th> Категории: </th>	<td> <ul>
+						{% for i in item.taskcat_set.all %}
+							<li> {{ i.cat.name }} </li>
+						{% endfor %}
+						</ul>
+					</td> </tr>
+	<!-- vCal -->
+	<tr> <th> Исполнитель: </th>	<td> {{ item.attendee|default_if_none:"" }} </td> </tr>
+	<tr> <th> Подробности: </th>	<td> {{ item.description }} </td> </tr>
+	<tr> <th> Начало: </th>		<td> {{ item.start_d|default_if_none:""|date }} {{ item.start_t|default_if_none:"" }} </td> </tr>
+	<tr> <th> Длительность: </th>	<td> {{ item.duration_d|default_if_none:"" }} {{ item.duration_t|default_if_none:"" }} </td> </tr>
+	<tr> <th> Место: </th>		<td> {{ item.location|default_if_none:"" }} </td> </tr>
+	<tr> <th> Важность: </th>	<td> {{ item.getpriorityname|default_if_none:"" }} </td> </tr>
+	<tr> <th> URL: </th>		<td> {{ item.URL|default_if_none:"" }} </td> </tr>
+	<!-- vToDo -->
+	<tr> <th> До: </th>		<td> {{ item.due_d|default_if_none:""|date }} {{ item.due_t|default_if_none:"" }} </td> </tr>
+	<tr> <th> Завершено: </th>	<td> {{ item.completed|default_if_none:"" }} </td> </tr>
+	<tr> <th> Процент: </th>	<td> {{ item.percent|default_if_none:"" }} </td> </tr>
+</table>
+<hr/>
+<table border="0"> <tr valign="top">
+{% ifequal user.id item.user_id %}
+	<a class="button" href="{% url gw.views.todo_edit item.id %}"> Изменить </a>
+	<button onClick="confirmDelete('{% url gw.views.todo_del item.id %}')"> Удалить </button>
+{% endifequal %}
+{% endblock %}

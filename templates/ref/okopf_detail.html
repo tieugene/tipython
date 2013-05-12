@@ -1,0 +1,21 @@
+<!-- OKOPF -->
+{% extends "ref/base.html" %}
+{% block title %} ОКОПФ {% endblock %}
+{% block topbar %} <a href="{% url ref.views.okopf_list %}"> ОКОПФ </a> {% endblock %}
+{% block body_main %}
+{% for i in item.get_ancestors %}
+	<p> {{ i.id }}: <a href="{% url ref.views.okopf_view i.id %}"> {{ i.name }} </a> </p> <BLOCKQUOTE>
+{% endfor %}
+<p> {{ item.id }}: {{ item.name }} </p> <BLOCKQUOTE>
+{% for i in item.get_children %}
+	<p>
+		{{ i.id }}:
+		{% if i.get_children_count %}
+			<a href="{% url ref.views.okopf_view i.id %}"> {{ i.name }} </a>
+		{% else %}
+			{{ i.name }}
+		{% endif %}
+		{% if i.shortname %} {{ i.shortname }} {% endif %}
+	</p>
+{% endfor %}
+{% endblock %}

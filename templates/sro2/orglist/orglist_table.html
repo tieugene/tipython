@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Реестр</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <th> № п/п</th>
+        <th> Краткое наименование</th>
+        <th> Полное наименование</th>
+        <th> ОКОПФ</th>
+        <th> Дата в ЕГРЮЛ</th>
+        <th> ИНН</th>
+        <th> КПП</th>
+        <th> ОГРН (СГРП)</th>
+        <th> ОКАТО</th>
+        <th> Адрес юридический</th>
+        <th> Адрес фактический</th>
+        <th> Телефоны</th>
+        <th> Email</th>
+        <th> WWW</th>
+        <th> Руководство</th>
+        <th> Статус в СРО</th>
+        <th> Реестровый #</th>
+        <th> Ррегистрационный #</th>
+        <th> Дата членства в НП</th>
+        <th> Дата оплаты взноса в КФ</th>
+        <th> Сумма взноса в КФ</th>
+        <th> Дата оплаты ВВ</th>
+        <th> Публиковать</th>
+        <th> Автор</th>
+        <th> Лиц. #</th>
+        <th> Лиц. с</th>
+        <th> Лиц. по</th>
+        <th> Стрх. страховщик</th>
+        <th> Стрх. Дог. #</th>
+        <th> Стрх. Дог. от</th>
+        <th> Стрх. Дог. по</th>
+        <th> Стрх. Сумма</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for orgsro in orgsro_list %}
+        <tr>
+            <td> {{ loop.index }} </td>
+            <td> {{ orgsro.org.name }} </td>
+            <td> {{ orgsro.org.fullname }} </td>
+            <td> {{ orgsro.org.okopf }} </td>
+            <td> {{ orgsro.org.egruldate|date }} </td>
+            <td> {{ orgsro.org.inn }} </td>
+            <td> {{ orgsro.org.kpp }} </td>
+            <td> {{ orgsro.org.ogrn }} </td>
+            <td> {{ orgsro.org.okato }} </td>
+            <td> {{ orgsro.org.laddress }} </td>
+            <td> {{ orgsro.org.raddress }} </td>
+            <td> {% if orgsro.org.contactphone_set.all()%} {% for i in orgsro.org.contactphone_set.all()%}
+                <p> {{ i.asstr() }} </p> {% endfor %} {% endif %} </td>
+            <td> {% if orgsro.org.contactemail_set.all()%} {% for i in orgsro.org.contactemail_set.all()%} <p><a
+                    href="mailto:{{ i.asstr() }}"> {{ i.asstr() }} </a></p> {% endfor %} {% endif %} </td>
+            <td> {% if orgsro.org.contactwww_set.all()%} {% for i in orgsro.org.contactwww_set.all()%} <p><a
+                    href="http://{{ i.asstr() }}"> {{ i.asstr() }} </a></p> {% endfor %} {% endif %} </td>
+            <td> {% if orgsro.org.orgstuff_set.all()%} {% for i in orgsro.org.orgstuff_set.all()%} {% if i.leader == 1 %}
+                <p> {{ i.role.asstr() }} {{ i.person.asstr() }} </p> {% endif %} {% endfor %} {% endif %} </td>
+            <td> {{ ['Нет','Кандидат','Член НП','Исключен','Архив'][orgsro.status] }} </td>
+            <td> {{ orgsro.regno }} </td>
+            <td> {{ orgsro.caseno }} </td>
+            <td> {{ orgsro.regdate|date }} </td>
+            <td> {{ orgsro.paydate|date }} </td>
+            <td> {{ orgsro.paysum }} </td>
+            <td> {{ orgsro.paydatevv|date }} </td>
+            <td align="center"> {% if orgsro.publish == 1 %} + {% endif %} </td>
+            <td> {{ orgsro.user.first_name }} {{ orgsro.user.last_name }} </td>
+        <td>Fixme</td>
+{#            {% if orgsro.orglicense %}#}
+{#                <td> {{ orgsro.orglicense.no }} </td>#}
+{#                <td> {{ orgsro.orglicense.datefrom|date }} </td>#}
+{#                <td> {{ orgsro.orglicense.datedue|date }} </td>#}
+{#            {% else %}#}
+{#                <td/>#}
+{#                <td/>#}
+{#                <td/>#}
+{#            {% endif %}<td>#}
+        <td>
+            {% for insurance in orgsro.orginsurance_set.all()%}
+                 {{ insurance.insurer }}<br>
+            {% endfor %}</td><td>
+                    {% for insurance in orgsro.orginsurance_set.all()%}
+                 {{ insurance.no }}<br>
+            {% endfor %}</td><td>
+                    {% for insurance in orgsro.orginsurance_set.all()%}
+                 {{ insurance.date|date }}<br>
+            {% endfor %}</td><td>
+                    {% for insurance in orgsro.orginsurance_set.all()%}
+                 {{ insurance.datedue|date }}<br>
+            {% endfor %}</td><td>
+                          {% for insurance in orgsro.orginsurance_set.all()%}
+                 {{ insurance.sum }}<br>
+            {% endfor %}</td>  
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

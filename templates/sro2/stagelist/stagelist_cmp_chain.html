@@ -1,0 +1,22 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    История изменений с {{ start.date|date }} по {{ end.date|date }}
+{% endblock %}
+
+{% block content %}
+    {% for ch in changes %}
+        <h3>{{ ch.start.date|date }} --&gt {{ ch.end.date|date }}</h3>
+        {% if ch.chg %}
+            <h3> Изменено: </h3>
+            <ul>
+                {% for s in ch.chg %}
+                    {% ifnotequal s.paused s.newdate %}
+                        <li> {{ s.stage }}: {{ s.paused }} =&gt; {{ s.newdate }}  {% if s.danger %}
+                            (ОПАСНЫЕ){% endif %}</li>
+                    {% endifnotequal %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

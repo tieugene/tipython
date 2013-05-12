@@ -1,0 +1,195 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Journal NG
+        {% if object %}
+    {{ object }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="{{ url_for('views.index') }}static/js/jquery.collapse.js"></script>
+
+    <style type="text/css">
+        #logs li {
+            border-top: solid 1px #555;
+            border-left: solid 1px #555;
+            border-right: solid 1px #555;
+            padding: 4px;
+        }
+
+        #logs li.del {
+            background: #ffcccc;
+        }
+
+        #logs li.add {
+            background: #ccffcc;
+        }
+
+        #logs li.edit {
+            background: #ffffcc;
+        }
+
+        #logs li.permit {
+            background: #FFc065;
+        }
+
+        .changes {
+            margin-top: 6px;
+        }
+
+        .changes li {
+            border-top: solid 1px #555;
+            border-left: solid 1px #555;
+            border-right: solid 1px #555;
+            background: #ccccff;
+            padding: 4px;
+        }
+
+        .changes li:last-child {
+            border-bottom: solid 1px #555;
+
+        }
+
+        #logs li:last-child {
+            border-bottom: solid 1px #555;
+
+        }
+
+        .sl {
+            margin-left: 16px;
+        }
+
+        #cl {
+            margin-bottom: -2px;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        $(function() {
+            $('#logs').jqcollapse({
+                slide: true,
+                speed: 500,
+                easing: 'easeOutCubic'
+            });
+
+            $('#logs li a').click(function() {
+                if ($('img', this).attr('src') == "{{ url_for('views.index') }}static/images/remove.gif") {
+                    $('img', this).attr('src', "{{ url_for('views.index') }}static/images/add.gif")
+                } else {
+                    $('img', this).attr('src', "{{ url_for('views.index') }}static/images/remove.gif")
+                }
+            })
+        })
+    </script>
+
+    <script>
+
+        $(document).ready(function() {
+            oTable = $('#journaltable').dataTable({
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers",
+                "sScrollY": "800px",
+                "sDom": '<"ui-state-default ui-corner-all search"f>rtip',
+                "oLanguage": {
+                    "sSearch": "Поиск (по <span style='color:#eeaaaa'><b>любому</b></span> полю):",
+                    "sZeroRecords":  "Записи отсутствуют."
+                },
+                "bPaginate": false,
+                "bSortClasses": false,
+            });
+        });
+        $(function() {
+            var dates = $('#from, #to').datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 3,
+                onSelect: function(selectedDate) {
+                    var option = this.id == "from" ? "minDate" : "maxDate";
+                    var instance = $(this).data("datepicker");
+                    var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
+                }
+            }).datepicker($.datepicker.regional['ru']);
+
+
+            $('#viewjournal').click(function() {
+                if ($('#from').val() && $('#to').val()) {
+                    window.location = "{{ url_for('sro2.views.journal_ng') }}" + $('#from').val() + '/' + $('#to').val() + '/'
+                } else {
+                    alert('Надо ввести ОБЕ даты!');
+                }
+            })
+
+        });
+    </script>
+    <div class="datepicker">
+        <label for="from">C</label>
+        <input type="text" id="from" name="from"/>
+        <label for="to">По</label>
+        <input type="text" id="to" name="to"/>
+	<span class='ui-corner-all ui-state-default button' id='viewjournal'>
+		Просмотреть журнал
+	</span>
+    </div>
+
+    <ul id="logs">
+        {% for log in logs %}
+            {#            {% if log.object %}#}
+            {% if log.action_flag == 1 %}
+                <li class="add">{{ log.ctype }} <b>{% if log.object %}<a href="{{ log.object.get_absolute_url()|d('#') }}">{{ log.object }}</a>{% else %}{{ log.object_repr }}{% endif %}</b><br>
+                    <i><b>Создано</b> {{ log.action_time|date("%d.%m.%Y %H:%M:%S") }}
+                    by {{ log.user.first_name }} {{ log.user.last_name }}</i>
+                {% elif log.action_flag == 2 %}
+                    {% if log.change_set.all() %}
+                        <li class="edit">{{ log.ctype }}
+                        <b><a href="{{ log.object.get_absolute_url()|d('#') }}">
+                            {{ log.object }}
+                        </a></b><br>
+
+                        <span class="sl"><i> <img src="{{ url_for('views.index') }}static/images/add.gif" alt=""
+                                                  id="cl">
+                            <b>Изменено</b> {{ log.action_time|date("%d.%m.%Y %H:%M:%S") }}
+                        by {{ log.change_set.all()[0].username }}</i></span>
+                        <ul class="changes">
+                            {% for ch in log.change_set.all() %}
+                                <li>{{ ch }}</li>
+                            {% endfor %}
+                        </ul>
+
+                    {% endif %}
+                {% elif log.action_flag == 3 %}
+                    <li class="del">{{ log.ctype }} <b>{{ log.object_repr }}</b><br>
+                    <i><b>Удалено </b>{{ log.action_time|date("%d.%m.%Y %H:%M:%S") }}
+                    by {{ log.user.first_name }} {{ log.user.last_name }}</i>
+                {% elif log.action_flag == 4 %}
+
+                <li class="permit">
+                {{ log.ctype }}
+            {% set obj = log.object %}
+                <b>{% if log.object %}
+                    <a href="{{ log.object.get_absolute_url()|d('#') }}">
+                        {{ log.object }}
+                    </a>
+                {% else %}
+                    {{ log.object_repr }}
+                {% endif %}</b><br>
+                    <i><b>
+                        {{ log.object.asstr_snapstatus() }}
+                    </b>
+                        {{ log.action_time|date("%d.%m.%Y %H:%M:%S") }}
+                    by {{ log.user.first_name }} {{ log.user.last_name }}
+                    </i><br>
+                    <span class="sl">c <b>{{ log.object.date|date }}</b>
+            {% if log.object.status == 1 and  log.object.permitstage_set.all().count() > 0 %}
+                {% set permitstage = log.object.permitstage_set.all()|first  %}
+                по <b>{{ permitstage.paused|date }}</b>
+            {% endif %}
+            (<a href='{{ log.object.protocol.get_absolute_url() }}'>{{ log.object.protocol }}</a>)</span>
+                </li>
+            {% endif %}
+            {#            {% endif %}#}
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "sro2/stagelist/stagelist_base.html" %}
+{% block sidebar %}
+    <center><h1>
+        <a href="{% url views.index %}"> LanSite </a> &gt;
+        <a href="{% url sro2.views.index %}"> СРО2 </a> &gt;
+        <a href="{% url sro2.views.index_sro stagelist.orgsro.sro.id %}"> {{ stagelist.orgsro.sro.name }} </a> &gt;
+        <a href="{% url sro2.views.sro_list stagelist.orgsro.sro.id %}"> Организации </a> &gt;
+        <a href="{% url sro2.views.orgsro_view stagelist.orgsro.id %}"> {{ stagelist.orgsro.org.name }} </a> &gt;
+        {{ stagelist.type.name }}
+    </h1></center>
+{% endblock %}
+{% block main %}
+    <form action="." method="post">
+    <table>
+        <tr>
+            <td> Тип:</td>
+            <td> {{ type.name }} </td>
+        </tr>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" value="Записать"/> </td>
+    <input type="button"
+           value="Отказаться" onClick="window.location.href='{% url sro2.views.stagelist_view stagelist.id % '"/>
+ </form>
+{% endblock %}

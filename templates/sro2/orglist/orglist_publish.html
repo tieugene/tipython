@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>LanSite.СРО2.{{ sro.name }}.Организации</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        body {
+            font-family: Serif;
+            font-size: 9pt;
+            background-color: white;
+            color: black;
+        }
+
+        TH {
+            background-color: grey;
+        }
+
+        H1 {
+            font-size: 12pt;
+            font-weight: bold;
+            background-color: grey;
+            color: white;
+            text-align: center;
+        }
+
+        H2 {
+            font-size: 11pt;
+            font-weight: bold;
+        }
+
+        H3 {
+            font-size: 10pt;
+            font-weight: bold;
+        }
+
+        H4 {
+            font-size: 9pt;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<script langauge="JavaScript" type="text/javascript">
+    function doMenu(item) {
+        obj = document.getElementById(item);
+        col = document.getElementById("x" + item);
+        if (obj.style.display == "none") {
+            obj.style.display = "block";
+            col.innerHTML = "[-]";
+        }
+        else {
+            obj.style.display = "none";
+            col.innerHTML = "[+]";
+        }
+    }
+</script>
+<table border="1">
+    <thead>
+    <tr>
+        <th colspan="2"><h1> Реестр членов Некоммерческого партнерства «Межрегиональное объединение организаций
+            железнодорожного строительства» </h1></th>
+    </tr>
+    <tr>
+        <th> № п/п</th>
+        <th> Наименование оганизации</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for orgsro in orgsro_list %}
+        <tr>
+            <td valign="top">
+                <h2><a href="JavaScript:doMenu('{{ orgsro.org.id }}');" id=x{{ orgsro.org.id }}>[+]</a>
+                    {{ forloop.counter }}
+                    <h2>
+            </td>
+            <td>
+                <h2> {{ orgsro.org.okopf.shortname }} {{ orgsro.org.name }} </h2>
+
+                <div id={{ orgsro.org.id }} style=
+                "display:none">
+                <!-- main -->
+                <table width="100%" border="0" bgcolor="lightgrey">
+                    <tr>
+                        <td><h3> 1. Основные данные: </h3></td>
+                    </tr>
+                </table>
+                <table border="0">
+                    <tr>
+                        <td> Краткое наименование:</td>
+                        <td> {{ orgsro.org.shortname }} </td>
+                    </tr>
+                    <tr>
+                        <td> Полное наименование:</td>
+                        <td> {{ orgsro.org.fullname }} </td>
+                    </tr>
+                    <tr>
+                        <td> ОКОПФ:</td>
+                        <td> {{ orgsro.org.okopf }} </td>
+                    </tr>
+                    <tr>
+                        <td> ИНН:</td>
+                        <td> {{ orgsro.org.inn }} </td>
+                    </tr>
+                    <tr>
+                        <td> КПП:</td>
+                        <td> {{ orgsro.org.kpp }} </td>
+                    </tr>
+                    <tr>
+                        <td> {{ orgsro.org.ogrn_label }}:</td>
+                        <td> {{ orgsro.org.ogrn }} </td>
+                    </tr>
+                    <tr>
+                        <td> ОКАТО:</td>
+                        <td> {{ orgsro.org.okato }} </td>
+                    </tr>
+                    <tr>
+                        <td> Адрес юридический:</td>
+                        <td> {{ orgsro.org.laddress }} </td>
+                    </tr>
+                    <tr>
+                        <td> Адрес фактический:</td>
+                        <td> {{ orgsro.org.raddress }} </td>
+                    </tr>
+                    <tr>
+                        <td> Реестровый №:</td>
+                        <td> {{ orgsro.regno }} </td>
+                    </tr>
+                    <tr>
+                        <td> Дата членства в НП:</td>
+                        <td> {{ orgsro.regdate|date }} </td>
+                    </tr>
+                </table>
+                <!-- okved -->
+                <table width="100%" border="0" bgcolor="lightgrey">
+                    <tr>
+                        <td><h4> 1.1. ОКВЭД: </h4></td>
+                    </tr>
+                </table>
+                {% if orgsro.org.okveds.all %}
+                    <ul>
+                        {% for i in orgsro.org.okveds.all %}
+                            <li> {{ i.asstr }} </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <!-- phone -->
+                <table width="100%" border="0" bgcolor="lightgrey">
+                    <tr>
+                        <td><h4> 1.2. Телефоны: </h4></td>
+                    </tr>
+                </table>
+                {% if orgsro.org.orgphone_set.all %}
+                    <ul>
+                        {% for i in orgsro.org.orgphone_set.all %}
+                            <li> {{ i.asstr }} </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <!-- email -->
+                <table width="100%" border="0" bgcolor="lightgrey">
+                    <tr>
+                        <td><h4> 1.3. Email: </h4></td>
+                    </tr>
+                </table>
+                {% if orgsro.org.orgemail_set.all %}
+                    <ul>
+                        {% for i in orgsro.org.orgemail_set.all %}
+                            <li> {{ i.asstr }} </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <!-- www -->
+                <table width="100%" border="0" bgcolor="lightgrey">
+                    <tr>
+                        <td><h4> 1.4. WWW: </h4></td>
+                    </tr>
+                </table>
+                {% if orgsro.org.orgwww_set.all %}
+                    <ul>
+                        {% for i in orgsro.org.orgwww_set.all %}
+                            <li> {{ i.asstr }} </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <!-- stuff -->
+                <table width="100%" border="0" bgcolor="lightgrey">
+                    <tr>
+                        <td><h3> 2. Персонал: </h3></td>
+                    </tr>
+                </table>
+                {% if orgsro.org.orgstuff_set.all %}
+                    <table>
+                        <tr>
+                            <th> ФИО</th>
+                            <th> Должность</th>
+                        </tr>
+                        {% for i in orgsro.org.orgstuff_set.all %}
+                            {% ifequal i.leader 1 %}
+                                <tr>
+                                    <td> {{ i.person.asstr }} </td>
+                                    <td> {{ i.role.asstr }} </td>
+                                </tr>
+                            {% endifequal %}
+                        {% endfor %}
+                    </table>
+                {% endif %}
+                <!-- permit -->
+                <table width="100%" border="0" bgcolor="lightgrey">
+                    <tr>
+                        <td><h3> 3. Свидетельства о допуске к работам, оказывающим влияние на безопасность объектов
+                            капитального строительства: </h3></td>
+                    </tr>
+                </table>
+                {% if orgsro.stagelist_set.all %}
+                    <ul>
+                        {% for i in orgsro.stagelist_set.all %}
+                            {% ifequal i.type.id 2 %}
+                                <li> № {{ i.permit.no }} от {{ i.permit.date|date }}, протокол
+                                    № {{ i.permit.protocol.no }} от {{ i.permit.protocol.date|date }} </li>
+                            {% endifequal %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><i> Updated: {{ dt }} </i></p>
+</body>
+</html>

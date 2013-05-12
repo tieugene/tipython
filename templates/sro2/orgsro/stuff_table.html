@@ -1,0 +1,86 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    <a href="{{ url_for('sro2.views.orgsro_view', orgsro.id) }}">
+		<span class='ui-state-default button ui-corner-all'>
+			{{ orgsro.org.name }}
+		</span>
+    </a>
+    &nbsp;
+    ({{ orgsro.sro.name }})
+    Список сотрудников
+{% endblock %}
+
+
+{% block content %}
+    <br>
+    <table border="1" cellspacing="0" width=100%>
+        <tr align="center">
+            <th rowspan="2" width="40">#</th>
+            <th rowspan="2"> Ф.И.О.</th>
+            <th rowspan="2"> Должность</th>
+            <th rowspan="2"> Специальность по диплому</th>
+            <th rowspan="2"> Стаж работы</th>
+            <th rowspan="2" width="230"> Наличие повышение квалификации, дата окончания</th>
+            <th colspan="2"> Форма трудовых</th>
+        </tr>
+
+        <tr align="center">
+            <th> Пост.</th>
+            <th> Совм.</th>
+        </tr>
+
+        {% for i in person_list %}
+            {% set parentloop = loop %}
+            {% set count = i.person.personskill_set.all().count() %}
+
+                {% for personskill in i.person.personskill_set.all()%}
+                    <tr>
+                        {% if loop.first %}
+                            <td rowspan="{{ count }}" style='text-align: center;'>{{ parentloop.index }}</td>
+                            <td rowspan="{{ count }}"> {{ i.person.asstr() }} </td>
+                            <td rowspan="{{ count }}"> {{ i.role.asstr() }} </td>
+                        {% endif %}
+
+                        <td> {{ personskill.speciality }} {% if personskill.skill.high %} (высшее){% else %}
+                            (среднее){% endif %}{% if personskill.speciality %}, Дата
+                            окончания: {{ personskill.skilldate|date }}{% endif %}
+                        </td>
+                        <td align="center"> {% if personskill.seniority != None %} {{ personskill.seniority }} {% else %}
+                            0 {% endif %} </td>
+                        <td>
+                            {% if personskill.course_set.all().count() == 0 %}
+                                Нет
+                            {% else %}
+                                {% for course in personskill.course_set.all()%}
+                                    {{ course.coursename }} - {{ course.coursedate|date }}<br>
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+
+                        {% if loop.first %}
+                            <td rowspan="{{ count }}" align="center"> {% if i.permanent == 1 %}
+                                + {% endif %} </td>
+                            <td rowspan="{{ count }}" align="center"> {% if not  i.permanent == 1 %}
+                                + {% endif %} </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+                {% if count == 0 %}
+                    <tr>
+                        <td style='text-align: center;'>{{ loop.index }}</td>
+                        <td> {{ i.person.asstr() }} </td>
+                        <td> {{ i.role.asstr() }} </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td align="center"> {% if i.permanent == 1 %} + {% endif %} </td>
+                        <td align="center"> {% if not i.permanent == 1 %} + {% endif %}</td>
+                    </tr>
+                {% endif %}
+
+        {% endfor %}
+    </table>
+
+{% endblock %}

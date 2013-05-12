@@ -1,0 +1,29 @@
+<!-- KLADR -->
+{% extends "ref/base.html" %}
+{% block title %} КЛАДР {% endblock %}
+{% block topbar %} <a href="{% url ref.views.kladr_list %}"> КЛАДР </a> {% endblock %}
+{% block body_main %}
+{% for i in item.get_ancestors %}
+	<p> {{ i.id }}: <a href="{% url ref.views.kladr_view i.id %}"> {{ i.name }}, {{ i.short }} </a> </p> <BLOCKQUOTE>
+{% endfor %}
+<p> {{ item.id }}: {{ item.name }}, {{ item.short }} </p> <BLOCKQUOTE>
+<table width="100%" border="1">
+<tr> <th> # </th> <th> id </th> <th> name </th> <th> short </th> <th> zip </th> <th> center </th> <th> okato </th> </tr>
+{% for i in item.get_children %}
+	<tr>
+	<td> {{ forloop.counter }} </td>
+	<td> {{ i.id }} </td>
+	<td>
+	{% if i.get_children_count %}
+		<a href="{% url ref.views.kladr_view i.id %}"> {{ i.name }} </a>
+	{% else %}
+		{{ i.name }}
+	{% endif %}
+	<td> {{ i.short.name }} </td>
+	<td> {% if i.zip %} {{ i.zip }} {% endif %} </td>
+	<td> {% if i.center %} {{ i.center.comments }} {% endif %} </td>
+	<td> {% if i.okato %} {{ i.okato }} {% endif %} </td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

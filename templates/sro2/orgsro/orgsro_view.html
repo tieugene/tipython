@@ -1,0 +1,169 @@
+{% extends "sro2/orgsro/orgsro_base.html" %}
+{% block body_main_button %}
+    {% if canedit and user.has_perm('gw.change_org')  %}
+        <a href='{{ url_for('sro2.views.orgsro_org_edit', orgsro.id) }}#org' class='button ui-state-default eb ui-corner-all ebutton'>
+            Изменить
+        </a>
+
+    {% endif %}
+{% endblock %}
+{% block body_sro_button %}
+    {% if canedit_orgsro and user.has_perm('sro2.change_orgsro')  %}
+        <a href='{{ url_for('sro2.views.orgsro_main_edit',orgsro.id) }}#main' class='button ui-state-default eb ui-corner-all ebutton'>
+        Изменить
+        </a>
+    {% endif %}
+{% endblock %}
+{% block body_license_add_button %}
+    {% if canedit_orgsro and user.has_perm('sro2.add_orglicense')  %}
+        <a href='{{ url_for('sro2.views.orgsro_license_add',orgsro.id) }}#main' class='button ui-state-default eb ui-corner-all'>
+        Указать
+        </a>
+    {% endif %}
+{% endblock %}
+{% block body_license_edit_button %}
+    {% if canedit_orgsro and user.has_perm('sro2.change_orglicense')  %}
+        <a href='{{ url_for('sro2.views.orgsro_license_edit',orgsro.id) }}#main' class='button ui-state-default eb ui-corner-all'>
+        Изменить
+        </a>
+    {% endif %}
+{% endblock %}
+{% block body_license_del_button %}
+    {% if canedit_orgsro and user.has_perm('sro2.delete_orglicense')  %}<input type="button" value="Удалить"
+                                                                   class='button ui-state-error'
+                                                                   onClick="confirmDelete('{{ url_for('sro2.views.orgsro_license_del', orgsro.id) }}#main')">{% endif %}
+{% endblock %}
+{% block body_insurance_add_button %}
+    {% if canedit_orgsro and user.has_perm('sro2.add_orginsurance')  %}
+        <a href='{{ url_for('sro2.views.orgsro_insurance_add',orgsro.id) }}#main' class='button ui-state-default eb ui-corner-all'>
+        Добавить
+        </a>
+    {% endif %}
+{% endblock %}
+{% block body_insurance_edit_button %}
+    {% if canedit_orgsro and user.has_perm('sro2.change_orginsurance')  %}
+        <a href='{{ url_for('sro2.views.orgsro_insurance_edit',orgsro.id) }}#main' class='button ui-state-default eb ui-corner-all'>
+        Изменить
+        </a>
+    {% endif %}
+{% endblock %}
+{% block body_insurance_del_button %}
+    {% if canedit_orgsro and user.has_perm('sro2.delete_orginsurance')  %}<input type="button" value="Удалить"
+                                                                     class='button ui-state-error'
+                                                                     onClick="confirmDelete('{{ url_for('sro2.views.orgsro_insurance_del',orgsro.id) }}#main')">{% endif %}
+{% endblock %}
+{% block body_okved_button %}
+    {% if canedit %}
+        {% if user.has_perm('gw.delete_orgokved')  or user.has_perm('gw.add_orgokved')  %}
+            <a href='{{ url_for('sro2.views.orgsro_okved_edit',orgsro.id) }}#okved' class='button ui-state-default eb ui-corner-all ebutton'>
+            Изменить
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block body_phone_button %}
+    {% if canedit and user.has_perm('gw.add_contactphone')  %}
+        <a href='{{ url_for('gw.views.contact_phone_add',orgsro.org.id) }}' class='button ui-state-default eb ui-corner-all ebutton'>
+            Добавить
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body_email_button %}
+    {% if canedit and user.has_perm('gw.add_contactemail')  %}
+        <a href='{{ url_for('gw.views.contact_email_add',orgsro.org.id) }}' class='button ui-state-default eb ui-corner-all ebutton'>
+            Добавить
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body_www_button %}
+    {% if canedit and user.has_perm('gw.add_contactwww')  %}
+        <a href='{{ url_for('gw.views.contact_www_add',orgsro.org.id) }}' class='button ui-state-default eb ui-corner-all ebutton'>
+            Добавить
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body_address_button %}
+    {% if canedit and show_button_address and user.has_perm('gw.add_address')  %}
+        <a href='{{ url_for('gw.views.contact_address_add',orgsro.org.id) }}' class='button ui-state-default eb ui-corner-all ebutton'>
+            Добавить
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body_stuff_button %}
+    {% if canedit or canedit_orgsro %}
+        {% if user.has_perm('gw.delete_orgstuff') or user.has_perm('gw.add_orgstuff')  %}
+            <a href='{{ url_for('sro2.views.orgsro_stuff_edit',orgsro.id) }}#stuff' class='button ui-state-default eb ui-corner-all ebutton'>
+                Изменить
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block body_stuff_table %}
+    <a href='{{ url_for('sro2.views.orgsro_stuff_table',orgsro.id) }}' class='button ui-state-default eb ui-corner-all'>
+        Распечатать таблицу
+    </a>
+{% endblock %}
+
+{% block body_permit_button %}
+    {% if canedit_orgsro %}
+        {% if user.has_perm('sro2.delete_stagelist') or user.has_perm('sro2.add_stagelisto') %}
+            <a href='{{ url_for('sro2.views.orgsro_stagelist_edit',orgsro.id) }}#permit' class='button ui-state-default eb ui-corner-all ebutton'>
+                Изменить
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block body_event_button %} <!-- <a href="../edit/event/"> Edit </div></a> -->
+{% endblock %}
+
+{% block body_certificate %}
+    {% if orgsro.status == 2 %}
+        <a href="{{ url_for('sro2.views.orgsro_certificate',orgsro.id) }}"
+                                   title="Свидетельство о членстве">
+        <div class='button ui-state-default eb'>
+            Свидетельство о членстве
+        </div>
+        </a>
+    {% else %}
+        <div class='ui-state-default eb button-disabled' title="Организация не является членом СРО!">
+            Свидетельство о членстве
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body_extract_full %}
+    {% if orgsro.status == 2 and orgsro.paysum and orgsro.currperm %}
+        <a href="{{ url_for('sro2.views.orgsro_extract', orgsro.id, 1) }}"
+                                    title="Полная выписка из реестра">
+        <div class='button ui-state-default eb'>
+            Выписка (полная)
+        </div>
+        </a>
+    {% else %}
+        <div class='ui-state-default eb button-disabled' title="Организация не является членом СРО или не введены необходимы данные!">
+            Выписка (полная)
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body_extract_lite %}
+    {% if orgsro.status == 2 and orgsro.paysum and orgsro.currperm %}
+        <a href="{{ url_for('sro2.views.orgsro_extract', orgsro.id, 0) }}"
+                                    title="Краткая выписка из реестра">
+        <div class='button ui-state-default eb'>
+            Выписка (краткая)
+        </div>
+        </a>
+    {% else %}
+        <div class='ui-state-default eb button-disabled' title="Организация не является членом СРО или не введены необходимы данные!">
+            Выписка (краткая)
+        </div>
+    {% endif %}
+{% endblock %}

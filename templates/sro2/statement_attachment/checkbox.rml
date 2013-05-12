@@ -1,0 +1,7 @@
+<illustration>
+{% if stage.id in list %}
+	<image file="{{ STATIC_ROOT }}/images/checkbox.png" x="0" y="0" width="10" height="10"/>
+{% else %}
+	<image file="{{ STATIC_ROOT }}/images/box.png" x="0" y="0" width="10" height="10"/>				
+{% endif %}
+</illustration>

@@ -1,0 +1,20 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Отчеты
+{% endblock %}
+
+{% block content %}
+    <ul>
+        <li><a href="{{ url_for('sro2.views.report_branches_orglist') }}">Организации по филиалам</a></li>
+        <li><a href="{{ url_for('sro2.views.report_byuser_list') }}">Количество организаций по пользователям</a></li>
+{#        <li><a href="{{ url_for('sro2.views.report_statements_list') }}">Организации и заявления</a></li>#}
+        {% if speccase %}
+            <li><a href="{{ url_for('sro2.views.report_speclist') }}">Особый список</a></li>
+        {% endif %}
+        {% if if_building %}
+            <li><a href="{{ url_for('sro2.views.report_permit') }}">Сведения о выданных свидетельствах о допуске (по строительству)</a></li>
+        {%  endif %}
+        <li><a href="{{ url_for('sro2.views.report_subject') }}">Сведения о наличии членов СРО в субъектах Российской Федерации</a></li>
+    </ul>
+{% endblock %}

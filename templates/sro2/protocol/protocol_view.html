@@ -1,0 +1,28 @@
+{% extends "sro2/protocol/protocol_base.html" %}
+
+{% block body_main_button %}
+    {% if user.has_perm('sro2.change_protocol') %}
+        <a href="{{ url_for('sro2.views.protocol_main', protocol.id) }}">
+            <div class='button ui-state-default eb'> Изменить</div>
+        </a>
+    {% endif %}
+    &nbsp;&nbsp;&nbsp;
+    {% if user.has_perm('sro2.delete_protocol') and protocol.permit_set.count() == 0 %}
+        <input type="button" title="Удалить" value="Удалить"
+               onClick="confirmDelete('{{ url_for("sro2.views.protocol_del", protocol.id) }}')"/>
+    {% endif %}
+{% endblock %}
+{% block permits %}
+    {% if not protocol.type %}
+        <h1> Свидетельства: </h1>
+        <table border="1" cellspacing="0" cellpadding="4">
+            {% for p in protocol.permit_set.all()%}
+                <tr>
+                    <td> {{ p.orgsro.org.name }} </td>
+                    <td><a href="{{ url_for('sro2.views.stagelist_view', p.id, 0, 0) }}"> № {{ p.no }} от {{ p.date|date }} </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

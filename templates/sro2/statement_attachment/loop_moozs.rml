@@ -1,0 +1,51 @@
+{%load sro2_extras%}
+		<para style="style5">
+			(<font color="red">ПРИМЕЧАНИЕ:</font> при выборе группы работ считается, что организация выбрала все виды работ, входящие в данную группу)
+		</para>
+
+		{% for groupstage in data.stages %}
+			<blockTable colWidths="1cm,17cm" style="myTable">
+				<tr>
+					<td>
+						{% with groupstage as stage %}
+							{% if stage.isgroup and not data.change %}
+								{% include "sro2/statement_attachment/checkbox_group.rml" %}
+							{% else %}
+								{% include "sro2/statement_attachment/checkbox.rml" %}
+							{% endif %}
+						{% endwith %}
+					</td>
+					<td>
+						<para style="style0" alignment="left">  {{ groupstage.code }}. {{ groupstage.name }} {% if groupstage.isgroup %}: {% endif %} </para> 
+					</td>
+				</tr>
+			</blockTable>
+			
+			{% if groupstage.isgroup %}	
+			<blockTable colWidths="1cm,5cm,1cm,5cm,1cm,5cm" style="myTable">
+				<tr>
+					{% for stage in groupstage|getsubstages %}						
+						<td>							
+							{% include "sro2/statement_attachment/checkbox.rml" %}
+						</td>
+						<td>
+							<para style="style0" alignment="left">
+								{{ stage.code }}
+							</para>
+						</td>
+						{% if forloop.counter|divisibleby:"3" and not forloop.last %}
+							</tr><tr>								
+						{% endif %}
+						
+						{% if forloop.last and not forloop.counter|divisibleby:"3" %}
+							<td></td><td></td>
+							{% if not forloop.counter|add:"1"|divisibleby:"3" %}
+								<td></td><td></td>
+							{% endif %}
+						{% endif %}					
+					{% endfor %}
+				</tr>
+			</blockTable>
+			{% endif %}
+			
+		{% endfor %}

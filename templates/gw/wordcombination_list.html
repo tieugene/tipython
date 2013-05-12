@@ -1,0 +1,114 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Список словосочетаний
+
+    {% if user.has_perm('gw.add_wordcombination') %}
+        <div class="ebutton">
+            <a href="{{ url_for('gw.views.wordcombination_add') }}"
+               class='button ui-state-default eb ui-corner-all'>
+                Добавить
+            </a>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+    <script langauge="JavaScript" type="text/javascript">
+        function confirmDelete(delUrl) {
+            if (confirm("Are you sure you want to delete")) {
+                document.location = delUrl;
+            }
+        }
+
+        $(function() {
+            $('.buttons').each(function(i) {
+                if ($('a', this).html() != null && $('div', this).html() != null) {
+                    $('a', this).addClass('ui-corner-left');
+                    $('div', this).addClass('ui-corner-right');
+                }
+
+                if ($('a', this).html() != null && $('div', this).html() == null) {
+                    $('a', this).addClass('ui-corner-all');
+                }
+
+                if ($('a', this).html() == null && $('div', this).html() != null) {
+                    $('div', this).addClass('ui-corner-all');
+                }
+            })
+
+            $('.wordcombination_del').each(function(i) {
+                $(this).click(function() {
+                    confirmDelete('{{ url_for('views.index') }}gw/wordcombination/delete/' + $(this).attr('name'));
+                })
+            })
+        })
+    </script>
+
+    <ul>
+        {% for wordcombination in wordcombinations %}
+            <li class="buttons">
+                <div>
+                    <a name="{{ wordcombination.id }}"></a>
+                    <b>{{ loop.index }}. {{ wordcombination }}</b>
+                    {% if user.has_perm('gw.change_wordcombination') %}
+                        <a href="{{ url_for('gw.views.wordcombination_edit', wordcombination.id) }}"
+                           class='button ui-state-default eb'>
+                            Изменить
+                        </a>
+                    {% endif %}
+                    {% if user.has_perm('gw.delete_wordcombination') %}
+                        <div class='button ui-state-default eb delete wordcombination_del'
+                             name={{ wordcombination.id }}>
+                            Удалить
+                        </div>
+                    {% endif %}
+                    <br>
+
+                    <ul>
+                        {% if wordcombination.nominative %}
+                            <li>
+                                <div style="width:180px;" class="left">Именительный падеж:</div>
+                                {{ wordcombination.nominative }}
+                            </li>
+                        {% endif %}
+                        {% if wordcombination.genetive %}
+                            <li>
+                                <div style="width:180px;" class="left">Родительный падеж:</div>
+                                {{ wordcombination.genetive }}
+                            </li>
+                        {% endif %}
+                        {% if wordcombination.dative %}
+                            <li>
+                                <div style="width:180px;" class="left">Дательный падеж:</div>
+                                {{ wordcombination.dative }}
+                            </li>
+                        {% endif %}
+                        {% if wordcombination.accusative %}
+                            <li>
+                                <div style="width:180px;" class="left">Винительный падеж:</div>
+                                {{ wordcombination.accusative }}
+                            </li>
+                        {% endif %}
+                        {% if wordcombination.instrumental %}
+                            <li>
+                                <div style="width:180px;" class="left">Творительный падеж:</div>
+                                {{ wordcombination.instrumental }}
+                            </li>
+                        {% endif %}
+                        {% if wordcombination.prepositional %}
+                            <li>
+                                <div style="width:180px;" class="left">Предложный падеж:</div>
+                                {{ wordcombination.prepositional }}
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+    <br>
+
+{% endblock %}

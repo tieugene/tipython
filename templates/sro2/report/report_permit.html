@@ -1,0 +1,118 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Сведения о выданных свидетельствах о допуске
+{% endblock %}
+
+{% block content %}
+    {% for sro in sros_building %}
+        <b>{{ sro }}</b>
+        <br><br>
+        <table border="1">
+            <thead>
+                <tr>
+                    <td> № </td>
+                    <td width="600px;"> Виды работ </td>
+                    <td> Количество свидетельств о допуске, выданных юридическим лицам </td>
+                    <td> Количество свидетельств о допуске, выданных индивидуальным предпринимателям </td>
+                    <td> Всего выдано свидетельств о допуске </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> 1. </td>
+                    <td> На общестроительные виды работ </td>
+                    <td> {{ ur.count_general }} </td>
+                    <td> {{ ip.count_general }}</td>
+                    <td> {{ ur.count_general + ip.count_general }}</td>
+                </tr>
+                <tr>
+                    <td> 2. </td>
+                    <td> На работы на особо опасных и технически сложных объектах </td>
+                    <td> {{ ur.count_dangerous }} </td>
+                    <td> {{ ip.count_dangerous }}</td>
+                    <td> {{ ur.count_dangerous + ip.count_dangerous }}</td>
+                </tr>
+                <tr>
+                    <td> 3. </td>
+                    <td> На буровзрывные работы </td>
+                    <td> {{ ur.count8 }} </td>
+                    <td> {{ ip.count8 }}</td>
+                    <td> {{ ur.count8 + ip.count8 }}</td>
+                </tr>
+                <tr>
+                    <td> 4. </td>
+                    <td> На устройство объектов нефтяной и газовой промышленности </td>
+                    <td> {{ ur.count22 }} </td>
+                    <td> {{ ip.count22 }}</td>
+                    <td> {{ ur.count22 + ip.count22 }}</td>
+                </tr>
+                <tr>
+                    <td> 5. </td>
+                    <td> На устройство автомобильных дорог и аэродромов </td>
+                    <td> {{ ur.count25 }} </td>
+                    <td> {{ ip.count25 }}</td>
+                    <td> {{ ur.count25 + ip.count25 }}</td>
+                </tr>
+                <tr>
+                    <td> 6. </td>
+                    <td> На устройство железнодорожных и трамвайных путей </td>
+                    <td> {{ ur.count26 }} </td>
+                    <td> {{ ip.count26 }}</td>
+                    <td> {{ ur.count26 + ip.count26 }}</td>
+                </tr>
+                <tr>
+                    <td> 7. </td>
+                    <td> На устройство тоннелей, метрополитенов </td>
+                    <td> {{ ur.count27 }} </td>
+                    <td> {{ ip.count27 }}</td>
+                    <td> {{ ur.count27 + ip.count27 }}</td>
+                </tr>
+                <tr>
+                    <td> 8. </td>
+                    <td> На устройство шахтных сооружений </td>
+                    <td> {{ ur.count28 }} </td>
+                    <td> {{ ip.count28 }}</td>
+                    <td> {{ ur.count28 + ip.count28 }}</td>
+                </tr>
+                <tr>
+                    <td> 9. </td>
+                    <td> На устройство мостов, эстакад и путепроводов </td>
+                    <td> {{ ur.count29 }} </td>
+                    <td> {{ ip.count29 }}</td>
+                    <td> {{ ur.count29 + ip.count29 }}</td>
+                </tr>
+                <tr>
+                    <td> 10. </td>
+                    <td> На гидротехнические работы, водолазные работы </td>
+                    <td> {{ ur.count30 }} </td>
+                    <td> {{ ip.count30 }}</td>
+                    <td> {{ ur.count30 + ip.count30 }}</td>
+                </tr>
+                <tr>
+                    <td> 11. </td>
+                    <td> На промышленные печи и дымовые трубы </td>
+                    <td> {{ ur.count31 }} </td>
+                    <td> {{ ip.count31 }}</td>
+                    <td> {{ ur.count31 + ip.count31 }}</td>
+                </tr>
+                <tr>
+                    <td> 12. </td>
+                    <td> На работы по осуществлению строительного контроля </td>
+                    <td> {{ ur.count32 }} </td>
+                    <td> {{ ip.count32 }}</td>
+                    <td> {{ ur.count32 + ip.count32 }}</td>
+                </tr>
+                <tr>
+                    <td> 13. </td>
+                    <td> На работы по организации строительства </td>
+                    <td> {{ ur.count33 }} </td>
+                    <td> {{ ip.count33 }}</td>
+                    <td> {{ ur.count33 + ip.count33 }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+    {% endfor %}
+
+{% endblock %}

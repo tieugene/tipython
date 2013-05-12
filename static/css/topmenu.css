@@ -1,0 +1,79 @@
+#topmenu ul {
+	list-style-type: none;	/* switch bullets off */
+	padding: 0;
+	margin: 1px;
+	/*width: auto;*/
+}
+
+#topmenu li {
+	display: inline;	/* order horizontaly */
+	border: 1px solid;
+	margin: 1px 0;
+	padding: 1px;
+	border-color: transparent;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+#topmenu a {
+	text-decoration: none;
+	white-space: nowrap;
+	padding: 0 0.5em;
+	border: 1px solid;
+	border-color: transparent;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+/* colors */
+/* 1. highlight */
+#topmenu a:link {
+	color: black;
+}
+
+/*#topmenu li.active a {
+	color: black;
+}*/
+
+#topmenu a:visited {
+	color: black;
+}
+
+#topmenu a:hover {
+	border-color: grey;
+}
+
+/* 2. normal bg */
+#topmenu .l1 li {			/* level 1 */
+	background-color: #FFFFFF;	/* own */
+}
+
+#topmenu .l2 li {			/* level 2 */
+	background-color: #EDF0F9;
+}
+
+#topmenu .l3 li {			/* level 3 */
+	background-color: #DDE5FF;
+}
+
+/* selected bg - as bg level below */
+#topmenu .l1 li.active {		/* level 1 */
+	background-color: #EDF0F9;
+}
+
+#topmenu .l2 li.active {		/* level 2 */
+	background-color: #DDE5FF;
+}
+
+#topmenu .l3 li.active {		/* level 3 */
+	background-color: #BBCCFF;	/* BBCCFF */
+	/*border-color: #A0A0FF;*/
+}

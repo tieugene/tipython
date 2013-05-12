@@ -1,0 +1,33 @@
+{% extends "sro2/orgsro/orgsro_base.html" %}
+<style type="text/css">
+    a.button {
+        border: 4px double black; /* Параметры границы */
+        background: #fc3; /* Цвет фона */
+        padding: 10px; /* Поля вокруг текста */
+    }
+</style>
+{% block body_okved %}
+    <form action=".#okved" method="post">
+        <table>
+            {% for i in orgsro.org.orgokved_set.all() %}
+                <tr>
+                    <td> {{ i.asstr() }} </td>
+                    <td> {% if user.has_perm('gw.delete_orgokved') %} <input type="button" value="Удалить"
+                                                                    onClick="confirmDelete('{{ url_for("sro2.views.orgsro_okved_del", orgsro.id, i.id) }}#okved')"/> {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% if user.has_perm('gw.add_orgokved') %}
+                <tr>
+                    <td> <select name="okved" id="okved_id">
+                        {% for i in okved %}
+                            <option value="{{ i.id }}"> {{ i.asstr() }} </option>
+                        {% endfor %}
+                    </select> </td>
+                    <td><input type="submit" value="Добавить"></td>
+                </tr>
+            {% endif %}
+        </table>
+        <a class="button ui-state-default" href="{{ url_for('sro2.views.orgsro_view',orgsro.id) }}#okved"> Закончить </a>
+    </form>
+{% endblock %}

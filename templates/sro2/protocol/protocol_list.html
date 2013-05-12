@@ -1,0 +1,113 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+   Протоколы {{ sro.name }}
+{% endblock %}
+
+{% block content %}
+    <script>
+        $(function() {
+            $('.yb').click(function() {
+                $('.eb').removeClass('ui-state-active')
+                $(this).addClass('ui-state-active')
+                $('tr[year!=' + $(this).html() + ']').hide()
+                $('tr[year=' + $(this).html() + ']').show()
+                $('tr[year=head]').show()
+            })
+            $('.allb').click(function() {
+                $('tr').show()
+                $('.eb').removeClass('ui-state-active')
+                $(this).addClass('ui-state-active')
+            })
+        })
+    </script>
+    {% if user.has_perm('sro2.add_protocol') %}
+        <a class="ui-state-default ui-corner-all button" href="{{ url_for('sro2.views.protocol_add', sro.id) }}"> Добавить
+            протокол </a>
+    {% endif %}
+    <div style='float: right'>
+        <div class='button ui-state-default eb allb ui-corner-left ui-state-active'>Все</div>
+        <div class='button ui-state-default eb yb'> 2009</div>
+        <div class='button ui-state-default eb yb ui-corner-right'> 2010</div>
+    </div>
+    <p>
+    <h3>Протоколы Заседания Правления</h3>
+    <div style='padding-left: 10px; height: 400px; overflow: auto; background: #eee;'>
+        <table border="0" id='protocols'>
+            <thead>
+            <tr year='head'>
+                <th><u> № </u></th>
+                <th><u> Дата </u></th>
+                <th/>
+            </tr>
+            </thead>
+            <tbody>
+            {% for protocol in protocol_list %}
+                {% if not protocol.type %}
+                    <tr year='{{ protocol.date|date("%Y") }}'>
+                        <td><a href="{{ url_for('sro2.views.protocol_view', protocol.id) }}">
+                            <div class='cell'>{{ protocol.no }}</div>
+                        </a></td>
+                        <td><a href="{{ url_for('sro2.views.protocol_view', protocol.id) }}">
+                            <div class='cell'>{{ protocol.date|date }} </div>
+                        </a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <h3>Протоколы Дисциплинарной Коммисии</h3>
+    <div style='padding-left: 10px; height: 400px; overflow: auto; background: #eee;'>
+        <table border="0" id='protocols'>
+            <thead>
+            <tr year='head'>
+                <th><u> № </u></th>
+                <th><u> Дата </u></th>
+                <th/>
+            </tr>
+            </thead>
+            <tbody>
+            {% for protocol in protocol_list %}
+                {% if protocol.type == 1 %}
+                    <tr year='{{ protocol.date|date("%Y") }}'>
+                        <td><a href="{{ url_for('sro2.views.protocol_view', protocol.id) }}">
+                            <div class='cell'>{{ protocol.no }}</div>
+                        </a></td>
+                        <td><a href="{{ url_for('sro2.views.protocol_view', protocol.id) }}">
+                            <div class='cell'>{{ protocol.date|date }} </div>
+                        </a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Протоколы Общего Собрания</h3>
+    <div style='padding-left: 10px; height: 400px; overflow: auto; background: #eee;'>
+        <table border="0" id='protocols'>
+            <thead>
+            <tr year='head'>
+                <th><u> № </u></th>
+                <th><u> Дата </u></th>
+                <th/>
+            </tr>
+            </thead>
+            <tbody>
+            {% for protocol in protocol_list %}
+                {% if protocol.type == 2 %}
+                    <tr year='{{ protocol.date|date("%Y") }}'>
+                        <td><a href="{{ url_for('sro2.views.protocol_view', protocol.id) }}">
+                            <div class='cell'>{{ protocol.no }}</div>
+                        </a></td>
+                        <td><a href="{{ url_for('sro2.views.protocol_view', protocol.id) }}">
+                            <div class='cell'>{{ protocol.date|date }} </div>
+                        </a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

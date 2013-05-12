@@ -1,0 +1,17 @@
+{% extends "gw/task/todo_base.html" %}
+{% block body_main %}
+<p> Загрузка iCalendar </p>
+<form enctype="multipart/form-data" action="{% url gw.views.todo_ical_import %}" method="post">
+	<table>
+		{{ form.as_p }}
+	</table>
+	<input type="submit" value="Записать"/>
+	<a class="button" href="{% url gw.views.todo_index %}"> Отказаться </a>
+</form>
+{% if result %}
+	<p> Result: </p>
+	{% for i in result %}
+		<p> {{ i }} </p>
+	{% endfor %}
+{% endif %}
+{% endblock %}

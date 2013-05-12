@@ -1,0 +1,626 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    {{ orgsro.sro.name }} - {{ orgsro.org.okopf.name }} {% if orgsro.speccase %}<span
+        style='text-decoration: underline'>{% endif %}{{ orgsro.org.fullname }}
+{% if user.is_superuser %}
+<a href="{{ orgsro.get_journal_url() }}">
+
+    <div class="ui-state-default ui-corner-all button jbutton">
+                    <span class="ui-icon ui-icon-clock"></span>
+                </div>
+</a>
+{% endif %}
+{% if orgsro.speccase %}</span>{% endif %} {% if speccase %}
+    <div id='spec' style='float: right; width: 80px; height: 20px;'></div>{% endif %}
+{% endblock %}
+
+{% block title %}
+   {{ orgsro.org.name }}, {{ orgsro.org.okopf.shortname }} - {{ orgsro.sro.name }}
+{% endblock %}
+
+{% block content %}
+
+    {% if speccase %}
+        <script>
+            $(function(){
+                $('#speccase').html("<td> Особый случай: </td>            <td> [{% if orgsro.speccase == 1 %} <img src='{{ url_for('views.index') }}static/tick_icon.gif' style='height: 12px;'> {% else %} <img src='{{ url_for('views.index') }}static/images/cross.png' style='height: 12px;'>{% endif %}]</td>")
+                $('#speccomments').html("<td> Особые коментарии: </td>            <td>{{ orgsro.speccomments }} <div class='button ui-state-default eb' style='float: right' id='specedit'> Изменить </div></td>")
+                $('#dialog').html('Особый случай: <input type="checkbox" name="speccasech" id="speccasech" value="{{orgsro.speccase}}" /><br>Особый комментарий: <br><textarea id="speccommentsta" style="width: 450px; height: 200px;"> </textarea>')
+                $('#speccommentsta').val('{{ orgsro.speccomments }}'.replace(/<br>/g, '\n'))
+            })
+        </script>
+        <div id="dialog" title="Особый случай">
+        </div>
+    {% endif %}
+
+    {% if user.branchuser.branch.center and p_form %}
+        <div id="member_dialog" title="Принятие в члены">
+            Реестровый №: <br><input type='text' name='regno' id='regnoinput'><br>
+            Дата членства в НП: <br><input type='text' name='regdate' id='regdateinput'><br>
+            {{ p_form.as_p() }}
+        </div>
+        <div id="exclude_dialog" title="Исключение из членов">
+            Дата исключения: <br><input type='text' name='excludedate' id='excludedateinput'><br>
+            {{ p_form.as_p() }}
+            Причина исключения: <br>
+            <div id='reasoninput'>
+                {% for reason in reasons %}
+                    <input type='checkbox' value='{{reason.id}}'> {{ reason.title }}<br>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+
+    <script langauge="JavaScript" type="text/javascript">
+        function confirmDelete(delUrl) {
+            if (confirm("Are you sure you want to delete")) {
+				document.location = delUrl;
+            }
+        }
+
+       $(function(){
+           $('.buttons').each(function(i) {
+               if ($('a', this).html() != null && $('div', this).html() != null) {
+                   $('a', this).addClass('ui-corner-left');
+                   $('div:last-child', this).addClass('ui-corner-right');
+               }
+
+               if ($('a', this).html() != null && $('div', this).html() == null) {
+                   $('a', this).addClass('ui-corner-all');
+               }
+
+               if ($('a', this).html() == null && $('div', this).html() != null) {
+                   $('div', this).addClass('ui-corner-all');
+               }
+           })
+
+           $('.address_del').each(function(i) {
+               $(this).click(function(){
+		           confirmDelete('{{ url_for('views.index') }}gw/contact/' + {{ orgsro.org.id }} + '/' + $(this).attr('name') + '/address_delete/');
+		       })
+           })
+
+           $('.phone_del').each(function(i) {
+               $(this).click(function(){
+		           confirmDelete('{{ url_for('views.index') }}gw/contact/' + $(this).attr('name') + '/phone_del/');
+		       })
+           })
+
+           $('.email_del').each(function(i) {
+               $(this).click(function(){
+		           confirmDelete('{{ url_for('views.index') }}gw/contact/' + $(this).attr('name') + '/email_del/');
+		       })
+           })
+
+           $('.www_del').each(function(i) {
+               $(this).click(function(){
+		           confirmDelete('{{ url_for('views.index') }}gw/contact/' + $(this).attr('name') + '/www_del/');
+		       })
+           })
+	   })
+    </script>
+
+    <a name="org"></a>
+    <div class='th'><span class='title'>Основные данные: </span>
+        {% block body_main_button %} {% endblock %}</div>
+    {% block body_main %}
+        <table border="0">
+            <tr>
+                <td title='Вводится без кавычек. Это то, что выводится в списке организаций.'> Отображаемое наименование:</td>
+                <td> {{ orgsro.org.name }} </td>
+            </tr>
+            <tr>
+                <td> Краткое наименование:</td>
+                <td> {{ orgsro.org.shortname }} </td>
+            </tr>
+            <tr>
+                <td title='Вводится без ООО, ЗАО, ОАО и тп.'> Полное наименование:</td>
+                <td> {{ orgsro.org.fullname }} </td>
+            </tr>
+            <tr>
+                <td> ОКОПФ:</td>
+                <td> {{ orgsro.org.okopf }} </td>
+            </tr>
+            <tr>
+                <td> Дата регистрации в ЕГРЮЛ:</td>
+                <td> {{ orgsro.org.egruldate|date("d.m.Y") }} </td>
+            </tr>
+            <tr>
+                <td> ИНН:</td>
+                <td> {{ orgsro.org.inn }} </td>
+            </tr>
+            <tr>
+                <td> КПП:</td>
+                <td> {{ orgsro.org.kpp }} </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ orgsro.org.ogrn_shortlabel }}
+                </td>
+                <td>
+                    {{ orgsro.org.ogrn }}
+                    <span style="padding:0px 10px;"></span>
+                    Иностранная организация:
+                    [{% if orgsro.org.foreign == 1 %}
+                    <img src='{{ url_for('views.index') }}static/tick_icon.gif' style='height: 12px;'>
+                {% else %}
+                    <img src='{{ url_for('views.index') }}static/images/cross.png' style='height: 12px;'>
+                {% endif %}]
+                </td>
+            </tr>
+            <tr>
+                <td> ОКАТО:</td>
+                <td> {{ orgsro.org.okato }} </td>
+            </tr>
+            <tr>
+                <td> Адрес юридический:</td>
+                <td> {{ orgsro.org.laddress }} </td>
+            </tr>
+            <tr>
+                <td> Адрес фактический:</td>
+                <td> {{ orgsro.org.raddress }} </td>
+            </tr>
+            <tr>
+                <td> Комментарии:</td>
+                <td> {{ orgsro.org.comments }} </td>
+            </tr>
+            <tr>
+                <td> Создал:</td>
+                <td> {{ orgsro.org.user.first_name }} {{ orgsro.org.user.last_name }} </td>
+            </tr>
+            {% if speccase %}
+                <tr style='display: none;' id='speccase'></tr>
+                <tr style='display: none;' id='speccomments'></tr>
+            {% endif %}
+        </table>
+    {% endblock %}
+
+	<a name="address"></a>
+    <div class='th'><span class='title'>Адреса: </span>
+        {% block body_address_button %} {% endblock %}</div>
+    {% block body_address %}
+        {% if orgsro.org.contactaddr_set.all()%}
+            <ul>
+                {% for i in orgsro.org.contactaddr_set.all() %}
+                    <li class='buttons'>
+						{{ i.addr.mkfullname(True, True)}} <b>({{ i|getaddresstypes()}})</b>
+                        {% if canedit %}
+                            <!--{% if user.has_perm('gw.change_contactaddr') %}
+                            {% endif %}-->
+                            {% if user.has_perm('gw.delete_contactaddr') %}
+							    <div class='button ui-state-default eb delete address_del' name={{i.addr.id}}>
+                                    Удалить
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endblock %}
+
+	<a name="phone"></a>
+    <div class='th'><span class='title'>Телефоны: </span>
+        {% block body_phone_button %} {% endblock %}</div>
+    {% block body_phone %}
+        {% if orgsro.org.contactphone_set.all()%}
+            <ul>
+                {% for i in orgsro.org.contactphone_set.all()%}
+                    <li class='buttons'>
+                        {{ i.phone.asstr() }}
+                        {% if canedit %}
+                            {% if user.has_perm('gw.change_contactphone') %}
+						        <a href="{{ url_for('gw.views.contact_phone_edit', i.id) }}" class='button ui-state-default eb'>
+                                    Изменить
+                                </a>
+                            {% endif %}
+                            {% if user.has_perm('gw.delete_contactphone') %}
+							    <div class='button ui-state-default eb delete phone_del' name={{i.id}}>
+                                    Удалить
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endblock %}
+    <a name="email"></a>
+    <div class='th'><span class='title'>Адреса электронной почты: </span>
+        {% block body_email_button %} {% endblock %}</div>
+    {% block body_email %}
+        {% if orgsro.org.contactemail_set.all()%}
+            <ul>
+                {% for i in orgsro.org.contactemail_set.all()%}
+                    <li class='buttons'>
+                        <a href="mailto:{{ i.email.asstr() }}">{{ i.email.asstr() }}</a>
+                        {% if canedit %}
+                            {% if user.has_perm('gw.change_contactemail') %}
+                                <a href="{{ url_for('gw.views.contact_email_edit', i.id) }}" class='button ui-state-default eb'>
+                                    Изменить
+                                </a>
+                            {% endif %}
+                            {% if user.has_perm('gw.delete_contactemail') %}
+							    <div class='button ui-state-default eb delete email_del' name={{i.id}}>
+                                    Удалить
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endblock %}
+    <a name="www"></a>
+    <div class='th'><span class='title'>Адреса сайтов: </span>
+        {% block body_www_button %} {% endblock %}</div>
+    {% block body_www %}
+        {% if orgsro.org.contactwww_set.all()%}
+            <ul>
+                {% for i in orgsro.org.contactwww_set.all()%}
+                    <li class='buttons'>
+                        <a href="{{ i.www.asstr() }}">{{ i.www.asstr() }}</a>
+                        {% if canedit %}
+                            {% if user.has_perm('gw.change_contactwww') %}
+                                <a href="{{ url_for('gw.views.contact_www_edit', i.id) }}" class='button ui-state-default eb'>
+                                    Изменить
+                                </a>
+                            {% endif %}
+                            {% if user.has_perm('gw.delete_contactwww') %}
+							    <div class='button ui-state-default eb delete www_del' name={{i.id}}>
+                                    Удалить
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endblock %}
+    <a name="main"></a>
+    <div class='th'><span class='title'>Данные в {{ orgsro.sro.name }}:</span>
+        {% block body_sro_button %} {% endblock %}</div>
+    {% block body_sro %}
+        <table>
+            <tr>
+                <td> Статус в СРО:</td>
+                <td> {{ orgsro.status|getstatus("ui-corner-all left") }}
+
+					{% if canedit_orgsro and user.has_perm('sro2.change_orgsro') %}
+					   {% if orgsro.status == 1 %}
+                          <div class='button ui-state-default eb' style='float: right; width: 160px;' id='tomembers'>
+						      Принять в члены
+						  </div>
+						  <div class='button ui-state-default eb' style='float: right; width: 160px;' id='toarchive'>
+						      В архив
+						  </div
+					   {% endif %}
+
+					   {% if orgsro.status == 2 %}
+                           <div class='button ui-state-default eb' style='float: right; width: 200px;' id='tocandidate'>
+                              Вернуть в кандидаты
+						   </div>
+						   <input type='button' class='button ui-state-error eb' style='float: right; width: 100px; margin-right: 10px;' id='exclude' value='Исключить'>
+					   {% endif %}
+
+                       {% if orgsro.status == 3 %}
+                           <div class='button ui-state-default eb' style='float: right; width: 200px;' id='returnmember'>
+                                Вернуть в члены
+						   </div>
+					   {% endif %}
+                    {% endif %}
+
+				</td>
+			</tr>
+            {% if orgsro.regno %}
+                <tr>
+                    <td> Реестровый №:</td>
+                    <td> {{ orgsro.regno }} </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td> Регистрационный №:</td>
+                <td> {{ orgsro.caseno }} </td>
+            </tr>
+            {% if orgsro.regdate %}
+                <tr>
+                    <td> Дата членства в СРО:</td>
+                    <td> {{ orgsro.regdate|date("d.m.Y") }} </td>
+                </tr>
+            {% endif %}
+            {% if orgsro.inprotocol %}
+                <tr>
+                    <td> Протокол-основание принятия</td>
+                    <td> {{ orgsro.inprotocol }} </td>
+                </tr>
+            {% endif %}
+            {% if orgsro.status == 3 %}
+                <tr>
+                    <td> Дата исключения:</td>
+                    <td> {{ orgsro.excludedate|date("d.m.Y") }} </td>
+                </tr>
+                <tr>
+                    <td> Причина исключения:</td>
+                    <td>{% for r in orgsro.reason.all()%} {{ r.title }};<br> {% endfor %} </td>
+                </tr>
+                <tr>
+                    <td> Протокол-основание исключения:</td>
+                    <td> {{ orgsro.exprotocol }} </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td> Дата оплаты взноса в КФ:</td>
+                <td> {{ orgsro.paydate|date("d.m.Y") }} </td>
+            </tr>
+            <tr>
+                <td> Сумма взноса в КФ:</td>
+                <td> {{ orgsro.paysum }} </td>
+            </tr>
+            <tr>
+                <td> Дата оплаты ВВ:</td>
+                <td> {{ orgsro.paydatevv|date("d.m.Y") }} </td>
+            </tr>
+            <tr>
+                <td> Коментарии:</td>
+                <td> {{ orgsro.comments }} </td>
+            </tr>
+            <tr>
+                <td> Публиковать на сайте:</td>
+                <td> [{% if orgsro.publish == 1 %} <img src='{{ url_for('views.index') }}static/tick_icon.gif'
+                                                          style='height: 12px;'> {% else %} <img
+                        src='{{ url_for('views.index') }}static/images/cross.png' style='height: 12px;'>{% endif %}] </td>
+            </tr>
+            <tr>
+                <td> Специалист:</td>
+                <td> {{ orgsro.user.first_name }} {{ orgsro.user.last_name }} </td>
+            </tr>
+        </table>
+    {% endblock %}
+    <hr width="75%"/>
+    <a name="license"></a>
+    {% block body_license %}
+        <table border="0">
+            <tr>
+                <td> Лицензии:</td>
+                <td>
+{#                    FIXME!   0_o       #}
+                    {% if orglicense %}
+                    {% set orglicense = orglicense[0] %}
+                        № {{ orglicense.no }} от {{ orglicense.datefrom|date }}
+                        по {{ orglicense.datedue|date }}
+                        {% block body_license_edit_button %} {% endblock %}
+                        {% block body_license_del_button %} {% endblock %}
+                    {% else %}
+                        Нет
+                        {% block body_license_add_button %} {% endblock %}
+                        <span id="sep" style="width: 10px">&nbsp;</span>
+                    {% endif %}
+                </td>    </tr>
+        </table>
+    {% endblock %}
+    <a name="incurance"></a>
+    {% block body_insurance %}
+        <table border="0">
+            <tr>
+                <td> Страховки:</td>
+                <td>
+                    {% if insurance %}
+                        <table border=1>
+                            {% for ins in insurance %}
+                                <tr>
+                                    <td {% if ins.active %}class='current'{% endif %} >Договор № {{ ins.no }}
+                                        от {{ ins.date|date("d.m.Y") }} на {{ ins.sum }} руб. в {{ ins.insurer }}
+                                        ({{ ins.insurer.fullname }})
+                                    </td>
+                                    <td>{% block body_insurance_edit_button %} {% endblock %}</td>
+                                    <td>{% block body_insurance_del_button %} {% endblock %}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        Нет
+                    {% endif %}
+                    <br>
+                    {% block body_insurance_add_button %} {% endblock %}
+                </td>    </tr>
+        </table>
+        <br>
+        <table width="250">
+        <tr>
+                <td> Аффилированность:</td>
+                <td> [{% if orgsro.aff == 1 %} <img src='{{ url_for('views.index') }}static/tick_icon.gif'
+                                                          style='height: 12px;'> {% else %} <img
+                        src='{{ url_for('views.index') }}static/images/cross.png' style='height: 12px;'>{% endif %}] </td>
+            </tr>
+        </table>
+        <br>
+    {% endblock %}
+    <a name="okved"></a>
+    <div class='th'><span class='title'>ОКВЭД:</span>
+        {% block body_okved_button %} {% endblock %}</div>
+    {% block body_okved %}
+        {% if orgsro.org.id != None %}
+            {% if orgsro.org.okveds.all()%}
+                <ul>
+                    {% for i in orgsro.org.okveds.all()%}
+                        <li> {{ i.asstr() }} </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+
+    <a name="stuff"></a>
+    <div class='th'>
+        <span class='title'>Персонал:</span>
+        {% block body_stuff_table %} {% endblock %}
+        {% block body_stuff_button %} {% endblock %}
+    </div>
+    {% block body_stuff %}
+        <br>
+        <table border="1" cellspacing="0" width=100%>
+            <tr align="center">
+                <th rowspan="2"> Ф.И.О.</th>
+                <th rowspan="2"> Должность</th>
+                <th rowspan="2"> Специальность по диплому</th>
+                <th rowspan="2"> Стаж работы</th>
+                <th rowspan="2" width="230"> Наличие повышение квалификации, дата окончания</th>
+                <th colspan="2"> Форма трудовых</th>
+            </tr>
+
+            <tr align="center">
+                <th> Пост.</th>
+                <th> Совм.</th>
+            </tr>
+
+            {% for i in person_list %}
+                {% set count = i.person.personskill_set.all().count() %}
+
+                    {% for personskill in i.person.personskill_set.all()%}
+                        <tr>
+                            {% if loop.first %}
+                                <td rowspan="{{ count }}"><a
+                                        href="{{ url_for('sro2.views.person_view', i.person.id) }}"><b>{{ i.person }}</b></a>
+                                </td>
+                                <td rowspan="{{ count }}"> {{ i.role }} </td>
+                            {% endif %}
+
+                            <td> {{ personskill.speciality }} {% if personskill.skill.high %} (высшее){% else %}
+                                (среднее){% endif %}{% if personskill.speciality %}, Дата
+                                окончания: {{ personskill.skilldate|date }}{% endif %}
+                            </td>
+                            <td align="center"> {% if personskill.seniority != None %} {{ personskill.seniority }} {% else %}
+                                0 {% endif %} </td>
+                            <td>
+                                {% if personskill.course_set.all.count == 0 %}
+                                    Нет
+                                {% else %}
+                                    {% for course in personskill.course_set.all()%}
+                                        {{ course.coursename }} - {{ course.coursedate|date("d.m.Y") }}<br>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+
+                            {% if loop.first %}
+                                <td rowspan="{{ count }}" align="center"> {% if i.permanent == 1 %}
+                                    + {% endif %} </td>
+                                <td rowspan="{{ count }}" align="center"> {% if i.permanent != 1 %}
+                                    + {% endif %} </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+
+                    {% if count == 0 %}
+                        <tr>
+                            <td><a href="{{ url_for('sro2.views.person_view', i.person.id) }}"><b>{{ i.person }}</b></a>
+                            </td>
+                            <td> {{ i.role }} </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td align="center"> {% if i.permanent == 1 %} + {% endif %} </td>
+                            <td align="center"> {% if i.permanent != 1 %} + {% endif %}</td>
+                        </tr>
+                    {% endif %}
+
+{#                {% endwith %}#}
+            {% endfor %}
+        </table>
+        <br>
+
+    {% endblock %}
+    <a name="permit"></a>
+    <div class='th'><span class='title'>Свидетельства о допуске к работам:</span>
+        {% block body_permit_button %} {% endblock %}</div>
+    {% block body_permit %}
+        <br>
+        <table border="1" cellspacing="0" width=100% class="sltable">
+            {% for statement in statements %}
+                {% if not statement.permit_set.all()%}
+                    <tr>
+                        <td><div class='cell'>
+                            <a href="{{ url_for('sro2.views.stagelist_view', statement.id, 0, 0) }}">
+            {{ statement }}
+            </a>
+                            </div>
+                        </td>
+                        <td><div class='cell'>{% if statement.rejectprotocol %}<a href="{{ url_for('sro2.views.protocol_view', statement.rejectprotocol.id) }}">{{ statement.rejectprotocol }}</a>{% endif %}</div></td>
+                        <td><div class='cell'>{% if statement.rejectprotocol %}Отказ{% else %}Новое{% endif %}</div></td>
+
+                    </tr>
+                {% endif %}
+        {% endfor %}
+            {% for permit in permits %}
+                <tr>
+                    <td>
+                        {% if permit.statement %}
+                <a href="{{ url_for('sro2.views.stagelist_view', permit.statement.id, 0, 0) }}">
+                        <div class='cell'>Заявление от {{ permit.statement.date|date("d.m.Y") }}</div>
+                    </a>{% else %}<div class='cell'>Отсутствует</div>{% endif %}
+                    </td>
+                <td>
+
+                    <a href="{{ url_for('sro2.views.stagelist_view', permit.id, 0, 0) }}"
+                       {% if permit == orgsro.currperm %}class='current'{% endif %}>
+                        <div class='cell'>{{ permit }}, протокол
+                            № {{ permit.protocol.no }}
+                            от {{ permit.protocol.date|date }}</div></a>
+                </td>
+                    <td><div class='cell'>{{ permit.last.asstr_snapstatus2() }}{% if permit.last.status == 1 %}
+                        до {{ permit.last.date|date }}{% endif %}</div></td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+    {% endblock %}
+    <a name="event"></a>
+    <div class='th'><span class='title'>Документы:</span>
+        {% block body_event_button %} {% endblock %}</div>
+    {% block body_event %}
+        {% if event %}
+            <table>
+                <tr>
+                    <th> Дата</th>
+                    <th> Тип</th>
+                    <th> Комментарии</th>
+                </tr>
+                {% for i in event %}
+                    <tr>
+                        <td> {{ i.date|date("d.m.Y") }} </td>
+                        <td> {{ i.type.name }} </td>
+                        <td> {{ i.comments }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% endblock %}
+    <div style='margin-top: 20px; padding-left: 6px; padding-bottom: 20px;'>
+        {% block body_certificate %}
+        {% endblock %}
+        <span id='sep' style='width: 10px'>&nbsp;</span>
+        {% block body_extract_full %}
+        {% endblock %}
+        <span id='sep' style='width: 10px'>&nbsp;</span>
+        {% block body_extract_lite %}
+        {% endblock %}
+    </div>
+
+{#    <div class='th'><span class='title'>GW:</span></div>#}
+
+{#    {% load gw_extras %}#}
+{#    <p>#}
+{#    Fix tagged inlines#}
+{#        {% attachfile orgsro.org %}#}
+{#    </p>#}
+{#    <hr/>#}
+{#    {% taglist orgsro.org %}#}
+
+    <script>
+        {% include "sro2/orgsro/orgsro.js" %}
+    </script>
+
+    
+{% endblock %}
+

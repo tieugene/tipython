@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+{%load sro2_extras%}
+<document filename="{{ name }}.pdf">
+<docinit>
+	<registerFont fontName="Serif" fontFile="{{ STATIC_ROOT }}/ttf/LiberationSerif-Regular.ttf"/>
+	<registerFont fontName="Serif-Bold" fontFile="{{ STATIC_ROOT }}/ttf/LiberationSerif-Bold.ttf"/>
+</docinit>
+<template pageSize="(21cm, 10.5cm)" title="Уведомления о вручении для отправки по почте членам СРО {{ sro }}" author="{{ data.user }}" subject="Svid" showBoundary="0">
+		<pageTemplate id="main">
+			<frame id="name" x1="8.5cm" y1="6.1cm" width="8.5cm" height="0.9cm"/>
+			<frame id="address" x1="5.8cm" y1="4.5cm" width="8.2cm" height="1.9cm"/>
+			<frame id="postalcode1" x1="13.7cm" y1="5.0cm" width="0.5cm" height="0.9cm"/>
+			<frame id="postalcode2" x1="14.2cm" y1="5.0cm" width="0.5cm" height="0.9cm"/>
+			<frame id="postalcode3" x1="14.7cm" y1="5.0cm" width="0.5cm" height="0.9cm"/>
+			<frame id="postalcode4" x1="15.2cm" y1="5.0cm" width="0.5cm" height="0.9cm"/>
+			<frame id="postalcode5" x1="15.7cm" y1="5.0cm" width="0.5cm" height="0.9cm"/>
+			<frame id="postalcode6" x1="16.2cm" y1="5.0cm" width="0.5cm" height="0.9cm"/>
+		</pageTemplate>
+</template>
+<stylesheet>
+<initialize>
+</initialize>
+<paraStyle
+	name =		"style1"
+	fontSize =	"9"
+	fontName =	"Serif"
+	spaceAfter =	"0"
+	spaceBefore =	"0"
+	alignment =	"center"
+/>
+<paraStyle
+	name =		"style2"
+	fontSize =	"12"
+	fontName =	"Serif-Bold"
+	spaceAfter =	"0"
+	spaceBefore =	"0"
+	leading =	"10"
+	alignment =	"center"
+/>
+<boxStyle name="special1"
+labelFontName="Helvetica"
+fontSize="10"
+alignment="RIGHT"
+textColor="red"
+fontName="Helvetica"
+labelFontSize="10"
+labelAlignment="RIGHT"
+labelTextColor="blue"
+boxStrokeColor="red"
+boxFillColor="pink"/>
+</stylesheet>
+
+<story>
+	{% for org in org_list %}
+	
+		{% if not forloop.first %}
+			<nextFrame/>
+		{% endif %}
+		
+		<para style="style1">
+			{{ org.okopf.shortname }} {{ org.shortname }}
+		</para>
+		
+		<nextFrame/>
+		
+		<para style="style1" leading = "18">
+			{{ org|getaddress_fullname:'Почтовый' }}
+		</para>
+		
+		<nextFrame/>		
+		
+		<para style="style2">
+			{{ org|getaddress_zip:'Почтовый'|slice:"0:1" }}
+		</para>
+		
+		<nextFrame/>
+		
+		<para style="style2">
+			{{ org|getaddress_zip:'Почтовый'|slice:"1:2" }}
+		</para>
+		
+		<nextFrame/>
+		
+		<para style="style2">
+			{{ org|getaddress_zip:'Почтовый'|slice:"2:3" }}
+		</para>
+		
+		<nextFrame/>
+		
+		<para style="style2">
+			{{ org|getaddress_zip:'Почтовый'|slice:"3:4" }}
+
+		</para>
+		
+		<nextFrame/>
+		
+		<para style="style2">
+			{{ org|getaddress_zip:'Почтовый'|slice:"4:5" }}
+		</para>
+		
+		<nextFrame/>
+		
+		<para style="style2">
+			{{ org|getaddress_zip:'Почтовый'|slice:"5:6" }}
+		</para>	
+		
+	{% endfor %}
+</story>
+</document>

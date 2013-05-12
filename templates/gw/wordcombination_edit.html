@@ -1,0 +1,30 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Словосочетание «{{ wordcombination }}»
+{% endblock %}
+
+{% block content %}
+
+    <style type="text/css">
+    input[type="text"] {
+        width: 1000px;
+    }
+    </style>
+    
+    <form id='mainform' action="#{{ wordcombination.id }}" method="POST">
+        <table width="100%" border="0">
+            {{ form.as_table() }}
+        </table>
+
+        <div id='div_save' class='button ui-state-default eb ui-corner-left' onclick="$('#mainform').submit();">
+            Сохранить
+        </div>
+
+        <a href="{{ url_for('gw.views.wordcombination_list') }}#{{ wordcombination.id }}"
+           class='button ui-state-default eb ui-corner-right'>
+            Отменить
+        </a>
+    </form>
+
+{% endblock %}

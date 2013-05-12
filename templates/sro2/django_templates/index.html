@@ -1,0 +1,25 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Добро пожаловать в информационную систему LanSite!
+{% endblock %}
+{% block content %}
+    <script>
+        $(function() {
+
+            if ($.browser.msie) {
+                $('#msie').html("Internet Explorer <b>__НЕ_ПОДДЕРЖИВАЕТСЯ__</b>.<br>Чтобы работать в новой версиии системы LanSite, необходимо использовать такие браузеры как <a href='http://www.mozilla-europe.org/ru/firefox/'>Firefox</a>, <a href='http://opera.com'>Opera</a> или <a href='http://google.ru/chrome'>Google Chrome</a>.")
+            }
+        })
+    </script>
+    <span id='msie'>
+</span>
+{#<br>#}
+Информационная система LanSite предназначена для автоматизации деятельности саморегулируемых организаций.
+<br> 
+Выберите необходимые пункты меню для начала работы.
+<br>
+Просьба всем пользователям информационной системы LanSite направлять свои вопросы, пожелания и комментарии на электронную почту
+<a href='mailto:it@moozs.ru'>it@moozs.ru</a>.
+
+{% endblock %}

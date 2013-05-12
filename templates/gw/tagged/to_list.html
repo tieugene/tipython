@@ -1,0 +1,15 @@
+{% extends "gw/tagged/base.html" %}
+{% block title %} LanSite/GW/tagged {% endblock %}
+{% block topbar %} Все TO {% endblock %}
+
+{% block body_main %} 
+<ul>
+    {%for to in tos%}
+    <li><a href="{% url gw.tagged.views.to_view to.object.id %}">{{to}}</a> -
+        {% for tag in to.tags.all %}
+            [{{ tag }}],
+        {% endfor %}
+        -- {{ to.tags.count }} шт.</li>
+{%endfor%}
+</ul>
+{% endblock %}

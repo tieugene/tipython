@@ -1,0 +1,21 @@
+<blockTable colWidths="1cm,17cm" style="myTable">
+{% for stage in data.stages %}
+	
+	{% if data.ver = 4 and danger = "0" and stage.dangeronly %}
+	{% else %}
+	
+	<tr>
+		<td vAlign="top">
+			{% if stage.isgroup and not data.change and not data.type_changed %}		
+				{% include "sro2/statement_attachment/checkbox_group.rml" %}
+			{% else %}
+				{% include "sro2/statement_attachment/checkbox.rml" %}
+			{% endif %}
+		</td>
+		<td> <para style="style0" {% if not stage.parent %} fontName="SerifBold" {% endif %}> {{ stage.code }}. {{ stage.name }} </para> </td>
+	</tr>
+	
+	{% endif %}
+	
+{% endfor %}
+</blockTable>

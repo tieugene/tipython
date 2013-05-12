@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document filename="{{ data.stagelist.permit.no }}.pdf">
+<docinit>
+	<registerFont fontName="Sans" fontFile="{{ STATIC_ROOT }}/ttf/arial.ttf"/>
+	<registerFont fontName="Sans-Bold" fontFile="{{ STATIC_ROOT }}/ttf/arialbd.ttf"/>
+</docinit>
+	<template pageSize="(21cm, 29.7cm)" title="{{ data.stagelist.permit.no }}" author="{{ data.user }}" subject="Permit" showBoundary="0">
+		<pageTemplate id="main">
+			<frame id="main"	x1="3cm" y1="2cm" width="15cm" height="17cm"/>
+		</pageTemplate>
+		<pageTemplate id="even">
+			<pageGraphics>
+				<setFont name="Sans" size="10"/>
+				<drawCentredString x="13.5cm" y="27.35cm"> {{ data.stagelist.permit.no }} </drawCentredString>
+			</pageGraphics>
+			<frame id="no"		x1="1.8cm" y1="3.0cm" width="17.5cm" height="22.8cm"/>
+		</pageTemplate>
+		<pageTemplate id="odd">
+			<frame id="no"		x1="1.8cm" y1="3.0cm" width="17.5cm" height="24.9cm"/>
+		</pageTemplate>
+	</template>
+
+<stylesheet>
+	<initialize>
+	</initialize>
+	<paraStyle
+		name="style1"
+		fontName="Sans"
+		fontSize="11"
+		alignment="justify"
+		spaceAfter="11"
+	/>
+	<paraStyle
+		name="style3"
+		fontName="Sans-Bold"
+		fontSize="8"
+		alignment="justify"
+		spaceAfter="0"
+	/>
+	<paraStyle
+		name="style4"
+		fontName="Sans"
+		fontSize="8"
+		alignment="justify"
+		spaceAfter="0"
+	/>
+	<paraStyle
+		name="style5"
+		fontName="Sans"
+		fontSize="10"
+		alignment="justify"
+		spaceAfter="8"
+	/>
+</stylesheet>
+
+<story>
+<setNextTemplate name="main"/>
+	<para style="style1" alignment="center">
+		№ {{ data.stagelist.permit.no }}
+	</para>
+	<para style="style1" alignment="center">
+		Начало действия с {{ data.date }}
+	</para>
+	<para style="style1">
+		Выдано члену саморегулируемой организации
+	</para>
+	<para style="style1" fontName="Sans-Bold">
+		{{ data.stagelist.orgsro.org.okopf.namedp }} {{ data.stagelist.orgsro.org.fullname }}
+	</para>
+	<para style="style1">
+		ИНН {{ data.stagelist.orgsro.org.inn }}, {{ data.stagelist.orgsro.org.ogrn_label }} {{ data.stagelist.orgsro.org.ogrn }}, местонахождение: {{ data.stagelist.orgsro.org.laddress }}
+	</para>
+	<para style="style1" spaceAfter="0">
+		Основание выдачи Свидетельства:
+	</para>
+	<para style="style1">
+		решение Правления Некоммерческого партнерства саморегулируемой организации {{ data.stagelist.orgsro.sro.fullname }}, протокол №{{ data.stagelist.permit.protocol.no }} от {{ data.protodate }}.
+	</para>
+	<para style="style1">
+		{% block block1 %} {% endblock %}
+	</para>
+	<para style="style1">
+		Свидетельство выдано без ограничения срока и территории его действия.
+	</para>
+	<para style="style1" spaceAfter="50">
+		Настоящее Свидетельство без приложений недействительно.
+	</para>
+	<blockTable>
+		<tr>
+			<td> <para style="style1"> {{ data.stagelist.orgsro.sro.sroown.bosstitle }} </para> </td>
+			<td> <para alignment="center">  </para> </td>
+			<td> <para style="style1" alignment="right"> {{ data.stagelist.orgsro.sro.sroown.boss }} </para> </td>
+		</tr>
+		<tr> <td/> <td>	<para style="style1" alignment="center"> МП </para> </td> <td/> </tr>
+	</blockTable>
+
+<setNextTemplate name="even,odd"/>
+<nextFrame/>
+	<para style="style5">
+		{% block block2 %} {% endblock %}
+	</para>
+{% for stage in data.stagelist.permitstage_set.list_ordinar %}
+	{% if stage.stage.parent %} <para style="style4"> {% else %} <para style="style3"> {% endif %} {{ stage.stage.code }}. {{ stage.stage.name }} </para>
+{% endfor %}
+	<para style="style4"> Итого видов работ: {{ data.stagelist.permitstage_set.count_ordinar }}. </para>
+<nextFrame/>
+
+{% if data.stagelist.permitstage_set.count_danger %}
+<setNextTemplate name="even,odd"/>
+	<para style="style5">
+		{% block block3 %} {% endblock %}
+	</para>
+{% for stage in data.stagelist.permitstage_set.list_danger %}
+	{% if stage.stage.parent %} <para style="style4"> {% else %} <para style="style3"> {% endif %} {{ stage.stage.code }}. {{ stage.stage.name }} </para>
+{% endfor %}
+	<para style="style4"> Итого видов работ: {{ data.stagelist.permitstage_set.count_danger }}. </para>
+{% endif %}
+
+</story>
+</document>

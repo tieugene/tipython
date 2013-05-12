@@ -1,0 +1,93 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    История изменений
+    <a href='{{ url_for('sro2.views.orgsro_view', permit.orgsro.id) }}' title='{{permit.orgsro.org.fullname}}'>
+		<span class='ui-state-default button ui-corner-left'>
+			{{ permit.orgsro.org.name }}
+		</span>
+    </a>
+    <a href='{{ url_for('sro2.views.stagelist_view', permit.id, 0, 0) }}' title='{{permit}}'>
+		<span class='ui-state-default button ui-corner-right'>
+			{{ permit }}
+		</span>
+    </a>
+{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            text-align: center;
+        }
+
+        td {
+            padding: 2px 6px;
+            margin: 0px;
+        }
+
+        table {
+            width: 100%;
+        }
+    </style>
+
+    <table border=1>
+        <thead>
+        <tr>
+            <!--<th>Сравнить</th>-->
+            <th> Тип</th>
+
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Протокол</th>
+            <!--<th/>-->
+{#            <th>Пользователь</th>#}
+            <th>Откат</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for snap in history %}
+            <tr>
+                <!--<td class="diff">
+				<input type="radio" name="old" value="{{snap.id}}">
+				<input type="radio" name="new" value="{{snap.id}}">
+			</td>-->
+                <td> {{ snap.asstr_snapstatus() }} </td>
+                <td> {{ snap.date|date }} </td>
+                <td>
+                    {% if snap.permitstage_set.all().count() > 0 %}
+                        {% set permitstage = snap.permitstage_set.all()|first  %}
+                            {{ permitstage.paused|date }}
+                    {% endif %}
+                </td>
+                <td><a href='{{ url_for('sro2.views.protocol_view', snap.protocol.id) }}'>{{ snap.protocol }}</a></td>
+                <!--<td><a href='{{ url_for('sro2.views.stagelist_cmp_ajax', permit.id, snap.id) }}'>Просмотр</a></td>-->
+{#                <td> {{ snap.user.first_name }} {{ snap.user.last_name }}</td>#}
+                <td> {% if not loop.last %} <a
+                        href='{{ url_for('sro2.views.permit_rollback', permit.id, snap.id) }}'>Откат</a> {% endif %} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- для приостановки/возобновления работ по отдельности
+<br>
+<div class="ui-state-default ui-corner-all button eb" id="cmp_button"> Сравнить</div>
+
+<script>
+	$(function(){
+		$('#cmp_button').click(function(){
+		var from = $('input:radio:checked[name="old"]').val()
+		var to = $('input:radio:checked[name="new"]').val()
+		if(from==undefined || to==undefined){
+			alert('Выберите документы для сравнения')
+			}else{
+			location = '{{ url_for('views.index') }}sro2/stagelist/chain_history/{"from":'+from+', "to":'+to+'}/'
+		}
+		})	
+	
+	})
+
+</script>
+-->
+{% endblock %}

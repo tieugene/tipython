@@ -1,0 +1,32 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Список СРО
+{% endblock %}
+
+{% block content %}
+
+    <style type="text/css">
+    input[type="text"] {
+        width: 600px;
+    }
+    select {
+        width: 600px;
+    }
+    </style>
+
+    <script type="text/javascript">
+        $(function(){
+
+        })
+    </script>
+
+    <form action="{{ url_for('sro2.views.sro_new') }}" method="POST">
+    <table>
+        {{ sform }}
+        {{ soform }}
+    </table>
+        </form>
+    <a href='{{ url_for('sro2.views.sro_list') }}'><div class="ui-state-default ui-corner-all button eb" >Назад</div></a>
+    <div class="ui-state-default ui-corner-all button eb" id="save" onClick="$('form').submit()" >Сохранить</div>
+{% endblock %}

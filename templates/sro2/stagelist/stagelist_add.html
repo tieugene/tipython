@@ -1,0 +1,53 @@
+{% extends "sro2/stagelist/stagelist_base.html" %}
+
+{% block contentheader %}
+    <script>
+        $(
+         function() {
+             $('#id_date').datepicker({dateFormat: 'dd.mm.yy',changeMonth: true,})
+         }).datepicker($.datepicker.regional['ru']);
+    </script>
+    <script>
+    $(function(){
+        {% if stagelist and not stagelist.rejectprotocol %}
+            $('#id_rejectprotocol').parent().parent().hide()
+        {% else %}
+            $('#rr').attr('checked','checked')
+        {% endif %}
+        $('#rr').click(function(){
+            $('#id_rejectprotocol').parent().parent().show()
+            $('#id_rejectprotocol').val('')
+            $('#id_permit').val('')
+        })
+        $('#pr').click(function(){
+            $('#id_rejectprotocol').parent().parent().hide()
+        })
+    })
+</script>
+{#    {% if stagelist.orgsro %}#}
+    <a href='{{ url_for("sro2.views.orgsro_view", orgsro.id) }}' title='{{orgsro.org.fullname}}'><span
+            class='ui-state-default button ui-corner-all'>{{ orgsro.org.name }}</span></a> ({{ orgsro.sro.name }})
+{#    {% else %}{{ orgsro.sro.name }}{% endif %}#}
+{% endblock %}
+
+{% block main %}
+    <form action="." method="post">
+        <table>
+            <tr>
+                <td> Тип:</td>
+                <td> {{ type }} </td>
+            </tr>
+            {{ form.as_table() }}
+        </table>
+        {% if type == 'Заявление' and permitform%}
+                <b>Результат</b>
+                <ul>
+                    <li> <input type="radio" name="group2" value="reject" id='rr'> <label for="rr">Отказ</label> </li>
+                    <li><input type="radio" name="group2" value="Wine" value="permit" id="pr"> <label for="pr">Выдано свидетельство</label> {{permitform.permit}}</li>
+                </ul>
+                {% endif %}
+        <input type="submit" value="Записать"/> </td>
+        <input type="button" value="Отказаться"
+               onClick="window.location.href='{{ url_for("sro2.views.orgsro_stagelist_edit", orgsro.id) }}#permit'"/>
+    </form>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "sro2/stagelist/stagelist_base.html" %}
+{% block main %}
+<style>
+    .list{
+    display: inline;
+    }
+</style>
+<script>
+    $(function(){
+        {% if not stagelist.rejectprotocol %}
+            $('#id_rejectprotocol').parent().parent().hide()
+{#            {% if stagelist.permit_set.all %}#}
+//                $('#pr').attr('checked','checked')
+{#            {% endif %}#}
+{#            $('#id_permit').val({{ stagelist. }})#}
+        {% else %}
+            $('#rr').attr('checked','checked')
+        {% endif %}
+        $('#rr').click(function(){
+            $('#id_rejectprotocol').parent().parent().show()
+            $('#id_rejectprotocol').val('')
+            $('#id_permit').val('')
+        })
+        $('#pr').click(function(){
+            $('#id_rejectprotocol').parent().parent().hide()
+        })
+        $('#stform').submit(function(){
+            if($('#pr').attr('checked') ){
+                if($('#id_permit').val()){
+                    $.ajax({
+                        url:'../link/'+$('#id_permit').val(),
+                        success: function(data){
+                            alert(data)
+                        }
+                    });
+                    return true
+                }
+                else{
+                    alert('Выберите свидетельство');
+                    return false
+                }
+            }
+            return true;
+        })
+    })
+</script>
+{#    {{ stagelist.permit_set.all }}#}
+    <form action="." method="post" id="stform">
+        <table>
+            <tr>
+                <td> Тип:</td>
+                <td>{% if stagelist.isperm() %}Свидетельство{% else %}Заявление{% endif %}</td> </tr>
+            {{ form.as_table() }}
+        </table>
+            {% if stagelist.isstatement() %}
+                <b>Результат</b>
+                <ul>
+                    <li> <input type="radio" name="group2" value="reject" id='rr'> <label for="rr">Отказ</label> </li>
+                    <li><input type="radio" name="group2" value="Wine" value="permit" id="pr"> <label for="pr">Выдано свидетельство</label> {{permitform.permit}}</li>
+                </ul>
+                {% endif %}
+        <input type="submit" value="Записать"/> 
+        <input type="button" value="Отказаться"
+               onClick="location='{{ url_for("sro2.views.stagelist_view", stagelist.id, 0, 0) }}'"/>
+    </form>
+{% endblock %}

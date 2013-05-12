@@ -1,0 +1,28 @@
+{% load sro2_extras %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>LanSite.СРО2.{{ sro.name }}.Поиск.{{ stage.name }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<center><h1>
+    <a href="{% url views.index %}"> LanSite </a> &gt;
+    <a href="{% url sro2.views.index %}"> СРО2 </a> &gt;
+    <a href="{% url sro2.views.index_sro sro.id %}"> {{ sro.name }} </a> &gt;
+    <a href="{% url sro2.views.sro_find sro.id %}"> Поиск </a> &gt;
+    {{ stage.no }}. {{ stage.name }}
+</h1></center>
+<hr/>
+{% if orgsro_list %}
+    <ol>
+    {% for orgsro in orgsro_list %}
+        <li><a href="{% url sro2.views.orgsro_view orgsro.id %}" title="{{ orgsro.org.fullname }}">{{ orgsro.org.name }}
+        </li>
+    {% endfor %}
+{% endif %}
+</body>
+</html>

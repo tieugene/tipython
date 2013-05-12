@@ -1,0 +1,11 @@
+{% extends "sro2/orgsro/orgsro_base.html" %}
+{% block body_license %}
+    <form action="." method="post">
+        <table>
+            {{ form.as_table() }}
+        </table>
+        <input type="submit" value="Записать"/> </td>
+        <input type="button" value="Отказаться"
+               onClick="window.location.href='{{ url_for("sro2.views.orgsro_view", orgsro.id) }}'"/>
+    </form>
+{% endblock %}

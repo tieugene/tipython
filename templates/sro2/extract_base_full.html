@@ -1,0 +1,243 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Выписка</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        @page {
+            size: 21cm 29.7cm;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: Serif;
+            font-size: 10pt;
+        }
+
+        P.style1 {
+            font-size: 12pt;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        P.style2 {
+            font-size: 10pt;
+            font-weight: bold;
+            text-align: justify;
+        }
+
+        P.style3 {
+            font-size: 8pt;
+            text-align: center;
+            margin-top: -18px;
+        }
+
+        P.style4 {
+            font-size: 12pt;
+            text-align: left;
+        }
+
+        P.style5 {
+            font-size: 12pt;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        P.style61 {
+            font-size: 7pt;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        P.style62 {
+            font-size: 7pt;
+            text-align: left;
+            margin-top: -11px
+        }
+
+        P.style7 {
+            font-size: 12pt;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        P.style8 {
+            font-size: 7pt;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        td {
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+<p class="style8"> Утверждено Решением Правления {{ orgsro.sro.name }}
+    (Протокол {% block block1 %} {% endblock %})</p>
+<p class="style7"> ВЫПИСКА (полная)</p>
+
+<p class="style7"> из реестра членов Некоммерческого партнерства саморегулируемой
+    организации {{ orgsro.sro.fullname }} </p>
+<p class="style2"> {% block block2 %} {% endblock %} </p>
+<table border="0">
+    <tr>
+        <td>
+            <p class="style1"><u> {{ date|date }} </u></p>
+
+            <p class="style3"><sup>(Дата)</sup></p>
+        </td>
+    </tr>
+</table>
+<p class="style4"> Настоящая выписка содержит сведения о члене {{ orgsro.sro.name }}: </p>
+
+<p class="style1"><u> {{ orgsro.org.okopf.name }} {{ orgsro.org.fullname }} </u></p>
+
+<p class="style3"> (Полное наименование организации) </p>
+
+<p class="style1"><u> {{ orgsro.regno }} </u></p>
+
+<p class="style3"> (Реестровый номер) </p>
+<table width="100%" border="1">
+    <tr>
+        <td width="40%">
+            <p class="style5">
+                {{ orgsro.org.ogrn_label }}
+            </p>
+        </td>
+        <td><p class="style5"> {{ orgsro.org.ogrn }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> ИНН </p></td>
+        <td><p class="style5"> {{ orgsro.org.inn }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Полное наименование </p></td>
+        <td><p class="style5"> {{ orgsro.org.okopf.name }} {{ orgsro.org.fullname }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Сокращенное наименование </p></td>
+        <td><p class="style5"> {{ orgsro.org.okopf.shortname }} {{ orgsro.org.shortname }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> ОПФ </p></td>
+        <td><p class="style5"> {{ orgsro.org.okopf.name }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Местонахождение </p></td>
+        <td><p class="style5"> {{ orgsro.org.laddress }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Реестровый номер в {{ orgsro.sro.name }} </p></td>
+        <td><p class="style5"> {{ orgsro.regno }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Дата членства в {{ orgsro.sro.name }} </p></td>
+        <td><p class="style5"> {{ orgsro.regdate|date }} </p></td>
+    </tr>
+
+    <tr>
+        <td><p class="style5"> Дата оплаты вступительного взноса </p></td>
+        <td><p class="style5"> {{ orgsro.paydatevv|date }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Дата оплаты взноса в компенсационный фонд {{ orgsro.sro.name }} </p></td>
+        <td><p class="style5"> {{ orgsro.paydate|date }} </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Взнос в Компенсационный фонд {{ orgsro.sro.name }} </p></td>
+        <td><p class="style5"> {{ orgsro.paysum }} рублей </p></td>
+    </tr>
+    <tr>
+        <td><p class="style5"> Страхование гражданской ответственности </p></td>
+        <td> <p class="style5">
+            {% for ins in insurance %}
+                Договор страхования гражданской ответственности № {{ ins.no }} от {{ ins.date|date }}
+                , {{ ins.insurer.fullname }}, Сумма страхового возмещения:  {{ ins.sum }} рублей<br>
+            {% endfor %}
+        </p> </td>
+    </tr>
+    <tr>
+        <td valign=top><p class="style5">
+            Сведения о внесении изменений в Свидетельство о допуске к работам, о приостановлении, о возобновлении, об
+            отказе в возобновлении или о прекращении действия данного свидетельства о допуске к определенному виду или
+            видам работ, которые оказывают влияние на безопасность объектов капитального строительства</p></td>
+        <td>
+                {{ lasthist.desc }}
+            <br>
+            {% if permit.permitstage_set.list_ordinar() %}
+                <u><b>Перечень видов работ, которые оказывают влияние на безопасность объектов капитального
+                    строительства:</b></u><br>
+                {% for stage in permit.permitstage_set.list_ordinar() %}
+                    {% if stage.stage.parent %} <p class="style62"> {% else %} <p
+                            class="style61"> {% endif %} {{ stage.stage.code }}. {{ stage.stage.name }} </p>
+                {% endfor %}
+            {% endif %}
+
+            {% if permit.permitstage_set.list_danger() %}
+                <hr>
+                <u><b>Перечень видов работ, связанных со строительством, реконструкцией и капитальным ремонтом особо
+                    опасных, технически сложных и уникальных объектов капитального строительства, оказывающих влияние на
+                    безопасность указанных объектов:</b></u><br>
+                {% for stage in permit.permitstage_set.list_danger() %}
+                    {% if stage.stage.parent %} <p class="style62"> {% else %} <p
+                            class="style61"> {% endif %} {{ stage.stage.code }}. {{ stage.stage.name }} </p>
+                {% endfor %}
+            {% endif %}
+            <hr>
+
+            {% if history %}
+                    {% for h in history|reverse %}
+                        {% if not loop.index == 1 %}
+                            {{ h.desc }}<br>
+                        {% endif %}
+                    {% endfor %}
+                <hr>
+            {% endif %}
+
+            {% if prevs %}
+                <b>Ранее выданные Свидетельства:</b><br>
+                {% for prev in prevs %}
+                    <span style='font-size: 13pt !important'><b>Свидетельство №{{ prev.no }}
+                        от {{ prev.date|date }} (Протокол №{{ prev.protocol.no }}
+                        от {{ prev.protocol.date|date }}):</b></span><br>
+                    {% if prev.permitstage_set.list_ordinar() %}
+                        <u><b>Перечень видов работ, которые оказывают влияние на безопасность объектов капитального
+                            строительства:</b></u><br>
+                        {% for stage in prev.permitstage_set.list_ordinar() %}
+                            {% if stage.stage.parent %} <p class="style62"> {% else %} <p
+                                    class="style61"> {% endif %} {{ stage.stage.code }}. {{ stage.stage.name }} </p>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if prev.permitstage_set.list_danger() %}
+                        <hr>
+                        <u><b>Перечень видов работ, связанных со строительством, реконструкцией и капитальным ремонтом
+                            особо опасных, технически сложных и уникальных объектов капитального строительства,
+                            оказывающих влияние на безопасность указанных объектов:</b></u><br>
+                        {% for stage in prev.permitstage_set.list_danger() %}
+                            {% if stage.stage.parent %} <p class="style62"> {% else %} <p
+                                    class="style61"> {% endif %} {{ stage.stage.code }}. {{ stage.stage.name }} </p>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+
+                <tr>
+                    <td colspan=2>
+                        {{ footer }}
+                    </td>
+                </tr>                        {% endif %}
+    </td>
+    </tr>
+</table>
+</br>
+<table width="100%" border="0">
+    <tr>
+        <td><p class="style5"> Исполнительный директор <br/> {{ orgsro.sro.name }} </p></td>
+        <td align="right"><p class="style5"> Д.В. Сережин </p></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center"><p class="style7"> МП </p></td>
+    </tr>
+</table>
+</body>
+</html>

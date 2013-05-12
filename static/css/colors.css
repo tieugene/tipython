@@ -1,0 +1,140 @@
+/*
+For each: bgcolor - ordinar/hover
+	topmenu
+	table-title
+	table-header
+	table-data:
+		odd
+		even
+	pulldown menu
+	a class=button
+*/
+
+.button {	/* a, td, th */
+	color: black;
+	background: lightgrey;
+	border-color: silver;
+}
+
+.addressbar {
+	background: #C3D9FF;
+}
+
+table.white {
+	border: 4px solid white;
+}
+
+table.normal {
+	border: 4px solid #A0A0FF;
+}
+
+td.tabactive {
+	background-color: #C3D9FF;	/* google code issue */
+}
+
+td.tabinactive {
+	background-color: #E5ECF9;	/* google code issue */
+}
+
+tr.title {
+	background: #C3D9FF;		/* like tabactive */
+}
+
+table.catitem td.itemcell {
+	border-color: #BBCCFF;
+}
+
+table.itemlist caption, table.itemlist thead, table.catlist caption, table.catlist thead {
+	background: #E3E9FF;
+}
+
+table.itemlist tbody {
+	background-color: #EDF0F9;
+	border-color: lightgrey;
+}
+
+table.itemlist a, table.catlist a {
+	color: black;
+}
+
+table.catlist tbody tr:hover {
+	background-color: #EDF0F9;
+}
+
+.pulldown a {
+	color: black;
+}
+
+li.pditem, li.pdmenu {
+	background: #EEEEFF;
+}
+
+li.pditem:hover, li.pdmenu:hover {
+	background: #DDE5FF;
+}
+
+tr.even {
+	background: snow;
+}
+
+tr.odd {
+	background: whitesmoke;
+}
+
+tr.even:hover {
+	background: lightcyan;
+}
+
+tr.odd:hover {
+	background: lightcyan;
+}
+
+/* google colors */
+/*
+	A0A0FF	- ?
+	#EEEEFF	- issues
+	#C3D9FF	- issues
+	BBCCFF	- border, selected folder	> topmenu.3 selected
+	C8D6FF	- AdSence			> topmenu.3
+	DDE5FF	- "Mail", folder hover		> topmenu.2
+	E3E9FF	- context header		> topmenu
+	EDF0F9	- read mails			> todo lines
+	FFFFCC	- selected mail
+	FFFFFF	- unread mails
+*/
+
+.color-bg-lightest {
+	background-color: #F5FCFF;
+}
+
+.color-bg-light {
+	background-color: #E5ECF9;
+}
+
+.color-bg-mid {
+	background-color: #C3D9FF;
+}
+
+.color-bg-dark {
+	background-color: #BBCCFF;	/* inbox, border */
+}
+
+.color-bg-darkest {
+	background-color: #A0A0FF;
+}
+
+.color-bd-none {
+	border-color: transparent;	/* inbox, border */
+}
+
+.color-bd-dark {
+	border-color: #BBCCFF;	/* inbox, border */
+}
+
+.color-bd-darkest {
+	border-color: #A0A0FF;	/* inbox, border */
+}
+
+.color-bd {
+	border-color: #FAEEDD;	/* ЦБИН - scared nymph */
+}

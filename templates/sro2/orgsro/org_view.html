@@ -1,0 +1,13 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    {{ orgsros[0].org.fullname }}
+{% endblock %}
+
+{% block content %}
+<ul>
+{% for orgsro in orgsros %}
+<li><a href="{{ orgsro.get_absolute_url() }}">{{ orgsro }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

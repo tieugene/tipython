@@ -1,0 +1,17 @@
+<!-- Phone -->
+{% extends "gw/bits/phone_base.html" %}
+{% block contentheader %}
+    Телефон
+{% endblock %}
+
+{% block content %}
+<form action=".?next={{ next }}#phone" method="post">
+	<table>
+		{{ form.as_table() }}
+	</table>
+	<input type="submit" value="Записать" class='button ui-state-default eb ui-corner-left ebutton left input-button'/> </td>
+	<a href="{{ next }}#phone"  class='button ui-state-default eb ui-corner-right ebutton left'> Отменить </a>
+    <br>
+    <br>
+</form>
+{% endblock %}

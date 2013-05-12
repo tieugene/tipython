@@ -1,0 +1,15 @@
+<!-- Phone -->
+{% extends "gw/bits/phone_base.html" %}
+{% block title %} Телефоны {% endblock %}
+{% block body_main %}
+<table cellpadding="1">
+<tr> <th> № </th> <td colspan="2" class="button"> <a href="{% url gw.views.phone_add %}" title="Добавить"> &nbsp; + &nbsp; </a> </td> </tr>
+{% for item in item_list %}
+	<tr>
+		<td> <a href="{% url gw.views.phone_detail item.id %}"> {{ item }} </a> </td>
+		<td class="button"> <a title="Изменить" href="{% url gw.views.phone_edit item.id %}"> &nbsp; E &nbsp; </a> </td>
+		<td class="button"> <a title="Удалить" href="{% url gw.views.phone_del item.id %}"> &nbsp; X &nbsp; </a> </td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

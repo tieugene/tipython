@@ -1,0 +1,270 @@
+{% extends "sro2/main.html" %}
+{#{% block body_stuff_button %} {% endblock %}#}
+{% block contentheader %}{{ orgsro.sro }} <a href='{{ url_for('sro2.views.orgsro_view', orgsro.id) }}'
+                                   title='{{orgsro.org.fullname}}'><span
+            class='ui-state-default button ui-corner-all'>{{ orgsro.org.name }}</span>
+        </a> Персонал{% endblock %}
+{% block content %}
+    <script>
+        function getRole() {
+            $('#roler').html("").load('{{ url_for('views.index') }}sro2/person/' + $('#id_person').val() + '/getskill/')
+        }
+        function confirmFire(pid) {
+            if (confirm("Точно уволить?")) {
+
+                document.location = '{{ url_for('views.index') }}sro2/orgsro/{{orgsro.id}}/stuff/' + pid + '/dismiss/' + $('.enddate[pid="' + pid + '"]').val();
+            }
+        }
+        function confirmDelete(delUrl) {
+            if (confirm("Are you sure you want to delete")) {
+                document.location = delUrl;
+            }
+        }
+    </script>
+
+    <style>
+        .fieldWrapper {
+            margin-top: 7px;
+        }
+
+        .fieldWrapper600 {
+            margin-top: 7px;
+        }
+
+        #new input[type="text"] {
+            width: 100%;
+        }
+
+        #stuff {
+            width: 100%;
+        }
+
+        .enddate {
+            width: 75px; /*display: inline;*/
+        }
+
+        /*.input100{*/
+        /*width: 100%;*/
+        /*}*/
+        .input100 * {
+            width: 100%;
+        }
+    </style>
+
+    {% if user.has_perm('gw.add_orgstuff') %}
+        <div style="width: 48%; padding: 4px;" class='left'>
+            <b>Добавление персонала в организацию</b>
+            <form action="{{ url_for('sro2.views.orgsro_stuff_orgstuff_add', orgsro.id) }}#stuff" method="POST">
+                <div class="">
+                    ФИО:
+                    {{ form.person.errors }}
+                    {{ form.person }}
+                    <div id='roler'></div>
+                </div>
+
+                <div class="fieldWrapper" id="div_startdate">
+                    Дата принятия на работу:
+                    {{ form.startdate.errors }}
+                    {{ form.startdate }}
+                </div>
+
+                <div class="input100">
+                    Должность:<br>
+                    {{ form.role.errors }}
+                    {{ form.role }}
+                </div>
+
+                <div class="fieldWrapper">
+                    Руководитель:
+                    {{ form.leader.errors }}
+                    {{ form.leader }}
+                </div>
+
+                <div class="fieldWrapper">
+                    Постоянно:
+                    {{ form.permanent.errors }}
+                    {{ form.permanent }}
+                </div>
+                <input type="submit" value="Добавить" title="Добавить сотрудника в организацию"/>
+
+            </form>
+        </div>
+    {% endif %}
+    <div style="width: 48%; padding: 4px;" class='right' id='new'>
+        {% if user.has_perm('gw.add_person') %}
+            <b>Добавление нового человека в Lansite</b>
+            <form action="{{ url_for('sro2.views.orgsro_stuff_add_person', orgsro.id) }}#stuff" method="POST">
+                <div class="fieldWrapper">
+                    {{ form_person.lastname.errors }}
+                    Фамилия:
+                    {{ form_person.lastname }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form_person.firstname.errors }}
+                    Имя:
+                    {{ form_person.firstname }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form_person.midname.errors }}
+                    Отчество:
+                    {{ form_person.midname }}
+                </div>
+                <input type="submit" value="Добавить" title="Добавить нового человека"/>
+            </form>
+        {% endif %}
+        {% if user.has_perm('gw.add_role') %}
+            <b>Создание новой должности</b>
+            <form action="{{ url_for('sro2.views.orgsro_stuff_add_role', orgsro.id) }}#stuff" method="POST">
+                <div class="fieldWrapper">
+                    {{ form_role.name.label_tag() }}:
+                    {{ form_role.name.errors }}
+                    {{ form_role.name }}
+                </div>
+{#                <div class="fieldWrapper">#}
+{#                    {{ form_role.comments.label_tag }}:#}
+{#                    {{ form_role.comments.errors }}#}
+{#                    {{ form_role.comments }}#}
+{#                </div>#}
+                <input type="submit" value="Добавить" title="Добавить новую должность"/>
+            </form>
+            </div>
+        {% endif %}
+
+    <table border="0" id='stuff'>
+        <tr>
+            <th width="20">#</th>
+            <th> ФИО</th>
+            <th> Должность</th>
+            <!--<th> Специальность </th>-->
+            <th title="Руководитель"> Рук.</th>
+            <th title="Постоянное место работы"> Пост.</th>
+            <th>Принят</th>
+            <th>Уволен</th>
+            <th/>
+            <th/>
+            <th/>
+        </tr>
+        <tr>
+            <td colspan="5"><b> Список сотрудников организации, учтённых в рамках СРО {{ orgsro.sro.asstr() }}: </b></td>
+        </tr>
+        {% for i in person_list %}
+            <tr {% if orgstuff_id == i.id %} class='cell-hover' {% endif %}>
+                {% if orgstuff_id == i.id %}
+                    <form action="{{ url_for('sro2.views.orgsro_stuff_orgstuff_edit',orgsro.id, orgstuff_id) }}#stuff"
+                          method="POST"> {% endif %}
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ url_for('sro2.views.person_view', i.person.id) }}"><b>{{ i.person.asstr() }}</b></a></td>
+                <td>
+                    {% if orgstuff_id == i.id %}
+                        <div class="fieldWrapper300">
+                            {{ form_orgstuff_edit.role }}
+                        </div>
+                    {% else %}
+                        {{ i.role.asstr() }}
+                    {% endif %}
+                </td>
+                <!--<td> {{ i.skill }} </td>-->
+                <td align="center">
+                    {% if orgstuff_id == i.id %}
+                        {{ form_orgstuff_edit.leader }}
+                        {% else %}
+                        [{% if i.leader == 1 %} <img src='{{ url_for('views.index') }}static/tick_icon.gif'
+                                                       style='height: 12px;'>{% else %} &nbsp;{% endif %}]
+                    {% endif %}
+                </td>
+                <td align="center">
+                    {% if orgstuff_id == i.id %}
+                        {{ form_orgstuff_edit.permanent }}
+                        {% else %}
+                        [{% if i.permanent == 1 %} <img src='{{ url_for('views.index') }}static/tick_icon.gif'
+                                                          style='height: 12px;'>{% else %} &nbsp;{% endif %}]
+                    {% endif %}
+                </td>
+                <td id="td_startdate">
+                	{% if orgstuff_id == i.id %}
+				        {{ form_orgstuff_edit.startdate }}				
+					{% else %}
+                        {% if i.startdate %}
+                            {{ i.startdate|date }}
+                        {% endif %}
+					{% endif %}
+                </td>
+                <td>{% if i.enddate %}<span style='color: red; font-size: 12px;'><b>{{ i.enddate|date }}</b>
+                    </span>{% else %} &nbsp;{% endif %}  </td>
+                <td>
+                    {% if user.has_perm('gw.change_orgstuff') %}
+                        {% if orgstuff_id == i.id %}
+                            <input type="submit" value="Сохранить" title="Сохранить изменения"
+                                   class='button ui-state-active eb'/>
+                        {% else %}
+                            <a href="{{ url_for('sro2.views.orgsro_stuff_edit', orgsro.id) }}?orgstuff_id={{ i.id }}#stuff">
+                                <div class='button ui-state-default eb'> Изменить</div>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.enddate %}
+                        <a href="{{ url_for('views.index') }}sro2/orgsro/{{orgsro.id}}/stuff/{{i.id}}/return/">
+                            <div class='button ui-state-default eb left' style='width: 150px; margin: 0px;'> Вернуть
+                            </div>
+                        </a>
+                    {% else %}
+                        {% if user.has_perm('gw.delete_orgstuff') %}
+                            <div style='width: 165px;'>
+                                <input type="button" value="Уволить" title="Уволить" class='button ui-state-error left'
+                                       onClick="confirmFire('{{i.id}}')" style='margin: 0px;'/>
+                                <input class='enddate' value="{{ now("%d.%m.%Y") }}"
+                                       style='float: right; margin-left: 4px; margin-top: 2px;' pid='{{i.id}}'>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.has_perm('gw.delete_orgstuff') %}
+                        <input type="button" value="Удалить" title="Удалить" class='button ui-state-error'
+                               onClick="confirmDelete('{{ url_for('sro2.views.orgsro_stuff_del', orgsro.id, i.id) }}#stuff')"/>
+                    {% endif %}
+                </td>
+                {% if orgstuff_id == i.id %} </form> {% endif %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="5"><b> Список сотрудников организации, учтённых в рамках других СРО: </b></td>
+        </tr>
+        {% for i in person_list_org %}
+            <tr>
+                <td><a href="{{ url_for('sro2.views.person_view', i.person.id) }}">{{ i.person.asstr() }}</a></td>
+                <td> {{ i.role.asstr() }} </td>
+                <td> {{ i.skill }} </td>
+                <td align="center"> [{% if i.leader == 1 %} <img src='{{ url_for('views.index') }}static/tick_icon.gif'
+                                                                   style='height: 12px;'>{% else %}
+                    &nbsp;{% endif %}] </td>
+                <td align="center"> [{% if i.permanent == 1 %} <img src='{{ url_for('views.index') }}static/tick_icon.gif'
+                                                                      style='height: 12px;'>{% else %}
+                    &nbsp;{% endif %}] </td>
+                <td>
+                    {{ i.startdate|date }}
+                </td>
+			    <td>
+			        {% if i.enddate %}
+                        <span style='color: red; font-size: 12px;'>
+					       <b>{{ i.enddate|date }}</b>
+                        </span>
+                    {% else %}
+					   &nbsp;
+					{% endif %}  
+                </td>
+                <td>
+                    <form action="{{ url_for('sro2.views.orgsro_stuff_add_exist', orgsro.id, i.person.id) }}#stuff"
+                          method="POST">
+                        <input type="submit" value="Добавить" title="Добавить сотрудника организации в текущую СРО"
+                               class='button ui-state-default eb'/>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <a class="button ui-state-default" href="{{ url_for('sro2.views.orgsro_view', orgsro.id) }}#stuff"> Закончить </a>
+{% endblock %}

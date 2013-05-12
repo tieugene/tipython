@@ -1,0 +1,17 @@
+<!-- WWW -->
+{% extends "gw/bits/www_base.html" %}
+{% block contentheader %}
+    www
+{% endblock %}
+
+{% block content %}
+
+<form action=".?next={{ next }}#www" method="post">
+	<table> {{ form.as_table() }} </table>
+	<input type="submit" value="Записать" class='button ui-state-default eb ui-corner-left ebutton left input-button'/> </td>
+	<a href="{{ next }}#www"  class='button ui-state-default eb ui-corner-right ebutton left'> Отменить </a>
+    <br>
+    <br>
+</form>
+
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Организации и пользователи
+{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            text-align: center;
+        }
+
+        td {
+            padding: 2px 6px;
+            margin: 0px;
+        }
+
+        table {
+            width: 100%;
+        }
+    </style>
+    <h3>Специалисты</h3>
+    <table border=1>
+        <thead>
+        <tr>
+            <th>Пользователь</th>
+            <th>Общее количество</th>
+            <th>МООЖС</th>
+            <th>МООАСП</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for line in result %}
+            <tr>
+                <td> <h4>{% if line.user %}{{ line.user.first_name }} {{ line.user.last_name }}{% else %}
+                    Вакансия{% endif %}</h4></td>
+                <td><b>{{ line.count }}</b></td>
+                <td>{{ line.countzs }}</td>
+                <td>{{ line.countasp }}</td>
+            </tr>
+            <tr>
+                <td colspan=4>
+                    <h5>МООЖС</h5>
+                    <table border=1>
+                        <thead>
+                        <tr>
+                            <th>Реестровый номер</th>
+                            <th>Название</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for org in line.orgs %}
+                            {% if org.sro.id == 1 %}
+                                <tr>
+                                    <td>{{ org.regno }}</td>
+                                    <td><a href='{{ url_for('sro2.views.orgsro_view', org.id) }}'>{{ org.org.name }}</a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <h5>МООАСП</h5>
+                    <table border=1>
+                        <thead>
+                        <tr>
+                            <th>Реестровый номер</th>
+                            <th>Название</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for org in line.orgs %}
+                            {% if org.sro.id == 2 %}
+                                <tr>
+                                    <td>{{ org.regno }}</td>
+                                    <td><a href='{{ url_for('sro2.views.orgsro_view', org.id) }}'>{{ org.org.name }}</a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Филиалы</h3>
+    <table border=1>
+        <thead>
+        <tr>
+            <th>Пользователь</th>
+            <th>Общее количество</th>
+            <th>МООЖС</th>
+            <th>МООАСП</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for line in bresult %}
+            <tr>
+                <td> <h4>{% if line.user %}{{ line.user.first_name }} {{ line.user.last_name }}{% else %}
+                    Вакансия{% endif %}</h4></td>
+                <td><b>{{ line.count }}</b></td>
+                <td>{{ line.countzs }}</td>
+                <td>{{ line.countasp }}</td>
+            </tr>
+            <tr>
+                <td colspan=4>
+                    <h5>МООЖС</h5>
+                    <table border=1>
+                        <thead>
+                        <tr>
+                            <th>Реестровый номер</th>
+                            <th>Название</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for org in line.orgs %}
+                            {% if org.sro.id == 1 %}
+                                <tr>
+                                    <td>{{ org.regno }}</td>
+                                    <td><a href='{{ url_for('sro2.views.orgsro_view', org.id) }}'>{{ org.org.name }}</a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <h5>МООАСП</h5>
+                    <table border=1>
+                        <thead>
+                        <tr>
+                            <th>Реестровй номер</th>
+                            <th>Название</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for org in line.orgs %}
+                            {% if org.sro.id == 2 %}
+                                <tr>
+                                    <td>{{ org.regno }}</td>
+                                    <td><a href='{{ url_for('sro2.views.orgsro_view', org.id) }}'>{{ org.org.name }}</a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

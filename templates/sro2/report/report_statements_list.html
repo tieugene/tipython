@@ -1,0 +1,87 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Организации и заявления
+{% endblock %}
+
+{% block content %}
+    <style>
+        td {
+            border-bottom: #333 solid 1px;
+        }
+
+        table {
+            width: 100%
+        }
+    </style>
+    <h2>МООЖС</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Организация</th>
+            <th>Дата заявления</th>
+            <th>Дата поступления</th>
+            <th>Дата протокола</th>
+            <th>Исполнитель</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for org in orgs %}
+            {% if org.statements %}
+                {% ifequal org.sro.id 1 %}
+                    <tr>
+                        <td>{{ org.regno }}</td>
+                        <td>{{ org.org.name }}<br> ИНН: {{ org.org.inn }}, {{ org.org.ogrn_label }}: {{ org.org.ogrn }}
+                        </td>
+                        <td>
+                            {% for statement in org.statements %}
+                                {{ statement.date|date:"d.m.Y" }}<br>
+                            {% endfor %}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endifequal %}
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>МООАСП</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Организация</th>
+            <th>Дата заявления</th>
+            <th>Дата поступления</th>
+            <th>Дата протокола</th>
+            <th>Исполнитель</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for org in orgs %}
+            {% if org.statements %}
+                {% ifequal org.sro.id 2 %}
+                    <tr>
+                        <td>{{ org.regno }}</td>
+                        <td>{{ org.org.name }}<br> ИНН:{{ org.org.inn }}, {% if org.org.foreign %} {{ SGRP }} {% else %}
+                            ОГРН {% endif %}: {{ org.org.ogrn }}</td>
+                        <td>
+                            {% for statement in org.statements %}
+                                {{ statement.date|date:"d.m.Y" }}<br>
+                            {% endfor %}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endifequal %}
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

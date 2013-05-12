@@ -1,0 +1,16 @@
+<!-- Contact.Address.Add -->
+{% extends "gw/base.html" %}
+{% block title %} Люди {% endblock %}
+{% block topbar %} <a href="{% url gw.views.person_idx %}"> Люди </a> {% endblock %}
+{% block body_main %}
+<p> Редактирование Адреса </p>
+<p> Человек: {{ contact }} </p>
+<p> Адрес: {{ address.fullname }} </p>
+<form action=".?address={{ address.id }}" method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{% url gw.views.person_dtl contact.id %}"> Отказаться </a>
+</form>
+{% endblock %}

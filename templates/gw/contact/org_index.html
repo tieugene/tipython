@@ -1,0 +1,22 @@
+<!-- Org -->
+{% extends "gw/contact/org_base.html" %}
+{% block head_css %}
+	<link type="text/css" href="{% url views.index %}static/css/toolbox.css" rel="stylesheet"/>
+{% endblock %}
+{% block body_main %}
+<div class="bordered color-bd-dark">
+	<table class="itemlist">
+		<caption>
+			Организации ({{ item_list.count }}):
+			<input type="button" value="+" title="Добавить новую Организацию" onClick="window.location.href='{% url gw.views.org_add %}'" style="cursor:pointer"/>
+			<input type="submit" value="x" title="Удалить выделенное" onClick="return confirm('Are you sure you want to delete selected items?');" style="cursor:pointer"/>
+		</caption>
+		{% for item in item_list %}
+			<tr bgcolor={% cycle 'lightcyan' 'white' %}>
+				<td> <input type="checkbox"/> </td>
+				<td> <a href="{% url gw.views.contact_detail item.id %}"> {{ item }} </a> </td>
+			</tr>
+		{% endfor %}
+	<table>
+</div>
+{% endblock %}

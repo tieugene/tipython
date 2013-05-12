@@ -1,0 +1,22 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Отправить Электронную почту
+{% endblock %}
+
+{% block content %}
+    <style>
+        #mailto {
+            width: 100%;
+            height: 400px;
+        }
+
+        #wrap {
+            margin: 0 10px 0 10px;
+        }
+    </style>
+    <p><a href="mailto:{{ mailto }}"> Ссылка для копирования </a></p>
+    <div id='wrap'>
+        <textarea id='mailto'>{{ mailto }}</textarea>
+    </div>
+{% endblock %}

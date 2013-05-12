@@ -1,0 +1,37 @@
+{% extends "sro2/person/person_base.html" %}
+{% block body_main %}
+    <form action=".#main" method="POST">
+        <table width="100%">
+            <tr>
+                <th> Фамилия</th>
+                <td>
+                    <div class="fieldWrapper">
+                        {{ form.lastname.errors }}
+                        {{ form.lastname }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th> Имя</th>
+                <td>
+                    <div class="fieldWrapper">
+                        {{ form.firstname.errors }}
+                        {{ form.firstname }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th> Отчество</th>
+                <td>
+                    <div class="fieldWrapper">
+                        {{ form.midname.errors }}
+                        {{ form.midname }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Записать и закрыть"/>
+        <input type="button" value="Отказаться"
+               onClick="window.location.href='{{ url_for('sro2.views.person_view', person.id) }}#main'"/>
+    </form>
+{% endblock %}

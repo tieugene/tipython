@@ -1,0 +1,46 @@
+{# / #}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title> {% block title %} {% endblock %} </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link type="text/css" href="{% url views.index %}static/css/base.css" rel="stylesheet"/>
+	<link type="text/css" href="{% url views.index %}static/css/topmenu.css" rel="stylesheet"/>
+	<link type="text/css" href="{% url views.index %}static/css/colors.css" rel="stylesheet"/>
+	{% block head_css %}  {% endblock %}
+	<script type="text/javascript" src="{% url views.index %}static/js/ask2del.js"> </script>
+	<script type="text/javascript" src="{% url views.index %}static/js/topmenu.js"> </script>
+	{% block head_js %}  {% endblock %}
+	<!--CSS-->
+	{% block scripts %} {% endblock %}
+</head>
+<body>
+{% if not user.is_authenticated %}
+	<div id='page'>
+		<!--If user not logged in-->
+		<div id='login' class='mid' align="center">
+			<h3> Извините, но для пользования Системой требуется войти под своими логином и паролем. </h3>
+			<p> <a href="{{ LOGIN_URL }}" class="button"> Вход </a> </p>
+		</div>
+	</div>
+{% else %}
+		<div id="topmenu">
+			{% block topmenu %} {% include "menu.html" %} {% endblock %}
+		</div>
+		<div style="position: absolute; top: 0; right: 1em">
+			User: {{ user }}
+			| <a href="{% url views.index %}logout"> Logout </a>
+		</div>
+	<div id='page'>
+		<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active" id='contentbody'>
+			<div id="content">
+			{% block body_main %}
+				<p> Просьба всем пользователям информационной системы LanSite уведомлять сотрудников ИТ-отдела о найдённых ошибках, неточностях, некорректном функционировании сайта по электронной почте <a href="mailto:it@moozs.ru">it@moozs.ru</a> </p>
+			{% endblock %}
+			</div>
+		</div>
+	</div>
+{% endif %}
+</body>
+<script> {% block bottom_script %}  {% endblock %} </script>
+</html>

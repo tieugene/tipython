@@ -1,0 +1,36 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Просмотр СРО {{ sro.sro }}
+    {% if user.is_superuser %}
+    <a href="{{ sro.get_journal_url() }}">
+                <div class="ui-state-default ui-corner-all button jbutton">
+                    <span class="ui-icon ui-icon-clock"></span>
+                </div>
+    </a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{{ url_for('views.index') }}static/js/ask2del.js"></script>
+    <table border=0>
+    <tr>
+        <td>Наименование:</td>
+        <td>{{ sro.sro.fullname }}</td>
+    </tr>
+    <tr>
+        <td>Тип:</td>
+        <td>{{ sro.sro.type }}</td>
+    </tr>
+    <tr>
+        <td>Регистрационный номер:</td>
+        <td>{{ sro.sro.regno }}</td>
+    </tr>
+	
+    </table>
+
+    <br>
+    <a href='{{ url_for('sro2.views.sro_list') }}'><div class="ui-state-default ui-corner-all button eb" >Назад</div></a>
+    <div class="ui-state-default ui-corner-all button eb"  onClick="confirmDelete('{{ url_for('sro2.views.sro_del', sro.id) }}')">Удалить</div>
+    <a href='{{ url_for('sro2.views.sro_edit', sro.id) }}'><div class="ui-state-default ui-corner-all button eb" >Изменить</div></a>
+{% endblock %}

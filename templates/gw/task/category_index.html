@@ -1,0 +1,33 @@
+{% extends "gw/task/todo_base.html" %}
+{% block head_css %}
+	<link type="text/css" href="{% url views.index %}static/css/toolbox.css" rel="stylesheet"/>
+{% endblock %}
+{% block head_js %}
+	<script type="text/javascript" src="{% url views.index %}static/js/toolbox.js"> </script>
+{% endblock %}
+{% block body_main %}
+<table class="tabbed">
+	<tr>
+		<td class="tabactive"> Категории </td>
+		<td class="tabinactive"> <a href="{% url gw.views.todo_list %}"> Задачи </a> </td>
+	</tr>
+</table>
+<table class="itemlist">
+	<caption> {% with data.title as pd %} {% include "gw/pulldown.html" %} {% endwith %} : {{ item_list.count }} </caption>
+	<thead>
+		<tr>
+			<th> <input type="checkbox"/> </th>
+			<th> {% with data.head as pd %} {% include "gw/pulldown.html" %} {% endwith %} </th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in item_list %}
+			<tr class="{% cycle 'even' 'odd' %}">
+				<td> <input type="checkbox"/> </td>
+				<td> <a href="{% url gw.views.todocat_view item.id %}"> {{ item.name }} </a> </td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

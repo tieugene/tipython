@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+{%load sro2_extras%}
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document filename="{{ statement.date }}.pdf">
+
+	{% include "sro2/statement_attachment/styles.rml" %}
+
+	<story>
+		<para style="style2">
+			Приложение 1д
+		</para>
+		<para style="style1"> 
+			к заявлению о внесении изменений в свидетельство о допуске к работам по строительству, реконструкции, капитальному ремонту
+			объектов капитального строительства, в том числе особо опасных, технически сложных и уникальных объектов, которые оказывают
+			влияние на безопасность указанных объектов 		
+		</para>		
+		<para style="style3">
+			Перечень <u>добавляемых</u> видов работ по строительству, реконструкции, капитальному ремонту объектов капитального строительства,
+			которые оказывают влияние на безопасность объектов капитального строительства		
+		</para>
+		<para style="style4">
+			(нужное отметить)
+		</para>		
+		{% with data.o_add as list %}
+			{% with "0" as danger %}
+				{% ifequal data.ver 4 %}
+					{% include "sro2/statement_attachment/loop_moozs_ver4.rml" %}
+				{% else %}
+					{% include "sro2/statement_attachment/loop_moozs.rml" %}
+				{% endifequal %}
+			{% endwith %}
+		{% endwith %}			
+		<para style="style0" spaceBefore = "30" spaceAfter = "30">
+			 Всего {{ data.count_o_add }} видов работ.
+		</para>				
+		{% include "sro2/statement_attachment/footer.rml" %}
+		
+		
+		<nextFrame/>		
+		
+		
+		<para style="style2">
+			Приложение 1и
+		</para>
+		<para style="style1"> 
+			к заявлению о внесении изменений в свидетельство о допуске к работам по строительству, реконструкции, капитальному ремонту
+			объектов капитального строительства, в том числе особо опасных, технически сложных и уникальных объектов, которые оказывают
+			влияние на безопасность указанных объектов 		
+		</para>		
+		<para style="style3">
+			Перечень <u>исключаемых</u> видов работ по строительству, реконструкции, капитальному ремонту объектов капитального строительства,
+			которые оказывают влияние на безопасность объектов капитального строительства		
+		</para>
+		<para style="style4">
+			 (нужное отметить)
+		</para>		
+		{% with data.o_del as list %}
+			{% with "0" as danger %}
+				{% ifequal data.ver 4 %}
+					{% include "sro2/statement_attachment/loop_moozs_ver4.rml" %}
+				{% else %}
+					{% include "sro2/statement_attachment/loop_moozs.rml" %}
+				{% endifequal %}
+			{% endwith %}
+		{% endwith %}		
+		<para style="style0" alignment="left" spaceBefore = "30" spaceAfter = "30">
+			 Всего {{ data.count_o_del }} видов работ.
+		</para>				
+		{% include "sro2/statement_attachment/footer.rml" %}
+		
+		
+		<nextFrame/>		
+		
+		
+		<para style="style2">
+			Приложение 2д
+		</para>
+		<para style="style1"> 
+			к заявлению о внесении изменений в свидетельство о допуске к работам по строительству, реконструкции, капитальному ремонту
+			объектов капитального строительства, в том числе особо опасных, технически сложных и уникальных объектов, которые оказывают
+			влияние на безопасность указанных объектов 		
+		</para>
+		
+		<para style="style3">
+			Перечень <u>добавляемых</u> видов работ, связанных со строительством, реконструкцией, капитальным ремонтом <u>особо опасных, технически
+			сложных и уникальных объектов капитального строительства</u>, оказывающих влияние на безопасность указанных объектов
+		</para>
+		<para style="style4">
+			 (нужное отметить)
+		</para>		
+		{% with data.d_add as list %}
+			{% with "1" as danger %}
+				{% ifequal data.ver 4 %}
+					{% include "sro2/statement_attachment/loop_moozs_ver4.rml" %}
+				{% else %}
+					{% include "sro2/statement_attachment/loop_moozs.rml" %}
+				{% endifequal %}
+			{% endwith %}
+		{% endwith %}		
+		<para style="style0" alignment="left" spaceBefore = "30" spaceAfter = "30">
+			 Всего {{ data.count_d_add }} видов работ.
+		</para>				
+		{% include "sro2/statement_attachment/footer.rml" %}
+		
+		
+		<nextFrame/>
+				
+		
+		<para style="style2">
+			Приложение 2и
+		</para>
+		<para style="style1"> 
+			к заявлению о внесении изменений в свидетельство о допуске к работам по строительству, реконструкции, капитальному ремонту
+			объектов капитального строительства, в том числе особо опасных, технически сложных и уникальных объектов, которые оказывают
+			влияние на безопасность указанных объектов 		
+		</para>		
+		<para style="style3">
+			Перечень <u>исключаемых</u> видов работ, связанных со строительством, реконструкцией, капитальным ремонтом <u>особо опасных,
+			технически сложных и уникальных объектов капитального строительства</u>, оказывающих влияние на безопасность указанных объектов
+		</para>
+		<para style="style4">
+			 (нужное отметить)
+		</para>		
+		{% with data.d_del as list %}
+			{% with "1" as danger %}
+				{% ifequal data.ver 4 %}
+					{% include "sro2/statement_attachment/loop_moozs_ver4.rml" %}
+				{% else %}
+					{% include "sro2/statement_attachment/loop_moozs.rml" %}
+				{% endifequal %}
+			{% endwith %}
+		{% endwith %}	
+		<para style="style0" alignment="left" spaceBefore = "30" spaceAfter = "30">
+			 Всего {{ data.count_d_del }} видов работ.
+		</para>				
+		{% include "sro2/statement_attachment/footer.rml" %}			
+	</story>
+</document>

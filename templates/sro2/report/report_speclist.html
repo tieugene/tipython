@@ -1,0 +1,46 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Организации с комментариями
+{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            text-align: center;
+        }
+
+        td {
+            padding: 2px 6px;
+            margin: 0px;
+        }
+
+        table {
+            width: 100%;
+        }
+    </style>
+    {% if speccase %}
+        <table border=1>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Организация</th>
+            <th>СРО</th>
+            <th>Комментарий</th>
+            <th/>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for org in orgs %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href='{{ url_for("sro2.views.orgsro_view", org.id) }}'>{{ org.org.name }}</a></td>
+                <td>{{ org.sro.name }}</td>
+                    <td>{{ org.speccomments }}</td>
+                <td><a href='{{ url_for("sro2.orgsro.views.orgsro_spec_del", org.id) }}'>Удалить</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    {% endif %}
+{% endblock %}

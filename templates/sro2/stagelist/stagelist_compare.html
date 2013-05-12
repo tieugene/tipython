@@ -1,0 +1,25 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Сравнение документов [{{ stagelist }}]
+{% endblock %}
+
+{% block content %}
+    <script>
+        $(function() {
+            $('#cmp_button').click(function() {
+                $("#cmp_result").html(' ').load('{{ url_for('views.index') }}sro2/stagelist/{{stagelist.id}}/cmp/' + $('#id_other').val())
+            })
+        })
+    </script>
+    <p>
+    <form action="{{ url_for('sro2.views.stagelist_cmp', stagelist.id) }}" method="POST" name="form2">
+        {{ compareto.other }}
+        <div class="ui-state-default ui-corner-all button eb" id="cmp_button"> Сравнить документы</div>
+        <p>
+
+        <div id='cmp_result'></div>
+    </form>
+    </p>
+
+{% endblock %}

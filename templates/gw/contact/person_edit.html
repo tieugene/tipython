@@ -1,0 +1,21 @@
+<!-- Person -->
+{% extends "gw/contact/person_base.html" %}
+{% block tabbar %}
+<table class="tabbed">
+	<tr>
+		<td class="tabactive"> <a href="{% url gw.views.person_index %}"> Люди </a> </td>
+		<td class="tabinactive"> <a href="{% url gw.views.org_index %}"> Организации </a> </td>
+		<td class="tabinactive"> <a href="{% url gw.views.contact_index_all %}"> Все контакты </a> </td>
+	</tr>
+</table>
+{% endblock %}
+{% block body_main %}
+<p> {% if mode %} Новый Человек {% else %} Редактировать Человека {% endif %} </p>
+<form action=".?next={{ next }}" method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{{ next }}"> Отказаться </a>
+</form>
+{% endblock %}

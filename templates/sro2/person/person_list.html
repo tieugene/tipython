@@ -1,0 +1,119 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Персонал [{{ letter }}]
+{% endblock %}
+
+{% block content %}
+    <script langauge="JavaScript" type="text/javascript">
+        function confirmDelete(delUrl) {
+            if (confirm("Are you sure you want to delete")) {
+                document.location = delUrl;
+            }
+        }
+        $(function() {
+            $('#alpha a').addClass('ui-state-default button ui-corner-all');
+            $('li, .smallbutton, .button').hover(
+                                                function() {
+                                                    $(this).addClass('ui-state-hover');
+                                                },
+                                                function() {
+                                                    $(this).removeClass('ui-state-hover');
+                                                }
+                    );
+
+            oTable = $('#persontable').dataTable({
+                "bJQueryUI": true,
+                "sScrollY": "800px",
+                "sDom": '<"ui-state-default ui-corner-all search"f>rtip',
+                "oLanguage": {
+                    "sSearch": "Поиск (по <span style='color:#eeaaaa'><b>любому</b></span> полю):",
+                    "sZeroRecords":  "Записи отсутствуют.",
+                    "sInfo": "Всего людей на странице: _TOTAL_"
+                },
+                "bPaginate": false,
+                "bSortClasses": false,
+                "bAutoWidth": false,
+            });
+
+            $('tr').hover(function() {
+                $(this).addClass('highlighted');
+            }, function() {
+                $(this).removeClass('highlighted');
+            });
+
+
+        })
+    </script>
+    <div id='alpha'>
+        <h3>Алфавитный указатель</h3>
+        <a href='{{ url_for('views.index') }}sro2/person/list/А'>А</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Б'>Б</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/В'>В</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Г'>Г</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Д'>Д</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Е'>Е</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Ж'>Ж</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/З'>З</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/И'>И</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/К'>К</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Л'>Л</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/М'>М</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Н'>Н</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/О'>О</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/П'>П</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Р'>Р</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/С'>С</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Т'>Т</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/У'>У</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Ф'>Ф</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Х'>Х</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Ц'>Ц</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Ч'>Ч</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Ш'>Ш</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Щ'>Щ</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Э'>Э</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Ю'>Ю</a>
+        <a href='{{ url_for('views.index') }}sro2/person/list/Я'>Я</a>
+    </div>
+
+    <hr>
+    {% if list %}
+        <table border="0" id='persontable' style="width: 100%">
+            <thead>
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Телефон</th>
+                <th>Организация</th>
+                    <th>Удалить</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for person in list %}
+                <tr>
+                    <td><a href="{{ url_for('sro2.views.person_view', person.id) }}">
+                        <div class='cell'>{{ person.lastname }}</div>
+                    </a></td>
+                    <td><a href="{{ url_for('sro2.person.views.person_view', person.id) }}">
+                        <div class='cell'>{{ person.firstname }} </div>
+                    </a></td>
+                    <td><a href="{{ url_for('sro2.person.views.person_view', person.id) }}">
+                        <div class='cell'>{{ person.midname }} </div>
+                    </a></td>
+                    <td> <a href="{{ url_for('sro2.person.views.person_view', person.id) }}">
+                        <div class='cell'>{% for contactphone in person.contactphone_set.all() %} {{ contactphone.phone.no }}<br>{% endfor %} </div></a></td>
+                    <td><a href="{{ url_for('sro2.person.views.person_view', person.id) }}">
+                        <div class='cell'>{{ person.orgstuff_set.count() }} </div>
+                    </a></td>
+                    <td> {% if chkuser(person,user) and user.has_perm('gw.delete_person') %} <input type="button" value="Удалить"
+                                                                                          title="Удалить"
+                                                                                          onClick="confirmDelete('{{ url_for('sro2.person.views.person_del', person.id) }}')"/> {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

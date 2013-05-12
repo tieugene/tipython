@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+        <link type="text/css" href="{% url views.index %}static/css/elen/jquery-ui-1.8.4.custom.css" rel="stylesheet">
+        <link type="text/css" href="{% url views.index %}static/css/index.css" rel="stylesheet">
+{#        <link type="text/css" href="{% url views.index %}static/css/jquery.ui.potato.menu.css" rel="stylesheet">    #}
+        <!--Debug CSS-->
+            <!--<link rel="stylesheet" href="{% url views.index %}static/css/debug.css" type="text/css">-->
+    <!--JS-->
+        <script type="text/javascript" src="{% url views.index %}static/js/jquery-1.4.3.min.js"></script>
+{#        <script type="text/javascript" src="{% url views.index %}static/js/jquery.ui.potato.menu.js"></script>#}
+        <script type="text/javascript" src="{% url views.index %}static/js/jquery-ui-1.8.5.custom.min.js"></script>
+{#        <script type="text/javascript" src="{% url views.index %}static/js/jquery.dataTables.js"></script>#}
+        <script type="text/javascript" src="{% url views.index %}static/js/datepicker_lang.js"></script>
+{% endblock %}

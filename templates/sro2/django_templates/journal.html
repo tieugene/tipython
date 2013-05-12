@@ -1,0 +1,94 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Журнал операций {% if sd %}[{{ sd }} - {{ ed }}]{% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <script>
+
+        $(document).ready(function() {
+            oTable = $('#journaltable').dataTable({
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers",
+                "sScrollY": "800px",
+                "sDom": '<"ui-state-default ui-corner-all search"f>rtip',
+                "oLanguage": {
+                    "sSearch": "Поиск (по <span style='color:#eeaaaa'><b>любому</b></span> полю):",
+                    "sZeroRecords":  "Записи отсутствуют."
+                },
+                "bPaginate": false,
+                "bSortClasses": false,
+            });
+        });
+        $(function() {
+            var dates = $('#from, #to').datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 3,
+                onSelect: function(selectedDate) {
+                    var option = this.id == "from" ? "minDate" : "maxDate";
+                    var instance = $(this).data("datepicker");
+                    var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
+                }
+            }).datepicker($.datepicker.regional['ru']);
+
+
+            $('#viewjournal').click(function() {
+                if ($('#from').val() && $('#to').val()) {
+                    window.location = "{% url sro2.views.journal %}" + $('#from').val() + '/' + $('#to').val() + '/'
+                } else {
+                    alert('Надо ввести ОБЕ даты!');
+                }
+            })
+
+        });
+    </script>
+    <div class="datepicker">
+        <label for="from">C</label>
+        <input type="text" id="from" name="from"/>
+        <label for="to">По</label>
+        <input type="text" id="to" name="to"/>
+	<span class='ui-corner-all ui-state-default button' id='viewjournal'>
+		Просмотреть журнал
+	</span>
+    </div>
+    {% if log %}
+        <hr/>
+        <table id='journaltable'>
+        <thead>
+        <tr>
+            <th> №</th>
+            <th> Время</th>
+            <th> Пользователь</th>
+            <th> Тип</th>
+            <th> Объект</th>
+            <th> Представление объекта</th>
+            <th> Комментарий</th>
+            <th> Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in log %}
+            <tr>
+                <td> {{ forloop.counter }} </td>
+                <td> {{ i.action_time|date:"d.m" }} {{ i.action_time|time:"H:i:s" }} </td>
+                <td> {{ i.user.first_name }} {{ i.user.last_name }}</td>
+                <td> {{ i.content_type }} </td>
+                <td> {{ i.object_id }} </td>
+                <td> {{ i.object_repr }} </td>
+                <td> {{ i.change_message }} </td>
+                <td align="center">
+                    {% ifequal i.action_flag 1 %} Добавлено {% endifequal %}
+                    {% ifequal i.action_flag 2 %} <p title="Изменение"> Изменено </p> {% endifequal %}
+                    {% ifequal i.action_flag 3 %} Удалено {% endifequal %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    {% endif %}
+</table>
+    <hr/>
+{% endblock %}

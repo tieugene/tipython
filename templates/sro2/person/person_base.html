@@ -1,0 +1,214 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+                    {{ person.lastname }}
+                {{ person.firstname }}
+                {{ person.midname }}
+    {% if user.is_superuser %}
+      <a href="{{ person.get_journal_url() }}">
+                <div class="ui-state-default ui-corner-all button jbutton">
+                    <span class="ui-icon ui-icon-clock"></span>
+                </div>
+    </a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        A.button {
+            border: outset;
+            background: lightgrey;
+            padding: 0px;
+            text-decoration: none;
+            color: black;
+            border-width: 1px;
+        }
+    </style>
+    <script langauge="JavaScript" type="text/javascript">
+        function confirmDelete(delUrl) {
+            if (confirm("Are you sure you want to delete")) {
+                document.location = delUrl;
+            }
+        }
+
+        $(function() {
+            $('.buttons').each(function(i) {
+                if ($('a', this).html() != null && $('div', this).html() != null) {
+                    $('a', this).addClass('ui-corner-left');
+                    $('div:last-child', this).addClass('ui-corner-right');
+                }
+
+                if ($('a', this).html() != null && $('div', this).html() == null) {
+                    $('a', this).addClass('ui-corner-all');
+                }
+
+                if ($('a', this).html() == null && $('div', this).html() != null) {
+                    $('div', this).addClass('ui-corner-all');
+                }
+            })
+
+            $('.phone_del').each(function(i) {
+                $(this).click(function() {
+                    confirmDelete('{{ url_for('views.index') }}gw/contact/' + $(this).attr('name') + '/phone_del/');
+                })
+            })
+        })
+    </script>
+
+    <a name="main"/>
+    <div class='th'><span class='title'>Основные данные: </span>
+        {% block body_main_button %} {% endblock %}</div>
+    {% block body_main %}
+        <table border="0">
+            <tr>
+                <td> Фамилия:</td>
+                <td> {{ person.lastname }} </td>
+            </tr>
+            <tr>
+                <td> Имя:</td>
+                <td> {{ person.firstname }} </td>
+            </tr>
+            <tr>
+                <td> Отчество:</td>
+                <td> {{ person.midname }} </td>
+            </tr>
+        </table>
+    {% endblock %}
+
+    <a name="phone"/>
+    <div class='th'><span class='title'>Телефоны: </span>
+        {% block body_phone_button %} {% endblock %}
+    </div>
+    {% block body_phone %}
+        <ul>
+            {% for i in person.contactphone_set.all()%}
+                <li class='buttons li_orgsro'>
+                    {{ i.phone.asstr() }}
+                    {% if canedit %}
+                        {% if user.has_perm('gw.change_contactphone') %}
+                            <a href="{{ url_for('gw.views.contact_phone_edit',i.id) }}" class='button ui-state-default eb'>
+                                Изменить
+                            </a>
+                        {% endif %}
+                        {% if user.has_perm('gw.delete_contactphone') %}
+                            <div class='button ui-state-default eb delete phone_del' name={{ i.id }}>
+                                Удалить
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+
+    <a name="skill"/>
+    <div class='th'><span class='title'>Квалификация: </span>
+        {% block body_skill_button %} {% endblock %}</div>
+    {% block body_skill %}
+        {% if person_skill %}
+
+            <table border="1">
+                <tr>
+                    <th> Специальность</th>
+                    <th> Подробности</th>
+                    <th/>
+                    <th/>
+                </tr>
+                {% for i in person_skill %}
+                    <tr>
+                        <td>{{ i.speciality.name }}<br>{{ i.dict }}</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td> Квалификация</td>
+                                    <td> {{ i.skill.name }} </td>
+                                </tr>
+                                {% if i.year %}
+                                    <tr>
+                                        <td> Год</td>
+                                        <td> {{ i.year }} </td>
+                                    </tr>{% endif %}
+                                <tr>
+                                    <td> Дата окончания</td>
+                                    <td> {% if i.skilldate %} {{ i.skilldate|date }} {% endif %} </td> </tr>
+                                <tr>
+                                    <td> Учебное заведение</td>
+                                    <td> {{ i.school }} </td>
+                                </tr>
+                                <tr>
+                                    <td> Стаж</td>
+                                    <td> {% if i.seniority %} {{ i.seniority }} {% endif %} </td> </tr>
+                                <tr>
+                                    <td> Стаж. Дата актуальности</td>
+                                    <td> {% if i.seniodate %} {{ i.seniodate|date }} {% endif %} </td> </tr>
+                                <tr>
+                                    <td> Аттестация. Дата выдачи</td>
+                                    <td> {% if i.tested %} {{ i.tested|date }} {% endif %} </td> </tr>
+                                {% if i.course_set.all()%}
+                                    <tr>
+                                        <td> СоПК.</td>
+                                        <td>
+                                            <hr>
+                                        </td>
+                                        {% for course in i.course_set.all()%}
+                                            <tr>
+                                                <td> СоПК. №</td>
+                                                <td> {% if course.courseno %} {{ course.courseno }} {% endif %} </td>
+                                            </tr>
+                                            <tr>
+                                                <td> СоПК. Дата</td>
+                                                <td> {% if course.coursedate %} {{ course.coursedate|date }} {% endif %} </td>
+                                            </tr>
+                                            <tr>
+                                                <td> СоПК. Тема</td>
+                                                <td> {% if course.coursename %} {{ course.coursename }} {% endif %} </td>
+                                            </tr>
+                                            <tr>
+                                                <td> СоПК. Уч. зав.</td>
+                                                <td> {% if course.courseschool %} {{ course.courseschool }} {% endif %} </td>
+                                            </tr>
+                                            <tr>
+                                            <td>
+                                                <hr>
+                                            </td>
+                                            <td>
+                                                <hr>
+                                            </td>
+                                        {% endfor %}
+                                {% endif %}
+
+                            </table> </td>
+                        <td> {% if user.has_perm('gw.delete_personskill') %} <input type="button" value="Удалить" title="Удалить"
+                                                                         onClick="confirmDelete('{{ url_for('sro2.views.person_skill_del', person.id, i.id) }}#stuff')"/> {% endif %}
+                        </td>
+                        <td> {% if user.has_perm('gw.delete_personskill') %} <input type="button" value="Изменить"
+                                                                         title="Изменить"
+                                                                         onClick="window.location='{{ url_for('sro2.views.person_skill_edit', person.id, i.id) }}#stuff'"/> {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        {% endif %}
+    {% endblock %}
+    <a name="org"/>
+    <div class='th'><span class='title'>Числится в: </span></div>
+    {% block body_org %}
+        {% if person.orgstuff_set %}
+            <ul>
+                {% for i in orgstuff_list %}
+                    {% for j in person.personorgsro_set.all()%}
+                        {% if i.org == j.org %}
+                            <li> <a href="{{ url_for('sro2.views.orgsro_view', j.sro.id, i.org.id) }}"> {{ i.org.shortname }}
+                                в {{ j.sro.name }}:</a> <font
+                                    style="text-transform: lowercase;"> {{ i.role }}, {% if i.permanent == 1 %}
+                                Постоянно {% else %} Совместитель{% endif %}{% if i.enddate %},
+                                Уволен{% endif %} </font> </li>
+                        {% endif %}
+                    {% endfor %}
+                    <br>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
