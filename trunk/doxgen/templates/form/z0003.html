@@ -1,0 +1,46 @@
+{% extends "auto_form.html" %}
+<!-- customization fields -->
+{% load kwacros %}
+{% loadkwacros "fieldwrap.html" %}
+{% block body_form %}
+<table border="1">
+		{% usekwacro fieldwrap form.name %}
+		<div>
+		<fieldset>
+			<legend> Получатель </legend>
+			<div class="list">
+				{% usekwacro fieldwrap form.recipient %}
+				{% usekwacro fieldwrap form.recishort %}
+				{% usekwacro fieldwrap form.inn %}
+				{% usekwacro fieldwrap form.kpp %}
+				{% usekwacro fieldwrap form.okato %}
+				{% usekwacro fieldwrap form.account %}
+				{% usekwacro fieldwrap form.bank %}
+				{% usekwacro fieldwrap form.bik %}
+				{% usekwacro fieldwrap form.ks %}
+			</div>
+		</fieldset>
+		</div>
+		<div>
+		<fieldset>
+			<legend> Плательщик </legend>
+			<div class="list">
+				{% usekwacro fieldwrap form.payer_fio %}
+				{% usekwacro fieldwrap form.payer_address %}
+				{% usekwacro fieldwrap form.payer_inn %}
+			</div>
+		</fieldset>
+		</div>
+		<div>
+		<fieldset>
+			<legend> Платеж </legend>
+			<div class="list">
+				{% usekwacro fieldwrap form.kbk %}
+				{% usekwacro fieldwrap form.details %}
+				{% usekwacro fieldwrap form.total %}
+				{% usekwacro fieldwrap form.date %}
+			</div>
+		</fieldset>
+		<div>
+</table>
+{% endblock %}

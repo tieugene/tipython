@@ -1,0 +1,13 @@
+<!-- File -->
+{% extends "gw/file/base.html" %}
+{% block title %} Файл {% endblock %}
+{% block topbar %} <a href="{% url gw.views.file_index %}"> Файлы </a> {% endblock %}
+{% block body_main %}
+<p> {% if mode %} Новый файл {% else %} Редактировать Файл {% endif %} </p>
+<form action="." method="POST">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+</form>
+{% endblock %}

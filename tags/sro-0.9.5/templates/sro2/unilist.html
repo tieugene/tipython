@@ -1,0 +1,53 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    List of {{ obj }} by {{ critline }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            text-align: center;
+        }
+
+        td {
+            padding: 2px 6px;
+            margin: 0px;
+        }
+
+        table {
+            width: 100%;
+        }
+    </style>
+    {% if result %}
+        Количество: {{ result|length }}<br>
+        {{ info }}
+        <table border=1>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>ID</th>
+                <th>asStr</th>
+                <th>__DICT__</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for line in result %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ line.id }}</td>
+                    <td>{{ line }}</td>
+                    <td>
+                        {% for key,value in line.dict.iteritems %}
+                            {% ifnotequal key 'dict' %}
+                                {{ key }} = {{ value }}<br>
+                            {% endifnotequal %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document filename="{{ data.stagelist.permit.no }}.pdf">
+	<docinit>
+		<registerFont fontName="Sans"		fontFile="{{ STATIC_ROOT }}/ttf/LiberationSans-Regular.ttf"/>
+		<registerFont fontName="Serif"		fontFile="{{ STATIC_ROOT }}/ttf/LiberationSerif-Regular.ttf"/>
+		<registerFont fontName="Serif-B"	fontFile="{{ STATIC_ROOT }}/ttf/LiberationSerif-Bold.ttf"/>
+	</docinit>
+
+	<template pageSize="(21cm, 29.7cm)" title="{{ data.stagelist.permit.no }}" author="{{ data.user }}" subject="Permit" showBoundary="0">
+		<pageTemplate id="main">
+			<frame id="main"	x1="3cm" y1="2cm" width="15cm" height="17cm"/>
+<pageGraphics>
+	<!-- Use drawString to place a fixed title on the page -->
+	<setFont name="Serif" size="10"/>
+
+<drawCentredString x="10.5cm" y="23.85cm" style="style0">191040, г. Санкт-Петербург, ул. Марата, дом 42 </drawCentredString>
+</pageGraphics>
+
+		</pageTemplate>
+		<pageTemplate id="even">
+			<pageGraphics>
+				<setFont name="Sans" size="10"/>
+				<drawCentredString x="15.5cm" y="27.35cm"> {{ data.stagelist.permit.no }} от {{ data.date }} </drawCentredString>
+		<para style="style0" alignment="center" fontSize="10" y='6cm'></para>
+			</pageGraphics>
+			<frame id="no"		x1="1.8cm" y1="3.0cm" width="17.5cm" height="22.8cm"/>
+		</pageTemplate>
+		<pageTemplate id="odd">
+			<frame id="no"		x1="1.8cm" y1="3.0cm" width="17.5cm" height="25.1cm"/>
+		</pageTemplate>
+	</template>
+	<stylesheet>
+		<initialize/>
+		<paraStyle	name="style0"	fontName="Serif"/>
+		<blockTableStyle id="myTable"> <lineStyle kind="GRID" colorName="black"/> </blockTableStyle>
+	</stylesheet>
+
+	<story>
+		<blockTable>
+			<tr>
+				<td> <para style="style0" alignment="left" fontSize="12"> {{ data.date }} </para> </td>
+				<td> <para style="style0" alignment="right" fontSize="14" fontName="Serif-B"> № {{ data.stagelist.permit.no }} </para> </td>
+			</tr>
+		</blockTable>
+		<para style="style0" alignment="left" fontSize="12" spaceBefore="24"> Выдано члену саморегулируемой организации: </para>
+		<para style="style0" alignment="center" fontSize="12" fontName="Serif-B" spaceBefore="10"> {{ data.stagelist.orgsro.org.okopf.namedp }} {{ data.stagelist.orgsro.org.fullname }} </para>
+		<para style="style0" alignment="center" fontSize="9"> ИНН {{ data.stagelist.orgsro.org.inn }}, {{ data.stagelist.orgsro.org.ogrn_label }} {{ data.stagelist.orgsro.org.ogrn }}, адрес местонахождения{% if data.stagelist.orgsro.org.foreign %} филиала{% endif %}: {{ data.stagelist.orgsro.org.laddress }}. </para>
+		<para style="style0" alignment="justify" fontSize="12" spaceBefore="12"> Основание выдачи Свидетельства: <font face="Serif-B"> решение Правления Некоммерческого партнерства саморегулируемой организации {{ data.stagelist.orgsro.sro.fullname }}, протокол №{{ data.stagelist.permit.protocol.no }} от {{ data.protodate }}. </font> </para>
+		<para style="style0" alignment="justify" fontSize="10" spaceBefore="20"> Настоящим Свидетельством подтверждается допуск к работам, указанным в приложении к настоящему Свидетельству, которые оказывают влияние на безопасность объектов капитального строительства. </para>
+		<para style="style0" alignment="justify" fontSize="10" spaceBefore="10"> Начало действия с {{ data.date }}. </para>
+		<para style="style0" alignment="justify" fontSize="10" spaceBefore="10"> Свидетельство без приложения не действительно. </para>
+		<para style="style0" alignment="justify" fontSize="10" spaceBefore="10"> Свидетельство выдано без ограничения срока и территории его действия. </para>
+		<para style="style0" alignment="justify" fontSize="10" spaceBefore="10"> Свидетельство выдано взамен ранее выданного {% if data.prevperm %} № {{ data.prevperm.permit.no }} {% else %} Нет {% endif %}. </para>
+		<para spaceBefore="45"/>
+		<blockTable>
+			<tr>
+				<td> <para style="style0" alignment="left" fontSize="10"> {{ data.stagelist.orgsro.sro.sroown.bosstitle }} </para> </td>
+				<td> <para style="style0" alignment="right" fontSize="10"> {{ data.stagelist.orgsro.sro.sroown.boss }} </para> </td>
+			</tr>
+		</blockTable>
+		<para style="style0" alignment="left" fontSize="12" spaceBefore="12" leftIndent="8cm"> МП </para>
+	<!-- Addon -->
+		<setNextTemplate name="even,odd"/>
+		<nextFrame/>
+		<para style="style0" alignment="center" fontSize="14" fontName="Serif-B"> Виды работ, которые оказывают влияние на безопасность объектов капитального строительства и о допуске к которым член Некоммерческого партнерства саморегулируемой организации {{ data.stagelist.orgsro.sro.fullname }} <font face="Serif"> {{ data.stagelist.orgsro.org.okopf.name }} {{ data.stagelist.orgsro.org.fullname }} </font> имеет Свидетельство</para>
+
+		<para spaceBefore="12"/>
+		<blockTable colWidths="1.5cm,8.5cm,7cm" style="myTable">
+			<tr>
+				<td> <para style="style0" alignment="center" fontSize="10" fontName="Serif-B" valign="middle"> № </para> </td>
+				<td> <para style="style0" alignment="center" fontSize="10" fontName="Serif-B" valign="middle"> Наименование вида работ </para> </td>
+				<td> <para style="style0" alignment="center" fontSize="10" fontName="Serif-B" valign="center"> Отметка о допуске к видам работ, которые оказывают влияние на безопасность особо опасных, технически сложных и уникальных объектов, предусмотренных статьей 48.1 Градостроительного кодекса Российской Федерации </para> </td>
+			</tr>
+			{% for stage in data.stages %}
+			{%if stage.id in data.o or stage.id in data.d%}
+			<tr>
+				<td> <para style="style0" alignment="center" fontSize="10" {% if not stage.parent %} fontName="Serif-B" {% endif %}> {{ stage.code }} </para> </td>
+				<td> <para style="style0" alignment="left" fontSize="10" {% if not stage.parent %} fontName="Serif-B" {% endif %} > {{ stage.name }} </para> </td>
+				{% if stage.is_leaf %}
+				<td> <para style="style0" alignment="center" fontSize="10"><font face="Serif-B"> {% if stage.id in data.d %}<b>с допуском</b>{% else %}<b>без допуска</b>{% endif %}</font> на особо опасные и технически сложные объекты </para> </td>
+				{% endif %}
+			</tr>
+				{% endif %}
+		{% endfor %}
+		</blockTable>
+		<para spaceBefore="36"/>
+		<blockTable>
+			<tr>
+				<td> <para style="style0" alignment="left" fontSize="10"> {{ data.stagelist.orgsro.sro.sroown.bosstitle }} </para> </td>
+				<td> <para style="style0" alignment="right" fontSize="10"> {{ data.stagelist.orgsro.sro.sroown.boss }} </para> </td>
+			</tr>
+			</blockTable>
+		<para spaceBefore="10"/>
+	<blockTable>
+			<tr>
+				<td>
+		<para>
+					<font face="Serif-B">Примечание:</font> <font face="Serif">Виды работ указываются в соответствии с Перечнем видов работ по инженерным изысканиям, по подготовке проектной документации, по строительству, реконструкции, капитальному ремонту объектов капитального строительства, которые оказывают влияние на безопасность объектов капитального строительства, утвержденным приказом Министерства регионального развития Российской Федерации от 30 декабря 2009 г. № 624 (зарегистрирован в Минюсте России 15 апреля 2010 г., регистрационный № 16902).</font>
+				</para>
+</td>
+			</tr>
+			</blockTable>
+	</story>
+</document>
+

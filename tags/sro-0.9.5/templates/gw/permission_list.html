@@ -1,0 +1,256 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Права на модели
+
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+
+
+/*  TABLES
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+tr.alt th, tr.alt td {
+    background: #f4f4f4;
+}
+.row1 th, .row1 td {
+    background: #f4f4f4;
+}
+.row2 th, .row2 td {
+    background: #fff;
+}
+.selected th, .selected td {
+    background: #ffd;
+}
+
+
+/*  Thead ................................................... */
+
+thead th,
+tfoot td {
+    color: #aaa;
+    border-left: 1px solid #d4d4d4;
+    border-bottom: 1px solid #d4d4d4;
+    background: #eee;
+    background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e0e0e0));
+    background: -moz-linear-gradient(top, #eee, #e0e0e0);
+}
+thead th:first-of-type {
+    border-top-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px;
+}
+thead th:last-of-type {
+    border-top-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px;
+}
+thead th.sorted {
+    border-bottom: 1px solid #ccc;
+    background: #e0e0e0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e0e0e0), to(#eee));
+    background: -moz-linear-gradient(top, #e0e0e0, #eee);
+}
+
+thead th a:link, thead th a:visited {
+    color: #59afcc;
+    border-top: 1px solid #fff;
+}
+thead th a:hover, thead th a:active,
+thead th.sorted a {
+    color: #444;
+}
+thead th.sorted a {
+    border-top: 1px solid #ececec;
+}
+
+
+/*  Tbody ................................................... */
+
+tbody th, tbody td {
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+tfoot td {
+    border-bottom: 0;
+    border-top: 1px solid #d4d4d4;
+}
+
+thead th:first-child,
+tfoot td:first-child {
+    border-left: 0;
+}
+
+fieldset table {
+    border-right: 1px solid #eee;
+}
+
+tr.row-label td {
+    border-bottom: 0;
+    color: #666;
+}
+    </style>
+
+
+<script langauge="JavaScript" type="text/javascript">
+
+        $(function() {
+            var i = 0;
+            {% for contenttype in contenttypes %}
+                var li = $( "<li>" )
+                    .appendTo('#ul_tabs')
+                        //.html("<a href='{{ url_for("views.index") }}gw/permission/gettable/" + i + "'>{{ contenttype.model_class()._meta.verbose_name_plural }}</a>");
+                        .html("<a href='#tabs-" + (i+1) + "' style='padding-bottom:0px; padding-top:0px;'>{{ contenttype.model_class()._meta.verbose_name_plural }}</a>")
+                        .css('height', '23px');
+                var div = $('<div>')
+                    .appendTo('#tabs')
+                //    .html('{{ contenttype.model_class()._meta.verbose_name_plural }}')
+                    .attr('id', 'tabs-' + (i+1));
+                i = i + 1;
+
+
+
+            {% endfor %}
+
+ loadTable(0);
+
+            function loadTable(number){
+					// $('#main_table').html('');  
+                $('#main_table').load(
+					       '{{ url_for("views.index") }}gw/permission/gettable/' +  number,
+					       function () {
+
+
+            $('.input_perm1, .input_perm2, .input_perm3, .input_perm4').change(function(){
+                uncheck($(this));
+                })
+            //                   $('.tr_checkboxes').change(function(){
+              //                     uncheck($(this));
+                //              })
+
+
+					       }
+					   )
+              }
+                    $("#tabs").tabs();
+
+
+            function uncheck(input){
+                if (input.attr('checked')){
+                    tr = input.parent().parent();
+                      id = tr.attr('id');
+                      number = input.attr('perm');
+                    if (number != 1){
+                    $('.input_perm1', tr).attr('checked', false);
+
+                    }
+                    if (number != 2){
+                    $('.input_perm2', tr).attr('checked', false);
+                    }
+                                        if (number != 3){
+                    $('.input_perm3', tr).attr('checked', false);
+                    }
+                                        if (number != 4){
+                    $('.input_perm4'. tr).attr('checked', false);
+                    }
+                                      if (number == 1){
+                    input.parent().parent().attr('bgcolor', '#ffcccc');
+                    }
+                                                          if (number == 2){
+                    input.parent().parent().attr('bgcolor', '#FFc065');
+                    }
+                                                          if (number == 3){
+                    input.parent().parent().attr('bgcolor', '#ffffcc');
+                    }
+                                                          if (number == 4){
+                    input.parent().parent().attr('bgcolor', '#ccffcc');
+                    }
+
+                  }else{
+                    input.parent().parent().attr('bgcolor', '');
+                }
+                input.parent().parent().attr('changed', '1');
+            }
+
+            $('#ul_tabs li a').click(function() {
+                var number =getNumberFromId($(this).attr('href')) - 1;
+                loadTable(number);
+            })
+            //$('#tabs-1').html($('#main_table').html());
+
+				function getNumberFromId(id) {
+					return parseInt(id.substring(id.length - 1, id.length));
+				}
+
+            $('#buttonSave').click(function(){
+                post ='[';
+                $('tr').each(function(i) {
+                  if ($(this).attr('changed') == '1') {
+
+                        id = tr.attr('id').substring(5);
+
+                        if (tr.attr('id').substring(4) == 'u'){
+                            is_user = true;
+                        }else{
+                            is_user = false;
+                        }
+
+                        perm = 0;
+                        if ($('.input_perm1', tr).attr('checked')){
+                            perm = 1
+                        }
+                        if ($('.input_perm2', tr).attr('checked')){
+                            perm = 2
+                        }
+                        if ($('.input_perm3', tr).attr('checked')){
+                            perm = 3
+                        }
+                                              if ($('.input_perm4', tr).attr('checked')){
+                            perm = 4
+                        }
+
+                        post += '{'
+                        post += '"id:"' + id + '",';
+                        post += '"is_user:"' + is_user + '",';
+                        post += '"perm:"' + perm + '",';
+                        post += '}'
+
+
+                  }
+
+                })
+                post += ']';
+                  $.post(
+                       "{{ url_for('views.index') }}gw/permission/save/" + number +"",
+                       post,
+                       function (data) {
+                           alert('Gut gemacht!');
+                       }
+                  )
+
+            })
+
+
+
+        });
+    </script>
+
+    <div id="tabs">
+
+	<ul id="ul_tabs" style="height:25px;">
+	</ul>
+
+
+
+    <br>
+    <div id='main_table'>
+    </div>
+
+        <br>
+
+    	<div id='buttonSave'
+          class='ui-corner-all ui-state-default eb button'>
+    Сохранить
+    </div>
+
+</div>
+{% endblock %}

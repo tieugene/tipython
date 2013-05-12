@@ -1,0 +1,3 @@
+#!/bin/sh
+# clean all *.pyc
+find .. -type f -name "*.pyc" -delete

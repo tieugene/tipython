@@ -1,0 +1,171 @@
+So - Action toolbar is dropdownmenu w <button> [+ dialog]
+
+jQueryUI:
+	Dialog
+	Tabs
+	Datepicker
+	Sortable
+	Autocomplete
+	Button+Dilog?
+== B312 ==
++ rename templates
++ rename templates in views
++ tune up templates
++ static
+* mk std for generic views (README):
+	* list (+)
+	* detail (+)
+	* create
+	* update
+	* delete
+* core std:
+	* views: generic views:
+		* object_list
+		* object_detail
+		* create_object
+		* update_object
+		* delete_object
+		* permalink
+		* pager
+	* templates:
+		* item => object
+		* permalink
+		* pager
+* test admin
+* Interface:
+	* top toolbar
+* menu
+* Functions naming:
+	* _idx/lst
+	* _dtl
+	* _add
+	* _edt
+	* _del
+* Contact: Add something - to pulldown list
+* OrgStuff => Stuff
+
+== objectpermissions tags ==
+* for i in allavailable tags
+* for i in object.users
+or
+* for i in object.objectuser_set
+* if 
+Useful:
+	<user>/<group>.get_object_perm(self, instance, format='int') - get all perms of user on instance
+	ObjectPermission.objects.all_with_perm(permission)
+
+== Refucktoring ==
+bits:
+	* del models:
+		* Speciality
+		* Skill
+		* PersonSkill
+		* Course
+	* del params:
+		* Person.skills
+		* Person.user
+		* Org.*
+		* OrgStuff[3:]
+	* move to ref:
+		* Okato
+		* Okopf
+		* Okved
+	* rename:
+		* Role => JobRole
+====
+Object tabs:
+	* details
+	* links?
+	* permissions
+	* history
+	* tagging
+== Averrin ==
+def	log_it(request, object, action='', change_message=''):
+	if object.pk is None and not action:
+		action=ADDITION
+	elif not action:
+		action=CHANGE
+	LogEntry.objects.log_action(
+		user_id		= request.user.id,
+		content_type_id	= ContentType.objects.get_for_model(object).pk,
+		object_id	= object.pk,
+		object_repr	= object.asstr(), # Message you want to show in admin action list
+		change_message	= u'UI: ' + change_message,
+		action_flag	= action	# django.contrib.admin.models: ADDITION/CHANGE/DELETION
+	)
+	if action == CHANGE:
+		try:
+			pres_object = object.__class__.objects.get(pk=object.pk)
+		except:
+			action = ADDITION
+	if action == CHANGE:
+		for prop in object.__dict__.keys():
+		    try:
+			j = LogEntry.objects.latest('action_time')
+			n = LogEntryField.objects.all().count() + 1
+			# FIXME: meta?..
+			if not prop.startswith('_') and str(object.__dict__[prop]) != str(pres_object.__dict__[prop]):
+			    present = str(pres_object.__dict__[prop])
+			    new = str(object.__dict__[prop])
+			    try:
+				field=object._meta.get_field(prop).verbose_name	# not FK?..
+			    except:
+				try:
+				    field = object._meta.get_field(prop[0:-3]).verbose_name	# FK?..
+				    if not getattr(pres_object, prop[0:-3]) is None:
+					present = getattr(pres_object,prop[0:-3]).asstr()
+				    if not getattr(object,prop[0:-3]) is None:
+					new = getattr(object,prop[0:-3]).asstr()
+				except:
+				    field = prop
+			    ch = LogEntryField (
+				    n,	# ???
+				    j.id,
+				    u'%s %s' % (request.user.first_name,request.user.last_name),
+				    field,
+				    present,
+				    new,
+				    )
+			    ch.save()
+			    n+=1
+		    except Exception,e:
+			raise Exception('[%s] %s -- %s \n%s' % (prop, str(pres_object.__dict__[prop]), str(object.__dict__[prop]),e))
+	return action
+
+class ExtraObject(object):
+	'''
+	Abstract class for logging object changes
+	'''
+	def save(self, force_insert = False, force_update = False, action='', using=''):
+		if not action:
+			action = log_it(get_request(), self)
+		else:
+			log_it(get_request(), self, action)
+		if issubclass(self.__class__, PolymorphicModel):
+			PolymorphicModel.save(self, force_insert = force_insert, force_update = force_update)
+		else:
+			models.Model.save(self, force_insert = force_insert, force_update = force_update, using = using)
+		if ((action == ADDITION) or (action == 4)):
+			log = LogEntry.objects.latest('action_time')
+			log.object_id = self.id	# ???
+			log.save()
+		return
+
+	def delete(self):
+		# raise Exception('boom')
+		log_it(get_request(), self, DELETION)
+		models.Model.delete(self)
+		return
+
+	def get_journal_url(self):
+		ctype=ContentType.objects.get_for_model(self.__class__)
+		return LOGIN_REDIRECT_URL+"sro2/journal/%s/%i/" % (ctype.model, self.id)
+== Timer ==
+	<script LANGUAGE="JavaScript">
+		tx = (new Date()).getTime()/1000;
+		function fx() {
+			tz = (new Date()).getTime()/1000;
+			document.getElementById("tz").innerHTML = "" + {% if t0 %} (tx - {{ t0 }}).toFixed(2) +  "+" + {% endif %} (tz - tx).toFixed(2);
+		};
+		window.onload = fx;
+	</script>

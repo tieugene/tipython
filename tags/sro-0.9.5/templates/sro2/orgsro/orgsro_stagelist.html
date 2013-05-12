@@ -1,0 +1,90 @@
+{% extends "sro2/orgsro/orgsro_base.html" %}
+{% block body_permit %}
+    <table id='permits'>
+
+        <tr>
+            <th> Тип</th>
+            <th> Документ</th>
+            <th>
+            <th/>
+            <th>
+            <th/>
+            <th>
+            <th/>
+        </tr>
+
+        {% for statement in statements %}
+            <tr>
+                <td><a href="{{ url_for('sro2.stagelist.views.stagelist_view', statement.id, 0, 0) }}">
+                    <div class='cell'>
+                        Заявление
+                    </div>
+                </a>
+                </td>
+                <td><a href="{{ url_for('sro2.stagelist.views.stagelist_view', statement.id, 0, 0) }}">
+                    <div class='cell'>
+                        от {{ statement.date|date }}</div>
+                </a>
+                </td>
+                <td>
+                    {% if user.has_perm('sro2.delete_stagelist') %} <input type="button" title="Удалить" value="Удалить"
+                                                                class='button ui-state-error'
+                                                                onClick="confirmDelete('{{ url_for("sro2.statement.views.statement_del", statement.id) }}#permit')"/> {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+        {% for permit in permits %}
+            <tr>
+                <td><a href="{{ url_for('sro2.stagelist.views.stagelist_view', permit.id, 0, 0) }}"
+                       {% if permit == orgsro.currperm %}class='current'{% endif %}>
+                    <div class='cell'>Свидетельство</div>
+                </a>
+                </td>
+                <td>
+                    <div class='cell'><a href="{{ url_for('sro2.stagelist.views.stagelist_view', permit.id, 0, 0) }}"
+                                         {% if permit == orgsro.currperm %}class='current'{% endif %}>
+                        № {{ permit.no }} от {{ permit.date|date }}, протокол № {{ permit.protocol.no }}
+                        от {{ permit.protocol.date|date }}</div>
+                    </a>
+                </td>
+                <td>
+                    {% if user.has_perm('sro2.delete_stagelist') %} <input type="button" title="Удалить" value="Удалить"
+                                                                class='button ui-state-error'
+                                                                onClick="confirmDelete('{{ url_for('sro2.permit.views.permit_del', permit.stagelist_ptr_id) }}#permit')"/> {% endif %}
+                </td>
+                <td>
+                    {% if permit == orgsro.currperm %}
+                        <a class="button ui-state-default" title="Сделать недействующим"
+                           href="{{ url_for('sro2.permit.views.permit_resetdefault', orgsro.id) }}">Сделать <b>не</b>действующим</a>
+                    {% else %}
+                        <a class="button ui-state-default" title="Назначить действующим"
+                           href="{{ url_for('sro2.permit.views.permit_setdefault', permit.permit.id) }}">Назначить
+                            действующим</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+        {% if user.has_perm('sro2.add_stagelist') %}
+            <form action=".#permit" method="POST">
+                <tr>
+                    <td colspan="2">
+                        <select name="type_id" id="type_id">
+                            <option value="" selected="selected">---------</option>
+                            <option value="statement">1: Заявление</option>
+                            <option value="permit">2: Свидетельство</option>
+                            <!--<option value="99">3: Свидетельство чужое</option>-->
+                        </select>
+                    </td>
+                    <td>
+                        <input type="submit" value="Добавить"/>
+                    </td>
+                </tr>
+            </form>
+        {% endif %}
+
+    </table>
+
+    <a class="button ui-state-default" href="{{ url_for('sro2.orgsro.views.orgsro_view', orgsro.id) }}#permit"> Закончить </a>
+{% endblock %}

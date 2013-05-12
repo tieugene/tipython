@@ -1,0 +1,20 @@
+<!-- KLADR -->
+{% extends "ref/base.html" %}
+{% block title %} КЛАДР {% endblock %}
+{% block topbar %} КЛАДР {% endblock %}
+{% block body_main %}
+<table width="100%" border="1" cellpading="0">
+<tr> <th> # </th> <th> id </th> <th> name </th> <th> short </th> <th> zip </th> <th> center </th> <th> okato </th> </tr>
+{% for item in item_list %}
+	<tr>
+	<td> {{ forloop.counter }} </td>
+	<td> {{ item.id }} </td>
+	<td> <a href="{% url apps.ref.views.kladr_view item.id %}"> {{ item.name }} </a> </td>
+	<td> {{ item.short.name }} </td>
+	<td> {% if item.zip %} {{ item.zip }} {% endif %} </td>
+	<td> {% if item.center %} {{ item.center }} {% endif %} </td>
+	<td> {% if item.okato %} {{ item.okato }} {% endif %} </td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

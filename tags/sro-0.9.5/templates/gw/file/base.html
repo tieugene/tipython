@@ -1,0 +1,9 @@
+<!-- File.Base -->
+{% extends "gw/base.html" %}
+{% block title %} Файл {% endblock %}
+{% block topmenu %}
+	{% include "gw/file/menu.html" %}
+{% endblock %}
+{% block bottom_script %}
+	setmenu("menu_gw_file");
+{% endblock %}

@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title> {{ orgsro.org.name }} </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        body {
+            font-family: Serif;
+            font-size: small;
+        }
+
+        H1 {
+            font-size: large;
+            text-align: center;
+        }
+
+        H2 {
+            font-size: medium;
+        }
+    </style>
+</head>
+<body>
+
+<h1> {{ orgsro.org.okopf.shortname }} {{ orgsro.org.name }} </h1>
+
+<!-- main -->
+<hr/>
+<h2> Основные данные: </h2>
+<table border="0">
+    <tr>
+        <td> Краткое наименование:</td>
+        <td> {{ orgsro.org.okopf.shortname }} {{ orgsro.org.shortname }} </td>
+    </tr>
+    <tr>
+        <td> Полное наименование:</td>
+        <td> {{ orgsro.org.okopf.name }} {{ orgsro.org.fullname }} </td>
+    </tr>
+    <tr>
+        <td> ИНН:</td>
+        <td> {{ orgsro.org.inn }} </td>
+    </tr>
+    <tr>
+        <td> КПП:</td>
+        <td> {{ orgsro.org.kpp }} </td>
+    </tr>
+    <tr>
+        <td> {{ orgsro.org.ogrn_label }}:</td>
+        <td> {{ orgsro.org.ogrn }} </td>
+    </tr>
+    <tr>
+        <td> ОКАТО:</td>
+        <td> {{ orgsro.org.okato }} </td>
+    </tr>
+    <tr>
+        <td> Адрес юридический:</td>
+        <td> {{ orgsro.org.laddress }} </td>
+    </tr>
+    <tr>
+        <td> Адрес фактический:</td>
+        <td> {{ orgsro.org.raddress }} </td>
+    </tr>
+    <tr>
+        <td> Реестровый №:</td>
+        <td> {{ orgsro.regno }} </td>
+    </tr>
+    <tr>
+        <td> Дата членства в НП:</td>
+        <td> {{ orgsro.regdate|date }} </td>
+    </tr>
+    {% if orgsro.status == 3 %}
+	<tr>
+	    <td> Дата исключения:</td>
+	    <td> {{ orgsro.excludedate|date("d.m.Y") }} </td>
+	</tr>
+	<tr>
+	    <td> Причина исключения:</td>
+	    <td>{% for r in orgsro.reason.all() %} {{ r.title }};<br> {% endfor %} </td>
+	</tr>
+	<tr>
+	    <td> Протокол-основание исключения:</td>
+	    <td> {{ orgsro.exprotocol }} </td>
+	</tr>
+    {% endif %}
+</table>
+
+<!-- okved -->
+<hr/>
+<h2> ОКВЭД: </h2>
+<ul> {% for i in orgsro.org.okveds.all() %}
+    <li> {{ i.asstr() }} </li> {% endfor %} </ul>
+
+<!-- phone -->
+<hr/>
+<h2> Телефоны: </h2>
+<ul> {% for i in orgsro.org.contactphone_set.all() %}
+    <li> {{ i.asstr() }} </li> {% endfor %} </ul>
+
+<!-- email -->
+<hr/>
+<h2> Email: </h2>
+<ul> {% for i in orgsro.org.contactemail_set.all() %}
+    <li><a href="mailto:{{ i.asstr() }}"> {{ i.asstr() }} </a></li> {% endfor %} </ul>
+
+<!-- www -->
+<hr/>
+<h2> WWW: </h2>
+<ul> {% for i in orgsro.org.contactwww_set.all() %}
+    <li><a href="{{ i.asstr() }}"> {{ i.asstr() }} </a></li> {% endfor %} </ul>
+
+<!-- stuff -->
+<hr/>
+<h2> Персонал: </h2>
+<ul>
+{% for i in person_list %}
+	<li> {{ i.person.asstr() }} - {{ i.role.asstr() }} </li>
+{% endfor %}
+</ul>
+
+<!-- permit -->
+<hr/>
+<h2> Действующее свидетельство о допуске: </h2>
+{% if orgsro.currperm %}
+	<p><a href="../permit/{{ orgsro.currperm.id }}.html"> № {{ orgsro.currperm.no }} от {{ orgsro.currperm.date|date }},
+	    протокол № {{ orgsro.currperm.protocol.no }} от {{ orgsro.currperm.protocol.date|date }} </a></p>
+{% else %}
+	Нет
+{% endif %}
+<h3> История изменения: </h3>
+<ul>
+    {% for item in history %}
+        <li>
+            {% if item.status == 1 %}
+                Действие Свидетельства приостановлено с {{ item.date|date }} по {{ item.get_datetill()|date }} в отношении
+                всех видов работ в соотвествии со статьей 55.5 ГрКРФ на основании
+                решения {{ item.protocol.asstr_short() }}, протокол № {{ item.protocol.no }}
+                от {{ item.protocol.date|date }}, на срок {{ item.get_daystill() }} календарный дней.
+            {% endif %}
+            {% if item.status == 2 %}
+                Действие Свидетельства возобновлено с {{ item.date|date }} в отношении всех видов работ на основании
+                решения {{ item.protocol.asstr_short() }}, протокол № {{ item.protocol.no }}
+                от {{ item.protocol.date|date }}.
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+<h2> Ранее выданные свидетельство о допуске: </h2>
+<ul>
+    {% for item in permits %}
+	{% if item !=  orgsro.currperm %}
+        <li> <a href="../permit/{{ item.id }}.html"> № {{ item.no }} от {{ item.date|date }}, протокол
+            № {{ item.protocol.no }} от {{ item.protocol.date|date }} </a> </li>
+	{% endif %}
+    {% endfor %}
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+20120221:
+	* org_date_reg added (dox_0004_A..E)
+20120219:
+	* fixed doc_detail_0004 (wrong <form> place)
+	* fixed date regex
+	* inn, kpp, ogrn added
+	* doc_0004_C: landscape
+	* doc_0004_2: page numbers
+20120219:
+	* shortcuts: founder_doc, founder_addr, org_addr etc
+	* ОбществА, управлениЕМ, МедведевУ (pymorphy)
+	* reordered contrib/user04
+	* reordered templates
+	* Опись OK
+	* Проклейки OK
+	* doc_0004:
+		* separate import
+		* html preview
+		* per-document rendering
+20120212:
+	* doc_004_C ok
+20120211:
+	* doc_004_7..C ok
+20120202:
+	* doc_004_1..6 ok
+20120129:
+	* __post_load (date deserialize)
+20120122:
+	* forms.py: org_okved_XX_k + org_okved_XX_v
+	* views.py: repack to tuple of k: v - by 10 x X pieces
+	* doc_0004.xhtml: ok (w/ OKVEDs)
+	* doc_0004.xhtml: H allign/sizes ok
+	* FIXED: doc_0004.xhtml: OS error about tmp file
+	* doc_0004.xhtml: V allign/sizes
+	* FIXED: doc_0004.xhtml: page header vsizes
+	* FIXED: doc_0004.xhtml: okved code box
+	* FIXED: doc_0004.xhtml: Stamp header (page #1)
+	* FIXED: doc_0004.xhtml: cell borders
+
+20120120:
+	* pagebreak ok
+
+20120119:
+	* doc_0004.xhtml ok (w/o OKVEDs)
+
+20120117:
+	* templatetag: letterbox
+	* doc_0004.xhtml: page #1 complete
+
+20120116:
+	* wkhtmltopdf ok
+
+20120115:
+	* DynaForm ok
+	* forms defined as struct
+	* auto_pre_save ok
+	* auto_detail (partialy)
+
+20120110:
+	* wodt => unoconv
+	* doctype #5 (F11001) added
+	* try to add dynaform
+
+2011xxxx:
+	* FIXME: в add/edit - педаль Отказ работает как Submit
+	* Json: save as utf8	# сохранять все данные json в кодировке utf8 (а не в unicode, как сейчас)

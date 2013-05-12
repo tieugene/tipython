@@ -1,0 +1,4 @@
+#!/bin/sh
+# dump all of data into json
+. ./VARS
+time nice $MGR dumpdata --format=json --indent=1 > ../fixtures/initial_data.json

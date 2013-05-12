@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+{%load sro2_extras%}
+<document filename="{{ data.orgsro.regno }}.pdf">
+<docinit>
+	<registerFont fontName="Sans" fontFile="{{ STATIC_ROOT }}/ttf/arial.ttf"/>
+	<registerFont fontName="Sans-Bold" fontFile="{{ STATIC_ROOT }}/ttf/arialbd.ttf"/>
+</docinit>
+<template pageSize="(21cm, 29.7cm)" title="{{ data.orgsro.regno }}" author="{{ data.user }}" subject="Svid" showBoundary="0">
+		<pageTemplate id="main">
+			<frame id="main"	x1="3.0cm" y1="19.5cm" width="15cm" height="2.9cm"/>
+			<frame id="footer1"	x1="3.0cm" y1="15cm" width="15cm" height="4.5cm"/>
+			<frame id="footer2"	x1="3.0cm" y1="9.0cm" width="15cm" height="2.05cm"/>
+			<frame id="footer3"	x1="3.0cm" y1="4.8cm" width="13cm" height="2cm"/>
+		</pageTemplate>
+</template>
+<stylesheet>
+<initialize>
+</initialize>
+<paraStyle
+	name="style1"
+	fontName="Sans-Bold"
+	fontSize="18"
+	alignment="justify"
+	spaceAfter="11"
+/>
+<paraStyle
+	name="style2"
+	fontName="Sans-Bold"
+	fontSize="13"
+	alignment="justify"
+	spaceAfter="3"
+/>
+<paraStyle
+	name="style3"
+	fontName="Sans-Bold"
+	fontSize="13"
+	alignment="justify"
+	spaceAfter="3"
+	spaceBefore="7"
+/>
+<paraStyle
+	name="style4"
+	fontName="Sans"
+	fontSize="9"
+	alignment="center"
+	spaceAfter="0"
+/>
+<paraStyle
+	name="style5"
+	fontName="Sans-Bold"
+	fontSize="12"
+	alignment="justify"
+	spaceAfter="0"
+/>
+</stylesheet>
+
+<story>
+	<para style="style1" alignment="center">
+		№ {{ data.orgsro.regno }}
+	</para>
+	<nextFrame/>
+		<para style="style2" alignment="center">
+		{{ data.orgsro.org.okopf.name|upper }} {{ data.orgsro.org.fullname|upper }} <br/>
+		</para>
+		<para style="style3" alignment="center">
+		ИНН {{ data.orgsro.org.inn }} <br/>
+		</para>
+		<para style="style2" alignment="center">
+        {{ data.orgsro.org.ogrn_label }} {{ data.orgsro.org.ogrn }}
+	</para>
+	<nextFrame/>
+	<para style="style5" alignment="center">
+		С {{ data.bigdate }}
+	</para>
+	<nextFrame/>
+	{% with data.orgsro.sro.sroown as sroown %}
+	<blockTable>
+		<tr>
+			<td width="5cm">
+			    <para style="style4">
+			        {% if sroown.signdeputy %}
+			            Заместитель {{ sroown.managechief|get_case:'Р' }} {{ sroown.manage|get_case:'Р' }}
+			        {% else %}
+			            {{ sroown.managechief }} {{ sroown.manage|get_case:'Р' }}
+			        {% endif %}
+			    </para>
+			</td>
+			<td width="5cm"> <para style="style4">  </para> </td>
+			<td width="5cm">
+			    <para style="style4">
+			        {% if sroown.signdeputy %}
+			            {{ sroown.managedeputyfull|get_shortcase:'И' }}
+			        {% else %}
+			            {{ sroown.managefull|get_shortcase:'И' }}
+			        {% endif %}
+			    </para>
+			</td>
+		</tr>
+	</blockTable>
+	{% endwith %}
+</story>
+</document>

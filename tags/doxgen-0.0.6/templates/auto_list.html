@@ -1,0 +1,20 @@
+{% extends "base_dox.html" %}
+{% block body_main %}
+	<p> {{ object.m.DATA.n }} <a href="{% url dox.views.doc_c object.m.DATA.u %}"> <button class="rounded" title="Добавить новый документ"> + </button> </a> </p>
+	{% if object_list %}
+	<div class="table box">
+		<div class="row center bold">
+			<div class="cell br"> Наименование </div>
+			<div class="cell br"> Создан </div>
+			<div class="cell"> Изменен </div>
+		</div>
+	{% for i in object_list %}
+		<div class="row">
+			<div class="cell bt br"> <a href="{% url dox.views.doc_r i.id %}"> {{ i.name }} </a> </div>
+			<div class="cell bt br"> {{ i.created|date:"d.m.y H:i" }} </div>
+			<div class="cell bt"> {{ i.updated|date:"d.m.y H:i" }} </div>
+		</div>
+	{% endfor %}
+	</div>
+	{% endif %}
+{% endblock %}

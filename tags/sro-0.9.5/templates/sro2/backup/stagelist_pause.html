@@ -1,0 +1,125 @@
+<!-- Шаблон не используется !!! -->
+
+
+{% extends "sro2/stagelist_base.html" %}
+{% block stages %}
+    <script type="text/javascript" src="{% url views.index %}static/js/jquery.quicksearch.js"></script>
+    <!--<script type="text/javascript" src="{% url views.index %}static/js/stages.js"></script>-->
+
+    <script>
+        {%include "sro2/stages.js"%}
+    </script>
+    <div class="demo" style='min-height: 200px;'>
+        Поиск работ: <input type='text' id='id_search_list'>
+        <ul id="sortable1" class="connectedSortable">
+            <li class="ui-state-default ui-state-disabled listheader"><input type="checkbox" name="maincheck"
+                                                                             id="maincheck"/>Действующие работы <span
+                    id='activecount'></span></li>
+            {% for item, child in itemlist.iteritems %}
+                {% if not child.paused or child.children %}
+                    <li class="ui-state-default stage activestage {%if child.children %}ui-state-disabled parentstage{%endif%} "
+                        state='active' id='{{ item.id }}' code='{{item.code}}'><input type="checkbox" name="numbers[]"
+                                                                                      class="mc" value="{{item.id}}"
+                                                                                      {% if child.children %}cat='true'{% endif %} />{{ item.code }}. {{ item.name }}
+                    </li>
+                    {% if child.children %}
+                        {% for i, c in child.children.iteritems %}
+                            {% if not c.paused %}
+                                <li class="ui-state-default stage activestage" state='active' id='{{ i.id }}'
+                                    style='margin-left: 16px;' parent='{{item.id}}' code='{{i.code}}'><input
+                                        type="checkbox" name="numbers[]" class="mc"
+                                        value="{{ i.id}}"/>{{ i.code }}. {{ i.name }}</li>
+                                {% for x, y in c.children.iteritems %}
+                                    {% if not y.paused %}
+                                        <li class="ui-state-default stage activestage" state='active' id='{{ x.id }}'
+                                            style='margin-left: 32px;' parent='{{i.id}}' code='{{x.code}}'><input
+                                                type="checkbox" name="numbers[]" class="mc"
+                                                value="{{ x.id}}"/>{{ x.code }}. {{ x.name }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="ui-state-default ui-corner-all button eb" id="stopSelected"> Приостановить выбранные</div>
+
+        <ul id="sortable2" class="connectedSortable">
+            <li class="ui-state-highlight ui-state-disabled listheader"><input type="checkbox" name="maincheck2"
+                                                                               id="maincheck2"/>Приостановленные
+                работы<span id='pausedcount'></span></li>
+            {% for item, child in itemlist.iteritems %}
+                {% if child.paused or child.children %}
+                    <li class="ui-state-highlight stage pausedstage {%if child.children %}ui-state-disabled parentstage{%endif%} "
+                        state='paused' id='{{ item.id }}' code='{{item.code}}' date="{{child.paused|date:"d.m.Y"}}">
+                        <input type="checkbox" name="numbers[]" class="mc2" value="{{item.id}}"
+                               {% if child.children %}cat='true'{% endif %} />{{ item.code }}. {{ item.name }} <span
+                            id="inlinedate">{% if child.paused %}[Приостановлен до: <span
+                            style="color: red;"><b>{{ child.paused|date:"d.m.Y" }}</b></span>]{% endif %}</span></li>
+                    {% if child.children %}
+                        {% for i, c in child.children.iteritems %}
+                            {% if c.paused %}
+                                <li class="ui-state-highlight stage pausedstage" state='paused' id='{{ i.id }}'
+                                    style='margin-left: 16px;' parent='{{item.id}}' code='{{i.code}}'
+                                    date="{{c.paused|date:"d.m.Y"}}"><input type="checkbox" name="numbers[]" class="mc2"
+                                                                            value="{{ i.id}}"/>{{ i.code }}. {{ i.name }}
+                                    <span id="inlinedate">[Приостановлен до: <span
+                                            style="color: red;"><b>{{ c.paused|date:"d.m.Y" }}</b></span>]</span></li>
+                                {% for x, y in c.children.iteritems %}
+                                    {% if y.paused %}
+                                        <li class="ui-state-highlight stage pausedstage" state='paused' id='{{ x.id }}'
+                                            style='margin-left: 32px;' parent='{{i.id}}' code='{{x.code}}'
+                                            date="{{y.paused|date:"d.m.Y"}}"><input type="checkbox" name="numbers[]"
+                                                                                    class="mc2"
+                                                                                    value="{{ x.id}}"/>{{ x.code }}. {{ x.name }}
+                                            <span id="inlinedate">[Приостановлен до: <span
+                                                    style="color: red;"><b>{{ y.paused|date:"d.m.Y" }}</b></span>]</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="ui-state-default ui-corner-all button eb" id="resumeSelected"> Возобновить выбранные</div>
+        <p><br>
+            <!--<div class="ui-state-default ui-corner-all button eb" id="cancelSort"> Отменить последнее изменение</div>  -->
+
+        <div class="ui-state-default ui-corner-all button eb" id="applyChanges"> Сохранить изменения</div>
+        <a href="{%url sro2.views.stagelist_view stagelist.id 0 0 %}">
+            <div class="ui-state-default ui-corner-all button eb">Отмена</div>
+            <a>
+
+                <div id="dialog" title="Приостановка" style='width: 300px;'>
+                    Приостановка работ<br>
+                    <label for="datetill">Приостановить c:</label>
+                    <input type='text' id='datetill' name='datetill'><br>
+
+                    <p>
+                        <label for="datedue">Приостановить до:</label>
+                        <input type='text' id='datedue' name='datedue'><br>
+
+                    <p>
+                        или <label for="delta">На:</label>
+                        <input type='text' id='delta' name='delta' value=60> дней от сегодня<br>
+                        *после ввода количества дней, следует снять фокус с поля ввода (кликнуть по пустому месту
+                        окошка)
+                        <br>
+
+                    <p>
+                        {{ form.as_p }}
+                    </p>
+                </div>
+                <div id="dialog_resume" title="Возобновление" style='width: 300px;'>
+                    <p>
+                        {{ form.as_p }}
+                    </p>
+                </div>
+    </div>
+
+    <!--</div>-->
+    <!--</div>-->
+{% endblock %}

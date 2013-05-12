@@ -1,0 +1,73 @@
+#topmenu ul {
+	list-style-type: none;	/* switch bullets off */
+	padding: 0;
+	margin: 1px;
+	/*width: auto;*/
+}
+
+#topmenu li {
+	display: inline;	/* order horizontaly */
+	border: 1px solid;
+	margin: 1px 0;
+	padding: 1px;
+	border-color: transparent;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+#topmenu a {
+	text-decoration: none;
+	white-space: nowrap;
+	padding: 0 0.5em;
+	border: 1px solid;
+	border-color: transparent;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+/* colors */
+/* 1. highlight */
+#topmenu a:link {
+	color: black;
+}
+
+/*#topmenu li.active a {
+	color: black;
+}*/
+
+#topmenu a:visited {
+	color: black;
+}
+
+#topmenu a:hover {
+	border-color: grey;
+}
+
+/* 2. normal bg */
+#topmenu .l1 li {			/* level 1 */
+	background-color: #FFFFFF;
+}
+
+#topmenu .l2 li, #topmenu .l1 li.active {			/* level 2 */
+	background-color: #EDF0F9;
+}
+
+#topmenu .l3 li, #topmenu .l2 li.active {			/* level 3 */
+	background-color: #DDE5FF;
+}
+
+#topmenu .l4 li, #topmenu .l3 li.active {			/* level 4 */
+	background-color: #BBCCFF;
+}
+
+#topmenu .l4 li.active {		/* level 4 */
+	background-color: #A0A0FF;
+}

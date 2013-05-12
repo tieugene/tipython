@@ -1,0 +1,9 @@
+{# /GW/ #}
+{% extends "base.html" %}
+{% block title %} {{ block.super }} /GW {% endblock %}
+{% block topmenu %}
+	{% include "gw/menu.html" %}
+{% endblock %}
+{% block bottom_script %}
+	setmenu("menu_gw");
+{% endblock %}

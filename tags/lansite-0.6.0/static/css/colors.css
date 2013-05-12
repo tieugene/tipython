@@ -1,0 +1,85 @@
+/*
+For each: bgcolor - ordinar/hover
+	topmenu
+	addressbar
+	table-title
+	table-header
+	table-data:
+		odd
+		even
+	pulldown menu
+	a class=button
+*/
+
+li.tmitem {	/* top-menu item - li */
+	background: #F0F0FF;
+}
+
+li.tmitem:hover {	/* top-menu item - li */
+	background: #E0E0FF;
+}
+
+ul.tmenu {	/* ul */
+	border: 1px solid #D0D0FF;
+}
+
+.button {	/* a, td, th */
+	color: black;
+	background: lightgrey;
+}
+
+.addressbar {
+	background: #C3D9FF;
+}
+
+table.white {
+	border: 4px solid white;
+}
+
+table.normal {
+	border: 4px solid #A0A0FF;
+}
+
+td.tabactive {
+	background-color: #C3D9FF;	/* google code issue */
+}
+
+td.tabinactive {
+	background-color: #E5ECF9;	/* google code issue */
+}
+
+table.itemlist caption {
+	background: #C3D9FF;		/* like tabactive */
+}
+
+tr.title {
+	background: #C3D9FF;		/* like tabactive */
+}
+
+table.itemlist thead tr {
+	background: #E5ECF9;		/* like tabactive */
+}
+
+li.pditem, li.pdmenu {
+	background: #EEEEFF;		/* google code issues */
+}
+
+li.pditem:hover, li.pdmenu:hover {
+	background: #C3D9FF;		/* google code issues */
+}
+
+tr.even {
+	background: snow;
+}
+
+tr.odd {
+	background: whitesmoke;
+}
+
+tr.even:hover {
+	background: lightcyan;
+}
+
+tr.odd:hover {
+	background: lightcyan;
+}

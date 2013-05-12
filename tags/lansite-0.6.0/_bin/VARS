@@ -1,0 +1,8 @@
+# -*- Shell-script -*-
+ROOTUSER="root"
+ROOTPASS="pass"
+DB="lansite"
+SQLITEDB="/mnt/shares/lansite/db/lansite.db"
+DBUSER="lansite"
+DBPASS="lansite"
+MGR="../manage.py"

@@ -1,0 +1,129 @@
+{% extends "gw/task/todo_base.html" %}
+{% block head_css %}
+	<link type="text/css" href="{% url views.index %}static/css/toolbox.css" rel="stylesheet"/>
+{% endblock %}
+{% block head_js %}
+	<script type="text/javascript" src="{% url views.index %}static/js/toolbox.js"> </script>
+	<script type="text/javascript" src="{% url views.index %}static/js/toggle.js"> </script>
+	<script type="text/javascript" src="{% url views.index %}static/js/dropdown.js"> </script>
+{% endblock %}
+{% block body_main %}
+<table class="catitem"> <tr>
+	{# Categories #}
+	<td class="catcell">
+		<form method="post" action="{% url gw.views.todo_cat_del_selected %}">
+		<table class="catlist">
+			<caption>
+				Категории ({{ cat_list.count }}):
+				<input type="button" value="+" title="Добавить новую категорию" onClick="window.location.href='{% url gw.views.todo_cat_add %}'" style="cursor:pointer"/>
+				<input type="submit" value="x" title="Удалить выделенное" onClick="return confirm('Are you sure you want to delete selected items?');" style="cursor:pointer"/>
+			</caption>
+			<thead>
+				<tr>
+					<th/>	<!-- Del -->
+					<th title="This user"> U </th>	<!-- All users / this user -->
+					<th title="This app"> A </th>	<!-- All app / this app -->
+					<th> Наименование </th>
+					<th/>	<!-- Edit -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr style="background: {% if current_cat %} white {% else %} #BBCCFF {% endif %};"> <td/> <td/> <td/> <td> <a href="{% url gw.views.todo_index%}?a=f&o=categories&v=*"> &lt;Все&gt; </a> </td> <td/> </tr>
+				{% for item in cat_list %}
+					<tr {% ifequal current_cat item.id %} style="background: #BBCCFF" {% else %} {% endifequal %}>
+						<td nowrap> <input type="checkbox" name="cat" value="{{ item.id }}"/> </td>
+						<td align="center"> {% if item.user %} &bull; {% endif %} </td>
+						<td align="center"> {% if item.app %} &bull; {% endif %} </td>
+						<td> <a href="{% url gw.views.todo_index%}?a=f&o=categories&v={{ item.id }}" title="{{ item.description }}"> {{ item.name }} </a> </td>
+						<td> <a href="{% url gw.views.todo_cat_edit item.id %}"> &#9997; </a> </td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		</form>
+	</td>
+	{# ToDos #}
+	<td class="itemcell">
+		<form id="itemform" method="post" action="{% url gw.views.todo_del_selected %}">
+		<table class="itemlist">
+			<caption>
+				Задачи ({{ item_list.count }}):
+				<input type="button" value="+" title="Добавить новую задачу" onClick="window.location.href='{% url gw.views.todo_add %}'" style="cursor:pointer"/>
+				<input id="dd_columns_parent" type="button" value="Колонки &#9663;" title="Настроить колонки"/>
+				<input id="dd_sort_parent" type="button" value="Сортировка &#9663;" title="Настроить сортировку"/>
+				<input id="dd_filter_parent" type="button" value="Фильтр &#9663;" title="Настроить Фильтр"/>
+				<input id="dd_actions_parent" type="button" value="Действия &#9663;" title="Всякие действия"/>
+				<input type="submit" value="x" title="Удалить выделенное" onClick="return confirm('Are you sure you want to delete selected items?');" style="cursor:pointer"/>
+			</caption>
+			<thead>
+				<tr>
+					<th> <input type="checkbox"> <a href=#"> &#9663; </a> </input> </th>
+					{% for i in item_head %}
+						<th nowrap> {{ i }} </th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in item_list %}
+					<tr>
+						<td nowrap> <input type="checkbox" name="todo" value="{{ item.id }}"/> </td>
+						{% if not hcol_dict.user %} <td nowrap> {{ item.user }} </td> {% endif %}
+						{% if not hcol_dict.created %} <td nowrap> {{ item.created|date }} </td> {% endif %}
+						{% if not hcol_dict.updated %} <td nowrap> {{ item.updated|date }} </td> {% endif %}
+						{% if not hcol_dict.summary %} <td nowrap> <a href="{% url gw.views.todo_detail item.id %}" title="{{ item.description }}"> {{ item.summary }} </a> </td> {% endif %}
+						{% if not hcol_dict.status %} <td nowrap> {{ item.getstatusname|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.restriction %} <td nowrap> {{ item.getrestrictionname|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.categories %} <td nowrap> {{ item.getcategories|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.attendee %} <td nowrap> {{ item.attendee|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.start %} <td nowrap> {{ item.start_d|date|default_if_none:"" }} {{ item.start_t|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.duration %} <td nowrap> {{ item.duration_d|default_if_none:"" }} {{ item.duration_t|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.priority %} <td nowrap> {{ item.getpriorityname|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.due %} <td nowrap> {{ item.due_d|default_if_none:""|date }} {{ item.due_t|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.completed %} <td nowrap> {{ item.completed|date|default_if_none:"" }} </td> {% endif %}
+						{% if not hcol_dict.percent %} <td nowrap> {{ item.percent|default_if_none:"" }} </td> {% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		</form>
+	</td>
+</tr> </table>
+
+<div id="dd_actions_child" class="pulldown">
+	<p> <a href="{% url gw.views.todo_ical_export %}"> Экспорт в iCal </a> </p>
+	<p> <a href="{% url gw.views.todo_ical_import %}"> Импорт из iCal </a> </p>
+</div>
+
+<form id="dd_columns_child" action="{% url gw.views.todo_index_setcolumns %}" method="post">
+	<div class="pulldown">
+		<table>
+			{{ columns_form.as_table }}
+		</table>
+		<input type="submit" value="Submit"/>
+	</div>
+</form>
+
+<form id="dd_sort_child" action="{% url gw.views.todo_index_setsort %}" method="post">
+	<div class="pulldown">
+		<table>
+			{{ sort_form.as_table }}
+		</table>
+		<input type="submit" value="Submit"/>
+	</div>
+</form>
+
+<form id="dd_filter_child" action="{% url gw.views.todo_index_setfilter %}" method="post">
+	<div class="pulldown">
+		<table>
+			{{ filter_form.as_table }}
+		</table>
+		<input type="submit" value="Submit"/>
+	</div>
+</form>
+
+<script type="text/javascript"> at_attach("dd_actions_parent", "dd_actions_child"); </script>
+<script type="text/javascript"> at_attach("dd_columns_parent", "dd_columns_child"); </script>
+<script type="text/javascript"> at_attach("dd_sort_parent", "dd_sort_child"); </script>
+<script type="text/javascript"> at_attach("dd_filter_parent", "dd_filter_child"); </script>
+
+{% endblock %}

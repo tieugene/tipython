@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+{%load sro2_extras%}
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document filename="{{ statement.date }}.pdf">
+
+	{% include "sro2/statement_attachment/styles.rml" %}
+
+	<story>
+		<para style="style2">
+			Приложение 1
+		</para>
+		<para style="style1"> 
+			к заявлению  о приеме в члены НП СРО «МООЖС»
+		</para>		
+		<para style="style3">
+			Перечень видов работ по строительству, реконструкции, капитальному ремонту объектов капитального строительства, которые
+			оказывают влияние на безопасность объектов капитального строительства
+		</para>
+		<para style="style4">
+			(нужное отметить)
+		</para>				
+		{% with data.o as list %}
+			{% with "0" as danger %}
+				{% ifequal data.ver 4 %}
+					{% include "sro2/statement_attachment/loop_moozs_ver4.rml" %}
+				{% else %}
+					{% include "sro2/statement_attachment/loop_moozs.rml" %}
+				{% endifequal %}
+			{% endwith %}
+		{% endwith %}		
+		<para style="style0" spaceBefore = "30" spaceAfter = "30">
+			 Всего {{ data.statement.permitstage_set.count_ordinar }} видов работ.
+		</para>				
+		{% include "sro2/statement_attachment/footer.rml" %}
+		
+		
+		<nextFrame/>
+		
+	
+		<para style="style2">
+			Приложение 2
+		</para>
+		<para style="style1"> 
+			к заявлению  о приеме в члены НП СРО «МООЖС»
+		</para>		
+		<para style="style3">
+			Перечень видов работ, связанных со строительством, реконструкцией и капитальным ремонтом <u>особо опасных, технически сложных
+			и уникальных объектов капитального строительства</u>, оказывающих влияние на безопасность указанных объектов
+		</para>
+		<para style="style4">
+			 (нужное отметить)
+		</para>		
+		{% with data.d as list %}
+			{% with "1" as danger %}
+				{% ifequal data.ver 4 %}
+					{% include "sro2/statement_attachment/loop_moozs_ver4.rml" %}
+				{% else %}
+					{% include "sro2/statement_attachment/loop_moozs.rml" %}
+				{% endifequal %}
+			{% endwith %}
+		{% endwith %}	
+		<para style="style0" alignment="left" spaceBefore = "30" spaceAfter = "30">
+			 Всего {{ data.statement.permitstage_set.count_danger }} видов работ.
+		</para>				
+		{% include "sro2/statement_attachment/footer.rml" %}			
+	</story>
+</document>

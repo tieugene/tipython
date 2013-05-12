@@ -1,0 +1,3 @@
+#!/bin/sh
+# make html list from stdin to stdout
+while read -r; do echo "<p> $REPLY </p>"; done

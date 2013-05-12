@@ -1,0 +1,113 @@
+{% extends "sro2/person/person_base.html" %}
+{% block body_skill_button %} {% endblock %}
+{% block body_skill %}
+    <script>
+        $(function() {
+            today = new Date;
+            month = today.getMonth() + 1
+            day = today.getDate()
+            year = today.getFullYear()
+            $('#id_seniodate').val(day + '.' + month + '.' + year)
+
+        })
+    </script>
+    {% if user.has_perm('gw.add_personskill') %}
+        <table border="0">
+            <tr>
+                <td>
+                    <form action="." method="POST">
+                        <table border="0">
+                            <tr class='required'>
+                                <td> {{ form.speciality.label_tag() }} </td>
+                                <td>
+                                    <div class="fieldWrapper"> {{ form.speciality.errors }} {{ form.speciality }} </div>
+                                </td>
+                            </tr>
+                            <tr class='required'>
+                                <td> {{ form.skill.label_tag() }} </td>
+                                <td>
+                                    <div class="fieldWrapper"> {{ form.skill.errors }} {{ form.skill }} </div>
+                                </td>
+                            </tr>
+{#                            <tr>#}
+{#                                <td> {{ form.year.label_tag() }} </td>#}
+{#                                <td>#}
+{#                                    <div class="fieldWrapper"> {{ form.year.errors }} {{ form.year }} </div>#}
+{#                                </td>#}
+{#                            </tr>#}
+                            <tr>
+                                <td> {{ form.skilldate.label_tag() }} </td>
+                                <td>
+                                    <div class="fieldWrapper"> {{ form.skilldate.errors }} {{ form.skilldate }} </div>
+                                </td>
+                            </tr>
+                            <tr class='required'>
+                                <td> {{ form.school.label_tag() }} </td>
+                                <td>
+                                    <div class="fieldWrapper"> {{ form.school.errors }} {{ form.school }} </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> {{ form.seniority.label_tag() }} </td>
+                                <td>
+                                    <div class="fieldWrapper"> {{ form.seniority.errors }} {{ form.seniority }} Ввести
+                                        число лет. Например: 5
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> {{ form.seniodate.label_tag() }} </td>
+                                <td>
+                                    <div class="fieldWrapper"> {{ form.seniodate.errors }} {{ form.seniodate }} </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> {{ form.tested.label_tag() }} </td>
+                                <td>
+                                    <div class="fieldWrapper"> {{ form.tested.errors }} {{ form.tested }} </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td/>
+                                <td><input type="submit" value="Добавить квалификацию"/></td>
+                            </tr>
+                        </table>
+                    </form>
+                </td>
+                {% if user.has_perm('gw.add_speciality') or user.has_perm('gw.add_skill') %}
+                    <td valign="top">
+                        <table border="0">
+                            <tr>
+                                <td>
+                                    {% if user.has_perm('gw.add_speciality') %}
+                                        <form action="{{ url_for('sro2.views.person_skill_add_speciality',person.id) }}"
+                                              method="POST">
+                                            <div class="fieldWrapper">
+                                                <input type="submit" value="<" title="Добавить новую специальность"
+                                                       value="<"/>
+                                                {{ form_speciality.name.errors }}
+                                                {{ form_speciality.name }}
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                    {% if user.has_perm('gw.add_skill') %}
+                                        <form action="{{ url_for('sro2.views.person_skill_add_skill', person.id) }}"
+                                              method="POST">
+                                            <div class="fieldWrapper">
+                                                <input type="submit" value="<" title="Добавить новую квалификацию"/>
+                                                {{ form_skill.name.errors }}
+                                                {{ form_skill.name }}<br>
+                                                Высшее: {{ form_skill.high }}
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                </td> </tr>
+                        </table>
+                    </td>
+                {% endif %}
+            </tr>
+        </table>
+    {% endif %}
+    <input type="button" value="Закончить"
+           onClick="window.location.href='{{ url_for('sro2.views.person_view',person.id) }}#skill'"/>
+{% endblock %}

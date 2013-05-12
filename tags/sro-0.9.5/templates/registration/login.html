@@ -1,0 +1,32 @@
+{%extends "main_lite.html"%}
+{% block content %}
+<div id='login_form'> 
+	<h3 class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-top contentheader"><b>
+			Вход в систему
+	</b></h3> 
+				<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active" id='contentbody'>
+{% if form.errors %}
+	<div class='ui-widget ui-state-error ui-corner-all cloud'>Вы неправильно ввели пароль или логин. Попробуйте ввести повторно.</div>
+{% endif %}
+
+<form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+<table>
+<tr>
+    <td>{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td>{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+
+<div style='text-align: center;'>
+	<input type="submit" value="Войти" class='ui-state-default ui-corner-all button'/>
+</div>
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+				</div> 
+			</div>
+
+{% endblock %}

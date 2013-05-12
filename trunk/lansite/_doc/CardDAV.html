@@ -1,0 +1,2896 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
+    <meta http-equiv="Content-Type" content="text/html; charset=latin-1" />
+    <meta name="robots" content="index,follow" />
+    <meta name="creator" content="rfcmarkup version 1.91" />
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+<meta name="DC.Identifier" content="urn:ietf:id:daboo-carddav" />
+<meta name="DC.Description.Abstract" content="This document defines extensions to the Web Distributed Authoring and\nVersioning (WebDAV) protocol to specify a standard way of accessing,\nmanaging, and sharing contact information based on the vCard format.\nDiscussion of this Internet-Draft is taking place on the mailing list\n&lt;http://lists.osafoundation.org/mailman/listinfo/ietf-carddav&gt;." />
+<meta name="DC.Creator" content="Cyrus Daboo &lt;cyrus@daboo.name&gt;" />
+<meta name="DC.Date.Issued" content="2008-02-23" />
+<meta name="DC.Title" content="vCard Extensions to WebDAV (CardDAV)" />
+
+    <link rel="icon" href="/images/id.png" type="image/png" />
+    <link rel="shortcut icon" href="/images/id.png" type="image/png" />
+    <title>draft-daboo-carddav-02 - vCard Extensions to WebDAV (CardDAV)</title>
+    
+    
+    <style type="text/css">
+	body {
+	    margin: 0px 8px;
+            font-size: 1em;
+	}
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	    font-weight: bold;
+            line-height: 0pt;
+            display: inline;
+            white-space: pre;
+            font-family: monospace;
+            font-size: 1em;
+	    font-weight: bold;
+        }
+        pre {
+            font-size: 1em;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+	.pre {
+	    white-space: pre;
+	    font-family: monospace;
+	}
+	.header{
+	    font-weight: bold;
+	}
+        .newpage {
+            page-break-before: always;
+        }
+        .invisible {
+            text-decoration: none;
+            color: white;
+        }
+        @media print {
+            body {
+                font-size: 10.5pt;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                font-size: 10.5pt;
+            }
+        
+            a:link, a:visited {
+                color: inherit;
+                text-decoration: none;
+            }
+            .noprint {
+                display: none;
+            }
+        }
+	@media screen {
+	    .grey, .grey a:link, .grey a:visited {
+		color: #777;
+	    }
+            .docinfo {
+                background-color: #EEE;
+            }
+            .top {
+                border-top: 7px solid #EEE;
+            }
+            .bgwhite  { background-color: white; }
+            .bgred    { background-color: #F44; }
+            .bggrey   { background-color: #666; }
+            .bgbrown  { background-color: #840; }            
+            .bgorange { background-color: #FA0; }
+            .bgyellow { background-color: #EE0; }
+            .bgmagenta{ background-color: #F4F; }
+            .bgblue   { background-color: #66F; }
+            .bgcyan   { background-color: #4DD; }
+            .bggreen  { background-color: #4F4; }
+
+            .legend   { font-size: 90%; }
+            .cplate   { font-size: 70%; border: solid grey 1px; }
+	}
+    </style>
+    <!--[if IE]>
+    <style>
+    body {
+       font-size: 13px;
+       margin: 10px 10px;
+    }
+    </style>
+    <![endif]-->
+
+    <script type="text/javascript"><!--
+    function addHeaderTags() {
+	var spans = document.getElementsByTagName("span");
+	for (var i=0; i < spans.length; i++) {
+	    var elem = spans[i];
+	    if (elem) {
+		var level = elem.getAttribute("class");
+                if (level == "h1" || level == "h2" || level == "h3" || level == "h4" || level == "h5" || level == "h6") {
+                    elem.innerHTML = "<"+level+">"+elem.innerHTML+"</"+level+">";		
+                }
+	    }
+	}
+    }
+    var legend_html = "Colour legend:<br />      <table>         <tr><td>Unknown:</td>          <td><span class='cplate bgwhite'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Draft:</td>            <td><span class='cplate bgred'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Informational:</td>    <td><span class='cplate bgorange'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Experimental:</td>     <td><span class='cplate bgyellow'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Best Common Practice:</td><td><span class='cplate bgmagenta'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Proposed Standard:</td><td><span class='cplate bgblue'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Draft Standard:</td>   <td><span class='cplate bgcyan'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Standard:</td>         <td><span class='cplate bggreen'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Historic:</td>         <td><span class='cplate bggrey'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>         <tr><td>Obsolete:</td>         <td><span class='cplate bgbrown'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>     </table>";
+    function showElem(id) {
+        var elem = document.getElementById(id);
+        elem.innerHTML = eval(id+"_html");
+        elem.style.visibility='visible';
+    }
+    function hideElem(id) {
+        var elem = document.getElementById(id);
+        elem.style.visibility='hidden';        
+        elem.innerHTML = "";
+    }
+    // -->
+    </script>
+</head>
+<body onload="addHeaderTags()">
+   <div style="height: 13px;">
+      <div onmouseover="this.style.cursor='pointer';"
+         onclick="showElem('legend');"
+         onmouseout="hideElem('legend')"
+	 style="height: 6px; position: absolute;"
+         class="pre noprint docinfo bgred"
+         title="Click for colour legend." >                                                                        </div>
+      <div id="legend"
+           class="docinfo noprint pre legend"
+           style="position:absolute; top: 4px; left: 4ex; visibility:hidden; background-color: white; padding: 4px 9px 5px 7px; border: solid #345 1px; "
+           onmouseover="showElem('legend');"
+           onmouseout="hideElem('legend');">
+      </div>
+   </div>
+<span class="pre noprint docinfo top">[<a href="../html/" title="Document search and retrieval page">Docs</a>] [<a href="http://tools.ietf.org/id/draft-daboo-carddav-02.txt" title="Plaintext version of this document">txt</a>|<a href="/pdf/draft-daboo-carddav-02.txt" title="PDF version of this document">pdf</a>] [<a href="mailto:draft-daboo-carddav@tools.ietf.org?subject=draft-daboo-carddav%20" title="Send email to the document authors">Email</a>] [<a href="/rfcdiff?difftype=--hwdiff&amp;url2=draft-daboo-carddav-02.txt" title="Inline diff (wdiff)">Diff1</a>] [<a href="/rfcdiff?url2=draft-daboo-carddav-02.txt" title="Side-by-side diff">Diff2</a>] [<a href="/idnits?url=http://tools.ietf.org/id/draft-daboo-carddav-02.txt" title="Run an idnits check of this document">Nits</a>]                         </span><br />
+<span class="pre noprint docinfo">                                                                        </span><br />
+<span class="pre noprint docinfo">Versions: <a href="./draft-daboo-carddav-00">00</a> <a href="./draft-daboo-carddav-01">01</a> <a href="./draft-daboo-carddav-02">02</a> <a href="./draft-daboo-carddav-03">03</a> <a href="./draft-daboo-carddav-04">04</a>                                                </span><br />
+<span class="pre noprint docinfo">                                                                        </span><br />
+<pre>
+Network Working Group                                           C. Daboo
+Internet-Draft                                                     Apple
+Expires: November 13, 2007                                  May 12, 2007
+
+
+                  <span class="h1">vCard Extensions to WebDAV (CardDAV)</span>
+                         <span class="h1">draft-daboo-carddav-02</span>
+
+Status of this Memo
+
+   By submitting this Internet-Draft, each author represents that any
+   applicable patent or other IPR claims of which he or she is aware
+   have been or will be disclosed, and any of which he or she becomes
+   aware will be disclosed, in accordance with <a href="./bcp79#section-6">Section&nbsp;6 of BCP 79</a>.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as Internet-
+   Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   <a href="http://www.ietf.org/ietf/1id-abstracts.txt">http://www.ietf.org/ietf/1id-abstracts.txt</a>.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   <a href="http://www.ietf.org/shadow.html">http://www.ietf.org/shadow.html</a>.
+
+   This Internet-Draft will expire on November 13, 2007.
+
+Copyright Notice
+
+   Copyright (C) The IETF Trust (2007).
+
+Abstract
+
+   This document defines extensions to the Web Distributed Authoring and
+   Versioning (WebDAV) protocol to specify a standard way of accessing,
+   managing, and sharing contact information based on the vCard format.
+   This document defines the "addressbook-access" feature of CardDAV.
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 1]</span>
+</pre><pre class='newpage'><a name="page-2" id="page-2" href="#page-2" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+Table of Contents
+
+   <a href="#section-1">1</a>.  Introduction and Overview  . . . . . . . . . . . . . . . . . .  <a href="#page-4">4</a>
+     <a href="#section-1.1">1.1</a>.  IMSP . . . . . . . . . . . . . . . . . . . . . . . . . . .  <a href="#page-4">4</a>
+     <a href="#section-1.2">1.2</a>.  ACAP . . . . . . . . . . . . . . . . . . . . . . . . . . .  <a href="#page-5">5</a>
+     <a href="#section-1.3">1.3</a>.  LDAP . . . . . . . . . . . . . . . . . . . . . . . . . . .  <a href="#page-6">6</a>
+     <a href="#section-1.4">1.4</a>.  SyncML . . . . . . . . . . . . . . . . . . . . . . . . . .  <a href="#page-6">6</a>
+     <a href="#section-1.5">1.5</a>.  WebDAV for Address Books . . . . . . . . . . . . . . . . .  <a href="#page-6">6</a>
+     <a href="#section-1.6">1.6</a>.  vCard  . . . . . . . . . . . . . . . . . . . . . . . . . .  <a href="#page-7">7</a>
+   <a href="#section-2">2</a>.  Conventions  . . . . . . . . . . . . . . . . . . . . . . . . .  <a href="#page-7">7</a>
+     <a href="#section-2.1">2.1</a>.  Notational Conventions . . . . . . . . . . . . . . . . . .  <a href="#page-7">7</a>
+     <a href="#section-2.2">2.2</a>.  XML Namespaces and Processing  . . . . . . . . . . . . . .  <a href="#page-8">8</a>
+     <a href="#section-2.3">2.3</a>.  Method Preconditions and Postconditions  . . . . . . . . .  <a href="#page-8">8</a>
+   <a href="#section-3">3</a>.  Requirements Overview  . . . . . . . . . . . . . . . . . . . .  <a href="#page-9">9</a>
+   <a href="#section-4">4</a>.  Address Book Data Model  . . . . . . . . . . . . . . . . . . .  <a href="#page-9">9</a>
+     <a href="#section-4.1">4.1</a>.  Address Book Server  . . . . . . . . . . . . . . . . . . . <a href="#page-10">10</a>
+   <a href="#section-5">5</a>.  Address Book Resources . . . . . . . . . . . . . . . . . . . . <a href="#page-10">10</a>
+     <a href="#section-5.1">5.1</a>.  Address Object Resources . . . . . . . . . . . . . . . . . <a href="#page-10">10</a>
+     <a href="#section-5.2">5.2</a>.  Address Book Collection  . . . . . . . . . . . . . . . . . <a href="#page-11">11</a>
+   <a href="#section-6">6</a>.  Address Book Feature . . . . . . . . . . . . . . . . . . . . . <a href="#page-12">12</a>
+     <a href="#section-6.1">6.1</a>.  Address Book Support . . . . . . . . . . . . . . . . . . . <a href="#page-12">12</a>
+       6.1.1.  Example: Using OPTIONS for the Discovery of
+               Support for CardDAV  . . . . . . . . . . . . . . . . . <a href="#page-12">12</a>
+     <a href="#section-6.2">6.2</a>.  Address Book Properties  . . . . . . . . . . . . . . . . . <a href="#page-13">13</a>
+       <a href="#section-6.2.1">6.2.1</a>.  CARDDAV:addressbook-description Property . . . . . . . <a href="#page-13">13</a>
+       <a href="#section-6.2.2">6.2.2</a>.  CARDDAV:supported-address-data Property  . . . . . . . <a href="#page-13">13</a>
+       <a href="#section-6.2.3">6.2.3</a>.  CARDDAV:max-resource-size Property . . . . . . . . . . <a href="#page-14">14</a>
+     <a href="#section-6.3">6.3</a>.  Creating Resources . . . . . . . . . . . . . . . . . . . . <a href="#page-15">15</a>
+       <a href="#section-6.3.1">6.3.1</a>.  MKADDRESSBOOK Method . . . . . . . . . . . . . . . . . <a href="#page-15">15</a>
+         <a href="#section-6.3.1.1">6.3.1.1</a>.  Status Codes . . . . . . . . . . . . . . . . . . . <a href="#page-16">16</a>
+         <a href="#section-6.3.1.2">6.3.1.2</a>.  Example - Successful MKADDRESSBOOK request . . . . <a href="#page-18">18</a>
+       <a href="#section-6.3.2">6.3.2</a>.  Creating Address Object Resources  . . . . . . . . . . <a href="#page-18">18</a>
+         6.3.2.1.  Additional Preconditions for PUT, COPY and MOVE  . 20
+         <a href="#section-6.3.2.2">6.3.2.2</a>.  Non-Standard Properties, and Parameters  . . . . . <a href="#page-20">20</a>
+         <a href="#section-6.3.2.3">6.3.2.3</a>.  Address Object Resource Entity Tag . . . . . . . . <a href="#page-21">21</a>
+   <a href="#section-7">7</a>.  Address Book Access Control  . . . . . . . . . . . . . . . . . <a href="#page-21">21</a>
+     <a href="#section-7.1">7.1</a>.  Additional Principal Property  . . . . . . . . . . . . . . <a href="#page-22">22</a>
+       <a href="#section-7.1.1">7.1.1</a>.  CARDDAV:addressbook-home-set Property  . . . . . . . . <a href="#page-22">22</a>
+   <a href="#section-8">8</a>.  Address Book Reports . . . . . . . . . . . . . . . . . . . . . <a href="#page-22">22</a>
+     <a href="#section-8.1">8.1</a>.  REPORT Method  . . . . . . . . . . . . . . . . . . . . . . <a href="#page-23">23</a>
+     <a href="#section-8.2">8.2</a>.  Ordinary collections . . . . . . . . . . . . . . . . . . . <a href="#page-23">23</a>
+     <a href="#section-8.3">8.3</a>.  Searching Text: Collations . . . . . . . . . . . . . . . . <a href="#page-23">23</a>
+       <a href="#section-8.3.1">8.3.1</a>.  CARDDAV:supported-collation-set Property . . . . . . . <a href="#page-24">24</a>
+     <a href="#section-8.4">8.4</a>.  Partial Retrieval  . . . . . . . . . . . . . . . . . . . . <a href="#page-25">25</a>
+     <a href="#section-8.5">8.5</a>.  Non-standard properties and parameters . . . . . . . . . . <a href="#page-25">25</a>
+     <a href="#section-8.6">8.6</a>.  CARDDAV:addressbook-query Report . . . . . . . . . . . . . <a href="#page-26">26</a>
+       8.6.1.  Example: Partial retrieval of vCards matching a
+               NICKNAME . . . . . . . . . . . . . . . . . . . . . . . <a href="#page-27">27</a>
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 2]</span>
+</pre><pre class='newpage'><a name="page-3" id="page-3" href="#page-3" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+       8.6.2.  Example: Partial retrieval of vCards matching a
+               full name  . . . . . . . . . . . . . . . . . . . . . . <a href="#page-29">29</a>
+     <a href="#section-8.7">8.7</a>.  CARDDAV:addressbook-multiget Report  . . . . . . . . . . . <a href="#page-32">32</a>
+       <a href="#section-8.7.1">8.7.1</a>.  Example: CARDDAV:addressbook-multiget Report . . . . . <a href="#page-33">33</a>
+   <a href="#section-9">9</a>.  Guidelines . . . . . . . . . . . . . . . . . . . . . . . . . . <a href="#page-34">34</a>
+     <a href="#section-9.1">9.1</a>.  Restrict the Properties Returned . . . . . . . . . . . . . <a href="#page-34">34</a>
+     <a href="#section-9.2">9.2</a>.  Use of Locking . . . . . . . . . . . . . . . . . . . . . . <a href="#page-35">35</a>
+     <a href="#section-9.3">9.3</a>.  Finding address books  . . . . . . . . . . . . . . . . . . <a href="#page-35">35</a>
+   <a href="#section-10">10</a>. XML Element Definitions  . . . . . . . . . . . . . . . . . . . <a href="#page-37">37</a>
+     <a href="#section-10.1">10.1</a>. CARDDAV:addressbook XML Element  . . . . . . . . . . . . . <a href="#page-37">37</a>
+     <a href="#section-10.2">10.2</a>. CARDDAV:mkaddressbook XML Element  . . . . . . . . . . . . <a href="#page-37">37</a>
+     <a href="#section-10.3">10.3</a>. CARDDAV:mkaddressbook-response XML Element . . . . . . . . <a href="#page-37">37</a>
+     <a href="#section-10.4">10.4</a>. CARDDAV:supported-collation XML Element  . . . . . . . . . <a href="#page-38">38</a>
+     <a href="#section-10.5">10.5</a>. CARDDAV:addressbook-query XML Element  . . . . . . . . . . <a href="#page-38">38</a>
+     <a href="#section-10.6">10.6</a>. CARDDAV:addressbook-data XML Element . . . . . . . . . . . <a href="#page-38">38</a>
+       <a href="#section-10.6.1">10.6.1</a>. CARDDAV:allprop XML Element  . . . . . . . . . . . . . <a href="#page-40">40</a>
+       <a href="#section-10.6.2">10.6.2</a>. CARDDAV:prop XML Element . . . . . . . . . . . . . . . <a href="#page-41">41</a>
+     <a href="#section-10.7">10.7</a>. CARDDAV:filter XML Element . . . . . . . . . . . . . . . . <a href="#page-41">41</a>
+       <a href="#section-10.7.1">10.7.1</a>. CARDDAV:prop-filter XML Element  . . . . . . . . . . . <a href="#page-42">42</a>
+       <a href="#section-10.7.2">10.7.2</a>. CARDDAV:param-filter XML Element . . . . . . . . . . . <a href="#page-42">42</a>
+       <a href="#section-10.7.3">10.7.3</a>. CARDDAV:is-not-defined XML Element . . . . . . . . . . <a href="#page-43">43</a>
+       <a href="#section-10.7.4">10.7.4</a>. CARDDAV:text-match XML Element . . . . . . . . . . . . <a href="#page-43">43</a>
+     <a href="#section-10.8">10.8</a>. CARDDAV:addressbook-multiget XML Element . . . . . . . . . <a href="#page-44">44</a>
+   <a href="#section-11">11</a>. Internationalization Considerations  . . . . . . . . . . . . . <a href="#page-44">44</a>
+   <a href="#section-12">12</a>. Security Considerations  . . . . . . . . . . . . . . . . . . . <a href="#page-45">45</a>
+   <a href="#section-13">13</a>. IANA Consideration . . . . . . . . . . . . . . . . . . . . . . <a href="#page-45">45</a>
+     <a href="#section-13.1">13.1</a>. Namespace Registration . . . . . . . . . . . . . . . . . . <a href="#page-45">45</a>
+   <a href="#section-14">14</a>. Acknowledgments  . . . . . . . . . . . . . . . . . . . . . . . <a href="#page-46">46</a>
+   <a href="#section-15">15</a>. References . . . . . . . . . . . . . . . . . . . . . . . . . . <a href="#page-46">46</a>
+     <a href="#section-15.1">15.1</a>. Normative References . . . . . . . . . . . . . . . . . . . <a href="#page-46">46</a>
+     <a href="#section-15.2">15.2</a>. Informative References . . . . . . . . . . . . . . . . . . <a href="#page-47">47</a>
+   <a href="#appendix-A">Appendix A</a>.  Change History (to be removed prior to
+                publication as an RFC)  . . . . . . . . . . . . . . . <a href="#page-47">47</a>
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . <a href="#page-48">48</a>
+   Intellectual Property and Copyright Statements . . . . . . . . . . <a href="#page-49">49</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 3]</span>
+</pre><pre class='newpage'><a name="page-4" id="page-4" href="#page-4" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+<span class="h2"><a name="section-1">1</a>.  Introduction and Overview</span>
+
+   Address books containing contact information are a key component of
+   personal information management tools, such as email, calendaring and
+   scheduling, and instant messaging clients.  To date several protocols
+   have been used for remote access to contact data, including LDAP
+   [<a href="./rfc2251" title='"Lightweight Directory Access Protocol (v3)"'>RFC2251</a>], IMSP and ACAP [<a href="./rfc2244" title='"ACAP -- Application Configuration Access Protocol"'>RFC2244</a>], together with SyncML used for
+   synchronization of such data.
+
+<span class="h3"><a name="section-1.1">1.1</a>.  IMSP</span>
+
+   IMSP, which was the predecessor to ACAP [<a href="./rfc2244" title='"ACAP -- Application Configuration Access Protocol"'>RFC2244</a>], received limited
+   support from vendors, but those that did implement solutions based on
+   it, found it to be a useful feature for large deployments of email
+   clients at sites where users may roam from machine to machine.  IMSP
+   provided for multiple personal, shared or public address books,
+   organized in a hierarchy, and gave individual users the ability to
+   control access to their address books so that they could grant read
+   or write access rights to other specific users or groups.  This
+   provided an easy and convenient way for users or workgroups to
+   quickly setup and manage shared address information.  Address book
+   support in IMSP suffers from a number of problems, including a
+   limited format for the address data itself, and scalability issues
+   with large address books.
+
+   The key features of address book support in IMSP are:
+
+   1.  Ability to use multiple address books with hierarchical layout.
+
+   2.  Ability to control access to individual address books.
+
+   3.  Server-side searching of address data, avoiding the need for
+       clients to download an entire address book in order to do a quick
+       address 'expansion' operation.
+
+   4.  Ability to download/upload an individual address in an address
+       book.
+
+   The key disadvantages of address book support in IMSP are:
+
+   1.  Limited schema for address data.
+
+   2.  Does not scale to large address books (e.g. no way to page
+       through the list of addresses in an address book).
+
+   3.  Does not provide any type of synchronization capability, which
+       easily leads to 'lost update' problems when multiple users are
+       editing the same address book entries.
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 4]</span>
+</pre><pre class='newpage'><a name="page-5" id="page-5" href="#page-5" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   4.  Lack of internationalization support.
+
+   5.  Does not provide per-address access control
+
+   6.  Does not provide a simple way to lookup users on the system.
+
+<span class="h3"><a name="section-1.2">1.2</a>.  ACAP</span>
+
+   ACAP [<a href="./rfc2244" title='"ACAP -- Application Configuration Access Protocol"'>RFC2244</a>] was meant as the successor to IMSP and as such was
+   designed to be a more 'generic' data access protocol for general
+   application use.  ACAP defined specific 'datasets' (basically formal
+   schema definitions) for different anticipated areas of use, including
+   address books, email accounts, application preferences, mime types
+   etc.  The use of such formal schema definitions was intended to
+   enhance interoperability between clients.  However, ACAP proved
+   difficult to implement due to over complexity in the protocol itself,
+   and this lead to few implementations.
+
+   The key features of address book support in ACAP are:
+
+   1.   Ability to use multiple address books with hierarchical layout.
+
+   2.   Ability to control access to individual address books and
+        address entries.
+
+   3.   Server-side searching of address data, avoiding the need for
+        clients to download an entire address book in order to do a
+        quick address 'expansion' operation.
+
+   4.   Ability to inherit address book data from others.
+
+   5.   Ability to watch changes in address book data through use of
+        'contexts'.
+
+   6.   Ability to page through address book data through use of
+        'contexts'.
+
+   7.   Internationalization support through use of UTF-8 for all data.
+
+   8.   Well defined address schema to enhance client interoperability.
+
+   9.   Compatibility with vCard data format.
+
+   10.  Users and groups dataset can be used to enumerate and find other
+        users on the system.
+
+   The key disadvantages of address book support in ACAP are:
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 5]</span>
+</pre><pre class='newpage'><a name="page-6" id="page-6" href="#page-6" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   1.  Inheritance, access control and contexts all together is hard,
+       and ultimately proved one of the major hurdles to
+       implementations.
+
+<span class="h3"><a name="section-1.3">1.3</a>.  LDAP</span>
+
+   LDAP [<a href="./rfc2251" title='"Lightweight Directory Access Protocol (v3)"'>RFC2251</a>] is a generic directory access protocol that is
+   specifically targeted at management applications and browser
+   applications that provide read/write interactive access to
+   directories.  Often such directories contain information about
+   people, including contact/address data.
+
+   The key features of address book support in LDAP are:
+
+   1.  To do
+
+   The key disadvantages of address book support in LDAP are:
+
+   1.  Lack of schemas require overly complex client configuration to
+       map expected fields in the client to directory entries in the
+       server.
+
+   2.  General reluctance to give 'ordinary' users write access to even
+       a small portion of the directory as often sensitive information
+       is included in directory entries and a small mistake in
+       configuring access control can lead to a major security breach.
+
+<span class="h3"><a name="section-1.4">1.4</a>.  SyncML</span>
+
+   SyncML is a protocol for synchronizing data, including contacts,
+   between different devices.
+
+   More...
+
+<span class="h3"><a name="section-1.5">1.5</a>.  WebDAV for Address Books</span>
+
+   WebDAV [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>] offers a number of advantages as a framework or
+   basis for address book access and management.  Most of these
+   advantages boil down to a significant reduction in design costs,
+   implementation costs, interoperability test costs and deployment
+   costs.
+
+   The key features of address book support with WebDAV are:
+
+   1.  Ability to use multiple address books with hierarchical layout.
+
+   2.  Ability to control access to individual address books and address
+       entries.
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 6]</span>
+</pre><pre class='newpage'><a name="page-7" id="page-7" href="#page-7" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   3.  Principal namespace can be used to enumerate and find other users
+       on the system.
+
+   4.  Server-side searching of address data, avoiding the need for
+       clients to download an entire address book in order to do a quick
+       address 'expansion' operation.
+
+   5.  Well-defined internationalization support through standard HTTP.
+
+   6.  Use of vCards for well defined address schema to enhance client
+       interoperability.
+
+   7.  Many limited clients (e.g. mobile devices) contain an HTTP stack
+       which makes implementing WebDAV much easier than other protocols.
+
+   The key disadvantages of address book support in WebDAV are:
+
+   1.  Lack of change notification.
+
+   2.  Stateless nature of protocol can result in more data being sent
+       with each transaction to maintain per-user session across
+       requests.
+
+<span class="h3"><a name="section-1.6">1.6</a>.  vCard</span>
+
+   vCard [<a href="./rfc2426" title='"vCard MIME Directory Profile"'>RFC2426</a>] is a MIME directory profile aimed at encapsulating
+   personal addressing and contact information about people.  The
+   specification of vCard was originally done by the Versit consortium,
+   with a subsequent 3.0 version standardized by the IETF [<a href="./rfc2426" title='"vCard MIME Directory Profile"'>RFC2426</a>].
+   vCard is in wide spread use in email clients and mobile devices as a
+   means of encapsulating address information for transport via email,
+   or for import/export and synchronization operations.
+
+
+<span class="h2"><a name="section-2">2</a>.  Conventions</span>
+
+<span class="h3"><a name="section-2.1">2.1</a>.  Notational Conventions</span>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [<a href="./rfc2119" title='"Key words for use in RFCs to Indicate Requirement Levels"'>RFC2119</a>].
+
+   The term "protected" is used in the Conformance field of property
+   definitions as defined in <a href="./rfc3253#section-1.4.2">Section&nbsp;1.4.2 of [RFC3253]</a>.
+
+   When XML element types in the namespaces "DAV:" and
+   "urn:ietf:params:xml:ns:carddav" are referenced in this document
+   outside of the context of an XML fragment, the string "DAV:" and
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 7]</span>
+</pre><pre class='newpage'><a name="page-8" id="page-8" href="#page-8" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   "CARDDAV:" will be prefixed to the element type names, respectively.
+
+<span class="h3"><a name="section-2.2">2.2</a>.  XML Namespaces and Processing</span>
+
+   Definitions of XML elements in this document use XML element type
+   declarations (as found in XML Document Type Declarations), described
+   in Section 3.2 of [<a href="#ref-W3C.REC-xml-20060816" title='"Extensible Markup Language (XML) 1.0 (Fourth Edition)"'>W3C.REC-xml-20060816</a>].
+
+   The namespace "urn:ietf:params:xml:ns:carddav" is reserved for the
+   XML elements defined in this specification, its revisions, and
+   related CardDAV specifications.  XML elements defined by individual
+   implementations MUST NOT use the "urn:ietf:params:xml:ns:carddav"
+   namespace, and instead should use a namespace that they control.
+
+   The XML declarations used in this document do not include namespace
+   information.  Thus, implementers must not use these declarations as
+   the only way to create valid CardDAV properties or to validate
+   CardDAV XML element type.  Some of the declarations refer to XML
+   elements defined by WebDAV [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>] which use the "DAV:" namespace.
+   Wherever such XML elements appear, they are explicitly prefixed with
+   "DAV:" to avoid confusion.
+
+   Also note that some CardDAV XML element names are identical to WebDAV
+   XML element names, though their namespace differs.  Care must be
+   taken not to confuse the two sets of names.
+
+   Processing of XML by CardDAV clients and servers MUST follow the
+   rules described in [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>], in particular <a href="#section-14">Section 14</a>, and Appendix
+   3 of that specification.
+
+<span class="h3"><a name="section-2.3">2.3</a>.  Method Preconditions and Postconditions</span>
+
+   A "precondition" of a method describes the state of the server that
+   must be true for that method to be performed.  A "postcondition" of a
+   method describes the state of the server that must be true after that
+   method has been completed.  If a method precondition or postcondition
+   for a request is not satisfied, the response status of the request
+   MUST be either 403 (Forbidden) if the request should not be repeated
+   because it will always fail, or 409 (Conflict) if it is expected that
+   the user might be able to resolve the conflict and resubmit the
+   request.
+
+   In order to allow better client handling of 403 and 409 responses, a
+   distinct XML element type is associated with each method precondition
+   and postcondition of a request.  When a particular precondition is
+   not satisfied or a particular postcondition cannot be achieved, the
+   appropriate XML element MUST be returned as the child of a top-level
+   DAV:error element in the response body, unless otherwise negotiated
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 8]</span>
+</pre><pre class='newpage'><a name="page-9" id="page-9" href="#page-9" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   by the request.  In a 207 Multi-Status response, the DAV:error
+   element would appear in the appropriate DAV:responsedescription
+   element.
+
+
+<span class="h2"><a name="section-3">3</a>.  Requirements Overview</span>
+
+   This section lists what functionality is required of a CardDAV
+   server.  To advertise support for CardDAV, a server:
+
+   o  MUST support vCard [<a href="./rfc2426" title='"vCard MIME Directory Profile"'>RFC2426</a>] as a media type for the address
+      object resource format;
+
+   o  MUST support WebDAV Class 1 [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>] (note that
+      [<a href="#ref-I-D.ietf-webdav-rfc2518bis" title='"HTTP Extensions for Distributed Authoring - WebDAV"'>I-D.ietf-webdav-rfc2518bis</a>] describes clarifications to [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>]
+      that aid interoperability);
+
+   o  MUST support WebDAV ACL [<a href="./rfc3744" title='"Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol"'>RFC3744</a>];
+
+   o  MUST support transport over TLS [<a href="./rfc2246" title='"The TLS Protocol Version 1.0"'>RFC2246</a>] as defined in [<a href="./rfc2818" title='"HTTP Over TLS"'>RFC2818</a>]
+      (note that [<a href="./rfc2246" title='"The TLS Protocol Version 1.0"'>RFC2246</a>] has been obsoleted by [<a href="./rfc4346" title='"The Transport Layer Security (TLS) Protocol Version 1.1"'>RFC4346</a>]);
+
+   o  MUST support ETags [<a href="./rfc2616" title='"Hypertext Transfer Protocol -- HTTP/1.1"'>RFC2616</a>] with additional requirements
+      specified in <a href="#section-6.3.2.3">Section 6.3.2.3</a> of this document;
+
+   o  MUST support all address book REPORTs defined in ,xref
+      target="reports"/&gt; of this document; and
+
+   o  MUST advertise support on all addressbook collections and address
+      object resources for the addressbook reports in the DAV:supported-
+      report-set property, as defined in Versioning Extensions to WebDAV
+      [<a href="./rfc3253" title='"Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)"'>RFC3253</a>].
+
+   In addition, a server:
+
+   o  SHOULD support the MKADDRESSBOOK method defined in <a href="#section-6.3.1">Section 6.3.1</a>
+      of this document.
+
+
+<span class="h2"><a name="section-4">4</a>.  Address Book Data Model</span>
+
+   As a brief overview, a CardDAV address book is modeled as a WebDAV
+   collection with a well defined structure; each of these address book
+   collections contain a number of resources representing address
+   objects as their direct child resources.  Each resource representing
+   an address object is called an "address object resource".  Each
+   address object resource and each address book collection can be
+   individually locked and have individual WebDAV properties.
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007               [Page 9]</span>
+</pre><pre class='newpage'><a name="page-10" id="page-10" href="#page-10" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Requirements derived from this model are provided in <a href="#section-5.1">Section 5.1</a> and
+   <a href="#section-5.2">Section 5.2</a>.
+
+<span class="h3"><a name="section-4.1">4.1</a>.  Address Book Server</span>
+
+   A CardDAV server is an address-aware engine combined with a WebDAV
+   repository.  A WebDAV repository is a set of WebDAV collections,
+   containing other WebDAV resources, within a unified URL namespace.
+   For example, the repository "http://example.org/webdav/" may contain
+   WebDAV collections and resources, all of which have URLs beginning
+   with "http://example.org/webdav/".  Note that the root URL
+   "http://example.org/" may not itself be a WebDAV repository (for
+   example, if the WebDAV support is implemented through a servlet or
+   other Web server extension).
+
+   A WebDAV repository MAY include address data in some parts of its URL
+   namespace, and non-address data in other parts.
+
+   A WebDAV repository can advertise itself as a CardDAV server if it
+   supports the functionality defined in this specification at any point
+   within the root of the repository.  That might mean that address data
+   is spread throughout the repository and mixed with non-address data
+   in nearby collections (e.g. address data may be found in /lisa/
+   addressbook/ as well as in /bernard/addressbook/, and non-address
+   data in /lisa/calendars/).  Or, it might mean that address data can
+   be found only in certain sections of the repository (e.g.
+   /addressbooks/user/).  Address book features are only required in the
+   repository sections that are or contain address objects.  So a
+   repository confining address data to the /carddav/ collection would
+   only need to support the CardDAV required features within that
+   collection.
+
+   The CardDAV server or repository is the canonical location for
+   address data and state information.  Clients may submit requests to
+   change data or download data.  Clients may store address objects
+   offline and attempt to synchronize at a later time.  However, clients
+   MUST be prepared for address data on the server to change between the
+   time of last synchronization and when attempting an update, as
+   address book collections may be shared and accessible via multiple
+   clients.  Entity tags and other features help this work.
+
+
+<span class="h2"><a name="section-5">5</a>.  Address Book Resources</span>
+
+<span class="h3"><a name="section-5.1">5.1</a>.  Address Object Resources</span>
+
+   This specification uses vCard as the default format for address or
+   contact information being stored on the server.  However, this
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 10]</span>
+</pre><pre class='newpage'><a name="page-11" id="page-11" href="#page-11" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   specification does allow other formats for address data provided that
+   the server advertises support for those additional formats as
+   described below.  The requirements in this section pertain to vCard
+   address data, os formats that follow the semantics of vCard data.
+
+   Address object resources contained in address book collections MUST
+   contain a single vCard component only.
+
+   vCard components in an address book collection MUST have a UID
+   property value that MUST be unique in the scope of the address book
+   collection in which it is contained.
+
+<span class="h3"><a name="section-5.2">5.2</a>.  Address Book Collection</span>
+
+   CardDAV defines the following new resource type for use in WebDAV
+   repositories holding vCard data.
+
+   Address book collections appear to clients as a WebDAV collection
+   resource, identified by a URL.  An address book collection MUST
+   report the DAV:collection and CARDDAV:addressbook XML elements in the
+   value of the DAV:resourcetype property.  The element type declaration
+   for CARDDAV:addressbook is:
+
+       &lt;!ELEMENT addressbook EMPTY&gt;
+
+   An address book collection can be created through provisioning (e.g.,
+   automatically created when a user's account is provisioned), or it
+   can be created with the MKADDRESSBOOK method (see <a href="#section-6.3.1">Section 6.3.1</a>).
+   This method can be useful for a user to create additional address
+   books (e.g., "soccer team members") or for users to share an address
+   book (e.g., "sales team contacts").  Note however that this document
+   doesn't define what extra address book collections are for.  Users
+   must rely on non-standard cues to find out what an address book
+   collection is for, or use the CARDDAV:addressbook-description
+   property defined in <a href="#section-6.2.1">Section 6.2.1</a> to provide such a cue.
+
+   The following restrictions are applied to the resources within an
+   address book collection:
+
+   a.  Address book collections MUST only contain address object
+       resources and collections that are not address book collections.
+       i.e., the only "top-level" non-collection resources allowed in an
+       address book collection are address object resources.  This
+       ensures that address book clients do not have to deal with non-
+       address data in an address book collection, though they do have
+       to distinguish between address object resources and collections
+       when using standard WebDAV techniques to examine the contents of
+       a collection.
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 11]</span>
+</pre><pre class='newpage'><a name="page-12" id="page-12" href="#page-12" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   b.  Collections contained in address book collections MUST NOT
+       contain address book collections at any depth. i.e., "nesting" of
+       address book collections within other address book collections at
+       any depth is not allowed.  This specification does not define how
+       collections contained in an address book collection are used or
+       how they relate to any address object resources contained in the
+       address book collection.
+
+   Multiple address book collections MAY be children of the same
+   collection.
+
+
+<span class="h2"><a name="section-6">6</a>.  Address Book Feature</span>
+
+<span class="h3"><a name="section-6.1">6.1</a>.  Address Book Support</span>
+
+   A server supporting the features described in this document, MUST
+   include "addressbook-access" as a field in the DAV response header
+   from an OPTIONS request on any resource that supports any address
+   book properties, reports, or methods.  A value of "addressbook-
+   access" in the DAV response header MUST indicate that the server
+   supports all MUST level requirements and REQUIRED features specified
+   in this document.
+
+<span class="h4"><a name="section-6.1.1">6.1.1</a>.  Example: Using OPTIONS for the Discovery of Support for CardDAV</span>
+
+   &gt;&gt; Request &lt;&lt;
+
+   OPTIONS /addressbooks/users/ HTTP/1.1
+   Host: addressbook.example.com
+
+   &gt;&gt; Response &lt;&lt;
+
+   HTTP/1.1 200 OK
+   Allow: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, COPY, MOVE
+   Allow: MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, REPORT
+   Allow: MKADDRESSBOOK, ACL
+   DAV: 1, 2, access-control, addressbook-access
+   Date: Sat, 11 Nov 2006 09:32:12 GMT
+   Content-Length: 0
+
+   In this example, the OPTIONS response indicates that the server
+   supports CardDAV in this namespace, therefore the '/addressbooks/
+   users/' collection may be used as a parent for address book
+   collections as the MKADDRESSBOOK method is available, and as a
+   possible target for REPORT requests for address book reports.
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 12]</span>
+</pre><pre class='newpage'><a name="page-13" id="page-13" href="#page-13" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+<span class="h3"><a name="section-6.2">6.2</a>.  Address Book Properties</span>
+
+<span class="h4"><a name="section-6.2.1">6.2.1</a>.  CARDDAV:addressbook-description Property</span>
+
+   Name:  addressbook-description
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Provides a human-readable description of the address book
+      collection.
+
+   Conformance:  This property MAY be defined on any address book
+      collection.  If defined, it MAY be protected and SHOULD NOT be
+      returned by a PROPFIND DAV:allprop request (as defined in <a href="#section-      ">Section</a>
+      <a href="#section-      ">12.14.1</a> of [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>]).  An xml:lang attribute indicating the human
+      language of the description SHOULD be set for this property by
+      clients or through server provisioning.  Servers MUST return any
+      xml:lang attribute if set for the property.
+
+   Description:  If present, the property contains a description of the
+      address book collection that is suitable for presentation to a
+      user.  If not present, the client should assume no description for
+      the address book collection.
+
+   Definition:
+
+       &lt;!ELEMENT addressbook-description (#PCDATA)&gt;
+       PCDATA value: string
+
+   Example:
+
+       &lt;C:addressbook-description xml:lang="fr-CA"
+          xmlns:C="urn:ietf:params:xml:ns:carddav"
+       &gt;Adresses de Oliver Daboo&lt;/C:addressbook-description&gt;
+
+<span class="h4"><a name="section-6.2.2">6.2.2</a>.  CARDDAV:supported-address-data Property</span>
+
+   Name:  supported-address-data
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Specifies what media types are allowed for address object
+      resources in an address book collection.
+
+   Conformance:  This property MAY be defined on any address book
+      collection.  If defined, it MUST be protected and SHOULD NOT be
+      returned by a PROPFIND DAV:allprop request (as defined in <a href="#section-      ">Section</a>
+      <a href="#section-      ">12.14.1</a> of [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>] ).
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 13]</span>
+</pre><pre class='newpage'><a name="page-14" id="page-14" href="#page-14" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Description:  The CARDDAV:supported-address-data property is used to
+      specify the media type supported for the address object resources
+      contained in a given address book collection (e.g., vCard version
+      3.0).  Any attempt by the client to store address object resources
+      with a media type not listed in this property MUST result in an
+      error, with the CARDDAV:supported-address-data precondition (
+      <a href="#section-6.3.2.1">Section 6.3.2.1</a> ) being violated.  In the absence of this property
+      the server MUST only accept data with the media type "text/vcard"
+      and vCard version 3.0, and clients can assume that.
+
+   Definition:
+
+       &lt;!ELEMENT supported-address-data (addressbook-data+)&gt;
+
+   Example:
+
+       &lt;C:supported-address-data
+          xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+         &lt;C:addressbook-data content-type="text/vcard" version="3.0"/&gt;
+       &lt;/C:supported-address-data&gt;
+
+<span class="h4"><a name="section-6.2.3">6.2.3</a>.  CARDDAV:max-resource-size Property</span>
+
+   Name:  max-resource-size
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Provides a numeric value indicating the maximum size of a
+      resource in octets that the server is willing to accept when an
+      address object resource is stored in an address book collection.
+
+   Conformance:  This property MAY be defined on any address book
+      collection.  If defined, it MUST be protected and SHOULD NOT be
+      returned by a PROPFIND DAV:allprop request (as defined in <a href="#section-      ">Section</a>
+      <a href="#section-      ">12.14.1</a> of [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>] ).
+
+   Description:  The CARDDAV:max-resource-size is used to specify a
+      numeric value that represents the maximum size in octets that the
+      server is willing to accept when an address object resource is
+      stored in an address book collection.  Any attempt to store an
+      address book object resource exceeding this size MUST result in an
+      error, with the CARDDAV:max-resource-size precondition (
+      <a href="#section-6.3.2.1">Section 6.3.2.1</a> ) being violated.  In the absence of this property
+      the client can assume that the server will allow storing a
+      resource of any reasonable size.
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 14]</span>
+</pre><pre class='newpage'><a name="page-15" id="page-15" href="#page-15" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Definition:
+
+       &lt;!ELEMENT max-resource-size (#PCDATA)&gt;
+       PCDATA value: a numeric value (positive integer)
+
+   Example:
+
+       &lt;C:max-resource-size xmlns:C="urn:ietf:params:xml:ns:carddav"
+       &gt;102400&lt;/C:max-resource-size&gt;
+
+<span class="h3"><a name="section-6.3">6.3</a>.  Creating Resources</span>
+
+   Address book collections and address object resources may be created
+   by either a CardDAV client or by the CardDAV server.  This
+   specification defines restrictions and a data model that both clients
+   and servers MUST adhere to when manipulating such address data.
+
+<span class="h4"><a name="section-6.3.1">6.3.1</a>.  MKADDRESSBOOK Method</span>
+
+   An HTTP request using the MKADDRESSBOOK method creates a new address
+   book collection resource.  A server MAY restrict address book
+   collection creation to particular collections.
+
+   Support for MKADDRESSBOOK on the server is only RECOMMENDED and not
+   REQUIRED because some address book stores only support one address
+   book per user (or principal), and those are typically pre-created for
+   each account.  However, servers and clients are strongly encouraged
+   to support MKADDRESSBOOK whenever possible to allow users to create
+   multiple address book collections to help organize their data better.
+
+   Clients SHOULD use the DAV:displayname property for a human-readable
+   name of the address book.  Clients can either specify the value of
+   the DAV:displayname property in the request body of the MKADDRESSBOOK
+   request, or alternatively issue a PROPPATCH request to change the
+   DAV:displayname property to the appropriate value immediately after
+   using the MKADDRESSBOOK request.  Clients SHOULD NOT set the DAV:
+   displayname property to be the same as any other address book
+   collection at the same URI "level".  When displaying address book
+   collections to users, clients SHOULD check the DAV:displayname
+   property and use that value as the name of the address book.  In the
+   event that the DAV: displayname property is empty, the client MAY use
+   the last part of the address book collection URI as the name, however
+   that path segment may be "opaque" and not represent any meaningful
+   human-readable text.
+
+   If a MKADDRESSBOOK request fails, the server state preceding the
+   request MUST be restored.
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 15]</span>
+</pre><pre class='newpage'><a name="page-16" id="page-16" href="#page-16" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Marshalling:
+
+      If a request body is included, it MUST be a CARDDAV:mkaddressbook
+      XML element.  Instruction processing MUST occur in the order
+      instructions are received (i.e., from top to bottom).
+      Instructions MUST either all be executed or none executed.  Thus
+      if any error occurs during processing all executed instructions
+      MUST be undone and a proper error result returned.  Instruction
+      processing details can be found in the definition of the DAV:set
+      instruction in <a href="./rfc2518#section-12.13">section&nbsp;12.13 of [RFC2518]</a>.
+
+       &lt;!ELEMENT mkaddressbook (DAV:set)&gt;
+
+      If a response body for a successful request is included, it MUST
+      be a CARDDAV:mkaddressbook-response XML element.
+
+       &lt;!ELEMENT mkaddressbook-response ANY&gt;
+
+      The response MUST include a Cache-Control:no-cache header.
+
+   Preconditions:
+
+      (DAV:resource-must-be-null): A resource MUST NOT exist at the
+      Request-URI.
+
+      (CARDDAV:addressbook-collection-location-bad): The Request-URI
+      MUST identify a location where an address book collection can be
+      created.
+
+      (DAV:needs-privilege): The DAV:bind privilege MUST be granted to
+      the current user.
+
+   Postconditions:
+
+      (CARDDAV:initialize-addressbook-collection): A new address book
+      collection exists at the Request-URI.  The DAV:resourcetype of the
+      address book collection MUST contain both DAV:collection and
+      CARDDAV:addressbook XML elements.
+
+<span class="h5"><a name="section-6.3.1.1">6.3.1.1</a>.  Status Codes</span>
+
+   The following are examples of response codes one would expect to get
+   in a response to a MKADDRESSBOOK request.  Note that this list is by
+   no means exhaustive.
+
+      201 (Created) - The address book collection resource was created
+      in its entirety.
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 16]</span>
+</pre><pre class='newpage'><a name="page-17" id="page-17" href="#page-17" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+      207 (Multi-Status) - The address book collection resource was not
+      created since one or more DAV:set instructions specified in the
+      request body could not be processed successfully.  The following
+      are examples of response codes one would expect to be used in a
+      207 (Multi-Status) response:
+
+         403 (Forbidden) - The client, for reasons the server chooses
+         not to specify, cannot alter one of the properties.
+
+         409 (Conflict) - The client has provided a value whose
+         semantics are not appropriate for the property.  This includes
+         trying to set read-only properties.
+
+         424 (Failed Dependency) - The DAV:set instruction on the
+         specified resource would have succeeded if it were not for the
+         failure of another DAV:set instruction specified in the request
+         body.
+
+         423 (Locked) - The specified resource is locked and the client
+         either is not a lock owner or the lock type requires a lock
+         token to be submitted and the client did not submit it.
+
+         507 (Insufficient Storage) - The server did not have sufficient
+         space to record the property.
+
+      403 (Forbidden) - This indicates at least one of two conditions:
+      1) the server does not allow the creation of address book
+      collections at the given location in its namespace, or 2) the
+      parent collection of the Request-URI exists but cannot accept
+      members.
+
+      405 (Method Not Allowed) - MKADDRESSBOOK can only be executed on a
+      null resource.
+
+      409 (Conflict) - A collection cannot be made at the Request-URI
+      until one or more intermediate collections have been created.
+
+      415 (Unsupported Media Type) - The server does not support the
+      request type of the body.
+
+      507 (Insufficient Storage) - The resource does not have sufficient
+      space to record the state of the resource after the execution of
+      this method.
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 17]</span>
+</pre><pre class='newpage'><a name="page-18" id="page-18" href="#page-18" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+<span class="h5"><a name="section-6.3.1.2">6.3.1.2</a>.  Example - Successful MKADDRESSBOOK request</span>
+
+   This example creates an address book collection called /home/lisa/
+   addressbook/ on the server addressbook.example.com with specific
+   values for the properties DAV:displayname and CARDDAV:addressbook-
+   description.
+
+   &gt;&gt; Request &lt;&lt;
+
+   MKADDRESSBOOK /home/lisa/addressbook/ HTTP/1.1
+   Host: addressbook.example.com
+   Content-Type: text/xml; charset="utf-8"
+   Content-Length: xxx
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;C:mkaddressbook xmlns:D="DAV:"
+                 xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+     &lt;D:set&gt;
+       &lt;D:prop&gt;
+         &lt;D:displayname&gt;Lisa's Address Book&lt;/D:displayname&gt;
+         &lt;C:addressbook-description xml:lang="en"
+   &gt;My primary address book.&lt;/C:addressbook-description&gt;
+       &lt;/D:prop&gt;
+     &lt;/D:set&gt;
+   &lt;/C:mkaddressbook&gt;
+
+   &gt;&gt; Response &lt;&lt;
+
+   HTTP/1.1 201 Created Date: Fri, 22 Oct 2004 12:17:08 GMT
+   Content-Length: 0
+   Date: Sat, 11 Nov 2006 09:32:12 GMT
+   Cache-Control: no-cache
+
+<span class="h4"><a name="section-6.3.2">6.3.2</a>.  Creating Address Object Resources</span>
+
+   Clients populate address book collections with address object
+   resources.  The URL for each address object resource is entirely
+   arbitrary, and does not need to bear a specific relationship (but
+   might) to the address object resource's vCard properties or other
+   metadata.  New address object resources MUST be created with a PUT
+   request targeted at an unmapped URI.  A PUT request targeted at a
+   mapped URI updates an existing address object resource.
+
+   When servers create new resources, it's not hard for the server to
+   choose a unique URL.  It's slightly tougher for clients, because a
+   client might not want to examine all resources in the collection, and
+   might not want to lock the entire collection to ensure that a new one
+   isn't created with a name collision.  However, there is an HTTP
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 18]</span>
+</pre><pre class='newpage'><a name="page-19" id="page-19" href="#page-19" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   feature to mitigate this.  If the client intends to create a new
+   address resource the client SHOULD use the HTTP header "If-None-
+   Match: *" on the PUT request.  The Request-URI on the PUT request
+   MUST include the target collection, where the resource is to be
+   created, plus the name of the resource in the last path segment.  The
+   "If-None-Match" header ensures that the client will not inadvertently
+   overwrite an existing resource even, if the last path segment turned
+   out to already be used.
+
+   &gt;&gt; Request &lt;&lt;
+
+   PUT /lisa/addressbook/newvcard.vcf HTTP/1.1
+   If-None-Match: *
+   Host: addressbook.example.com
+   Content-Type: text/vcard
+   Content-Length: xxx
+
+   BEGIN:VCARD
+   VERSION:3.0
+   FN:Cyrus Daboo
+   N:Daboo;Cyrus
+   ADR;TYPE=POSTAL:;2822 Email HQ;Suite 2821;RFCVille;PA;15213;USA
+   EMAIL;TYPE=INTERNET,PREF:cyrus@daboo.name
+   NICKNAME:me
+   NOTE:Example VCard.
+   ORG:Self Employed
+   TEL;TYPE=WORK,VOICE:412 605 0499
+   TEL;TYPE=FAX:412 605 0705
+   URL:http://www.daboo.name
+   UID:1234-5678-9000-1
+   END:VCARD
+
+   &gt;&gt; Response &lt;&lt;
+
+   HTTP/1.1 201 Created
+   Date: Thu, 02 Sep 2004 16:53:32 GMT
+   Content-Length: 0
+   ETag: "123456789-000-111"
+
+   The request to change an existing address object resource is the
+   same, but with a specific ETag in the "If-Match" header, rather than
+   the "If-None-Match" header.
+
+   File names for vCards are commonly suffixed by ".vcf", and clients
+   may choose to use the same convention for URLs.
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 19]</span>
+</pre><pre class='newpage'><a name="page-20" id="page-20" href="#page-20" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+<span class="h5"><a name="section-6.3.2.1">6.3.2.1</a>.  Additional Preconditions for PUT, COPY and MOVE</span>
+
+   This specification creates additional Preconditions for PUT, COPY and
+   MOVE methods.  These preconditions apply:
+
+      When a PUT operation of an address object resource into an address
+      book collection occurs.
+
+      When a COPY or MOVE operation of an address object resource into
+      an address book collection occurs.
+
+   The new preconditions are:
+
+      (CARDDAV:supported-address-data): The resource submitted in the
+      PUT request, or targeted by a COPY or MOVE request MUST be a
+      supported media type (i.e., vCard) for address object resources;
+
+      (CARDDAV:valid-address-data): The resource submitted in the PUT
+      request, or targeted by a COPY or MOVE request MUST be valid data
+      for the media type being specified (i.e., MUST contain valid vCard
+      data);
+
+      (CARDDAV:no-uid-conflict): The resource submitted in the PUT
+      request, or targeted by a COPY or MOVE request MUST NOT specify a
+      vCard UID property value already in use in the targeted address
+      book collection or overwrite an existing address object resource
+      with one that has a different UID property value.  Servers SHOULD
+      report the URL of the resource that is already making use of the
+      same UID property value in the DAV:href element;
+
+          &lt;!ELEMENT no-uid-conflict (DAV:href)&gt;
+
+      (CARDDAV:addressbook-collection-location-ok): In a COPY or MOVE
+      request, when the Request-URI is an address book collection, the
+      Destination-URI MUST identify a location where an address book
+      collection can be created;
+
+      (CARDDAV:max-resource-size): The resource submitted in the PUT
+      request, or targeted by a COPY or MOVE request MUST have an octet
+      size less than or equal to the value of the CARDDAV:max-resource-
+      size property value ( <a href="#section-6.2.3">Section 6.2.3</a> ) on the address book
+      collection where the resource will be stored;
+
+<span class="h5"><a name="section-6.3.2.2">6.3.2.2</a>.  Non-Standard Properties, and Parameters</span>
+
+   vCard provides a "standard mechanism for doing non-standard things".
+   This extension support allows implementers to make use of non-
+   standard properties and parameters whose names are prefixed with the
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 20]</span>
+</pre><pre class='newpage'><a name="page-21" id="page-21" href="#page-21" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   text "X-".
+
+   Servers MUST support the use of non-standard properties and
+   parameters in address object resources stored via the PUT method.
+
+   Servers may need to enforce rules for their own "private" properties
+   or parameters, so servers MAY reject any attempt by the client to
+   change those or use values for those outside of any restrictions the
+   server may have.  Servers SHOULD ensure that any "private" properties
+   or parameters it uses follow the convention of including a vendor id
+   in the "X-" name, as described in <a href="./rfc2426#section-3.8">Section&nbsp;3.8 of [RFC2426]</a>, e.g.,
+   "X-ABC-PRIVATE".
+
+<span class="h5"><a name="section-6.3.2.3">6.3.2.3</a>.  Address Object Resource Entity Tag</span>
+
+   The DAV:getetag property MUST be defined and set to a strong entity
+   tag on all address object resources.
+
+   A response to a GET request targeted at an address object resource
+   MUST contain an ETag response header field indicating the current
+   value of the strong entity tag of the address object resource.
+
+   Servers SHOULD return a strong entity tag (ETag header) in a PUT
+   response when the stored address object resource is equivalent by
+   octet equality to the address object resource submitted in the body
+   of the PUT request.  This allows clients to reliably use the returned
+   strong entity tag for data synchronization purposes.  For instance,
+   the client can do a PROPFIND request on the stored address object
+   resource and have the DAV:getetag property returned, and compare that
+   value with the strong entity tag it received on the PUT response, and
+   know that if they are equal, then the address object resource on the
+   server has not been changed.
+
+   In the case where the data stored by a server as a result of a PUT
+   request is not equivalent by octet equality to the submitted address
+   object resource, the behavior of the ETag response header is not
+   specified here, with the exception that a strong entity tag MUST NOT
+   be returned in the response.  As a result, clients may need to
+   retrieve the modified address object resource (and ETag) as a basis
+   for further changes, rather than use the address object resource it
+   had sent with the PUT request.
+
+
+<span class="h2"><a name="section-7">7</a>.  Address Book Access Control</span>
+
+   CardDAV servers MUST support and adhere to the requirements of WebDAV
+   ACL [<a href="./rfc3744" title='"Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol"'>RFC3744</a>].  WebDAV ACL provides a framework for an extensible set
+   of privileges that can be applied to WebDAV collections and ordinary
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 21]</span>
+</pre><pre class='newpage'><a name="page-22" id="page-22" href="#page-22" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   resources.
+
+<span class="h3"><a name="section-7.1">7.1</a>.  Additional Principal Property</span>
+
+   This section defines an additional property for WebDAV principal
+   resources as defined in [<a href="./rfc3744" title='"Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol"'>RFC3744</a>].
+
+<span class="h4"><a name="section-7.1.1">7.1.1</a>.  CARDDAV:addressbook-home-set Property</span>
+
+   Name:  addressbook-home-set
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Identifies the URL of any WebDAV collections that contain
+      address book collections owned by the associated principal
+      resource.
+
+   Conformance:  This property SHOULD be defined on a principal
+      resource.  If defined, it MAY be protected and SHOULD NOT be
+      returned by a PROPFIND DAV:allprop request (as defined in <a href="#section-      ">Section</a>
+      <a href="#section-      ">12.14.1</a> of [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>]).
+
+   Description:  The CARDDAV:addressbook-home-set property is meant to
+      allow users to easily find the address book collections owned by
+      the principal.  Typically, users will group all the address book
+      collections that they own under a common collection.  This
+      property specifies the URL of collections that either are address
+      book collections or ordinary collections that have child or
+      descendant address book collections owned by the principal.
+
+   Definition:
+
+       &lt;!ELEMENT addressbook-home-set (DAV:href*)&gt;
+
+   Example:
+
+    &lt;C:addressbook-home-set xmlns:D="DAV:"
+       xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+      &lt;D:href&gt;http://addressbook.example.com/bernard/addresses/&lt;/D:href&gt;
+    &lt;/C:addk-home-set&gt;
+
+
+<span class="h2"><a name="section-8">8</a>.  Address Book Reports</span>
+
+   This section defines the reports that CardDAV servers MUST support on
+   address book collections and address object resources.
+
+   CardDAV servers MUST advertise support for these REPORTs on all
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 22]</span>
+</pre><pre class='newpage'><a name="page-23" id="page-23" href="#page-23" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   address book collections and address object resources with the DAV:
+   supported-report-set property defined in <a href="./rfc3253#section-3.1.5">Section&nbsp;3.1.5 of [RFC3253]</a>.
+   CardDAV servers MAY also advertise support for these REPORTs on
+   ordinary collections.
+
+   Some of these REPORTs allow address data (from possibly multiple
+   resources) to be returned.
+
+<span class="h3"><a name="section-8.1">8.1</a>.  REPORT Method</span>
+
+   The REPORT method (defined in <a href="./rfc3253#section-3.6">Section&nbsp;3.6 of [RFC3253]</a>) provides an
+   extensible mechanism for obtaining information about a resource.
+   Unlike the PROPFIND method, which returns the value of one or more
+   named properties, the REPORT method can involve more complex
+   processing.  REPORT is valuable in cases where the server has access
+   to all of the information needed to perform the complex request (such
+   as a query), and where it would require multiple requests for the
+   client to retrieve the information needed to perform the same
+   request.
+
+   A server that supports addressbook-access MUST support the DAV:
+   expand-property report (defined in <a href="./rfc3253#section-3.8">Section&nbsp;3.8 of [RFC3253]</a>).
+
+<span class="h3"><a name="section-8.2">8.2</a>.  Ordinary collections</span>
+
+   Servers MAY support the REPORTs defined in this document on ordinary
+   collections (collections that are not address book collections) in
+   addition to address book collections or address object resources.  In
+   computing responses to the REPORTs on ordinary collections, servers
+   MUST only consider address object resources contained in address book
+   collections that are targeted by the REPORT based on the value of the
+   Depth request header.
+
+<span class="h3"><a name="section-8.3">8.3</a>.  Searching Text: Collations</span>
+
+   Some of the reports defined in this section do text matches of
+   character strings provided by the client and compared to stored
+   address data.  Since vCard data is by default encoded in the UTF-8
+   charset and may include characters outside of the US-ASCII charset
+   range in some property and parameter values, there is a need to
+   ensure that text matching follows well-defined rules.
+
+   To deal with this, this specification makes use of the IANA Collation
+   Registry defined in [<a href="./rfc4790" title='"Internet Application Protocol Collation Registry"'>RFC4790</a>] to specify collations that may be used
+   to carry out the text comparison operations with a well-defined rule.
+
+   The comparisons used in CardDAV are all "substring" matches as per
+   <a href="./rfc4790#section-4.2">[RFC4790] Section&nbsp;4.2</a>.  Collations supported by the server MUST
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 23]</span>
+</pre><pre class='newpage'><a name="page-24" id="page-24" href="#page-24" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   support "substring" match operations.
+
+   CardDAV servers are REQUIRED to support the "i;ascii-casemap" and
+   "i;octet" collations as described in [<a href="./rfc4790" title='"Internet Application Protocol Collation Registry"'>RFC4790</a>], and the
+   "i;unicasemap" collation as described in
+   [<a href="#ref-I-D.crispin-collation-unicasemap" title='"i;unicode-casemap - Simple Unicode Collation Algorithm"'>I-D.crispin-collation-unicasemap</a>], MAY support other collations.
+
+   Servers MUST advertise the set of collations that they support via
+   the CARDDAV:supported-collation-set property defined on any resource
+   that supports reports that use collations.
+
+   Clients MUST only use collations from the list advertised by the
+   server.
+
+   In the absence of a collation explicitly specified by the client, or
+   if the client specifies the "default" collation identifier (as
+   defined in <a href="./rfc4790#section-3.1">[RFC4790] Section&nbsp;3.1</a>), the server MUST default to using
+   "i;ascii-casemap" as the collation.
+
+   Wildcards (as defined in <a href="./rfc4790#section-3.2">[RFC4790] Section&nbsp;3.2</a>) MUST NOT be used in
+   the collation identifier.
+
+   If the client chooses a collation not supported by the server, the
+   server MUST respond with a CARDDAV:supported-collation precondition
+   error response.
+
+<span class="h4"><a name="section-8.3.1">8.3.1</a>.  CARDDAV:supported-collation-set Property</span>
+
+   Name:  supported-collation-set
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Identifies the set of collations supported by the server
+      for text matching operations.
+
+   Conformance:  This property MUST be defined on any resource that
+      supports a REPORT that does text matching.  If defined, it MUST be
+      protected and SHOULD NOT be returned by a PROPFIND DAV:allprop
+      request (as defined in <a href="./rfc2518#section-12.14.1">Section&nbsp;12.14.1 of [RFC2518]</a>).
+
+   Description:  The CARDDAV:supported-collation-set property contains
+      zero or more CARDDAV:supported-collation elements which specify
+      the collection identifiers of the collations supported by the
+      server.
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 24]</span>
+</pre><pre class='newpage'><a name="page-25" id="page-25" href="#page-25" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Definition:
+
+         &lt;!ELEMENT supported-collation-set (supported-collation*)&gt;
+
+         &lt;!ELEMENT supported-collation (#PCDATA)&gt;
+
+   Example:
+
+      &lt;C:supported-collation-set
+        xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+        &lt;C:supported-collation&gt;i;ascii-casemap&lt;/C:supported-collation&gt;
+        &lt;C:supported-collation&gt;i;octet&lt;/C:supported-collation&gt;
+        &lt;C:supported-collation&gt;i;unicasemap&lt;/C:supported-collation&gt;
+      &lt;/C:supported-collation-set&gt;
+
+<span class="h3"><a name="section-8.4">8.4</a>.  Partial Retrieval</span>
+
+   Some address book REPORTs defined in this document allow partial
+   retrieval of address object resources.  A CardDAV client can specify
+   what information to return in the body of an address book REPORT
+   request.
+
+   A CardDAV client can request particular WebDAV property values, all
+   WebDAV property values, or a list of the names of the resource's
+   WebDAV properties.  A CardDAV client can also request address data to
+   be returned and whether all vCard properties should be returned or
+   only particular ones.  See CARDDAV:address-data in <a href="#section-10.6">Section 10.6</a>.
+
+<span class="h3"><a name="section-8.5">8.5</a>.  Non-standard properties and parameters</span>
+
+   Servers MUST support the use of non-standard property or parameter
+   names in the CARDDAV:addressbook-data XML element in address book
+   REPORT requests to allow clients to request that non-standard
+   properties and parameters be returned in the address data provided in
+   the response.
+
+   Servers MAY support the use of non-standard property or parameter
+   names in the CARDDAV:prop-filter and CARDDAV:param-filter XML
+   elements specified in the CARDDAV:filter XML element of address book
+   REPORT requests.
+
+   Servers MUST fail with the CARDDAV:supported-filter precondition if
+   an address book REPORT request uses a CARDDAV:prop-filter or CARDDAV:
+   param-filter XML element that makes reference to a non-standard
+   property or parameter name which the server does not support queries
+   on.
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 25]</span>
+</pre><pre class='newpage'><a name="page-26" id="page-26" href="#page-26" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+<span class="h3"><a name="section-8.6">8.6</a>.  CARDDAV:addressbook-query Report</span>
+
+   The CARDDAV:addressbook-query REPORT performs a search for all
+   address object resources that match a specified filter.  The response
+   of this REPORT will contain all the WebDAV properties and address
+   object resource data specified in the request.  In the case of the
+   CARDDAV:addressbook-data XML element, one can explicitly specify the
+   vCard properties that should be returned in the address object
+   resource data that matches the filter.
+
+   The format of this report is modeled on the PROPFIND method.  The
+   request and response bodies of the CARDAV:addressbook-query report
+   use XML elements that are also used by PROPFIND.  In particular the
+   request can include XML elements to request WebDAV properties to be
+   returned.  When that occurs the response should follow the same
+   behavior as PROPFIND with respect to the DAV:multistatus response
+   elements used to return specific property results.  For instance, a
+   request to retrieve the value of a property which does not exist is
+   an error and MUST be noted with a response XML element which contains
+   a 404 (Not Found) status value.
+
+   Support for the CARDDAV:addressbook-query REPORT is REQUIRED.
+
+   Marshalling:
+
+      The request body MUST be a CARDDAV:addressbook-query XML element
+      as defined in <a href="#section-10.5">Section 10.5</a>.
+
+      The request MAY include a Depth header.  If no Depth header is
+      included, Depth:0 is assumed.
+
+      The response body for a successful request MUST be a DAV:
+      multistatus XML element (i.e., the response uses the same format
+      as the response for PROPFIND).  In the case where there are no
+      response elements, the returned DAV:multistatus XML element is
+      empty.
+
+      The response body for a successful CARDDAV:addressbook-query
+      REPORT request MUST contain a DAV:response element for each
+      address object that matched the search filter. address data is
+      returned in the CARDDAV:addressbook-data XML element inside the
+      DAV:propstat XML element.
+
+   Preconditions:
+
+      (CARDDAV:supported-address-data): The attributes "content-type"
+      and "version" of the CARDDAV:addressbook-data XML element (see
+      <a href="#section-10.6">Section 10.6</a>) specify a media type supported by the server for
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 26]</span>
+</pre><pre class='newpage'><a name="page-27" id="page-27" href="#page-27" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+      address object resources.
+
+      (CARDDAV:supported-filter): The CARDDAV:prop-filter (see
+      <a href="#section-10.7.1">Section 10.7.1</a>) and CARDDAV:param-filter (see <a href="#section-10.7.2">Section 10.7.2</a>) XML
+      elements used in the CARDDAV:filter XML element (see <a href="#section-10.7">Section 10.7</a>)
+      in the REPORT request only make reference to properties and
+      parameters for which queries are supported by the server. i.e., if
+      the CARDDAV:filter element attempts to reference an unsupported
+      property or parameter, this precondition is violated.  Servers
+      SHOULD report the CARDDAV:prop-filter or CARDDAV:param-filter for
+      which it does not provide support.
+
+          &lt;!ELEMENT supported-filter (prop-filter*,
+                                      param-filter*)&gt;
+
+      (CARDDAV:supported-collation): Any XML attribute specifying a
+      collation MUST specify a collation supported by the server as
+      described in <a href="#section-8.3">Section 8.3</a>.
+
+   Postconditions:
+
+      (DAV:number-of-matches-within-limits): The number of matching
+      address object resources must fall within server-specific,
+      predefined limits.  For example, this condition might be triggered
+      if a search specification would cause the return of an extremely
+      large number of responses.
+
+<span class="h4"><a name="section-8.6.1">8.6.1</a>.  Example: Partial retrieval of vCards matching a</span>
+        NICKNAME
+
+   In this example, the client requests the server to search for address
+   object resources that contain a NICKNAME property whose value equals
+   some specific text, and to return specific vCard properties for those
+   vCards found.  In addition the DAV:getetag property is also requested
+   and returned as part of the response.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 27]</span>
+</pre><pre class='newpage'><a name="page-28" id="page-28" href="#page-28" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   &gt;&gt; Request &lt;&lt;
+
+
+   REPORT /home/bernard/addressbook/ HTTP/1.1
+   Host: addressbook.example.com
+   Depth: 1
+   Content-Type: text/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;C:addressbook-query xmlns:D="DAV:"
+                     xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+     &lt;D:prop&gt;
+       &lt;D:getetag/&gt;
+       &lt;C:addressbook-data&gt;
+         &lt;C:prop name="VERSION"/&gt;
+         &lt;C:prop name="UID"/&gt;
+         &lt;C:prop name="NICKNAME"/&gt;
+         &lt;C:prop name="EMAIL"/&gt;
+         &lt;C:prop name="FN"/&gt;
+       &lt;/C:addressbook-data&gt;
+     &lt;/D:prop&gt;
+     &lt;C:filter&gt;
+       &lt;C:prop-filter name="NICKNAME"&gt;
+         &lt;C:text-match collation="i;unicasemap"
+                       match-type="equality"
+         &gt;me&lt;/C:text-match&gt;
+       &lt;/C:prop-filter&gt;
+     &lt;/C:filter&gt;
+   &lt;/C:addressbook-query&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 28]</span>
+</pre><pre class='newpage'><a name="page-29" id="page-29" href="#page-29" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   &gt;&gt; Response &lt;&lt;
+
+
+   HTTP/1.1 207 Multi-Status
+   Date: Sat, 11 Nov 2006 09:32:12 GMT
+   Content-Type: text/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;D:multistatus xmlns:D="DAV:"
+                  xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+     &lt;D:response&gt;
+       &lt;D:href&gt;/home/bernard/addressbook/v102.vcf&lt;/D:href&gt;
+       &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+           &lt;D:getetag&gt;"23ba4d-ff11fb"&lt;/D:getetag&gt;
+           &lt;C:addressbook-data&gt;BEGIN:VCARD
+   VERSION:3.0
+   NICKNAME:me
+   UID:34222-232@example.com
+   FN:Cyrus Daboo
+   EMAIL:daboo@example.com
+   END:VCARD
+   &lt;/C:addressbook-data&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+       &lt;/D:propstat&gt;
+     &lt;/D:response&gt;
+   &lt;/D:multistatus&gt;
+
+
+<span class="h4"><a name="section-8.6.2">8.6.2</a>.  Example: Partial retrieval of vCards matching a             full</span>
+        name
+
+   In this example, the client requests the server to search for address
+   object resources that contain a FN property whose value contains some
+   specific text, and to return specific vCard properties for those
+   vCards found.  In addition the DAV:getetag property is also requested
+   and returned as part of the response.
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 29]</span>
+</pre><pre class='newpage'><a name="page-30" id="page-30" href="#page-30" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   &gt;&gt; Request &lt;&lt;
+
+
+   REPORT /home/bernard/addressbook/ HTTP/1.1
+   Host: addressbook.example.com
+   Depth: 1
+   Content-Type: text/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;C:addressbook-query xmlns:D="DAV:"
+                     xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+     &lt;D:prop&gt;
+       &lt;D:getetag/&gt;
+       &lt;C:addressbook-data&gt;
+         &lt;C:prop name="VERSION"/&gt;
+         &lt;C:prop name="UID"/&gt;
+         &lt;C:prop name="NICKNAME"/&gt;
+         &lt;C:prop name="EMAIL"/&gt;
+         &lt;C:prop name="FN"/&gt;
+       &lt;/C:addressbook-data&gt;
+     &lt;/D:prop&gt;
+     &lt;C:filter&gt;
+       &lt;C:prop-filter name="FN"&gt;
+         &lt;C:text-match collation="i;unicasemap"
+                       match-type="substring"
+         &gt;Daboo&lt;/C:text-match&gt;
+       &lt;/C:prop-filter&gt;
+     &lt;/C:filter&gt;
+   &lt;/C:addressbook-query&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 30]</span>
+</pre><pre class='newpage'><a name="page-31" id="page-31" href="#page-31" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   &gt;&gt; Response &lt;&lt;
+
+
+   HTTP/1.1 207 Multi-Status
+   Date: Sat, 11 Nov 2006 09:32:12 GMT
+   Content-Type: text/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;D:multistatus xmlns:D="DAV:"
+                  xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+     &lt;D:response&gt;
+       &lt;D:href&gt;/home/bernard/addressbook/v102.vcf&lt;/D:href&gt;
+       &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+           &lt;D:getetag&gt;"23ba4d-ff11fb"&lt;/D:getetag&gt;
+           &lt;C:addressbook-data&gt;BEGIN:VCARD
+   VERSION:3.0
+   NICKNAME:me
+   UID:34222-232@example.com
+   FN:Cyrus Daboo
+   EMAIL:daboo@example.com
+   END:VCARD
+   &lt;/C:addressbook-data&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+       &lt;/D:propstat&gt;
+     &lt;/D:response&gt;
+     &lt;D:response&gt;
+       &lt;D:href&gt;/home/bernard/addressbook/v104.vcf&lt;/D:href&gt;
+       &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+           &lt;D:getetag&gt;"23ba4d-ff11fc"&lt;/D:getetag&gt;
+           &lt;C:addressbook-data&gt;BEGIN:VCARD
+   VERSION:3.0
+   NICKNAME:oliver
+   UID:34222-23222@example.com
+   FN:Oliver Daboo
+   EMAIL:oliver@example.com
+   END:VCARD
+   &lt;/C:addressbook-data&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+       &lt;/D:propstat&gt;
+     &lt;/D:response&gt;
+   &lt;/D:multistatus&gt;
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 31]</span>
+</pre><pre class='newpage'><a name="page-32" id="page-32" href="#page-32" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+<span class="h3"><a name="section-8.7">8.7</a>.  CARDDAV:addressbook-multiget Report</span>
+
+   The CARDDAV:addressbook-multiget REPORT is used to retrieve specific
+   address object resources from within a collection, if the Request-URI
+   is a collection, or to retrieve a specific address object resource,
+   if the Request-URI is a address object resource.  This report is
+   similar to the CARDDAV:addressbook-query REPORT (see <a href="#section-8.6">Section 8.6</a>),
+   except that it takes a list of DAV:href elements instead of a
+   CARDDAV:filter element to determine which address object resources to
+   return.
+
+   Support for the addressbook-multiget REPORT is REQUIRED.
+
+   Marshalling:
+
+      The request body MUST be a CARDDAV:addressbook-multiget XML
+      element (see <a href="#section-10.8">Section 10.8</a>, which MUST contain at least one DAV:
+      href XML element, and one optional CARDDAV:addressbook-data
+      element as defined in <a href="#section-10.6">Section 10.6</a>.  If the Request-URI is a
+      collection resource, then the DAV:href elements MUST refer to
+      resources within that collection, and they MAY refer to resources
+      at any depth within the collection.  As a result the "Depth"
+      header MUST be ignored by the server and SHOULD NOT be sent by the
+      client.  If the Request-URI refers to a non-collection resource,
+      then there MUST be a single DAV:href element that is equivalent to
+      the Request-URI.
+
+      The response body for a successful request MUST be a DAV:
+      multistatus XML element.
+
+      The response body for a successful CARDDAV:addressbook-multiget
+      REPORT request MUST contain a DAV:response element for each
+      address object resource referenced by the provided set of DAV:href
+      elements.  Address data is returned in the CARDDAV:addressbook-
+      data element inside the DAV:prop element.
+
+      In the case of an error accessing any of the provided DAV:href
+      resources, the server MUST return the appropriate error status
+      code in the DAV:status element of the corresponding DAV:response
+      element.
+
+   Preconditions:
+
+      (CARDAV:supported-address-data): The attributes "content-type" and
+      "version" of the CARDDAV:addressbook-data XML elements (see
+      <a href="#section-10.6">Section 10.6</a> ) specify a media type supported by the server for
+      address object resources.
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 32]</span>
+</pre><pre class='newpage'><a name="page-33" id="page-33" href="#page-33" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Postconditions:
+
+      None.
+
+<span class="h4"><a name="section-8.7.1">8.7.1</a>.  Example: CARDDAV:addressbook-multiget Report</span>
+
+   In this example, the client requests the server to return specific
+   properties of the address components referenced by specific URIs.  In
+   addition the DAV:getetag property is also requested and returned as
+   part of the response.  Note that in this example, the resource at
+   http://addressbook.example.com/home/bernard/addressbook/vcf1.vcf does
+   not exist, resulting in an error status response.
+
+   &gt;&gt; Request &lt;&lt;
+
+
+   REPORT /home/bernard/addressbook/ HTTP/1.1
+   Host: addressbook.example.com
+   Content-Type: text/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;C:addressbook-multiget xmlns:D="DAV:"
+                        xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+     &lt;D:prop&gt;
+       &lt;D:getetag/&gt;
+       &lt;C:addressbook-data&gt;
+         &lt;C:prop name="VERSION"/&gt;
+         &lt;C:prop name="UID"/&gt;
+         &lt;C:prop name="NICKNAME"/&gt;
+         &lt;C:prop name="EMAIL"/&gt;
+         &lt;C:prop name="FN"/&gt;
+       &lt;/C:addressbook-data&gt;
+     &lt;/D:prop&gt;
+     &lt;D:href&gt;/home/bernard/addressbook/vcf102.vcf&lt;/D:href&gt;
+     &lt;D:href&gt;/home/bernard/addressbook/vcf1.vcf&lt;/D:href&gt;
+   &lt;/C:addressbook-multiget&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 33]</span>
+</pre><pre class='newpage'><a name="page-34" id="page-34" href="#page-34" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   &gt;&gt; Response &lt;&lt;
+
+
+   HTTP/1.1 207 Multi-Status
+   Date: Sat, 11 Nov 2006 09:32:12 GMT
+   Content-Type: text/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;D:multistatus xmlns:D="DAV:"
+                  xmlns:C="urn:ietf:params:xml:ns:carddav"&gt;
+     &lt;D:response&gt;
+       &lt;D:href&gt;/home/bernard/addressbook/vcf102.vcf&lt;/D:href&gt;
+       &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+           &lt;D:getetag&gt;"23ba4d-ff11fb"&lt;/D:getetag&gt;
+           &lt;C:addressbook-data&gt;BEGIN:VCARD
+   VERSION:3.0
+   NICKNAME:me
+   UID:34222-232@example.com
+   FN:Cyrus Daboo
+   EMAIL:daboo@example.com
+   END:VCARD
+   &lt;/C:addressbook-data&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+       &lt;/D:propstat&gt;
+     &lt;/D:response&gt;
+     &lt;D:response&gt;
+       &lt;D:href&gt;/home/bernard/addressbook/vcf1.vcf&lt;/D:href&gt;
+       &lt;D:status&gt;HTTP/1.1 404 Resource not found&lt;/D:status&gt;
+     &lt;/D:response&gt;
+   &lt;/D:multistatus&gt;
+
+
+
+<span class="h2"><a name="section-9">9</a>.  Guidelines</span>
+
+<span class="h3"><a name="section-9.1">9.1</a>.  Restrict the Properties Returned</span>
+
+   Clients may not need all the properties in a vCard object when
+   presenting information to the user, or looking up specific items for
+   their email address, for example.  Since some property data can be
+   large (e.g., PHOTO or SOUND with inline content) clients can choose
+   to ignore those by only requesting the specific items it knows it
+   will use, through use of the CARDDAV:addressbook-data XML element in
+   the relevant reports.
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 34]</span>
+</pre><pre class='newpage'><a name="page-35" id="page-35" href="#page-35" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   However, if a client needs to make a change to a vCard, it can only
+   change the entire vCard data via a PUT request.  There is no way to
+   incrementally make a change to a set of properties within a vCard
+   object resource.  As a result the client will have to cache the
+   entire set of properties on a resource that is being changed.
+
+<span class="h3"><a name="section-9.2">9.2</a>.  Use of Locking</span>
+
+   WebDAV locks can be used to prevent two clients modifying the same
+   resource from either overwriting each others' changes (though that
+   problem can also be solved by using ETags) and also to prevent the
+   user from making changes that will conflict with another set of
+   changes.  In a multi-user address book system, the address book
+   client could lock an address object resource while the user is
+   editing the vCard data, and unlock the address object resource when
+   the user finishes or cancels.  Locks can also be used to prevent
+   changes while data is being reorganized.  For example, an address
+   book client might lock two address book collections prior to moving a
+   bunch of address object resources from one to another.
+
+   Clients may request a lock timeout period that is appropriate to the
+   use case.  When the user explicitly decides to reserve a resource and
+   prevent other changes, a long timeout might be appropriate, but in
+   cases when the client automatically decides to lock the resource the
+   timeout should be short (and the client can always refresh the lock
+   should it need to).  A short lock timeout means that if the client is
+   unable to remove the lock, the other address book users aren't
+   prevented from making changes.
+
+<span class="h3"><a name="section-9.3">9.3</a>.  Finding address books</span>
+
+   Much of the time an address book client (or agent) will discover a
+   new address book's location by being provided directly with the URL.
+   E.g. a user will type his or her own address book location into
+   client configuration information, or cut and paste a URL from email
+   into the address book application.  The client need only confirm that
+   the URL points to a resource which is an address book.  The client
+   may also be able to browse WebDAV collections to find address book
+   collections.
+
+   The choice of HTTP URLs means that address object resources are
+   backward compatible with existing software, but does have the
+   disadvantage that existing software does not usually know to look at
+   the OPTIONS response to that URL to determine what can be done with
+   it.  This is somewhat of a barrier for WebDAV usage as well as with
+   CardDAV usage.  This specification does not offer a way through this
+   other than making the information available in the OPTIONS response
+   should this be requested.
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 35]</span>
+</pre><pre class='newpage'><a name="page-36" id="page-36" href="#page-36" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   For address book sharing use cases, one might wish to find the
+   address book belonging to another user.  If the other user has an
+   address book in the same repository, that address book can be found
+   by using the principal namespace required by WebDAV ACL support.
+
+   Because CardDAV requires servers to support WebDAV ACL [<a href="./rfc3744" title='"Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol"'>RFC3744</a>]
+   including principal namespaces, and with the addition of the CARDDAV:
+   addressbook-home-set property, there are a couple options for CardDAV
+   clients to find one's own address book or another user's address
+   book.
+
+   In this case, a DAV:principal-match REPORT is used to find a named
+   property (the CARDDAV:addressbook-home-set) on the Principal-URL of
+   the current user.  Using this, a WebDAV client can learn "who am I"
+   and "where are my address books".  The REPORT request body looks like
+   this:
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;D:principal-match xmlns:D="DAV:"&gt;
+     &lt;D:self/&gt;
+     &lt;D:prop&gt;
+       &lt;C:addressbook-home-set
+          xmlns:C="urn:ietf:params:xml:ns:carddav"/&gt;
+     &lt;/D:prop&gt;
+   &lt;/D:principal-match&gt;
+
+   To find other users' address books, the DAV:principal-property-search
+   REPORT can be used to filter on some properties and return others.
+   To search for an address book owned by a user named "Laurie", the
+   REPORT request body would look like this:
+
+   &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+   &lt;D:principal-property-search xmlns:D="DAV:"&gt;
+     &lt;D:property-search&gt;
+       &lt;D:prop&gt;
+         &lt;D:displayname/&gt;
+       &lt;/D:prop&gt;
+       &lt;D:match&gt;Laurie&lt;/D:match&gt;
+     &lt;/D:property-search&gt;
+     &lt;D:prop&gt;
+       &lt;C:addressbook-home-set
+          xmlns:C="urn:ietf:params:xml:ns:carddav"/&gt;
+       &lt;D:displayname/&gt;
+     &lt;/D:prop&gt;
+   &lt;/D:principal-property-search&gt;
+
+   The server performs a case-sensitive or caseless search for a
+   matching string subset of "Laurie" within the DAV:displayname
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 36]</span>
+</pre><pre class='newpage'><a name="page-37" id="page-37" href="#page-37" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   property.  Thus, the server might return "Laurie Dusseault", "Laurier
+   Desruisseaux" or "Wilfrid Laurier" all as matching DAV:displayname
+   values, and the address books for each of these.
+
+
+<span class="h2"><a name="section-10">10</a>.  XML Element Definitions</span>
+
+<span class="h3"><a name="section-10.1">10.1</a>.  CARDDAV:addressbook XML Element</span>
+
+   Name:  addressbook
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Specifies the resource type of an address book collection.
+
+   Description:  See <a href="#section-5.2">Section 5.2</a>.
+
+   Definition:
+
+       &lt;!ELEMENT addressbook EMPTY&gt;
+
+<span class="h3"><a name="section-10.2">10.2</a>.  CARDDAV:mkaddressbook XML Element</span>
+
+   Name:  mkaddressbook
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Specifies a request that includes the WebDAV property
+      values to be set for an address book collection resource when it
+      is created.
+
+   Description:  See <a href="#section-6.3.1">Section 6.3.1</a> .
+
+   Definition:
+
+       &lt;!ELEMENT mkaddressbook (DAV:set)&gt;
+
+<span class="h3"><a name="section-10.3">10.3</a>.  CARDDAV:mkaddressbook-response XML Element</span>
+
+   Name:  mkaddressbook-response
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Specifies a response body for a successful MKADDRESSBOOK
+      request.
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 37]</span>
+</pre><pre class='newpage'><a name="page-38" id="page-38" href="#page-38" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Description:  See <a href="#section-6.3.1">Section 6.3.1</a> .
+
+   Definition:
+
+       &lt;!ELEMENT mkaddressbook-response ANY&gt;
+
+<span class="h3"><a name="section-10.4">10.4</a>.  CARDDAV:supported-collation XML Element</span>
+
+   Name:  supported-collation
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Identifies a single collation via its collation identifier
+      as defined by [<a href="./rfc4790" title='"Internet Application Protocol Collation Registry"'>RFC4790</a>].
+
+   Description:  The CARDDAV:supported-collation contains the text of a
+      collation identifier as described in <a href="#section-8.3.1">Section 8.3.1</a>.
+
+   Definition:
+
+       &lt;!ELEMENT supported-collation (#PCDATA)&gt;
+       PCDATA value: collation identifier
+
+<span class="h3"><a name="section-10.5">10.5</a>.  CARDDAV:addressbook-query XML Element</span>
+
+   Name:  addressbook-query
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Defines a report for querying address book data
+
+   Description:  See <a href="#section-8.6">Section 8.6</a>.
+
+   Definition:
+
+       &lt;!ELEMENT addressbook-query ((DAV:allprop |
+                                     DAV:propname |
+                                     DAV:prop)?, filter)&gt;
+
+<span class="h3"><a name="section-10.6">10.6</a>.  CARDDAV:addressbook-data XML Element</span>
+
+   Name:  addressbook-data
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 38]</span>
+</pre><pre class='newpage'><a name="page-39" id="page-39" href="#page-39" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Purpose:  Specifies one of the following:
+
+      1.  A supported media type for address object resources when
+          nested in the CARDDAV:supported-address-data property;
+
+      2.  The parts of an address object resource should be returned by
+          a given address book REPORT;
+
+      3.  The content of an address object resource in a response to an
+          address book REPORT.
+
+   Description:  When nested in the CARDDAV:supported-address-data
+      property, the CARDDAV:addressbook-data XML element specifies a
+      media type supported by the CardDAV server for address object
+      resources.
+
+      When used in an address book REPORT request, the CARDDAV:
+      addressbook-data XML element specifies which parts of address
+      object resources need to be returned in the response.  If the
+      CARDDAV:addressbook-data XML element doesn't contain any CARDDAV:
+      prop elements, address object resources will be returned in their
+      entirety.
+
+      Finally, when used in an address book REPORT response, the
+      CARDDAV:addressbook-data XML element specifies the content of a
+      address object resource.  Given that XML parsers normalize the
+      two-character sequence CRLF (US-ASCII decimal 13 and US-ASCII
+      decimal 10) to a single LF character (US-ASCII decimal 10), the CR
+      character (US-ASCII decimal 13) MAY be omitted in address object
+      resources specified in the CARDDAV:addressbook-data XML element.
+      Furthermore, address object resources specified in the CARDDAV:
+      addressbook-data XML element MAY be invalid per their media type
+      specification if the CARDAV:addressbook-data XML element part of
+      the address book REPORT request did not specify required
+      properties (e.g., UID, etc.) or specified a CARDDAV:prop XML
+      element with the "novalue" attribute set to "yes".
+
+   Note:  The CARDDAV:addressbook-data XML element is specified in
+      requests and responses inside the DAV:prop XML element as if it
+      were a WebDAV property.  However, the CARDDAV:addressbook-data XML
+      element is not a WebDAV property and as such it is not returned in
+      PROPFIND responses nor used in PROPPATCH requests.
+
+   Note:  The address data embedded within the CARDDAV:addressbook-data
+      XML element MUST follow the standard XML character data encoding
+      rules, including use of &amp;lt;, &amp;gt;, &amp;amp; etc entity encoding or
+      the use of a &lt;![CDATA[ ... ]]&gt; construct.  In the later case the
+      vCard data cannot contain the character sequence "]]&gt;" which is
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 39]</span>
+</pre><pre class='newpage'><a name="page-40" id="page-40" href="#page-40" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+      the end delimiter for the CDATA section.
+
+   Definition:
+
+       &lt;!ELEMENT address-data EMPTY&gt;
+
+       when nested in the CARDDAV:supported-address-data property
+       to specify a supported media type for address object
+       resources;
+
+       &lt;!ELEMENT address-data (prop?)&gt;
+
+       when nested in the DAV:prop XML element in an addressbook
+       REPORT request to specify which parts of address object
+       resources should be returned in the response;
+
+       &lt;!ELEMENT address-data (#PCDATA)&gt;
+       PCDATA value: address data
+
+       when nested in the DAV:prop XML element in an addressbook
+       REPORT response to specify the content of a returned
+       address object resource.
+
+       &lt;!ATTLIST address-data content-type CDATA "text/vcard"
+                             version CDATA "3.0"&gt;
+       content-type value: a MIME media type
+       version value: a version string
+
+       attributes can be used on all three variants of the
+       CALDAV:address-data XML element.
+
+<span class="h4"><a name="section-10.6.1">10.6.1</a>.  CARDDAV:allprop XML Element</span>
+
+   Name:  allprop
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Specifies that all properties shall be returned.
+
+   Description:  This element can be used when the client wants all
+      properties of components returned by a report.
+
+   Definition:
+
+       &lt;!ELEMENT allprop EMPTY&gt;
+
+   NOTE: The CARDDAV:allprop element defined here has the same name as
+   the DAV:allprop element defined in WebDAV.  However, the CARDDAV:
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 40]</span>
+</pre><pre class='newpage'><a name="page-41" id="page-41" href="#page-41" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   allprop element defined here uses the
+   "urn:ietf:params:xml:ns:carddav" namespace, as opposed to the "DAV:"
+   namespace used for the DAV:allprop element defined in WebDAV.
+
+<span class="h4"><a name="section-10.6.2">10.6.2</a>.  CARDDAV:prop XML Element</span>
+
+   Name:  prop
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Defines which properties to return in the response.
+
+   Description:  The "name" attribute specifies the name of the
+      addressbook property to return (e.g., "NICKNAME").  The "novalue"
+      attribute can be used by clients to request that the actual value
+      of the property not be returned (if the "novalue" attribute is set
+      to "yes").  In that case the server will return just the vCard
+      property name and any vCard parameters and a trailing ":" without
+      the subsequent value data.
+
+   Definition:
+
+       &lt;!ELEMENT prop EMPTY&gt;
+
+       &lt;!ATTLIST prop name CDATA #REQUIRED
+                  novalue (yes | no) "no"&gt;
+       name value: a vCard property name
+       novalue value: "yes" or "no"
+
+   NOTE: The CARDDAV:prop element defined here has the same name as the
+   DAV:prop element defined in WebDAV.  However, the CARDDAV:prop
+   element defined here uses the "urn:ietf:params:xml:ns:carddav"
+   namespace, as opposed to the "DAV:" namespace used for the DAV:prop
+   element defined in WebDAV.
+
+<span class="h3"><a name="section-10.7">10.7</a>.  CARDDAV:filter XML Element</span>
+
+   Name:  filter
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Determines which matching objects are returned.
+
+   Description:  The "filter" element specifies the search filter used
+      to match address objects that should be returned by a report.
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 41]</span>
+</pre><pre class='newpage'><a name="page-42" id="page-42" href="#page-42" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   Definition:
+
+       &lt;!ELEMENT filter (prop-filter)&gt;
+
+<span class="h4"><a name="section-10.7.1">10.7.1</a>.  CARDDAV:prop-filter XML Element</span>
+
+   Name:  prop-filter
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Limits the search to specific properties.
+
+   Description:  The CARDDAV:prop-filter XML element specifies a search
+      criteria on a specific vCard property (e.g., NICKNAME).  A address
+      object is said to match a CARDDAV:prop-filter if:
+
+      *  A property of the type specified by the "name" attribute
+         exists, and the CARDDAV:prop-filter is empty, or it matches the
+         CARDDAV:text-match conditions if specified, and that any
+         CARDDAV:param-filter child elements also match.
+
+      or:
+
+      *  A property of the type specified by the "name" attribute does
+         not exist, and the CARDAV:is-not-defined element is specified.
+
+   Definition:
+
+       &lt;!ELEMENT prop-filter (is-not-defined |
+                              (text-match?, param-filter*))&gt;
+
+       &lt;!ATTLIST prop-filter name CDATA #REQUIRED&gt;
+       name value: a vCard property name (e.g., "NICKNAME")
+
+<span class="h4"><a name="section-10.7.2">10.7.2</a>.  CARDDAV:param-filter XML Element</span>
+
+   Name:  param-filter
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Limits the search to specific parameter values.
+
+   Description:  The CARDDAV:param-filter XML element specifies a search
+      criteria on a specific vCard property parameter (e.g., TYPE) in
+      the scope of a given CARDDAV:prop-filter.  A vCard property is
+      said to match a CARDDAV:param-filter if:
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 42]</span>
+</pre><pre class='newpage'><a name="page-43" id="page-43" href="#page-43" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+      *  A parameter of the type specified by the "name" attribute
+         exists, and the CARDDAV:param-filter is empty, or it matches
+         the CARDDAV:text-match conditions if specified.
+
+      or:
+
+      *  A parameter of the type specified by the "name" attribute does
+         not exist, and the CARDDAV:is-not-defined element is specified.
+
+   Definition:
+
+       &lt;!ELEMENT param-filter (is-not-defined | text-match)?&gt;
+
+       &lt;!ATTLIST param-filter name CDATA #REQUIRED&gt;
+       name value: a property parameter name (e.g., "TYPE")
+
+<span class="h4"><a name="section-10.7.3">10.7.3</a>.  CARDDAV:is-not-defined XML Element</span>
+
+   Name:  is-not-defined
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Specifies that a match should occur if the enclosing
+      property or parameter does not exist.
+
+   Description:  The CARDDAV:is-not-defined XML element specifies that a
+      match occurs if the enclosing property or parameter value
+      specified in an address book REPORT request does not exist in the
+      address data being tested.
+
+   Definition:
+
+       &lt;!ELEMENT is-not-defined EMPTY&gt;
+
+<span class="h4"><a name="section-10.7.4">10.7.4</a>.  CARDDAV:text-match XML Element</span>
+
+   Name:  text-match
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  Specifies a substring match on a property or parameter
+      value.
+
+   Description:  The CARDDAV:text-match XML element specifies text used
+      for a substring match against the property or parameter value
+      specified in an address book REPORT request.
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 43]</span>
+</pre><pre class='newpage'><a name="page-44" id="page-44" href="#page-44" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+      The "collation" attribute is used to select the collation that the
+      server MUST use for character string matching.  In the absence of
+      this attribute the server MUST use the "i;ascii-casemap"
+      collation.
+
+      The "negate-condition" attribute is used to indicate that this
+      test returns a match if the text matches, when the attribute value
+      is set to "no", or return a match if the text does not match, if
+      the attribute value is set to "yes".  For example, this can be
+      used to match components with a CATEGORIES property not set to
+      PERSON.
+
+   Definition:
+
+       &lt;!ELEMENT text-match (#PCDATA)&gt;
+       PCDATA value: string
+
+       &lt;!ATTLIST text-match collation        CDATA "i;ascii-casemap"
+                        negate-condition (yes | no) "no"&gt;
+
+<span class="h3"><a name="section-10.8">10.8</a>.  CARDDAV:addressbook-multiget XML Element</span>
+
+   Name:  addressbook-multiget
+
+   Namespace:  urn:ietf:params:xml:ns:carddav
+
+   Purpose:  CardDAV report used to retrieve specific address objects
+      via their URIs.
+
+   Description:  See <a href="#section-8.7">Section 8.7</a>.
+
+   Definition:
+
+       &lt;!ELEMENT addressbook-multiget ((DAV:allprop |
+                                        DAV:propname |
+                                        DAV:prop)?,
+                                       DAV:href+)&gt;
+
+
+<span class="h2"><a name="section-11">11</a>.  Internationalization Considerations</span>
+
+   CardDAV allows internationalized strings to be stored and retrieved
+   for the description of address book collections (see <a href="#section-6.2.1">Section 6.2.1</a>).
+
+   The CARDDAV:addressbook-query report ( <a href="#section-8.6">Section 8.6</a> ) includes a text
+   searching option controlled by the CARDDAV:text-match element and
+   details of character handling are covered in the description of that
+   element (see <a href="#section-10.7.4">Section 10.7.4</a> ).
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 44]</span>
+</pre><pre class='newpage'><a name="page-45" id="page-45" href="#page-45" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+<span class="h2"><a name="section-12">12</a>.  Security Considerations</span>
+
+   HTTP protocol transactions are sent in the clear over the network
+   unless protection from snooping is negotiated.  This can be
+   accomplished by use of TLS as defined in [<a href="./rfc2818" title='"HTTP Over TLS"'>RFC2818</a>].  In particular,
+   if HTTP Basic authentication is available, the server MUST allow TLS
+   to be used at the same time, and SHOULD prevent use of Basic
+   authentication when TLS is not in use.
+
+   With the ACL extension present, WebDAV allows control over who can
+   access (read or write) any resource on the WebDAV server.  In
+   addition, WebDAV ACL provides for an "inheritance" mechanism, whereby
+   resources may inherit access privileges from other resources.  Often
+   the "other" resource is a parent collection of the resource itself.
+   Clients MUST take care to ensure users are aware of which address
+   books may be "private" (i.e. only accessible to them) and which are
+   "shared" (i.e. accessible to others).
+
+   Since webservers are often the target of automated indexing
+   applications that gather data from the server, analyze it and extract
+   'interesting' parts, great care must be taken when allowing
+   unauthenticated access to any address book or address object data.
+   Clients MAY choose to warn users when they create address data in a
+   public address book, copy or move address data into public address
+   books, or change access privileges in such a way as to expose address
+   data to unauthenticated users.
+
+   This specification currently relies on standard HTTP authentication
+   mechanisms for identifying users.  These comprise Basic and Digest
+   authentication as well as SSL using client-side certificates.
+
+
+<span class="h2"><a name="section-13">13</a>.  IANA Consideration</span>
+
+   In addition to the namespaces defined by <a href="./rfc2518">RFC2518</a> [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>] for XML
+   elements, this document uses a URN to describe a new XML namespace
+   conforming to a registry mechanism described in <a href="./rfc3688">RFC3688</a> [<a href="./rfc3688" title='"The IETF XML Registry"'>RFC3688</a>] .
+   All other IANA considerations mentioned in <a href="./rfc2518">RFC2518</a> [<a href="./rfc2518" title='"HTTP Extensions for Distributed Authoring -- WEBDAV"'>RFC2518</a>] also
+   apply to this document.
+
+<span class="h3"><a name="section-13.1">13.1</a>.  Namespace Registration</span>
+
+   Registration request for the carddav namespace:
+
+   URI: urn:ietf:params:xml:ns:carddav
+
+   Registrant Contact: See the "Author's Address" section of this
+   document.
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 45]</span>
+</pre><pre class='newpage'><a name="page-46" id="page-46" href="#page-46" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   XML: None.  Namespace URIs do not represent an XML specification.
+
+
+<span class="h2"><a name="section-14">14</a>.  Acknowledgments</span>
+
+   Thanks go to Lisa Dusseault and Bernard Desruisseaux for their work
+   on CalDAV, on which CardDAV is heavily based.  The following
+   individuals contributed their ideas and support for wiring this
+   specification: Arnaud Quillaud.
+
+
+<span class="h2"><a name="section-15">15</a>.  References</span>
+
+<span class="h3"><a name="section-15.1">15.1</a>.  Normative References</span>
+
+   [<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", <a href="./bcp14">BCP 14</a>, <a href="./rfc2119">RFC 2119</a>, March 1997.
+
+   [<a name="ref-RFC2246" id="ref-RFC2246">RFC2246</a>]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
+              <a href="./rfc2246">RFC 2246</a>, January 1999.
+
+   [<a name="ref-RFC2426" id="ref-RFC2426">RFC2426</a>]  Dawson, F. and T. Howes, "vCard MIME Directory Profile",
+              <a href="./rfc2426">RFC 2426</a>, September 1998.
+
+   [<a name="ref-RFC2518" id="ref-RFC2518">RFC2518</a>]  Goland, Y., Whitehead, E., Faizi, A., Carter, S., and D.
+              Jensen, "HTTP Extensions for Distributed Authoring --
+              WEBDAV", <a href="./rfc2518">RFC 2518</a>, February 1999.
+
+   [<a name="ref-RFC2616" id="ref-RFC2616">RFC2616</a>]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H.,
+              Masinter, L., Leach, P., and T. Berners-Lee, "Hypertext
+              Transfer Protocol -- HTTP/1.1", <a href="./rfc2616">RFC 2616</a>, June 1999.
+
+   [<a name="ref-RFC2818" id="ref-RFC2818">RFC2818</a>]  Rescorla, E., "HTTP Over TLS", <a href="./rfc2818">RFC 2818</a>, May 2000.
+
+   [<a name="ref-RFC3253" id="ref-RFC3253">RFC3253</a>]  Clemm, G., Amsden, J., Ellison, T., Kaler, C., and J.
+              Whitehead, "Versioning Extensions to WebDAV
+              (Web Distributed Authoring and Versioning)", <a href="./rfc3253">RFC 3253</a>,
+              March 2002.
+
+   [<a name="ref-RFC3688" id="ref-RFC3688">RFC3688</a>]  Mealling, M., "The IETF XML Registry", <a href="./bcp81">BCP 81</a>, <a href="./rfc3688">RFC 3688</a>,
+              January 2004.
+
+   [<a name="ref-RFC3744" id="ref-RFC3744">RFC3744</a>]  Clemm, G., Reschke, J., Sedlar, E., and J. Whitehead, "Web
+              Distributed Authoring and Versioning (WebDAV) Access
+              Control Protocol", <a href="./rfc3744">RFC 3744</a>, May 2004.
+
+   [<a name="ref-RFC4346" id="ref-RFC4346">RFC4346</a>]  Dierks, T. and E. Rescorla, "The Transport Layer Security
+              (TLS) Protocol Version 1.1", <a href="./rfc4346">RFC 4346</a>, April 2006.
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 46]</span>
+</pre><pre class='newpage'><a name="page-47" id="page-47" href="#page-47" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   [<a name="ref-RFC4790" id="ref-RFC4790">RFC4790</a>]  Newman, C., Duerst, M., and A. Gulbrandsen, "Internet
+              Application Protocol Collation Registry", <a href="./rfc4790">RFC 4790</a>,
+              March 2007.
+
+   [<a name="ref-W3C.REC-xml-20060816" id="ref-W3C.REC-xml-20060816">W3C.REC-xml-20060816</a>]
+              Paoli, J., Bray, T., Sperberg-McQueen, C., Maler, E., and
+              F. Yergeau, "Extensible Markup Language (XML) 1.0 (Fourth
+              Edition)", World Wide Web Consortium Recommendation REC-
+              xml-20060816, August 2006,
+              &lt;<a href="http://www.w3.org/TR/2006/REC-xml-20060816">http://www.w3.org/TR/2006/REC-xml-20060816</a>&gt;.
+
+<span class="h3"><a name="section-15.2">15.2</a>.  Informative References</span>
+
+   [<a name="ref-I-D.crispin-collation-unicasemap" id="ref-I-D.crispin-collation-unicasemap">I-D.crispin-collation-unicasemap</a>]
+              Crispin, M., "i;unicode-casemap - Simple Unicode Collation
+              Algorithm", <a href="./draft-crispin-collation-unicasemap-01">draft-crispin-collation-unicasemap-01</a> (work in
+              progress), March 2007.
+
+   [<a name="ref-I-D.ietf-webdav-rfc2518bis" id="ref-I-D.ietf-webdav-rfc2518bis">I-D.ietf-webdav-rfc2518bis</a>]
+              Dusseault, L., "HTTP Extensions for Distributed Authoring
+              - WebDAV", <a href="./draft-ietf-webdav-rfc2518bis-18">draft-ietf-webdav-rfc2518bis-18</a> (work in
+              progress), February 2007.
+
+   [<a name="ref-RFC2244" id="ref-RFC2244">RFC2244</a>]  Newman, C. and J. Myers, "ACAP -- Application
+              Configuration Access Protocol", <a href="./rfc2244">RFC 2244</a>, November 1997.
+
+   [<a name="ref-RFC2251" id="ref-RFC2251">RFC2251</a>]  Wahl, M., Howes, T., and S. Kille, "Lightweight Directory
+              Access Protocol (v3)", <a href="./rfc2251">RFC 2251</a>, December 1997.
+
+
+<span class="h2"><a name="appendix-A">Appendix A</a>.  Change History (to be removed prior to publication as an</span>
+             RFC)
+
+   Changes from -01
+
+   1.   Added commentary on SyncML.
+
+   2.   Changed 'adbk' to 'addressbook'.
+
+   3.   Support for MKADDRESSBOOK is anow a SHOULD.
+
+   4.   Updated to <a href="./rfc4790">RFC4790</a> reference.
+
+   5.   Removed synchronization report.
+
+   6.   Removed BNF conventions section as we have no BNF.
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 47]</span>
+</pre><pre class='newpage'><a name="page-48" id="page-48" href="#page-48" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+   7.   Reworded and reformatted several items to match the final CalDAV
+        spec.
+
+   8.   Added section on use of nonstandard proeprties and parameters
+        (as per CalDAV).
+
+   9.   Added section of behavior of ETags (as per CalDAV).
+
+   10.  Generalized the text so that vCard need not be the only format
+        supported by the server (i.e., allow xml version of vCard etc).
+
+   11.  Renamed supported-addressbook-data to supported-address-data.
+
+   12.  Renamed valid-addressbook-data tp valid-address-data.
+
+   13.  Now requires "i;unicasemao" collation.
+
+   Changes from -00
+
+   1.  Fixed various incorrect references and typos.
+
+   2.  Major changes to sync with latest CalDAV spec behaviors.
+
+
+Author's Address
+
+   Cyrus Daboo
+   Apple Inc.
+   1 Infinite Loop
+   Cupertino, CA  95014
+   USA
+
+   Email: cyrus@daboo.name
+   URI:   <a href="http://www.apple.com/">http://www.apple.com/</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="grey">Daboo                   Expires November 13, 2007              [Page 48]</span>
+</pre><pre class='newpage'><a name="page-49" id="page-49" href="#page-49" class="invisible"> </a>
+<span class="grey">Internet-Draft    vCard Extensions to WebDAV (CardDAV)          May 2007</span>
+
+
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).
+
+   This document is subject to the rights, licenses and restrictions
+   contained in <a href="./bcp78">BCP 78</a>, and except as set forth therein, the authors
+   retain all their rights.
+
+   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in <a href="./bcp78">BCP 78</a> and <a href="./bcp79">BCP 79</a>.
+
+   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.
+
+   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+
+Acknowledgment
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+
+
+
+
+Daboo                   Expires November 13, 2007              [Page 49]
+</pre><pre class='newpage'>
+
+</pre><br />
+<span class="noprint"><small><small>Html markup produced by rfcmarkup 1.91, available from
+<a href="http://tools.ietf.org/tools/rfcmarkup/">http://tools.ietf.org/tools/rfcmarkup/</a>
+</small></small></span>
+</body></html>

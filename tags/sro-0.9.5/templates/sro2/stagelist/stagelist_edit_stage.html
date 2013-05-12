@@ -1,0 +1,143 @@
+{% extends "sro2/stagelist/stagelist_base.html" %}
+{% block stages %}
+
+    <!-- ща будет костыль -->
+    <script type="text/javascript" language="JavaScript">
+        <!--
+        function doMenu(item) {
+            obj = document.getElementById("d" + item);
+            col = document.getElementById("x" + item);
+            if (obj.style.display == "none") {
+                obj.style.display = "block";
+                col.innerHTML = "[-]";
+            }
+            else {
+                obj.style.display = "none";
+                col.innerHTML = "[+]";
+            }
+        }
+        function SelectAll(state) {
+            items = document.myform.id;
+            for (i = 0; i < items.length; i++) {
+                if (items[i].checked = state) {
+                    items[i].checked = state;
+                }
+            }
+        }
+        function chkDown(item) {
+            // march all children like item
+            var id = item.value;
+            var div = document.getElementById("d" + id);
+            if (div != null) {
+                var items = div.getElementsByTagName("input");
+                for (var i = 0; i < items.length; i++) {
+                    var e = items[i];
+                    if ((e.name == 'id') && (e.type == 'checkbox') && (!e.disabled)) {
+                        e.checked = item.checked;
+                    }
+                }
+            }
+        }
+        function chkUp(item) {
+            // item == checkbox
+            var parentid = item.getAttribute("parent")
+            if (parentid != "") {
+                var parent = document.getElementById("i" + parentid);
+                if (item.checked == true) {
+                    if (parent.checked == false) {    // if this is first item
+                        parent.checked = true;
+                    }
+                }
+                else {    // item off
+                    var div = document.getElementById("d" + parentid);
+                    var items = div.getElementsByTagName("input");
+                    var flag = false;
+                    for (i = 0; i < items.length; i++) {
+                        if (items[i].checked == true) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if ((flag == false) && (parent.checked == true)) {
+                        parent.checked = false;
+                    }
+                }
+                chkUp(parent);
+            }
+        }
+        function Item0Clicked(item) {
+            chkDown(item);
+        }
+        function ItemClicked(item) {
+            // item == checkbox
+            // 1. down
+            chkDown(item);
+            // 2. up
+            chkUp(item);
+        }
+        //-->
+    </script>
+    <div id='stages'>
+        <h3> ({% if danger %} Опасные {% else %} Обычные {% endif %}) </h3>
+        <form name="myform" action="?danger={{ danger }}" method="POST">
+            {% for item, value in itemlist.iteritems() %}
+                <p>
+{#                    {% if stagelist.isperm() %}#}
+{#                        <input id="c{{ item.id }}" name="d{{ item.id }}" type="text" maxlength="10"#}
+{#                               size="10" {% if value.paused %} value="{{ value.paused|date }}" {% endif %}/>#}
+{#                    {% endif %}#}
+                    <tt> {% if value.children %} <a href="JavaScript:doMenu('{{ item.id }}');"
+                                                    id=x{{ item.id }}>[+]</a> {% else %} &nbsp;&nbsp;&nbsp; {% endif %}
+                    </tt>
+                    <input type="checkbox" id="i{{ item.id }}" name="id" value="{{ item.id }}" {% if value.exists %}
+                           checked {% endif %} onClick="Item0Clicked(this);"/>
+                    {{ item.code }}. {{ item.name }}
+                </p>
+                {% if value.children %}
+                    <div id="d{{ item.id }}" style="display:none">
+                        {% for i, v in value.children.iteritems() %}
+                            <p>
+{#                                {% if stagelist.isperm() %}#}
+{#                                    <input id="c{{ i.id }}" name="d{{ i.id }}" type="text" maxlength="10"#}
+{#                                           size="10" {% if v.paused %} value="{{ v.paused|date }}" {% endif %}/>#}
+{#                                {% endif %}#}
+                                <tt> &nbsp; {% if v.children %} <a href="JavaScript:doMenu('{{ i.id }}');"
+                                                                   id=x{{ i.id }}>[+]</a> {% else %} &nbsp;&nbsp;
+                                    &nbsp; {% endif %} </tt>
+                                <input type="checkbox" id="i{{ i.id }}" parent="{{ item.id }}" name="id"
+                                       value="{{ i.id }}" {% if v.exists %} checked {% endif %}
+                                       onClick="ItemClicked(this);"/>
+                                {{ i.code }}. {{ i.name }}
+                            </p>
+                            {% if v.children %}
+                                <div id="d{{ i.id }}" style="display:none">
+                                    {% for x, y in v.children.iteritems() %}
+                                        <p>
+{#                                            {% if stagelist.isperm() %}#}
+{#                                                <input id="c{{ x.id }}" name="d{{ x.id }}" type="text" maxlength="10"#}
+{#                                                       size="10" {% if y.paused %}#}
+{#                                                       value="{{ y.paused|date }}" {% endif %}/>#}
+{#                                            {% endif %}#}
+                                            <tt> &nbsp; &nbsp; </t> <input type="checkbox" id="i{{ x.id }}"
+                                                                           parent="{{ i.id }}" name="id"
+                                                                           value="{{ x.id }}" {% if y.exists %}
+                                                                           checked {% endif %}
+                                                                           onClick="ItemClicked(this);"/>
+                                                {{ x.code }}. {{ x.name }}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <input type="submit" value="Сохранить и выйти"/>
+            <input type="button" value="Выйти без сохранения"
+                   onClick="window.location.href='{{ url_for('sro2.views.stagelist_view', stagelist.id, 0, danger) }}'"/>
+            <input type="button" value="&radic;" title="Выбрать все" onClick="SelectAll(true);"/>
+            <input type="button" value="x" title="Удалить все" onClick="SelectAll(false);"/>
+        </form>
+    </div>
+
+{% endblock %}

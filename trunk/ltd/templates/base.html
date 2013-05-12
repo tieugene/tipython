@@ -1,0 +1,24 @@
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+{# / #}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title> {% block title %} DoxGen {% endblock %} </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link type="text/css" href="{{ STATIC_URL }}css/base.css" rel="stylesheet"/>
+	<link type="text/css" href="{{ STATIC_URL }}css/colors.css" rel="stylesheet"/>
+</head>
+<body>
+	<div id="topmenu">
+		<a href="{% url views.index %}"> Домой </a> |
+		<a href="{% url views.doctype_index %}"> Шаблоны </a> |
+		<a href="{% url views.about %}"> О программе </a> |
+	</div>
+	<div>
+	{% block body_main %}
+		<p> Заглушка </p>
+	{% endblock %}
+	</div>
+</body>
+</html>

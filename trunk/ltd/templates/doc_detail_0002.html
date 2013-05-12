@@ -1,0 +1,20 @@
+{% extends "doc_detail_base.html" %}
+{% block details %}
+<tr>	<td> Наименование (кратко): </td>	<td> {{ data.name }} </td>	</tr>
+<tr>	<td> Открытие: </td>			<td> {{ data.opening }} </td>	</tr>
+<tr>	<td> Наименование фирмы (полное): </td>		<td> {{ data.oname }} </td>	</tr>
+<tr>	<td> Адрес фирмы: </td>			<td> {{ data.oaddr }} </td>	</tr>
+<tr>	<td> ИНН фирмы: </td>			<td> {{ data.oinn }} </td>	</tr>
+<tr>	<td> Рег. № в ПФР: </td>		<td> {{ data.opfrno }} </td>	</tr>
+<tr>	<td> УПФР в: </td>			<td> {{ data.opfrname }} </td>	</tr>
+<tr>	<td> Наименование банка: </td>		<td> {{ data.bname }} </td>	</tr>
+<tr>	<td> Адрес банка: </td>			<td> {{ data.baddr }} </td>	</tr>
+<tr>	<td> ИНН банка: </td>			<td> {{ data.binn }} </td>	</tr>
+<tr>	<td> КПП банка: </td>			<td> {{ data.bkpp }} </td>	</tr>
+<tr>	<td> БИК: </td>				<td> {{ data.bik }} </td>	</tr>
+<tr>	<td> Р/с: </td>				<td> {{ data.rs }} </td>	</tr>
+<tr>	<td> Должность шефа: </td>		<td> {{ data.jobrole }} </td>	</tr>
+<tr>	<td> Фамилия И. О. шефа: </td>		<td> {{ data.boss }} </td>	</tr>
+<tr>	<td> Дата открытия/закрытия: </td>	<td> {{ data.date0 }} </td>	</tr>
+<tr>	<td> Дата документа: </td>		<td> {{ data.date1 }} </td>	</tr>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Список членов {{ sro.name }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        body {
+            font-family: Serif;
+        }
+
+        H1 {
+            font-size: medium;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<hr/>
+<h1> Реестр членов Некоммерческого партнерства СРО {{ sro.fullname }} </h1>
+<ol>
+    {% for item in item_list %}
+        <li><a href="member/{{ item.id }}.html"> {{ item.org.okopf.shortname }} {{ item.org.shortname }} </a></li>
+    {% endfor %}
+</ol>
+<hr/>
+<h1> Список организаций, прекративших членство в Некоммерческом партнерстве саморегулируемой организации {{ sro.fullname }} </h1>
+<ol>
+    {% for item in item_xlist %}
+        <li><a href="member/{{ item.id }}.html"> {{ item.org.okopf.shortname }} {{ item.org.shortname }} </a></li>
+    {% endfor %}
+</ol>
+<hr/>
+<p><i> Updated: {{ now("%d.%m.%Y %H:%M:%S") }} uid {{ user.id }} </i></p>
+</body>
+</html>

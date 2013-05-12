@@ -1,0 +1,68 @@
+{#{% load sro2_extras %}#}
+<thead>
+<tr>
+    <th><input type="checkbox" name="maincheck" id="maincheck"/><span style='display: none'>!!!</span></th>
+    <th><font style="font-size: 8pt">Реестр.&nbsp;№</font> </th>
+    <th>Название</th>
+    <th>Статус</th>
+    <th>ОКАТО</th>
+    <th>Страховка до</th>
+    <th><font style="font-size: 8pt">На&nbsp;сайте</font> </th>
+    {% if  user.has_perm('sro2.delete_orgsro') %}
+        <th><font style="font-size: 8pt">Удалить</font> </th>
+    {% endif %}
+</tr>
+</thead>
+<tbody>
+{% if list %}
+    {% for orgsro in list %}
+        <tr letter='{{ orgsro.org.name|first }}'>
+            <td>
+                <input type="checkbox" name="numbers[]" class="mc" value="{{ orgsro.org.id}}"/><span
+                    style='display: none'>!!!</span>
+            </td>
+            <td>
+                <a href="{{ url_for('sro2.views.orgsro_view',orgsro.id)}}" title="{{ orgsro.org.fullname }}" target="_blank">
+{#                    <div class='cell'>{{ orgsro.regno|string[5:] }}</div>#}
+                                        <div class='cell'>{{ orgsro.regno }}</div>
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('sro2.views.orgsro_view',orgsro.id)}}" title="{{ orgsro.org.fullname }}" target="_blank">
+                    <div class='cell'>{{ orgsro.org.name }}</div>
+                </a>
+            </td>
+            <td>
+                {{ ['Нет','Кандидат','Член НП','Исключен','Архив'][orgsro.status] }}
+            </td>
+            <td>
+                <a href="{{ url_for('sro2.views.orgsro_view',orgsro.id)}}" title="{{ orgsro.org.fullname }}" target="_blank">
+                    <div class='cell'>{% if orgsro.org.okato %}{{ orgsro.org.okato.name }}{% endif %}</div>
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('sro2.views.orgsro_view',orgsro.id)}}" title="{{ orgsro.org.fullname }}" target="_blank">
+                    <div class='cell'>{% for ins in orgsro.orginsurance_set.all() %}{% if loop.first %}{{ ins.datedue|date}}{%endif  %}{% endfor %}</div>
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('sro2.views.orgsro_view',orgsro.id)}}" title="{{ orgsro.org.fullname }}" target="_blank">
+                    {% if orgsro.publish %}
+                        <div class='cell'>
+                            <img src='{{ url_for('views.index') }}static/tick_icon.gif' style='height: 12px;'>
+                            <span style="display: none;">True</span>
+                        </div>
+                    {% endif %}
+                </a>
+            </td>
+            <td>
+                {% if chkuser(orgsro.org,user) and user.has_perm('sro2.delete_orgsro') %}
+                    <button title="Удалить" onClick="confirmDelete('{{ url_for('sro2.views.orgsro_del',orgsro.id) }}')">
+                        Удалить
+                    </button>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+{% endif %}
+</tbody>

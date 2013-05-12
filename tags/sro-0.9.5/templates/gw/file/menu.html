@@ -1,0 +1,8 @@
+{# L3 menu /GW/Files/ #}
+{% include "gw/menu.html" %}
+<ul idref="menu_gw_file" class="l3">
+	<li id="menu_gw_file_img"> <a href="{% url gw.views.file_index_img %}"> Изображения </a> </li>
+	<li id="menu_gw_file_audio"> <a href="#"> Аудио </a> </li>
+	<li id="menu_gw_file_video"> <a href="#"> Видео </a> </li>
+	<li id="menu_gw_file_all"> <a href="{% url gw.views.file_index_all %}"> Все файлы </a> </li>
+</ul>

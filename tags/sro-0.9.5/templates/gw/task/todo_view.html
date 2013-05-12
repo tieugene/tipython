@@ -1,0 +1,61 @@
+{% extends "gw/task/assign_base.html" %}
+{% block body_main %}
+<table>
+	<tr> <th> Категория: </th> <td> {{ item.category }} </td> </tr>
+	<tr> <th> Создано: </th> <td> {{ item.created }} </td> </tr>
+	<tr> <th> Исполнитель: </th> <td> {{ item.assignee }} </td> </tr>
+	<tr> <th> Срок: </th> <td> {% if item.deadline %} {{ item.deadline }} {% endif %} </td> </tr>
+	<tr> <th> Важность: </th> <td> {% if importance %} {{ item.importance }} {% endif %} </td> </tr>
+	<tr> <th> Сделано: </th> <td> {% if item.done %} &radic; {% endif %} </td> </tr>
+	<tr> <th> Прочтено: </th> <td> {% if item.read %} &radic; {% endif %} </td> </tr>
+	<tr> <th> Тема: </th> <td> {{ item.subject }} </td> </tr>
+	<tr> <th> Подробности: </th> <td> {{ item.description }} </td> </tr>
+</table>
+<hr/>
+<table border="0"> <tr valign="top">
+{% ifequal user.id item.author_id %}
+	{% ifequal item.done 1 %}
+		{% ifnotequal item.read 1 %}
+			<td> <a class="button" href="{% url gw.views.assign_approve item.id %}"> Подтвердить </a> </td>
+		{% endifnotequal %}
+		<td> <a class="button" href="{% url gw.views.assign_reopen item.id %}"> Открыть заново </a> </td>
+	{% endifequal %}
+	<td> <a class="button" href="{% url gw.views.assign_edit item.id %}"> Изменить </a> </td>
+	<td> <button onClick="confirmDelete('{% url gw.views.assign_del item.id %}')"> Удалить </button> </td>
+{% endifequal %}
+{% ifequal user.id item.assignee_id %}
+	{% ifequal item.done 0 %}
+		{% ifequal item.read 0 %}
+			<td> <a class="button" href="{% url gw.views.assign_accept item.id %}"> Принять </a> </td>
+		{% else %}
+			<td> <a class="button" href="{% url gw.views.assign_done item.id %}"> Сделано </a> </td>
+			<td> <form action="{% url gw.views.assign_route item.id %}" method="post">
+				<input type="submit" value="Перебросить"/>
+				<p> {{ form1.user }} </p>
+			</form> </td>
+			<td> <form action="{% url gw.views.assign_invalid item.id %}" method="post">
+				<input type="submit" value="Неправильно"/>
+				<p> {{ form2.comment }} </p>
+			</form> </td>
+			<td> <form action="{% url gw.views.assign_duped item.id %}" method="post">
+				<input type="submit" value="Дубль"/>
+				<p> {{ form3.assign }} </p>
+			</form> </td>
+			<td> <a class="button" href="{% url gw.views.assign_mksub item.id %}"> Создать подзадачу </a> </td>
+			<td> <a class="button"> Конвертировать в ToDo </a> </td>
+		{% endifequal %}
+	{% endifequal %}
+{% endifequal %}
+<td> <a class="button" href="{% url gw.views.assign_history item.id %}"> История </a> </td>
+</tr> </table>
+{% if item.child.all %}
+	<hr/>
+	<h2> Подзадачи: </h2>
+	<ul>
+	{% for i in item.child.all %}
+		<li> <a href="{% url gw.views.assign_view i.id %}"> {{ i.subject }} </a> </li>
+	{% endfor %}
+	</ul>
+{% endif %}
+<p> CantBclosed: {{ item.cantbeclosed }} </p>
+{% endblock %}

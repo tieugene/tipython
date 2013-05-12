@@ -1,0 +1,31 @@
+{% extends "sro2/orgsro/orgsro_base.html" %}
+{% block body_main %}
+    <script langauge="JavaScript" type="text/javascript">
+        $(function() {
+
+            function changelabelforeign() {
+                if ($('input#id_foreign').attr('checked')) {
+                    $('label[for="id_ogrn"]').html("СГРП №");
+                } else {
+                    $('label[for="id_ogrn"]').html("ОГРН");
+                };
+            };
+
+            changelabelforeign();
+
+            $('input#id_foreign').change(function() {
+                changelabelforeign();
+            });
+
+        })
+    </script>
+
+    <form action=".#org" method="POST">
+        <table width="100%" border="1">
+            {{ form.as_table() }}
+        </table>
+        <input type="submit" value="Записать и закрыть"/>
+        <input type="button" value="Отказаться"
+               onClick="window.location.href='{{ url_for('sro2.views.orgsro_view',orgsro.id) }}#org'"/>
+    </form>
+{% endblock %}

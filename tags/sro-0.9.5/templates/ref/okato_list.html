@@ -1,0 +1,16 @@
+<!-- OKATO -->
+{% extends "ref/base.html" %}
+{% block title %} ОКАТО {% endblock %}
+{% block topbar %} ОКАТО {% endblock %}
+{% block body_main %}
+<table cellpadding="1">
+<tr> <th> # </th> <th> Наименование </th> <th> Доп. инф. </th> </tr>
+{% for item in item_list %}
+	<tr>
+		<td> {{ item.code }} </td>
+		<td> {{ item.name }} </td>
+		<td> {% if item.comments %} {{ item.comments }} {% endif %} </td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

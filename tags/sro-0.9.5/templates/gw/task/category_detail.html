@@ -1,0 +1,28 @@
+{% extends "gw/task/todocat_base.html" %}
+{% block body_main %}
+<p>
+	Категория: {{ item.name }}
+	<a class="button" title="Изменить" href="{% url gw.views.todocat_edit item.id %}"> &#9997; </a>
+	<a class="button" title="Удалить" href="{% url gw.views.todocat_del item.id %}"> &#9760; </a>
+</p>
+<hr/>
+<p> Задачи: <a class="button" title="Добавить задачу" href="{% url gw.views.todocat_add_todo item.id %}"> &nbsp; + &nbsp; </a> </p>
+<table border="1" cellspacing="0">
+	<tr> <th> # </th> <th> Тема </th> <th> Создано </th> <th> Срок </th> <th> Состояние </th> <th/> </tr>
+	{% for i in item.todo_set.all %}
+		<tr>
+			<td> {{ forloop.counter }} </td>
+			<td> <a href="{% url gw.views.todo_view i.id %}" title="{{ item.description }}"> {{ i.subject }} </a> </td>
+			<td> {{ i.created|date }} </td>
+			<td> {% if i.deadline %} {{ i.deadline }} {% endif %} </td>
+			<td align="center"> {%if i.done %} &radic; {% endif %} </td>
+			<td>
+				<a class="button" title="Изменить" href="{% url gw.views.todo_edit i.id %}"> &nbsp; E &nbsp; </a>
+				<a class="button" title="Удалить" href="{% url gw.views.todo_del i.id %}"> &nbsp; X &nbsp; </a>
+				{% if not i.done %} <a class="button" title="Завершить" href="{% url gw.views.todo_done i.id %}"> &nbsp; &radic; &nbsp; </a> {% endif %}
+			</td>
+		</tr>
+		</a>
+	{% endfor %}
+</table>
+{% endblock %}

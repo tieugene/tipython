@@ -1,0 +1,14 @@
+<!-- File -->
+{% extends "file/base.html" %}
+{% block body_main %}
+<form action="." method="POST">
+	<table>
+		<caption>
+			<p> {% if mode %} Новый файл {% else %} Редактировать Файл {% endif %} </p>
+		</caption>
+		{{ form.as_table }}
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{% url apps.file.views.file_index %}"> <button> Отказаться </button> </a>
+</form>
+{% endblock %}

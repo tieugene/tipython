@@ -1,0 +1,43 @@
+<!-- Address.Base -->
+{% extends "core/base.html" %}
+{% block title %}  {{ block.super }} Address {% endblock %}
+{% block head_js %} {{ block.super }}
+<script langauge="JavaScript" type="text/javascript">
+function doMenu() {
+        div=document.getElementById("div");
+	exp=document.getElementById("exp");
+        if (div.style.display=="none") {
+                div.style.display="block";
+                exp.innerHTML="&#9660;";
+        }
+        else {
+                div.style.display="none";
+                exp.innerHTML="&#9654;";
+        }
+}
+</script>
+{% endblock %}
+{% block onload_js %} {{ block.super }} setmenu("menu_core_address"); {% endblock %}
+{% block body_main %}
+<!-- 1. Header -->
+<p>
+	<a href="{% url apps.core.views.address_index %}{% if next %}?next={{ next }}{% endif %}"> / </a>
+	{% for i in item.get_ancestors %}
+		{% if i.type %}
+			<a href="{% url apps.core.views.address_short i.parent.id i.type.id %}{% if next %}?next={{ next }}{% endif %}"> {{ i.type.name }} </a>
+		{% endif %}
+		<a href="{% url apps.core.views.address_detail i.id %}{% if next %}?next={{ next }}{% endif %}"> {{ i.name }} </a> /
+	{% endfor %}
+	{% if item.type %}
+		<a href="{% url apps.core.views.address_short item.parent.id item.type.id %}{% if next %}?next={{ next }}{% endif %}"> {{ item.type.name }} </a>
+	{% endif %}
+	{{ item.name }}
+	{% if item.endpoint and next %}
+		<a class="button" href="{{ next }}?address={{ item.id }}"> &nbsp;OK&nbsp; </a>
+		<a class="button" href="{{ next }}"> &nbsp;Cancel&nbsp; </a>
+	{% endif %}
+</p>
+<hr/>
+	{% block body_detail %}
+	{% endblock %}
+{% endblock %}

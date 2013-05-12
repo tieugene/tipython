@@ -1,0 +1,70 @@
+p {
+	margin: 0;
+}
+
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+
+.button {
+	border: outset;
+	border-width: 2px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+a.button {
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	text-decoration: none;
+
+}
+
+td.button {
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	text-decoration: none;
+	text-align: center;
+}
+
+th.button {
+	padding: 0px;
+	text-decoration: none;
+	text-align: center;
+}
+
+#content {
+	width: 100%;
+	float: left;
+}
+
+.pdable:after {
+	content: "▿";
+}
+
+table.tabbed {
+	border-style: none;
+	border: 0px;			/* border="0" */
+	border-collapse: collapse;	/* cellspacing="0" */
+}
+
+table.tabbed td {
+	padding: 0.2em 0.5em;
+	border-radius: 0.4em 0.4em 0 0;		/* radius: lt rt rb lb */
+	/*padding: 0px;*/			/* cellpadding="0" */
+}
+
+table.itemlist {
+	border-style: none;
+	border: 0px;
+	border-collapse: separate;	/* cellspacing="0" */
+}
+

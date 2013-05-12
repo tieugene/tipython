@@ -1,0 +1,10 @@
+{% extends "base_dox.html" %}
+{% block body_main %}
+<p> Type: <a href="{% url dox.views.doc_l type.m.DATA.u %}"> {{ type.m.DATA.n }} </a> </p>
+<a href="{% url dox.views.doc_u pk %}"> <button title="Изменить"> Edit </button> </a>
+<a href="{% url dox.views.doc_v pk %}"> <button title="Просмотр"> Preview </button> </a>
+<a href="{% url dox.views.doc_p pk %}"> <button title="Печатать"> Print </button> </a>
+<a href="{% url dox.views.doc_d pk %}"> <button title="Удалить"> Delete </button> </a>
+<p> Наименование: {{ name }} </p>
+{% include "auto_rvp.html" %}
+{% endblock %}

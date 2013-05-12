@@ -1,0 +1,38 @@
+{% extends "gw/task/todo_base.html" %}
+{% block head_css %}
+	<link type="text/css" href="{% url views.index %}static/css/toolbox.css" rel="stylesheet"/>
+{% endblock %}
+{% block head_js %}
+	<script type="text/javascript" src="{% url views.index %}static/js/toolbox.js"> </script>
+{% endblock %}
+{% block body_main %}
+<table class="tabbed">
+	<tr>
+		<td class="tabinactive"> <a href="{% url gw.views.todocat_list %}"> Категории </a> </td>
+		<td class="tabactive"> Задачи </td>
+	</tr>
+</table>
+<table class="itemlist">
+	<caption> {% with data.title as pd %} {% include "gw/pulldown.html" %} {% endwith %} : {{ item_list.count }} </caption>
+	<thead>
+		<tr>
+			<th> <input type="checkbox"/> {% with data.cb as pd %} {% include "gw/pulldown.html" %} {% endwith %} </th>
+			{% for i in data.head %}
+				<th> {% with i as pd %} {% include "gw/pulldown.html" %} {% endwith %} </th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in item_list %}
+			<tr class="{% cycle 'even' 'odd' %}">
+				<td> <input type="checkbox"/> </td>
+				<td> {% if item.category %} <a href="{% url gw.views.todocat_view item.category.id %}"> {{ item.category }} </a> {% endif %} </td>
+				<td> <a href="{% url gw.views.todo_view item.id %}" title="{{ item.description }}"> {{ item.subject }} </a> </td>
+				<td> {{ item.created|date }} </td>
+				<td> {% if item.deadline %} {{ item.deadline|date }} {% endif %} </td>
+				<td align="center"> {%if item.done %} &radic; {% endif %} </td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

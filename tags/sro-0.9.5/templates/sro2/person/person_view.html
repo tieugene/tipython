@@ -1,0 +1,27 @@
+{% extends "sro2/person/person_base.html" %}
+
+{% block body_main_button %}
+    {% if canedit and user.has_perm('gw.change_person') %}
+        <a href='{{ url_for('sro2.views.person_main',person.id) }}#main' class='button ui-state-default eb ui-corner-all ebutton'>
+            Изменить
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body_skill_button %}
+    {% if canedit %}
+        {% if user.has_perm('gw.add_personskill') or user.has_perm('gw.delete_personskill') or user.has_perm('gw.change_personskill') %}
+            <a href='{{ url_for('sro2.views.person_skill',person.id) }}#skill' class='button ui-state-default eb ui-corner-all ebutton'>
+                Добавить
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block body_phone_button %}
+    {% if canedit and user.has_perm('gw.add_phone') %}
+        <a href='{{ url_for('gw.views.contact_phone_add',person.id) }}#phone' class='button ui-state-default eb ui-corner-all ebutton'>
+            Добавить
+        </a>
+    {% endif %}
+{% endblock %}

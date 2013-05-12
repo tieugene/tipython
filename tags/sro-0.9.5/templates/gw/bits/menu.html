@@ -1,0 +1,9 @@
+{# L3 menu /GW/Files/ #}
+{% include "gw/menu.html" %}
+<ul idref="menu_gw_bits" class="l3">
+	<li id="menu_gw_bits_address"> <a href="{% url gw.views.address_index %}"> Адреса </a> </li>
+	<li id="menu_gw_bits_phone"> <a href="{% url gw.views.phone_index %}"> Телефоны </a> </li>
+	<li id="menu_gw_bits_www"> <a href="{% url gw.views.www_index %}"> WWW </a> </li>
+	<li id="menu_gw_bits_email"> <a href="{% url gw.views.email_index %}"> Email </a> </li>
+	<li id="menu_gw_bits_im"> <a href="{% url gw.views.im_index %}"> IM </a> </li>
+</ul>

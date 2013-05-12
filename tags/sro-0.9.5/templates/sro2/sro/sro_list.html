@@ -1,0 +1,16 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Список СРО
+{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for sro in sros %}
+        <li>{{ loop.index }}. <a href="{{ url_for('sro2.views.sro_view', sro.id) }}">{{ sro.sro }} -- {{ sro.sro.fullname }}</a></li>
+    {% endfor %}
+    </ul>
+    <br>
+
+    <a href='{{ url_for('sro2.views.sro_new') }}'><div class="ui-state-default ui-corner-all button eb" >Добавить</div></a>
+{% endblock %}

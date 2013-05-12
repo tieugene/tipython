@@ -1,0 +1,27 @@
+{% comment %}
+includable for pull-down menu
+Params (dict): {
+	'id':		menu id
+	'name':		anchor name
+	'title':	pullup title
+	'menu': {		#menu own
+		'name':	name,
+		'type':	0/1,	# (menuitem/submenu)
+		'url':	url/{'name':..., 'url':...},
+	}
+}
+{% endcomment %}
+	<a onclick="ddopen('pd_{{ pd.id }}')" href="#" title="{{ pd.title }}" class="pdable"> {{ pd.name|safe }} </a>
+	<ul id="pd_{{ pd.id }}" class="ddtoolbox">
+	{% for item in pd.menu %}
+	{% if item.type %}
+		<li class="pdmenu"> <a href="#"> {{ item.name }} </a> <ul>
+		{% for subitem in item.url %}
+			<li class="pditem"> <a href="{{ subitem.url }}"> {{ subitem.name|safe }} </a> </li>
+		{% endfor %}
+		</ul> </li>
+	{% else %}
+		<li class="pditem"> <a href="{{ item.url }}"> {{ item.name|safe }} </a> </li>
+	{% endif %}
+	{% endfor %}
+	</ul>

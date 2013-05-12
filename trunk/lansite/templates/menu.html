@@ -1,0 +1,11 @@
+{# L1 menu / #}
+<ul class="l1" id="menu">
+	<li id="menu_core">	<a href="{% url apps.core.views.index %}"> Йидро </a> </li>
+	<li id="menu_contact">	<a href="{% url apps.contact.views.index %}"> Контакты </a> </li>
+	<li id="menu_task">	<a href="{% url apps.task.views.index %}"> Задачи </a> </li>
+	<li id="menu_file">	<a href="{% url apps.file.views.index %}"> Файлы </a> </li>
+	<li id="menu_eav">	<a href="{% url apps.eav.views.index %}"> EAV </a> </li>
+	<li id="menu_ref">	<a href="{% url apps.ref.views.index %}"> Справочники </a> </li>
+	<li id="menu_service">	<a href="{% url views.service %}"> Сервис </a> </li>
+	<li id="menu_about">	<a href="{% url views.about %}"> О программе </a> </li>
+</ul>

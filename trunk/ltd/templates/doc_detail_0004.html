@@ -1,0 +1,36 @@
+{% extends "doc_detail_auto.html" %}
+{% block body_menu_top %}
+<table border="0"> <tr>
+	<td> <a href="{% url views.doc_edit object.pk %}"> <button> Изменить </button> </a> </td>
+	<td> <a href="{% url views.doc_del object.pk %}"> <button> Удалить </button> </a> </td>
+	<form action="." method="post"> {% csrf_token %}
+	<td>
+		<select name="doc">
+			<option value="0"> Форма № 11001 </option>
+			<option value="1"> Решение </option>
+			<option value="2"> Устав </option>
+			<option value="3"> Заявление на выдачу копии </option>
+			<option value="4"> Квитанция_4000 </option>
+			<option value="5"> Квитанция_200 </option>
+			<option value="6"> Доверенность в ФНС </option>
+			<option value="7"> Упрощенка </option>
+			<option value="8"> Опись </option>
+			<option value="9"> Проклейки </option>
+			<option value="A"> Приказ #1 </option>
+			<option value="B"> Акт приемки </option>
+			<option value="C"> Список участников </option>
+			<option value="D"> Заявление в ПФР </option>
+			<option value="E"> Доверенность в ПФР </option>
+		</select>
+	</td>
+	<td>
+		<select name="import">
+			<option value="html"> Просмотр </option>
+			<option value="pdf"> Печать </option>
+		</select>
+	</td>
+	<td> <input type="submit" value="Импорт"/> </td>
+	</form>
+</tr> </table>
+{% endblock %}
+{% block body_menu_bottom %} {% endblock %}

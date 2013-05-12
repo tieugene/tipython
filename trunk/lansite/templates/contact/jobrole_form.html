@@ -1,0 +1,14 @@
+<!-- Jobrole -->
+{% extends "contact/jobrole_base.html" %}
+{% block body_main %}
+<form action=".?next={{ next }}" method="post">
+	<table>
+		<caption>
+			{% if mode %} Новая Должность {% else %} Редактировать Должность {% endif %}
+		</caption>
+		{{ form.as_table }}
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{% url apps.contact.views.jobrole_index %}"> <button> Отказаться </button> </a>
+</form>
+{% endblock %}

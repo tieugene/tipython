@@ -1,0 +1,4 @@
+#!/bin/sh
+# drops all tables
+. ./VARS
+mysql --user=$ROOTUSER --password=$ROOTPASS < dropall.sql

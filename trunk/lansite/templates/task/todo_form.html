@@ -1,0 +1,110 @@
+{% extends "task/todo_base.html" %}
+{% load adminmedia %}
+{% block head_css %}
+	<link rel="stylesheet" type="text/css" href="/admin_media/css/forms.css"/>
+	<link rel="stylesheet" type="text/css" href="/admin_media/css/base.css"/>
+	<link rel="stylesheet" type="text/css" href="/admin_media/css/widgets.css"/>
+{% endblock %}
+{% block head_js %}
+	<script type="text/javascript" src="/my_admin/jsi18n/"></script>
+	<script type="text/javascript" src="/admin_media/js/core.js"></script>
+	{{ form.media }}
+	<script type="text/javascript">
+		window.__admin_media_prefix__ = "{% filter escapejs %}{% admin_media_prefix %}{% endfilter %}";
+	</script>
+	<script>
+	$(function() {
+		$('#id_start_d, #id_completed, #id_due_d').mask('99/99/9999');
+		$('#id_start_t, #id_due_t, #id_duration_t').mask('99:99:99');
+	});
+	</script>
+{% endblock %}
+{% block onload_js %}
+	{{ block.super }}
+	setmenu("menu_task_todo_detail");
+	//$('#id_completed, #id_due_d').datepicker({dateFormat: 'dd.mm.yy',changeMonth: true,});
+{% endblock %}
+{% block body_main %}
+<form action="." method="post">
+<table padding="0">
+	<caption>
+		<span> {% if object %} Редактирование ToDo {% else %} Новая Задача ToDo {% endif %} </span>
+		<button type="submit"> Записать </button>
+		{% if object %} <a href="{% url apps.task.views.todo_detail object.id %}"> {% else %} <a href="{% url apps.task.views.todo_index %}"> {% endif %} <button> Отказаться </button> </a>
+	</caption>
+	<tr>
+		<th> {{ form.attendee.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.attendee.errors }} {{ form.attendee }} </div> </td>
+		<th> {{ form.categories.label_tag }}: </th>
+	</tr>
+	<tr>
+		<th> {{ form.summary.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.summary.errors }} {{ form.summary }} </div> </td>
+		<td rowspan="11"> <div class="fieldWrapper"> {{ form.categories.errors }} {{ form.categories }} </div> </td>
+	</tr>
+	<tr>
+		<th> {{ form.description.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.description.errors }} {{ form.description }} </div> </td>
+	</tr>
+	<tr>
+		<th> {{ form.location.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.location.errors }} {{ form.location }} </div> </td>
+	</tr>
+	<tr>
+		<th> {{ form.URL.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.URL.errors }} {{ form.URL }} </div> </td>
+	</tr>
+	<tr>
+		<th> {{ form.priority.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.priority.errors }} {{ form.priority }} </div> </td>
+	</tr>
+	<tr>
+		<th> {{ form.restriction.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.restriction.errors }} {{ form.restriction }} </div> </td>
+	</tr>
+	<tr>
+		<th> {{ form.status.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.status.errors }} {{ form.status }} </div> </td>
+	</tr>
+	<tr>
+		<th> {{ form.percent.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.percent.errors }} {{ form.percent }} </div> </td>
+	</tr>
+	<tr>
+		<th> Начало: </th>
+		<td>
+			<div class="fieldWrapper"> {{ form.start_d.errors }} {{ form.start_d }} </div>
+			<div class="fieldWrapper"> {{ form.start_t.error }} {{ form.start_t }} </div>
+		</td>
+	</tr>
+	<tr>
+		<th> {{ form.completed.label_tag }}: </th>
+		<td> <div class="fieldWrapper"> {{ form.completed.errors }} {{ form.completed }} </div> </td>
+	</tr>
+	<tr>
+		<th> Длительность: </th>
+		<td>
+			<div class="fieldWrapper"> {{ form.duration_d.errors }} {{ form.duration_d }} </div>
+			<div class="fieldWrapper"> {{ form.duration_t.errors }} {{ form.duration_t }} </div>
+		</td>
+	</tr>
+	<tr>
+		<th> До: </th>
+		<td>
+			<div class="fieldWrapper"> {{ form.due_d.errors }} {{ form.due_d }} </div>
+			<div class="fieldWrapper"> {{ form.due_t.errors }} {{ form.due_t }} </div>
+		</td>
+	</tr>
+	<tr> <td colspan="2">
+		<button type="submit"> Записать </button>
+		{% if object %} <a href="{% url apps.task.views.todo_detail object.id %}"> {% else %} <a href="{% url apps.task.views.todo_index %}"> {% endif %} <button> Отказаться </button> </a>
+	</td> </tr>
+</table>
+</form>
+{% endblock %}
+
+<div class="fieldWrapper">
+	{# field.errors #}
+	{# field.label_tag #}: {{ field }}
+</div>
+	{# form.as_table #}

@@ -1,0 +1,72 @@
+<!-- Contacts -->
+{% extends "gw/base.html" %}
+{% block title %} Контакт {% endblock %}
+{% block topbar %} <a href="{% url gw.views.contact_index %}"> Контакты </a> {% endblock %}
+{% block body_main %}
+<h1> {{ item }} </h1>
+{% block body_detail %}
+{% endblock %}
+<p>
+	<a class="button" title="Изменить" href="{% url gw.views.contact_edit item.id %}"> &nbsp; E &nbsp; </a>
+	<a class="button" title="Удалить" href="{% url gw.views.contact_del item.id %}"> &nbsp; X &nbsp; </a>
+</p>
+<hr/>
+<table>
+<!-- Addresses -->
+<tr>
+	<td rowspan='{{ item.contactaddr_set.all.count|add:"1" }}' valign="top"> <h2> Адреса: </h2> </td>
+	<td/>
+	<td colspan="2" class="button"> <a title="Добавить" href="{% url gw.views.address_index %}?next={% url gw.views.contact_addr_add item.id %}"> &nbsp; + &nbsp; </a> </td>
+</tr>
+{% for i in item.contactaddr_set.all %}
+<tr>
+	<td bgcolor={% cycle 'lightgrey' 'white' %}> <a title="Подробности" href="{% url gw.views.address_detail i.addr.id %}"> {{ i.addr.fullname }} </a> </td>
+	<td class="button"> <a title="Изменить" href="{% url gw.views.address_detail i.addr.id %}?next={% url gw.views.contact_addr_edit i.id %}"> &nbsp; E &nbsp; </a> </td>
+	<td class="button"> <a title="Удалить" href="{% url gw.views.contact_addr_del i.id %}"> &nbsp; X &nbsp; </a> </td>
+</tr>
+{% endfor %}
+<!-- Phones -->
+<tr>
+	<td rowspan='{{ item.contactphone_set.all.count|add:"1" }}' valign="top"> <h2> Телефоны: </h2> </td>
+	<td> <!--input type="text"/--> </td>
+	<td colspan="2" class="button"> <a title="Добавить" href="{% url gw.views.contact_phone_add item.id %}"> &nbsp; + &nbsp; </a> </td>
+</tr>
+{% for i in item.contactphone_set.all %}
+<tr>
+	<td bgcolor={% cycle 'lightgrey' 'white' %}> <a title="Подробности" href="{% url gw.views.phone_detail i.phone.id %}"> {{ i.phone }} </a> {% if i.ext %} #{{ i.ext }} {% endif %} </td>
+	<td class="button"> <a title="Изменить" href="{% url gw.views.contact_phone_edit i.id %}"> &nbsp; E &nbsp; </a> </td>
+	<td class="button"> <a title="Удалить" href="{% url gw.views.contact_phone_del i.id %}"> &nbsp; X &nbsp; </a> </td>
+</tr>
+{% endfor %}
+<!-- WWW -->
+<tr>
+	<td rowspan='{{ item.contactwww_set.all.count|add:"1" }}' valign="top"> <h2> WWW: </h2> </td>
+	<td> <!--input type="text"/--> </td>
+	<td colspan="2" class="button"> <a title="Добавить" href="{% url gw.views.contact_www_add item.id %}"> &nbsp; + &nbsp; </a> </td>
+</tr>
+{% for i in item.contactwww_set.all %}
+<tr>
+	<td bgcolor={% cycle 'lightgrey' 'white' %}> <a title="Подробности" href="{% url gw.views.www_detail i.www.id %}"> {{ i.www.URL }} </a> <a href="{{ i.www.URL }}"> &#9655; </a> </td>
+	<td class="button"> <a title="Изменить" href="{% url gw.views.contact_www_edit i.id %}"> &nbsp; E &nbsp; </a> </td>
+	<td class="button"> <a title="Удалить" href="{% url gw.views.contact_www_del i.id %}"> &nbsp; X &nbsp; </a> </td>
+</tr>
+{% endfor %}
+<!-- Email -->
+<tr>
+	<td rowspan='{{ item.contactemail_set.all.count|add:"1" }}' valign="top"> <h2> Email: </h2> </td>
+	<td> <!--input type="text"/--> </td>
+	<td colspan="2" class="button"> <a title="Добавить" href="{% url gw.views.contact_email_add item.id %}"> &nbsp; + &nbsp; </a> </td>
+</tr>
+{% for i in item.contactemail_set.all %}
+<tr>
+	<td bgcolor={% cycle 'lightgrey' 'white' %}> <a title="Подробности" href="{% url gw.views.email_detail i.email.id %}"> {{ i.email.URL }} </a> <a href="{{ i.email.URL }}"> &#9655; </a> </td>
+	<td class="button"> <a title="Изменить" href="{% url gw.views.contact_email_edit i.id %}"> &nbsp; E &nbsp; </a> </td>
+	<td class="button"> <a title="Удалить" href="{% url gw.views.contact_email_del i.id %}"> &nbsp; X &nbsp; </a> </td>
+</tr>
+{% endfor %}
+<!-- IM -->
+<tr>	<td> <h2> IM: </h2> </td>	<td/></tr>
+{% block body_extra %}
+{% endblock %}
+</table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "gw/task/assign_base.html" %}
+{% block body_main %}
+<p> Новое Задание </p>
+	<form action="." method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{% url gw.views.assign_list %}"> Отказаться </a>
+	</form>
+{% endblock %}

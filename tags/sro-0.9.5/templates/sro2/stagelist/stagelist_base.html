@@ -1,0 +1,197 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}{{ stagelist.orgsro.sro.name }} -
+    {% if stagelist.orgsro.id %}<a href='{{ url_for('sro2.views.orgsro_view', stagelist.orgsro.id) }}'
+                                   title='{{stagelist.orgsro.org.fullname}}'><span
+            class='ui-state-default button ui-corner-all'>{{ stagelist.orgsro.org.name }}</span>
+        </a> - {% if stagelist.isstatement() %} Заявление от: {{ stagelist.statement.date|date }}{% endif %}{% if stagelist.isperm() %} Свидетельство №: {{ stagelist.permit.no }}{% endif %}
+
+    {% if user.is_superuser %}
+        <a href="{{ stagelist.get_journal_url() }}">
+            <div class="ui-state-default ui-corner-all button jbutton">
+                    <span class="ui-icon ui-icon-clock"></span>
+                </div>
+        </a>
+        {% endif %}
+    {% else %}Новый документ{% endif %}
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="{{ url_for('views.index') }}static/js/jquery.quicksearch.js"></script>
+    {% if stagelist and stagelist.isperm() and prevpermit_id %}
+        <script>
+            {% include "sro2/stagelist/stages_all.js" %}
+        </script>
+    {% endif %}
+    <script>
+        $(function() {
+            $("#tabs").tabs({selected: 0});
+        })
+        $(
+         function() {
+             $('#id_date').datepicker({dateFormat: 'dd.mm.yy',changeMonth: true,})
+         }).datepicker($.datepicker.regional['ru']);
+    </script>
+    <style>
+        #stages p {
+            margin: 2px;
+        }
+    </style>
+    <div class='th'>
+        <span class='title'>Основные данные: </span>
+        <div style='float: right; margin-top: 1px;'>
+            {% block editmain %}
+                {% if canedit_orgsro and user.has_perm('sro2.change_stagelist') %}
+                    <a href="{{ url_for('sro2.views.stagelist_edit', stagelist.id) }}">
+                        <div class='button ui-state-default eb'>Изменить</div>
+                    </a>
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+
+    {% block main %}
+        <table border="0">
+            <tr>
+                <td> Организация:</td>
+                <td> {{ stagelist.orgsro.org.name }} </td>
+            </tr>
+            <tr>
+                <td> Тип:</td>
+                <td> {% if stagelist.isperm() %}Свидетельство{% else %}Заявление{% endif %}</td> </tr>
+            <tr>
+                <td> Версия списка видов работ:</td>
+                <td> {{ stagelist.ver.name }} </td>
+            </tr>
+            {% if stagelist.rejectprotocol %}
+            <tr>
+                <td> Протокол-отказ:</td>
+                <td> {{ stagelist.rejectprotocol }} </td>
+            </tr>
+            {% endif %}
+            {% if stagelist.isstatement() %}
+                <tr>
+                    <td> Дата {% if stagelist.isperm() %}Свидетельства{% else %}Заявления{% endif %}:</td>
+                    <td> {{ stagelist.statement.date|date }} </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td> Номер Свидетельства:</td>
+                    <td> {{ stagelist.permit.no }} </td>
+                </tr>
+                <tr>
+                    <td> Дата {% if stagelist.isperm() %}Свидетельства{% else %}Заявления{% endif %}:</td>
+                    <td> {{ stagelist.permit.date|date }} </td>
+                </tr>
+                <tr>
+                    <td> Протокол:</td>
+{#                    <td> № {{ stagelist.permit.protocol.no }} от {{ stagelist.permit.protocol.date|date }} </td>#}
+                    <td>{{ stagelist.permit.protocol }}</td>
+                </tr>
+                <tr>
+                    <td> Заявление:</td>
+                    <td> {% if stagelist.permit.statement %} <a href="{{ url_for('sro2.views.stagelist_view', stagelist.permit.statement.id, 0, 0) }}">{{ stagelist.permit.statement }}</a> {% endif %} </td> </tr>
+                {% if stagelist.permit.last %}
+                <tr>
+                    <td> Статус:</td>
+                    <td>{{ stagelist.permit.last.asstr_snapstatus2()}} {% if stagelist.permit.last.status == 1 %}
+                        до {{ stagelist.permit.last.date|date }}{% endif %}</td>
+                </tr>
+                    {% endif %}
+            {% endif %}
+        </table>
+        <br>
+        <a href='{{ url_for('sro2.views.stagelist_compare',stagelist.id) }}'>
+            <div class="ui-state-default ui-corner-left button eb"> Сравнить документ</div>
+        </a>{% if stagelist.isperm() %}
+        <a href='{{ url_for('sro2.views.permit_history', stagelist.id) }}'>
+            <div class="ui-state-default ui-corner-right button eb"> История изменений</div>
+        </a>
+    {% endif %}
+    {% endblock %}
+
+    <hr/>
+    <div class='th'>
+        <span class='title'>Виды работ:
+            {% if stagelist and full is defined %}
+                <div style='float: right; margin-top: 1px;'>
+                    <a href="{{ url_for('sro2.views.stagelist_view', stagelist.id, full, 0) }}" class='button ui-state-default eb allb ui-corner-left {% if not danger == 1 %}ui-self-active{% endif %} hardfix'>
+                        Основные
+                    </a>
+                    <a href="{{ url_for('sro2.views.stagelist_view', stagelist.id, full, 1) }}" class='button ui-state-default eb yb ui-corner-right {% if danger == 1 %}ui-self-active{% endif %}'>
+                        Опасные
+                    </a>
+                </div>
+            {% endif %}
+        </span>
+    </div>
+
+    {% block stages %}
+    {% endblock %}
+
+
+    {% if canedit_orgsro and user.has_perm('sro2.change_stagelist') %}
+        {% block buttons_bottom %}
+            {% if not issnapshots %}
+                <a href="{{ url_for('sro2.views.stagelist_editstages', stagelist.id) }}?danger={{ danger }}">
+                    <div class='button ui-state-default eb hardfix {% if stagelist.isstatement() or button == "none" %} ui-corner-all {% else %} ui-corner-left {% endif %}'>
+                        Изменить
+                    </div>
+                </a>
+            {% endif %}
+
+            {% if stagelist.isperm() %}
+                {% if button == 0 or button == 2 %}
+                    <div class="button ui-state-default eb {% if issnapshots %} ui-corner-all {% else %} ui-corner-right {% endif %}"
+                         id="pausePermit">
+                        Приостановить
+                    </div>
+                    {% else %}{% if button == 1 %}
+                        <div class="button ui-state-default eb {% if issnapshots %} ui-corner-all {% else %} ui-corner-right {% endif %}"
+                             id="resumePermit">
+                            Возобновить
+                        </div>
+                    {% endif %}{% endif %}
+
+                {% if issnapshots %}
+                    <p>
+                        <br>
+                        <u>Для изменения состава видов работ необходимо сделать <b><a href='{{ url_for('sro2.views.permit_history', stagelist.id) }}'>откат</a></b> свидетельства до оригинального
+                            варианта.</u>
+                    </p>
+                {% endif %}
+
+                <div id="dialog_pause" title="Приостановка" style='width: 300px;'>
+                    <label for="datesince">Приостановить c:</label> <input type='text' id='datesince_pause'
+                                                                           name='datesince'>
+                    <br>
+                    <label for="datetill">Приостановить до:</label> <input type='text' id='datetill' name='datetill'>
+                    <br>
+                    или <label for="delta">на:</label> <input type='text' id='delta' name='delta' value=60> дней от даты
+                    приостановки
+                    <br>
+                    *после ввода количества дней, следует снять фокус с поля ввода (кликнуть по пустому месту окошка)
+                    <br>
+                    {{ form.as_p() }}
+
+                </div>
+
+                <div id="dialog_resume" title="Возобновление" style='width: 300px;'>
+                    <label for="datesince">Возобновить c:</label> <input type='text' id='datesince_resume'
+                                                                         name='datesince'>
+                    <br>
+                    {{ form.as_p() }}
+                </div>
+
+            {% endif %}
+
+        {% endblock %}
+    {% endif %}
+
+
+
+    </div>
+
+
+{% endblock %}
+

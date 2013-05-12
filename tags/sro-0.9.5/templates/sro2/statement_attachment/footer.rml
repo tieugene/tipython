@@ -1,0 +1,19 @@
+<blockTable style="myTable">
+	<tr>
+		<td> <para style="style0" alignment="center"> __________________________ </para> </td>
+		<td> <para style="style0" alignment="center"> __________________________ </para> </td>
+	</tr>
+	<tr>
+		<td> <para style="style5" alignment="center"> (Должность) </para> </td>
+		<td> <para style="style5" alignment="center"> (подпись) </para> </td>
+	</tr>
+</blockTable>
+<para style="style0" alignment="center">
+	М.П.
+</para>	
+<para style="style0" alignment="left" spaceAfter="5">
+	Дата заполнения:
+</para>	
+<para style="style0" alignment="left" spaceAfter="25">
+	{{ data.date }}
+</para>

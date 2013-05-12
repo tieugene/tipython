@@ -1,0 +1,20 @@
+{% extends "gw/task/todo_base.html" %}
+{% block tabbar %}
+<table class="tabbed">
+	<tr>
+		<td class="tabactive"> <a href="{% url gw.views.todo_index %}"> ToDo </a> </td>
+		<td class="tabinactive"> Календарь </td>
+		<td class="tabinactive"> Все задачи </td>
+	</tr>
+</table>
+{% endblock %}
+{% block body_main %}
+<p> Новая Задача </p>
+	<form action="." method="post">
+		<table padding="0">
+			{{ form.as_table }}
+		</table>
+		<input type="submit" value="Записать"/> </td>
+		<a class="button" href="{% url gw.views.todo_index %}"> Отказаться </a>
+	</form>
+{% endblock %}

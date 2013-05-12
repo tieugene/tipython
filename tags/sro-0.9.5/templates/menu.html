@@ -1,0 +1,9 @@
+{# L1 menu / #}
+<ul class="l1">
+	<li id="menu_gw"> <a href="{% url gw.views.index %}"> Groupware </a> </li>
+	<li id="menu_sro"> <a href="{% url sro2.views.index %}"> Делопроизводство </a> </li>
+	<li id="menu_ref"> <a href="{% url ref.views.index %}"> Справочники </a> </li>
+	{# if user.is_stuff #}
+		<li> <a href="{% url views.index %}admin"> Администрирование </a> </li>
+	{# endif #}
+</ul>

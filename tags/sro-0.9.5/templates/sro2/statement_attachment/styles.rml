@@ -1,0 +1,61 @@
+<docinit>
+	<registerFont fontName="Serif"		fontFile="{{ STATIC_ROOT }}/ttf/LiberationSerif-Regular.ttf"/>
+	<registerFont fontName="SerifBold"	fontFile="{{ STATIC_ROOT }}/ttf/LiberationSerif-Bold.ttf"/>
+	<registerFont fontName="SerifItalic"	fontFile="{{ STATIC_ROOT }}/ttf/LiberationSerif-Italic.ttf"/>
+		<registerFontFamily normal="Serif" bold="SerifBold" italic = "SerifItalic"/>
+</docinit>
+	
+<template pageSize="(21cm, 29.7cm)" title="{{ statement.date }}" author="{{ data.user }}" subject="Permit" showBoundary="0">
+	<pageTemplate id="main">
+		<frame id="main"	x1="1.5cm" y1="1.5cm" width="18cm" height="26.7cm"/>
+	</pageTemplate>
+</template>
+	
+<stylesheet>
+	<initialize/>
+	<paraStyle
+		name="style0"
+		fontName="Serif"
+		fontSize="14"
+	/>
+	<paraStyle
+		name="style1"
+		fontName="Serif"
+		fontSize="10"
+		leftIndent = "9cm"
+		spaceAfter="10"
+	/>
+	<paraStyle
+		name="style2"
+		fontName="SerifBold"
+		fontSize="10"
+		leftIndent = "9cm"
+	/>
+	<paraStyle
+		name="style3"
+		fontName="SerifBold"
+		fontSize="14"
+		leftIndent = "2cm"
+		rightIndent = "2cm"
+		alignment="center"
+	/>
+	<paraStyle
+		name="style4"
+		fontName="Serif"
+		fontSize="14"
+		leftIndent = "2cm"
+		rightIndent = "2cm"
+		alignment="center"
+		spaceAfter="5"
+	/>
+	<paraStyle
+		name="style5"
+		fontName="Serif"
+		fontSize="10"
+		alignment="center"
+		spaceAfter="10"
+	/>
+	<blockTableStyle id="myTable"> 
+		<lineStyle kind="GRID" colorName = "white"/>
+	</blockTableStyle>
+</stylesheet>

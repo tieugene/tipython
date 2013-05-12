@@ -1,0 +1,7 @@
+{# L3 menu /GW/Contacts/ #}
+{% include "gw/menu.html" %}
+<ul idref="menu_gw_contact" class="l3">
+	<li id="menu_gw_contact_org"> <a href="{% url gw.views.org_index %}"> Организации </a> </li>
+	<li id="menu_gw_contact_person"> <a href="{% url gw.views.person_index %}"> Люди </a> </li>
+	<li id="menu_gw_contact_all"> <a href="{% url gw.views.contact_index_all %}"> Все контакты </a> </li>
+</ul>

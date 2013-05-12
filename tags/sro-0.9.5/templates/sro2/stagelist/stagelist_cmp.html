@@ -1,0 +1,62 @@
+{% block main %}
+
+    <h2> Сравнение: </h2>
+    <p><a href="{{ url_for('sro2.views.stagelist_view', src.id, 0, 0) }}">{{ src }}</a> &lt;--&gt; <a
+            href="{{ url_for('sro2.views.stagelist_view', dst.id, 0, 0) }}">{{ dst }}</a></p>
+
+    {% if del_o or add_o or chg_o %}
+        <hr/>
+        <h3> Обычные </h3>
+        <b> Удалено: </b>
+        <ul>
+            {% for s in del_o %}
+                <li> {{ s.stage }} </li>
+            {% endfor %}
+        </ul>
+        <b> Добавлено: </b>
+        <ul>
+            {% for s in add_o %}
+                <li> {{ s.stage }} </li>
+            {% endfor %}
+        </ul>
+        <b> Изменено: </b>
+        <ul>
+            {% for s in chg_o %}
+                {% if not s.paused == s.newdate %}
+                    {% if not s.paused %}
+                        <li> {{ s.stage }}: приостановлено с {{ dst.date|date }} до {{ s.newdate|date }} </li>
+                    {% else %}
+                        <li> {{ s.stage }}: {{ s.paused }} =&gt; {{ s.newdate }} </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if del_d or add_d or chg_d %}
+        <hr/>
+        <h3> Опасные </h3>
+        <b> Удалено: </b>
+        <ul>
+            {% for s in del_d %}
+                <li> {{ s.stage }} </li>
+            {% endfor %}
+        </ul>
+        <b> Добавлено: </b>
+        <ul>
+            {% for s in add_d %}
+                <li> {{ s.stage }} </li>
+            {% endfor %}
+        </ul>
+        <b> Изменено: </b>
+        <ul>
+            {% for s in chg_d %}
+                {% if not s.paused == s.newdate %}
+                    <li> {{ s.stage }}: {{ s.paused }} =&gt; {{ s.newdate }} </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+ 

@@ -1,0 +1,53 @@
+{% extends "sro2/main.html" %}
+{%load sro2_extras%}
+{% block contentheader %}
+    Отправка заказных писем с уведомлением № _____ от {{ sro.fullname }}
+{% endblock %}
+
+
+{% block content %}
+    <script langauge="JavaScript" type="text/javascript">
+        $(function() {
+            $('#notification').click(function() {
+                document.location = '{% url views.index %}sro2/orglist/print/notification/{% autoescape off %}{{ orgs }}{% endautoescape %}/';
+            })
+        })
+    </script>
+
+    <span id='notification'
+          class='ui-corner-all ui-state-default button'>
+	Распечатать уведомления
+</span>
+
+    <p></p>
+
+    <table border="1" cellspacing="0" width=100%>
+        <thead>
+        <tr>
+            <th> №</th>
+            <th> Адресат, адрес</th>
+            <th> Штрих-код</th>
+            <th> Вес</th>
+            <th> Сумма</th>
+            <th> Номер исходящего</th>
+            <th> Принял оригинал</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for org in org_list %}
+            <tr>
+                <td nowrap valign="top"> {{ forloop.counter }} </td>
+                <td nowrap valign="top"> {{ org.shortname }} {{ org.okopf.shortname }}, <br>
+					{{ org|getaddress_zip:'Почтовый' }}, {{ org|getaddress_fullname:'Почтовый' }}
+				</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

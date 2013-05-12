@@ -1,0 +1,30 @@
+<!-- File -->
+{% extends "gw/file/base.html" %}
+{% block title %} Файлы {% endblock %}
+{% block body_main %}
+<table cellpadding="1" border="1">
+<tr>
+	<th> Наименование </th>
+	<th> MIME </th>
+	<th> Saved </th>
+	<th> Size </th>
+	<th> MD5 </th>
+	<td colspan="2"/>
+</tr>
+<form  enctype="multipart/form-data" action="{% url gw.views.file_add %}" method="POST"> <tr>
+	<td colspan="5"> {{ form.as_p }} </td> <td colspan="3"> <input type="submit" value="+" title="Upload"/> </td>
+</tr> </form>
+{% for item in item_list %}
+	<tr bgcolor={% cycle 'lightcyan' 'white' %}>
+		<td> <a href="{% url gw.views.file_detail item.id %}"> {{ item.name }} </a> </td>
+		<td> {{ item.mime }} </td>
+		<td> <tt> {{ item.saved }} </tt> </td>
+		<td align="right"> <tt> {{ item.size }} </tt> </td>
+		<td> <tt> {{ item.md5 }} </tt> </td>
+		<td class="button"> <a title="Удалить" href="{% url gw.views.file_del item.id %}"> &nbsp; X &nbsp; </a> </td>
+		<td class="button"> <a title="Слить" href="{% url gw.views.file_dl item.id %}"> &nbsp; V &nbsp; </a> </td>
+	</tr>
+{% endfor %}
+<table>
+{% endblock %}
+{% block bottom_script %} setmenu("menu_gw_file_all"); {% endblock %}

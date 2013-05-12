@@ -1,0 +1,67 @@
+* z0005:
+	* squares:
+		* size: 3.5 x 4.5
+		* fullsize: (157/34) x (26/4..84/13) => 4.617647059 x 6.5
+	* 1pt = 1"/72 = 0.3527777778 =>
+		* size: 10x13 pt
+		* fullsize: 13x18.5..18.3 pt
+* z0002 (21001):
+	* add okved:
+		* 3 modes: handly/with_guide/from_ref; on start: 1 and 3
+		* check+add:
+			1. find all selected okveds
+			2. find last (or 1st empty) input fieldset
+			3. add values (id_okved-0-code, id_okved-0-name, add_another())
+			4. patch okved-TOTAL_FORMS, okved-INITIAL_FORMS, 
+			5. add empty fieldset
+			6. remove checks
+		* ajax
+	* moedelo: как у меня, но больше вложенностей и только птицы
+* "Exclude" tpls (local_settings?)
+
+Data structures:
+	* Doc
+		* Doc.data
+	* DATA
+	* FORM
+	* FORMSETS
+	* to templates:
+		* user defined:
+			* list
+			* read
+			* view
+			* print
+			* form
+		* auto:
+			* list
+			* read
+			* view
+			* print
+			* form
+	* to user functions:
+		* LIST
+		* READ
+		* VIEW
+		* PRINT
+		* ANON
+		* CREATE
+		* UPDATE
+		* POST_LOAD
+		* POST_FORM
+		* PRE_READ
+		* PRE_VIEW
+		* PRE_PRINT
+		* PRE_FORM
+		* PRE_SAVE
+
+URLS:
+	http://dreamhelg.ru/2011/02/css-position-in-10-steps/
+	http://softwaremaniacs.org/blog/category/primer/
+	http://sbform.ru/
+	http://www.sberbank.biz/formtax.html
+	http://blanker.ru/album
+	http://www.gnivc.ru/inf_provision/form_templates/
+
+Общероссийский классификатор видов экономической деятельности (ОКВЭД) OK 029-2001
+
+5582760 - справка п.96

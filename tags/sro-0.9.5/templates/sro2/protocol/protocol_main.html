@@ -1,0 +1,11 @@
+{% extends "sro2/protocol/protocol_base.html" %}
+{% block body_main %}
+    <form action="." method="POST">
+        <table width="100%">
+            {{ form.as_table() }}
+        </table>
+        <input type="submit" value="Записать и закрыть"/>
+        <input type="button" value="Отказаться"
+               onClick="window.location.href='{{ url_for('sro2.views.protocol_list', sro.id) }}'"/>
+    </form>
+{% endblock %}

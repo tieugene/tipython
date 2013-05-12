@@ -1,0 +1,37 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Организации по филиалам
+{% endblock %}
+
+{% block content %}
+    {% for borgs in orgs %}
+        {% for branch,org in borgs.items() %}
+            <h2>{{ branch }} - {{ org|length }}</h2>
+            <div style='border: #333 solid 1px;'>
+                <h3>МООЖС</h3>
+                <ol style='margin-left: 12px;'>
+                    {% for o in org %}
+                        {% if o.sro.id == 1 %}
+                            <li><a href="{{ url_for('sro2.views.orgsro_view', o.id) }}" title="{{ o.org.fullname }}"
+                                   target="_blank">
+                                <div class='cell'>{{ o.org.name }}</div>
+                            </a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+                <h3>МООАСП</h3>
+                <ol style='margin-left: 12px;'>
+                    {% for o in org %}
+                        {% if o.sro.id == 2 %}
+                            <li><a href="{{ url_for('sro2.views.orgsro_view', o.id) }}" title="{{ o.org.fullname }}"
+                                   target="_blank">
+                                <div class='cell'>{{ o.org.name }}</div>
+                            </a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

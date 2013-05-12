@@ -1,0 +1,52 @@
+	<tr> <th colspan="6">
+		{% ifequal user.id object.user_id %}
+			<a href="{% url apps.task.views.todo_edit object.id %}"> <button> Изменить </button> </a>
+			<button onClick="confirmDelete('{% url apps.task.views.todo_del object.id %}')"> Удалить </button>
+		{% endifequal %}
+		<a href="{% url apps.task.views.todo_detail_setcols object.id 1 %}"> <button title="1-column view"> 1 </button> </a>
+		<a href="{% url apps.task.views.todo_detail_setcols object.id 2 %}"> <button title="2-column view"> 2 </button> </a>
+		<a href="{% url apps.task.views.todo_detail_setcols object.id 3 %}"> <button title="1-column view" disabled="disabled"> 3 </button> </a>
+	</th> </tr>
+	<tr>
+		<th> Пользователь: </th>	<td> {{ object.user }} </td>
+		<th> Исполнитель: </th>		<td> {{ object.attendee|default_if_none:"" }} </td>
+		<th> Видимость: </th>		<td> {{ object.getrestrictionname|default_if_none:"" }} </td>
+	</tr>
+	<tr>
+		<th> Тема: </th>		<td colspan="5"> {{ object.summary }} </td>
+	</tr>
+	<tr>
+		<th> Подробности: </th>		<td colspan="5"> {{ object.description }} </td>
+	</tr>
+	<tr>
+		<th> Место: </th>		<td> {{ object.location|default_if_none:"" }} </td>
+		<th> URL: </th>			<td> {{ object.URL|default_if_none:"" }} </td>
+		<th> Категории: </th>		<td colspan="3">
+						<ul> {% for i in object.taskcat_set.all %}
+							<li> {{ i.cat.name }} </li>
+						{% endfor %} </ul> </td>
+	</tr>
+	<tr>
+		<th> Важность: </th>		<td> {{ object.getpriorityname|default_if_none:"" }} </td>
+		<th> Состояние: </th>		<td> {{ object.getstatusname|default_if_none:"" }} </td>
+		<th> Процент: </th>		<td> {{ object.percent|default_if_none:"" }} </td>
+	</tr>
+	<tr>
+		<th> Создано: </th>		<td> {{ object.created|date }} </td>
+		<th> Изменено: </th>		<td> {{ object.updated|date }} </td>
+		<th> Завершено: </th>		<td> {{ object.completed|default_if_none:"" }} </td>
+	</tr>
+	<tr>
+		<th> Начало: </th>		<td> {{ object.start_d|default_if_none:""|date }} {{ object.start_t|default_if_none:"" }} </td>
+		<th> Длительность: </th>	<td> {{ object.duration_d|default_if_none:"" }} {{ object.duration_t|default_if_none:"" }} </td>
+		<th> До: </th>			<td> {{ object.due_d|default_if_none:""|date }} {{ object.due_t|default_if_none:"" }} </td>
+	</tr>
+	<tr> <th colspan="6">
+		{% ifequal user.id object.user_id %}
+			<a href="{% url apps.task.views.todo_edit object.id %}"> <button> Изменить </button> </a>
+			<button onClick="confirmDelete('{% url apps.task.views.todo_del object.id %}')"> Удалить </button>
+		{% endifequal %}
+		<a href="{% url apps.task.views.todo_detail_setcols object.id 1 %}"> <button title="1-column view"> 1 </button> </a>
+		<a href="{% url apps.task.views.todo_detail_setcols object.id 2 %}"> <button title="2-column view"> 2 </button> </a>
+		<a href="{% url apps.task.views.todo_detail_setcols object.id 3 %}"> <button title="1-column view" disabled="disabled"> 3 </button> </a>
+	</th> </tr>

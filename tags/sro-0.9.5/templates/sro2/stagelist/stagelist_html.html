@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Свидетельство</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<h1> Перечень видов работ, которые оказывают влияние на безопасность объектов капитального строительства: </h1>
+{% for item in stagelist.permitstage_set.list_ordinar() %}
+    {% if item.stage.isgroup %}
+        <p><b> {{ item.stage.code }}. {{ item.stage.name }} </b></p>
+    {% else %}
+        <p> {{ item.stage.code }}. {{ item.stage.name }} </p>
+    {% endif %}
+{% endfor %}
+<p> Итого: {{ stagelist.permitstage_set.count_ordinar() }} </p>
+
+<h1> Перечень видов работ, связанных со строительством, реконструкцией и капитальным ремонтом особо опасных, технически
+    сложных и уникальных объектов капитального строительства, оказывающих влияние на безопасность указанных
+    объектов: </h1>
+{% for item in stagelist.permitstage_set.list_danger() %}
+    {% if item.stage.isgroup %}
+        <p><b> {{ item.stage.code }}. {{ item.stage.name }} </b></p>
+    {% else %}
+        <p> {{ item.stage.code }}. {{ item.stage.name }} </p>
+    {% endif %}
+{% endfor %}
+<p> Итого: {{ stagelist.permitstage_set.count_danger() }} </p>
+</body>
+</html>

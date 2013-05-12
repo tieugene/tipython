@@ -1,0 +1,30 @@
+<!-- Person -->
+{% extends "gw/contact/contact_detail.html" %}
+<table class="tabbed">
+	<tr>
+		<td class="tabactive"> <a href="{% url gw.views.person_index %}"> Люди </a> </td>
+		<td class="tabinactive"> <a href="{% url gw.views.org_index %}"> Организации </a> </td>
+		<td class="tabinactive"> <a href="{% url gw.views.contact_index_all %}"> Все контакты </a> </td>
+	</tr>
+</table>
+{% block body_detail %}
+	<table>
+		<tr> <td> Дата рождения: </td> <td> {% if item.birthdate %} {{ item.birthdate|date }} {% endif %} </td> </tr>
+		<tr> <td> Пол: </td> <td> {% if item.sex %} М {% else %} Ж {% endif %} </td> </tr>
+	</table>
+{% endblock %}
+<!-- Org -->
+{% block body_extra %}
+	<tr>
+		<td rowspan='{{ item.orgstuff_set.all.count|add:"1" }}' valign="top"> <h2> Организации: </h2> </td>
+		<td> <!--input type="text"/--> </td>
+		<td colspan="2" class="button"> <a title="Добавить" href="{% url gw.views.person_stuff_add item.id %}"> &nbsp; + &nbsp; </a> </td>
+	</tr>
+	{% for i in item.orgstuff_set.all %}
+	<tr>
+		<td bgcolor={% cycle 'lightgrey' 'white' %}> <a title="Подробности" href="{% url gw.views.contact_detail i.org.id %}"> {{ i.org }} </a> : <a title="Подробности" href="{% url gw.views.role_detail i.role.id %}"> {{ i.role }} </a> </td>
+		<td class="button"> <a title="Изменить" href="{% url gw.views.person_stuff_edit i.id %}"> &nbsp; E &nbsp; </a> </td>
+		<td class="button"> <a title="Удалить" href="{% url gw.views.person_stuff_del i.id %}"> &nbsp; X &nbsp; </a> </td>
+	</tr>
+	{% endfor %}
+{% endblock %}

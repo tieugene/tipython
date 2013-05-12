@@ -1,0 +1,9 @@
+{% extends "doc_detail_base.html" %}
+{% block details %}
+	{% for i in data %}
+		<tr>
+			<td> {{ i.l }} </td>
+			<td> {{ i.v }} </td>
+		</tr>
+	{% endfor %}
+{% endblock %}

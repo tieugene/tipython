@@ -1,0 +1,36 @@
+<!-- Org -->
+{% extends "gw/contact_detail.html" %}
+{% block title %} Организация {% endblock %}
+{% block head_js %}
+<script type="text/javascript" src="{% url views.index %}static/js/toggle.js"> </script>
+{% endblock %}
+{% block topbar %} <a href="{% url gw.views.org_index %}"> Организации </a> {% endblock %}
+{% block body_detail %}
+<a href="#" onclick="Toggle(this)"> &#9654; </a> <div style="display:none;">
+	<table>
+		<tr> <td> Наименование: </td> <td> {{ item.cn }} </td> </tr>
+		<tr> <td> Краткое наименование: </td> <td> {% if item.shortname %} {{ item.shortname }} {% endif %} </td> </tr>
+		<tr> <td> Полное наименование: </td> <td> {% if item.fullname %} {{ item.fullname }} {% endif %} </td> </tr>
+		<tr> <td> Фирменное наименование: </td> <td> {% if item.brandname %} {{ item.brandname }} {% endif %} </td> </tr>
+		<tr> <td> Дата регистрации в ЕГРЮЛ: </td> <td> {% if item.egruldate %} {{ item.egruldate }} {% endif %} </td> </tr>
+		<tr> <td> ИНН: </td> <td> {% if item.inn %} {{ item.inn }} {% endif %} </td> </tr>
+		<tr> <td> КПП: </td> <td> {% if item.kpp %} {{ item.kpp }} {% endif %} </td> </tr>
+		<tr> <td> ОГРН: </td> <td> {% if item.ogrn %} {{ item.ogrn }} {% endif %} </td> </tr>
+	</table>
+</div>
+{% endblock %}
+<!-- Stuff -->
+{% block body_extra %}
+	<tr>
+		<td rowspan='{{ item.stuffs.all.count|add:"1" }}' valign="top"> <h2> Персонал: </h2> </td>
+		<td> <!--input type="text"/--> </td>
+		<td colspan="2" class="button"> <a title="Добавить" href="{% url gw.views.org_stuff_add item.id %}"> &nbsp; + &nbsp; </a> </td>
+	</tr>
+	{% for i in item.orgstuff_set.all %}
+	<tr>
+		<td bgcolor={% cycle 'lightgrey' 'white' %}> <a title="Подробности" href="{% url gw.views.jobrole_detail i.role.id %}"> {{ i.role }} </a>: <a title="Подробности" href="{% url gw.views.person_detail i.person.id %}"> {{ i.person }} </a> </td>
+		<td class="button"> <a title="Изменить" href="{% url gw.views.org_stuff_edit i.id %}"> &nbsp; E &nbsp; </a> </td>
+		<td class="button"> <a title="Удалить" href="{% url gw.views.org_stuff_del i.id %}"> &nbsp; X &nbsp; </a> </td>
+	</tr>
+	{% endfor %}
+{% endblock %}

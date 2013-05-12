@@ -1,0 +1,33 @@
+<!-- Org -->
+{% extends "contact/contact_detail.html" %}
+{% block body_detail %}
+<a href="#" onclick="Toggle(this)"> &#9654; </a> <div style="display:none;">
+	<table>
+		<tr> <td> Наименование: </td> <td> {{ object.cn }} </td> </tr>
+		<tr> <td> Краткое наименование: </td> <td> {% if object.shortname %} {{ object.shortname }} {% endif %} </td> </tr>
+		<tr> <td> Полное наименование: </td> <td> {% if object.fullname %} {{ object.fullname }} {% endif %} </td> </tr>
+		<tr> <td> Фирменное наименование: </td> <td> {% if object.brandname %} {{ object.brandname }} {% endif %} </td> </tr>
+		<tr> <td> Дата регистрации в ЕГРЮЛ: </td> <td> {% if object.egruldate %} {{ object.egruldate }} {% endif %} </td> </tr>
+		<tr> <td> ИНН: </td> <td> {% if object.inn %} {{ object.inn }} {% endif %} </td> </tr>
+		<tr> <td> КПП: </td> <td> {% if object.kpp %} {{ object.kpp }} {% endif %} </td> </tr>
+		<tr> <td> ОГРН: </td> <td> {% if object.ogrn %} {{ object.ogrn }} {% endif %} </td> </tr>
+	</table>
+</div>
+{% endblock %}
+<!-- Stuff -->
+{% block body_extra %}
+	<tr>
+		<td rowspan='{{ object.stuffs.all.count|add:"1" }}' valign="top"> <h2> Персонал: </h2> </td>
+		<td> <!--input type="text"/--> </td>
+		<td> <a href="{% url apps.contact.views.org_stuff_add object.id %}"> <button title="Добавить"> + </button> </a> </td>
+	</tr>
+	{% for i in object.orgstuff_set.all %}
+	<tr>
+		<td bgcolor={% cycle 'lightgrey' 'white' %}> <a title="Подробности" href="{% url apps.contact.views.jobrole_detail i.role.id %}"> {{ i.role }} </a>: <a title="Подробности" href="{% url apps.contact.views.person_detail i.person.id %}"> {{ i.person }} </a> </td>
+		<td>
+			<a href="{% url apps.contact.views.org_stuff_edit i.id %}"> <button title="Изменить"> E </button> </a>
+			<a href="{% url apps.contact.views.org_stuff_del i.id %}"> <button title="Удалить"> X </button> </a>
+		</td>
+	</tr>
+	{% endfor %}
+{% endblock %}

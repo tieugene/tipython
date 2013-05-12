@@ -1,0 +1,69 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    Поиск
+{% endblock %}
+
+{% block content %}
+    <body onLoad="onLoad();">
+
+    <script language="JavaScript" type="text/javascript">
+        function onLoad() {
+            select = document.getElementById("select_stage_id");
+            for (i = 0; i < select.options.length; i++) {
+                if (select.options[i].text.length >= 173) select.options[i].text = select.options[i].text.substr(0, 173) + "...";
+            }
+
+            select = document.getElementById("select_stage_old_id");
+            for (i = 0; i < select.options.length; i++) {
+                if (select.options[i].text.length >= 173) select.options[i].text = select.options[i].text.substr(0, 173) + "...";
+            }
+
+        }
+        function selectsClearNew() {
+            document.getElementById("select_stage_old_id").options[0].selected = true;
+        }
+
+        function selectsClearOld() {
+            document.getElementById("select_stage_id").options[0].selected = true;
+        }
+
+    </script>
+    <form action="{% url sro2.views.orglist_find sro.id%}" method="POST">
+
+        Виды работ по новой классификации:
+        <select name="select_stage" id="select_stage_id" style="width: 100%;" onChange="selectsClearNew()">
+            <option value=""></option>
+            {% for stage in stage_list %}
+                <option value="{{ stage.id }}"
+                        id="select_option_{{ stage.id }}"> {{ stage.code }}. {{ stage.name }} </option>
+            {% endfor %}
+        </select>
+
+        Виды работ по старой классификации:
+        <select name="select_stage_old" id="select_stage_old_id" style="width: 100%;" onChange="selectsClearOld()">
+            <option value=""></option>
+            {% for stage in stage_list_old %}
+                <option value="{{ stage.id }}"
+                        id="select_option_{{ stage.id }}"> {{ stage.code }}. {{ stage.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Показать организации"
+               title="Показать членов СРО, имеющих действующее свидетельство по выбранному типу работ"/>
+
+    </form>
+    <br>
+    {% if stage %}
+        {{ stage.code }}. {{ stage.name }}:
+        {% if orgsro_list %}
+            <ol>
+            {% for orgsro in orgsro_list %}
+                <li><a href="{% url sro2.views.orgsro_view orgsro.id %}"
+                       title="{{ orgsro.org.fullname }}">{{ orgsro.org.name }}</li>
+            {% endfor %}
+        {% else %}
+            <p>организаций нет</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

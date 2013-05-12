@@ -1,0 +1,44 @@
+digraph DoxGen_States {
+ rankdir="LR";
+ {
+  node  [shape="rectangle",style="rounded,filled",fillcolor="lightgrey"];
+  t	[label="Templates"];
+  l	[label="List"];
+  c	[label="Create",fillcolor="lightyellow"];
+  u	[label="Update",fillcolor="lightyellow"];
+  r	[label="Read"];
+  v	[label="preView"];
+  p	[label="Print"];
+  /* legend */
+  l0	[label="From"];
+  l1	[label="To"];
+ }
+ subgraph cluster0 { l0; l1; label = "Legend"; }
+ /* 1. Anon */
+ t -> l [style="dashed"];
+ c -> p [label="Print", style="dashed", color="green"];
+ c -> l [label="Cancel", style="dashed"];
+ /* Registered */
+ t -> l;
+ l -> r;
+ r -> l;
+ r -> l [label="Delete"];
+ r -> v [label="Preview"];
+ r -> p [label="Print"];
+ r -> u [label="Edit"];
+ u -> r [label="Save", color="green"];
+ u -> r [label="Cancel"];
+ u -> v [label="Preview", color="green"];
+ u -> p [label="Print", color="green"];
+ l -> c [label="+"];
+ c -> l [label="Cancel"];
+ c -> r [label="Save", color="green"];
+ /* wanted */
+ c -> p [label="Print", color="green"];
+ c -> v [label="Preview", color="green"];
+ /* 3. Legend */
+ l0 -> l1 [label="GET Anon", style="dashed"];
+ l0 -> l1 [label="PUT Anon", style="dashed", color="green"];
+ l0 -> l1 [label="GET Reg"];
+ l0 -> l1 [label="PUT Reg", color="green"];
+}

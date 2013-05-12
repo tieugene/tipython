@@ -1,0 +1,70 @@
+    <div id='mw' style='height: 36px !important; overflow-y: hidden;'>
+        <div id='menu' class="left" style=" width: 730px;">
+            <ul id='ddm'>
+            {% for sro in sros %}
+                <li class='ui-state-default {% if not forloop.counter0 %}ui-corner-left{% endif %} menuitem'><b>{{ sro.sro.name }}</b>
+                    <ul class='sub'>
+                        <a href="{% url sro2.views.orglist_list sro.sro.id %}" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Организации
+                            </li>
+                        </a>
+                        <a href="{% url sro2.views.protocol_list sro.sro.id %}" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Протоколы
+                            </li>
+                        </a>
+                    </ul>
+                </li>
+            {% endfor %}
+
+                <a href="{% url sro2.views.person_list а %}" class='nu'>
+                    <li class='ui-widget ui-state-default bb menuitem'>
+                        <b>Персонал</b>
+                    </li>
+                </a>
+                <a href="{% url sro2.views.report %}" class='nu'>
+                    <li class='ui-widget ui-state-default bb menuitem'>
+                        <b>Отчёты</b>
+                    </li>
+                </a>
+                    {% block functions %}
+                    {% endblock %}
+            </ul>
+        </div>
+            <div id='toolbar' class='ui-corner-all'>
+                <div class="left" title="Имя пользователя" style="margin-right: 4px; padding-top: 2px;">
+                    <span style="font-size: 10pt;">{{ user }}: {{ user.first_name }} {{ user.last_name }}</span>
+                </div>
+                <div class="ui-state-default ui-corner-all smallbutton" title="Версия" style="width: 48px;">
+                    <span style="font-size: 10pt;">{{ VERSION }}</span>
+                </div>
+            <a href="{% url views.index %}">
+                <div class="ui-state-default ui-corner-all smallbutton" title="Главная страница">
+                    <span class="ui-icon ui-icon-home"></span>
+                </div>
+            </a>
+            <a href="{% url sro2.views.journal %}">
+                <div class="ui-state-default ui-corner-all smallbutton" title="Журнал">
+                    <span class="ui-icon ui-icon-clock"></span>
+                </div>
+            </a>
+            <a href="{% url views.index %}admin" target="_blank">
+                <div class="ui-state-default ui-corner-all smallbutton" title="Администрирование">
+                    <span class="ui-icon ui-icon-wrench"></span>
+                </div>
+            </a>
+            <a href="{% url views.index %}about/">
+                <div class="ui-state-default ui-corner-all smallbutton" title="О программе">
+                    <span class="ui-icon ui-icon-info"></span>
+                </div>
+            </a>
+            <a href="{% url views.index %}logout/" style="text-decoration: none !important;">
+                <div class="ui-state-default ui-corner-all smallbutton" title="Выход" style="width: 48px;">
+{#                    <span class="ui-icon ui-icon-closethick"></span>#}
+                    <span style="font-size: 10pt;">Выход</span>
+                </div>
+            </a>
+        </div>
+    </div>
+

@@ -1,0 +1,8 @@
+{% extends "gw/task/assign_base.html" %}
+{% block body_main %}
+<ul>
+{% for item in item_list %}
+	<li> {{ item.action_time }}: {{ item.user }}, {{ item.action_flag }} {{ item.change_message }} </li>
+{% endfor %}
+<ul>
+{% endblock %}

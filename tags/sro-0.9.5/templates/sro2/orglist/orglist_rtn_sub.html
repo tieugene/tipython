@@ -1,0 +1,42 @@
+<table border="1">
+    <thead>
+    <tr>
+        <th> № п/п</th>
+        <th> Наименование</th>
+        <th> ИНН</th>
+        <th> ОГРН (СГРП)</th>
+        <th> Номер лицензии на соответствующий вид работ</th>
+        <th> Является ли член саморегулируемой организации аффилированным лицом по отношению к другим членам данного
+            СРО
+        </th>
+        <th> ОКАТО</th>
+        <th> Адрес юридический</th>
+        <th> Телефоны</th>
+        <th> WWW</th>
+        <th> Email</th>
+        <th> Перечень видов работ, оказывающих влияние на безопасность объектов капитального строительства</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for orgsro in orgsrolist %}
+        <tr>
+            <td nowrap valign="top"> {{ forloop.counter }} </td>
+            <td valign="top"> {{ orgsro.org.okopf.name }} {{ orgsro.org.fullname }} </td>
+            <td nowrap valign="top"> {{ orgsro.org.inn }} </td>
+            <td nowrap valign="top"> {{ orgsro.org.ogrn }} </td>
+            <td valign="top"> {% if orgsro.orglicense %} {{ orgsro.orglicense.no }}
+                от {{ orgsro.orglicense.datefrom|date }} {% endif %} </td>
+            <td nowrap valign="top"> Нет</td>
+            <td nowrap valign="top"> {{ orgsro.org.okato }} </td>
+            <td valign="top"> {{ orgsro.org.laddress }} </td>
+            <td nowrap valign="top"> {% for i in orgsro.org.orgphone_set.all %} {% if not forloop.first %}
+                <br/> {% endif %} {{ i }} {% endfor %} </td>
+            <td nowrap valign="top"> {% for i in orgsro.org.orgwww_set.all %} {% if not forloop.first %}
+                <br/> {% endif %} {{ i }} {% endfor %} </td>
+            <td nowrap valign="top"> {% for i in orgsro.org.orgemail_set.all %}  {% if not forloop.first %}
+                <br/> {% endif %} {{ i }} {% endfor %} </td>
+            <td nowrap> {{ orgsro.permits2str|linebreaksbr }} </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

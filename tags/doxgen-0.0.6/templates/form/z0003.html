@@ -1,0 +1,46 @@
+{% extends "base_dox.html" %}
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.populate.js"></script>
+{% endblock %}
+{% block body_main %}
+	<H1> Форма ПД-4 </H1>
+	<div class="table">
+		<div class="cell">
+			<form id="myForm" action="." method="post">
+				{% csrf_token %}
+				<input type="submit" value="Печать"/>
+				<table border="1">
+					{{ form.as_table }}
+				</table>
+			</form>
+		</div>
+		<div class="cell">
+			<p Заполнить для: </p>
+			<ul>
+				<li> <button onClick="populateForm('ip')"> ИП </button> </li>
+				<li> <button onClick="populateForm('ltd')"> ООО </button> </li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var json = {
+			'ip': {
+				'id_recipient':	'МИ ФНС РФ №11 по Санкт-Петербургу',
+				'id_recishort':	'УФК МФ РФ по СПб',
+				'id_inn':	'7842000011',
+				'id_kpp':	'784201001',
+				'id_okato':	'40298564000',
+				'id_account':	'40101810200000010001',
+				'id_bank':	'ГРКЦ ГУ Банка России по Санкт-Петербургу',
+				'id_bik':	'044030001',
+				'id_kbk':	'18210807010011000110',
+				'id_details':	'за государственную регистрацию физ.лиц, ИП',
+			},
+			'ltd': {
+			},
+		};
+		function populateForm(data) {
+			$(document.forms['myForm']).populate(json[data]);
+		}
+	</script>
+{% endblock %}

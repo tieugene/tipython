@@ -1,0 +1,22 @@
+<!-- Org.Stuff -->
+{% extends "contact/base.html" %}
+{% block title %} Персонал {% endblock %}
+{% block body_main %}
+<p> Новый Персонал </p>
+<form action=".{% if next %}?next={{ next }}{% endif %}" method="post">
+	<table>
+		<tr>
+			<th> Человек </th>
+			<td> <div class="fieldWrapper"> {{ form.person.errors }} {{ form.person }} </div> </td>
+			<td> <a title="Новый человек" href="{% url apps.contact.views.person_add %}"> <button> + </button> </a> </td>
+		</tr>
+		<tr>
+			<th> Должность </th>
+			<td> <div class="fieldWrapper"> {{ form.role.errors }} {{ form.role }} </div> </td>
+			<td> <a title="Новая должность" href="{% url apps.contact.views.jobrole_add %}"> <button> + </button> </a> </td>
+		</tr>
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{{ object.get_absolute_url }}"> <button> Отказаться </button> </a>
+</form>
+{% endblock %}

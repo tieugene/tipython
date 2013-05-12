@@ -1,0 +1,113 @@
+{%extends "sro2/main.html"%}
+
+{%block contentheader%}
+    Генерация протокола заседания правления
+{%endblock%}
+
+{%block content%}
+    <style>
+
+    .accept a {
+        font-weight: bold !important;
+        color: green !important;
+    }
+    .deny a {
+        font-weight: bold !important;
+        color: red !important;
+    }
+    </style>
+
+    <script>
+    $(function(){
+        $('option[value=""]').remove()
+
+    $('#genreport').click(function(){
+//        $('#genreport').replaceWith('<a href="#"><div class="ui-state-default ui-corner-all button eb">Скачать</div></a>')
+
+        var chln = $('#tochange > li').length
+        toch=[]
+        if(chln>0){
+            $("#tochange > li").each(function(i,obj){
+                toch.push('{"id":'+$(obj).attr('value')+',"accept":"'+$(obj).attr('accept')+'"}')
+            })
+        }
+
+        var acln = $('#toaccept > li').length
+        toac=[]
+        if(acln>0){
+            $("#toaccept > li").each(function(i,obj){
+                toac.push('{"id":'+$(obj).attr('value')+',"accept":"'+$(obj).attr('accept')+'"}')
+            })
+        }
+
+
+        $('#genreport_wait').replaceWith('<img src="{% url views.index %}static/ajax-loader.gif" id="loader">')
+        $.post('.','',function(data){
+        $('#loader').replaceWith('<a href="'+"{% url views.index %}media/"+data+'"><div id="genreport_wait" class="ui-state-default ui-corner-all button eb">Скачать</div></a>')
+        })
+    })
+
+//       $('#ch_accept').click(function(){
+//             var val=$('#chlist select').val()
+//             var name=$('#chlist option[value="'+val+'"]').html()
+//           $('#tochange').append('<li value="'+val+'" accept="True" class="accept">'+name+'</li>')
+//           $('#chlist option[value='+val+']').remove()
+//           $('#chlist select').val('')
+//       })
+//
+//       $('#accept').click(function(){
+//             var val=$('#aclist select').val()
+//             var name=$('#aclist option[value="'+val+'"]').html()
+//           $('#toaccept').append('<li value="'+val+'" accept="True" class="accept">'+name+'</li>')
+//           $('#aclist select').val('')
+//       })
+//
+//      $('#deny').click(function(){
+//             var val=$('#aclist select').val()
+//             var name=$('#aclist option[value="'+val+'"]').html()
+//           $('#toaccept').append('<li value="'+val+'" accept="False" class="deny">'+name+'</li>')
+//           $('#aclist select').val('')
+//       })
+//    $('#ch_deny').click(function(){
+//             var val=$('#chlist select').val()
+//             var name=$('#chlist option[value="'+val+'"]').html()
+//           $('#tochange').append('<li value="'+val+'" accept="False" class="deny">'+name+'</li>')
+//        $('#chlist option[value='+val+']').remove()
+//           $('#chlist select').val('')
+//       })
+})
+    </script>
+
+    <h2>{{ protocol }}</h2>
+    <h3>Внесение изменений</h3>
+{#        <div id="chlist" style="display: inline">{{ tochform }}</div>#}
+{#    <div class="ui-state-default ui-corner-all button eb" id="ch_accept">Принять</div>#}
+{#    <div class="ui-state-error ui-corner-all button eb" id="ch_deny">Отказать</div>#}
+    <ul id='tochange'>
+    {% for org in orgs.tochange %}
+           <li value="{{ org.id }}" accept="{{ org.accept }}" class="{% if org.accept %}accept{% else %}deny{% endif %}"><a href="{% url sro2.views.orgsro_view org.id %}">{{ org.org.fullname }} - {% if org.accept %}Принято{% else %}Отказано{% endif %}</a></li>
+    {% endfor %}
+    </ul>
+
+    <h3>Принятие в СРО</h3>
+    <ul id='toaccept'>
+     {% for org in orgs.toaccept %}
+           <li value="{{ org.id }}" accept="{{ org.accept }}" class="{% if org.accept %}accept{% else %}deny{% endif %}"><a href="{% url sro2.views.orgsro_view org.id %}">{{ org.org.fullname }} - {% if org.accept %}Принято{% else %}Отказано{% endif %}</a></li>
+    {% endfor %}
+    </ul>
+
+        <h3>Выход из СРО</h3>
+    <ul id='toexclude'>
+     {% for org in orgs.toexclude %}
+           <li value="{{ org.id }}" class="deny"><a href="{% url sro2.views.orgsro_view org.id %}">{{ org.org.fullname }}</a></li>
+    {% endfor %}
+    </ul>
+    <br>
+    <br>
+    <p>
+        <b>Внимание!</b> Сформированный пакет документов не является готовым к делопроизводству и требует дополнительного форматирования и внесения данных. Обращайте внимание на падежы ОКОПФ, пункты статей кодекса и тп.
+    </p>
+    <div class="ui-state-default ui-corner-all button eb" id="genreport">Сформировать протокол заседания</div>
+    <div id='genreport_wait'></div>
+
+{%endblock%}

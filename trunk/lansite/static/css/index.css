@@ -1,0 +1,368 @@
+/**
+* @package moozs.lansite
+* @version 0.3
+* @author Набродов Алексей aka Averrin <averrin@gmail.com>
+*/
+
+/**
+ * @subpackage main.html
+ * @for Основные свойства интерфейса
+*/
+body{
+    width: 90%;
+    margin: 0px auto;
+    background: #fff;
+    height: 100%;
+    font-size: 1em !important;
+    font-family: Verdana, Arial, sans-serif;
+}
+#page{
+    margin-top: 8px;
+}
+.button{
+    padding: 3px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+.smallbutton{
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    margin-right: 3px;
+    float: left;
+}
+.smallbutton span{
+    margin: 3px;
+}
+#userinfo{
+    margin-top: 5px;
+    /*border: 1px #4294C4 solid;*/
+    padding-left: 4px;
+    padding-bottom: 4px;
+}
+#toolbar{
+    float: right;
+    margin-top: 6px;
+    margin-right: -4px;
+}
+#menu{
+    margin-top: 4px;
+}
+#menu ul{
+    padding-left: 0px;
+    list-style-type: none;
+    margin-top: 4px;
+}
+#menu li{
+    text-align: center;
+    margin-bottom: 1px;
+    font-size: 16px !important;
+}
+.sub li{
+    width: 100%;
+    padding: 4px !important;
+}
+.bb{
+    padding: 4px !important;
+}
+.ui-accordion .ui-accordion-header a {
+    padding: 4px !important;
+    padding-left: 34px !important;
+}
+#content{
+    width: 100%;
+}
+.contentheader {
+    padding: 4px !important;
+    padding-left: 34px !important;
+}
+#contentbody{
+    padding: 6px;
+}
+.nu{
+    text-decoration: none;
+}
+.button a {
+    text-decoration: none;
+}
+h3 {
+    margin-bottom; 8px !important;
+}
+.ui-icon{
+    float:left;
+}
+ul{
+    list-style-type: none;
+}
+.menuitem{
+    cursor: pointer;
+    padding: 4px 16px 4px 8px !important;
+    margin-right: 0px !important;
+}
+.forcelink {
+	text-decoration: underline !important;
+	font-weight: bold !important;
+	color: blue !important;
+}
+/**
+ * @for всплывающие подсказки
+*/
+#tooltip {
+	max-width: 600px;
+	position: absolute;
+	z-index: 10;
+	border: 1px solid #1593db;
+	background-color: #e5f5fe;
+	color: #444;
+	padding: 5px;
+	opacity: 0.75;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	font-size: 14px !important;
+}
+
+
+
+/**
+ * @subpackage /sro2/registration/login.html
+ * @for Свойства формы входа
+*/
+#login_form{
+    margin: 0px auto;
+    margin-top: 20px;
+    padding: 10px;
+    width: 40%;
+    font-size: 1em;
+}
+#login{
+    margin: 0px auto;
+    width: 60%;
+    text-align: center;
+}
+
+
+/**
+ * @subpackage /sro2/sro_orglist.html, /sro2/person_list.html
+ * @for Свойства для табличных представлений
+*/
+.ui-accordion .ui-accordion-content {
+    padding: 4px;
+}
+.fg-toolbar {
+    height: 40px !important;
+}
+.highlighted td {
+    background: #ffaaaa;
+}
+.selected td {
+    background: #aaaaff;
+}
+.odd{
+    background: #eeffee;
+}
+.even{
+    background: #eeeeff;
+}
+.search{
+    padding: 4px;
+    margin-bottom: 4px;
+}
+.cell{
+	width: 100%;
+	height: 100%;
+	margin-left: 4px;
+	margin-right: 8px;
+}
+
+/*@for Алфавитный указатель*/
+#alpha a{
+    padding-left: 4px;
+    padding-right: 4px;
+}
+/*@for Дополнительные кнопки внизу страницы*/
+
+.orgbottom li .ins{
+    width: 11% !important;
+    float: left;
+    height: 38px;
+    margin-right: 1px;
+    padding: 4px;
+    font-size: 13px;
+    text-decoration: none !important;
+}
+.insideul{
+    padding: 4px;
+    margin-bottom: 0px;
+}
+
+/*@comment sro_orglist specific*/
+#orgtable{
+    font-weight: bold;
+}
+#orgbuttons{
+    margin-bottom: 6px;
+    font-size: 16px !important;
+}
+#addition{
+    margin-bottom: 2px;
+}
+#make_rtf, #mail_sel, #getselected_envelope, #getselected_notification{
+cursor: pointer;
+}
+
+/**
+ * @subpackage  sro_org_add
+ * @for юзабилити форм
+*/
+/*#id_name, #id_shortname, #id_fullname, #id_okopf, #id_inn, #id_ogrn, #id_laddress*/
+.required {
+	background: #dedeff;
+}
+
+.error {
+	background: #ffaaaa;
+}
+
+/**
+ * @subpackage  fix_old_ui
+ * @for Фиксы для поплывшего оформления старых страниц
+*/
+.fieldWrapper select{
+    max-width: 700px !important;
+}
+.fieldWrapper300 select{
+	max-width: 300px !important;
+}
+.fieldWrapper600 select{
+	max-width: 600px !important;
+}
+#orgadd input[type="text"]{
+min-width: 400px;
+}
+#stuffadd input[type="text"]{
+min-width: 260px;
+}
+input[type=button].ui-state-hover{
+background: #eeaaaa;
+color: #995555;
+padding: 3px;
+font-size: 16px;
+}
+
+input[type=button].button{
+padding: 3px;
+font-size: 16px;
+}
+#stuff td{
+        border-bottom: solid 1px #999;
+}
+.th {
+padding: 6px;
+background: #bcf;
+}
+.title{
+font-size: 18px;
+font-weight: bold;
+}
+a.button{
+/*padding-right: 6px;*/
+margin-bottom: 4px;
+}
+.ebutton{
+float: right;
+}
+.current{
+font-weight: bold;
+color: #337733 !important;
+}
+.button a{
+text-decoration: none !important;
+}
+.eb{
+    display: inline;
+width: 80px;
+margin-bottom: 4px;
+}
+.cell-hover{
+background: #aaaaff;
+}
+table{
+text-align: left !important;
+font-weight: normal !important;
+}
+th label{
+text-align: left !important;
+font-weight: normal !important;
+}
+
+/**
+ * @subpackage  stagelist_base.html
+ * @for Приостановка свидетельств и интерфейсные фиксы
+*/
+.stage{
+margin-bottom: 2px;
+padding-left: 6px;
+}
+.activestage{
+background: #84a8e4 !important;
+color: #222 !important;
+
+}
+.pausedstage{
+background: #f0d848 !important;
+color: #222 !important;
+
+}
+.pausedstage{}
+.listheader{
+padding-left: 10px;
+padding-top: 8px;
+padding-bottom: 8px;
+}
+.parentstage {
+/*background: #243048 !important;*/
+opacity: 0.7 !important;
+}
+#stages{
+margin-top: 6px;
+}
+.hardfix{
+margin-right: -7px;
+}
+#controls{
+margin-top: 10px;
+}
+tt a{
+text-decoration: none !important;
+}
+
+/**
+ * @subpackage  orgsro_base.html
+ * @for Представление статусов
+*/
+#status{
+width: 90px;
+padding: 4px 6px;
+text-align: center;
+margin-right: 10px;
+}
+
+.snone{background: #888;}
+
+.scandidate{background: #d2eaf4;}
+
+.smember{background: #acdd4a;}
+
+.sexclude{background: #e14f1c; color: #eee}
+
+.sarchive{background: #888;}
+
+.right{float: right;}
+
+.left{float: left;}
+
+.sub li:hover, .orgbottom li .ins:hover, .bb:hover, .menuitem:hover, .smallbutton:hover, .button:hover {
+	border: solid 1px #444 !important;
+	color: black !important;
+}

@@ -1,0 +1,29 @@
+{# Шаблон строки навигации для постраничного вывода списков #}
+
+<p align=center>
+
+    Страница {{ page.number }} из {{ page.paginator.num_pages }}<br>
+
+    {% if page.has_previous %}
+        <a href="{{ page.base_path }}{{ page.previous_page_number }}/">&lt; Назад</a> |
+    {% endif %}
+
+    {% if page.has_other_pages %}
+
+        {% for pnum in page.paginator.page_range %}
+
+            {% ifequal pnum page.number %}
+                {{ pnum }}
+            {% else %}
+                <a href="{{ page.base_path }}{{ pnum }}/">{{ pnum }}</a>
+            {% endifequal %} |
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% if page.has_next %}
+        <a href="{{ page.base_path }}{{ page.next_page_number }}/">Вперёд &gt;</a>
+    {% endif %}
+
+</p>

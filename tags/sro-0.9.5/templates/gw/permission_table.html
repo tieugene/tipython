@@ -1,0 +1,81 @@
+
+        <table>
+            <thead>
+            <tr>
+                <th align="center" colspan="2">                                    </th>
+                 <th colspan="4" align="center">                    Права                </th>
+            </tr>
+            <tr>
+                <th align="center" width="400px;" colspan="2">                Группа                    </th>
+                 <th width="140px;" align="center" >                    на чтение                </th>
+                <th width="140px;" align="center">                    на изменение                </th>
+                 <th width="140px;" align="center">                    на создание                </th>
+                                 <th  width="140px;" align="center">                    на удаление                </th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            {% for permission in permissions %}
+                <tr changed='0'>
+                    <td colspan="2">{{ permission.subject }}</td>
+                    <td align="center"><input type="checkbox" {% if permission.perm == 1 %}checked="True" {% endif %}  id="input_u_{{ user.id }}_1" class="input_perm"></input></td>
+                    <td align="center"><input type="checkbox" {% if permission.perm == 2 %}checked="True" {% endif %} id="input_u_{{ user.id }}_2" class="input_perm"></input></td>
+                    <td align="center"><input type="checkbox" {% if permission.perm == 3 %}checked="True" {% endif %} id="input_u_{{ user.id }}_3" class="input_perm"></input></td>
+                    <td align="center"><input type="checkbox" {% if permission.perm == 4 %}checked="True" {% endif %} id="input_u_{{ user.id }}_4" class="input_perm"></input></td>
+                </tr>
+            {% endfor %}
+
+            {% for group in groups %}
+                <tr changed='0'  id="tr_g_{{ group.id }}" class="tr_checkboxes">
+            <td colspan="2" style="padding-left:5px;">{{ group.name }}</td>
+                     <td align="center" title="Право на чтение"><input type="checkbox" id="input_g_{{ group.id }}_1" class="input_perm1" perm='1'></input></td>
+                     <td align="center" ><input type="checkbox" id="input_g_{{ group.id }}_2" class="input_perm2" perm='2'></input></td>
+                     <td align="center" ><input type="checkbox" id="input_g_{{ group.id }}_3" class="input_perm3" perm='3'></input></td>
+                     <td align="center" ><input type="checkbox" id="input_g_{{ group.id }}_4" class="input_perm4" perm='4'></input></td>
+                </tr>
+            {% endfor %}
+
+            <tr ><td height="20px;" colspan="6"></td></tr>
+            </tbody>
+
+            <thead>
+            <tr>
+                <th align="center" colspan="2">                                    </th>
+                 <th colspan="5" align="center">                    Права                </th>
+            </tr>
+            <tr>
+                <th align="center" >                Пользователь                    </th>
+                <th align="center">                Логин                    </th>
+                 <th align="center">                    на чтение                </th>
+                <th align="center">                    на изменение                </th>
+                 <th align="center">                    на создание                </th>
+                 <th align="center">                    на удаление                </th>
+
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            {% for permission in permissions1 %}
+                <tr changed='0'>
+                    <td>{{ permission.subject }}</td>
+
+                    <td >{{ permission.subject }}</td
+                    <td align="center"><input type="checkbox" {% if permission.perm == 1 %}checked="True" {% endif %} id="input_u_{{ user.id }}_1" class="input_perm"></input></td>
+                    <td align="center"><input type="checkbox" {% if permission.perm == 2 %}checked="True" {% endif %} id="input_u_{{ user.id }}_2" class="input_perm"></input></td>
+                    <td align="center"><input type="checkbox" {% if permission.perm == 3 %}checked="True" {% endif %} id="input_u_{{ user.id }}_3" class="input_perm"></input></td>
+                    <td align="center"><input type="checkbox" {% if permission.perm == 4 %}checked="True" {% endif %} id="input_u_{{ user.id }}_4" class="input_perm"></input></td>
+               </tr>
+            {% endfor %}
+
+            {% for user in users %}
+                <tr changed='0'>
+            <td style="padding-left:5px;">{{ user.first_name }} {{ user.last_name }}</td>
+                     <td style="padding-left:5px;">{{ user.username }}</td>
+
+                     <td align="center"><input type="checkbox" id="input_u_{{ user.id }}_1" class="input_perm"></input></td>
+                     <td align="center"><input type="checkbox" id="input_u_{{ user.id }}_2" class="input_perm"></input></td>
+                     <td align="center"><input type="checkbox"  id="input_u_{{ user.id }}_3" class="input_perm"></input></td>
+                        <td align="center"><input type="checkbox"  id="input_u_{{ user.id }}_4" class="input_perm"></input></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>

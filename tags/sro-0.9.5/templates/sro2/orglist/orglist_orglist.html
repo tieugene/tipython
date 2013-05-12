@@ -1,0 +1,223 @@
+{% extends "sro2/main.html" %}
+{#{% load sro2_extras %}#}
+
+{% block contentheader %}
+    Организации {{ sro.name }} {% if filtr %}Фильтр: [{{ filtr.name }}:{{ filtr.value }}]
+    <form method="POST" style="float: right; margin-top: -4px;"><input type="submit"
+                                                                       class='ui-state-default ui-corner-all button'
+                                                                       value="Снять фильтр" title="Снять фильтр"/>
+    </form> Количество: {{ count }} {% endif %}
+{% endblock %}
+
+{% block functions %}
+<li class='ui-state-default menuitem'><b>Действия</b>
+    <ul class='sub'>
+         <li class='ui-widget ui-corner-all ui-state-default'>
+             <a title="Поиск организаций по видам работ" href="{{ url_for('sro2.views.orglist_find',sro.id)}}" class='nu'>
+            <div> Поиск</div>
+        </a></li>
+        <li class='ui-widget ui-corner-all ui-state-default'><a title="Список организаций для размещения на вебсайте" href="{{ url_for('sro2.views.orglist_publish',sro.id)}}" class='nu'>
+            <div> Просмотр</div>
+        </a></li>
+        <li class='ui-widget ui-corner-all ui-state-default'><a title="Размещение на вебсайте" href="{{ url_for('sro2.views.orglist_upload',sro.id)}}" class='nu'>
+            <div> Публикация</div>
+        </a></li>
+        <li class='ui-widget ui-corner-all ui-state-default'><a title="Список членов в табличном виде" href="{{ url_for('sro2.views.orglist_table',sro.id)}}" class='nu'>
+            <div> Таблица</div>
+        </a></li>
+        <li class='ui-widget ui-corner-all ui-state-default'><a title="Список членов в виде CSV" href="{{ url_for('sro2.views.orglist_csv',sro.id)}}" class='nu'>
+            <div> CSV</div>
+        </a></li>
+        <li class='ui-widget ui-corner-all ui-state-default'>
+            <div id='make_rtf'> Отчет в Ростехнадзор</div>
+        </li>
+        <li class='ui-widget ui-corner-all ui-state-default'>
+            <div id='mail_sel' title="Список e-mail адресов для выбранных организаций"> E-mail</div>
+        </li>
+        <li class='ui-widget ui-corner-all ui-state-default'>
+            <div id='getselected_envelope' title="Распечатать конверты для выбранных организаций"> Распечатать конверты
+            </div>
+        </li>
+        <li class='ui-widget ui-corner-all ui-state-default'>
+            <div id='getselected_notification'> Распечатать уведомления
+            </div>
+        </li>
+    </ul>
+</li>
+{% endblock %}
+
+{% block content %}
+    <script langauge="JavaScript" type="text/javascript">
+        function confirmDelete(delUrl) {
+            if (confirm("Are you sure you want to delete")) {
+                document.location = delUrl;
+            }
+        }
+        function get_selected() {
+            var orgs = [];
+            $(':checked').each(function() {
+                if ($(this).val() != '' & $(this).val() != 'on') {
+                    orgs.push($(this).val());
+                }
+            });
+            return orgs;
+        }
+        function makeTable() {
+            oTable = $('#orgtable').dataTable({
+                "bJQueryUI": true,
+//                "sScrollY": "800px",
+                "sDom": '<"ui-state-default ui-corner-all search"f>rtip',
+                "oLanguage": { /*Перевод*/
+                    "sSearch": "Поиск (по <span style='color:#ee7777'><b>любому</b></span> полю):",
+                    "sZeroRecords":  "Записи отсутствуют.",
+                    "sInfo": "Всего организаций: _TOTAL_"
+                },
+                "bPaginate": false,
+                "bSortClasses": false,
+            });
+            $('tr').hover(function() {
+                $(this).addClass('highlighted');
+            }, function() {
+                $(this).removeClass('highlighted');
+            });
+            $('#loader').hide()
+            $("#maincheck").click(function() {
+                if ($('#maincheck').attr('checked')) {
+                    $('.mc').attr('checked', true);
+                    $('.mc').parent().parent().addClass('selected');
+                } else {
+                    $('.mc').attr('checked', false);
+                    $('.mc').parent().parent().removeClass('selected');
+                }
+            });
+            $('.mc').click(function() {
+                $(this).parent().parent().toggleClass('selected');
+            })
+
+
+            $('#make_rtf').click(function() {
+                $('#dialog').dialog('open');
+                $.ajax({
+                    url: "{{ url_for('sro2.views.orglist_rtnh',sro.id)}}",
+                    success: function(data) {
+                        var down = 'Файл готов. Нажмите на кнопку "Скачать", чтобы загрузить файл к себе на компьютер.<br><br><a href="'
+                        var purl = "{{ url_for('views.index') }}"
+                        var down2 = '" class="ui-state-default button ui-corner-all">Скачать</a>'
+                        $('#down').html(down + purl + 'media/' + data + down2);
+                        $('#wait').html(' ')
+                    }
+                });
+            })
+
+
+            $('#getselected_envelope').click(function() {
+                printMail(0); // print envelopes
+            })
+            $('#getselected_notification').click(function() {
+                printMail(1); // print notifications
+            })
+
+            function printMail(object) {
+                orgs = get_selected();
+                if (orgs.length > 0) {
+                    if (object == 0) { //envelopes
+                        document.location = '{{ url_for("views.index") }}sro2/orglist/print/envelope/{"orgs":[' + orgs + '],"sro_id":{{sro.id}}}/';
+                    } else {
+                        if (object == 1) { //notifications
+                            document.location = '{{ url_for("views.index") }}sro2/orglist/print/maillist/{"orgs":[' + orgs + '],"sro_id":{{sro.id}}}/';
+                        }
+                    }
+                } else {
+                    alert('Надо выделить хотя бы одну организацию!')
+                }
+            }
+
+            $('#mail_sel').click(function() {
+                orgs = get_selected();
+                if (orgs.length > 0) {
+                    document.location = '{{ url_for("views.index") }}sro2/orglist/mail_sel/{"orgs":[' + orgs + '],"sro_id":{{sro.id}}}/';
+                } else {
+                    alert('Надо выделить хотя бы одну организацию!')
+                }
+            })
+        }
+
+
+        $(function(){
+            $("#orgbuttons").accordion({ header: "h2", collapsible: true, active: false });
+            {%if not filtr%}
+                $("#orgtable").html(' ').load('{{ url_for("views.index") }}sro2/orglist/{{sro.id}}/get_list/', function(){
+            {%endif%}
+        makeTable()
+        {%if not filtr%}
+            })
+        {%endif%}
+            $('#dialog').dialog({
+                autoOpen: false,
+                title: 'Скачать реестр',
+                position: 'top',
+                width: 400,
+                height: 200,
+            });
+        } );
+    </script>
+
+    <!--Filter Accordion-->
+    <div id='orgbuttons'>
+        <div> <!--Не удалять эту дивку, это синтаксис jquery.accordion-->
+            <h2><a href='#'>Фильтр</a></h2>
+
+            <form method="POST">
+                По ОКАТО:
+                {{ form.okato }}<br>
+                По страхователю:
+                {{ form.insurer }}<br>
+                <input type="submit" class='ui-state-default ui-corner-all button' value="Снять фильтр"
+                       title="Снять фильтр"/><br>
+            </form>
+        </div>
+    </div>
+
+    <!--Panel of org addition-->
+    {% if user.has_perm('sro2.add_orgsro') or user.has_perm('gw.add_org') %}
+	<div id='addition' class="ui-state-default ui-corner-all" style="padding: 6px;">
+        
+		{% if user.has_perm('gw.add_org') %}
+		<a class="ui-state-active ui-corner-all button" href="{{ url_for('sro2.views.orglist_org_add',sro.id)}}"> Добавить
+            Организацию </a>
+		{% endif %}
+		
+        {% if user.has_perm('sro2.add_orgsro') %}
+		<form action="{{ url_for('sro2.views.orglist_org_add_exists',sro.id)}}" method="POST"
+              style='float: right; margin-top: -4px; '>
+            Добавить организацию из списка: {{ formaddexist.org }}
+            <input type="submit" value="Добавить" class="ui-state-active ui-corner-all button"
+                   title="Добавить организацию из списка"/>
+        </form>
+		{% endif %}
+
+    </div>
+    {% endif %}
+		
+    <!--DataTable-->
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="orgtable" style='width: 100%;'>
+        {% if list %}
+            {% include "sro2/orglist/orgtable.html" %}
+        {% else %}
+            </table>
+            <!--Ajax loader-->
+            <div id='loader' style='margin-left: 40%;'>
+                Загружаем данные с сервера <img src='{{ url_for("views.index") }}static/ajax-loader.gif'
+                                                style='margin-bottom: -10px;'>
+            </div>
+        {% endif %}
+    </table>
+
+    <div id="dialog" title="Скачать реестр">
+        <div id='wait'>Файл формируется. Подождите, пожалуйста. <img src='{{ url_for("views.index") }}static/ajax-loader.gif'
+                                                                     style='margin-bottom: -10px;'></div>
+        <div id='down'></div>
+    </div>
+
+{% endblock %}
+

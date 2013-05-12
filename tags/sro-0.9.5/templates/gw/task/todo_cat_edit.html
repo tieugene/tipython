@@ -1,0 +1,11 @@
+{% extends "gw/task/todo_base.html" %}
+{% block body_main %}
+<p> Новая Категория </p>
+	<form action="." method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{% url gw.views.todo_index %}"> Отказаться </a>
+	</form>
+{% endblock %}

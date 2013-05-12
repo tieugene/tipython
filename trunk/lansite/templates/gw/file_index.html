@@ -1,0 +1,16 @@
+<!-- File -->
+{% extends "gw/base.html" %}
+{% block title %} Файлы {% endblock %}
+{% block topbar %} &gt; Файлы {% endblock %}
+{% block body_main %}
+<table cellpadding="1">
+<tr> <th/> <th> Наименование </th> <td class="button"> <a href="{% url gw.views.file_add %}" title="Добавить"> + </a> </td> </tr>
+{% for item in item_list %}
+	<tr bgcolor={% cycle 'lightcyan' 'white' %}>
+		<td> <input type="checkbox"/> </td>
+		<td> <a href="{% url gw.views.file_detail item.id %}"> {{ item.name }} </a> </td>
+		</td>
+	</tr>
+{% endfor %}
+<table>
+{% endblock %}

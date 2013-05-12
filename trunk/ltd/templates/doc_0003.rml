@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document filename="C-09-1.pdf">
+	<docinit>
+		<registerTTFont faceName="Arial"		fileName="static/ttf/arial.ttf"/>
+		<registerTTFont faceName="Arial-B"		fileName="static/ttf/arial.ttf"/>
+		<registerTTFont faceName="Arial-I"		fileName="static/ttf/ariali.ttf"/>
+		<registerTTFont faceName="Arial-BI"		fileName="static/ttf/arialbi.ttf"/>
+		<registerTTFont faceName="Courier"		fileName="static/ttf/cour.ttf"/>
+		<registerTTFont faceName="Courier-B"		fileName="static/ttf/courbd.ttf"/>
+		<registerTTFont faceName="Courier-I"		fileName="static/ttf/couri.ttf"/>
+		<registerTTFont faceName="Courier-BI"		fileName="static/ttf/courbi.ttf"/>
+		<registerTTFont faceName="Georgia"		fileName="static/ttf/georgia.ttf"/>
+		<registerTTFont faceName="Georgia-B"		fileName="static/ttf/georgiab.ttf"/>
+		<registerTTFont faceName="Georgia-I"		fileName="static/ttf/georgiai.ttf"/>
+		<registerTTFont faceName="Georgia-BI"		fileName="static/ttf/georgiaz.ttf"/>
+		<registerTTFont faceName="Times"		fileName="static/ttf/times.ttf"/>
+		<registerTTFont faceName="Times-B"		fileName="static/ttf/timesbd.ttf"/>
+		<registerTTFont faceName="Times-I"		fileName="static/ttf/timesi.ttf"/>
+		<registerTTFont faceName="Times-BI"		fileName="static/ttf/timesbi.ttf"/>
+		<registerTTFont faceName="Trebuchet"		fileName="static/ttf/trebuc.ttf"/>
+		<registerTTFont faceName="Trebuchet-B"		fileName="static/ttf/trebucbd.ttf"/>
+		<registerTTFont faceName="Trebuchet-I"		fileName="static/ttf/trebucit.ttf"/>
+		<registerTTFont faceName="Trebuchet-BI"		fileName="static/ttf/trebucbi.ttf"/>
+		<registerTTFont faceName="Verdana"		fileName="static/ttf/verdana.ttf"/>
+		<registerTTFont faceName="Verdana-B"		fileName="static/ttf/verdanab.ttf"/>
+		<registerTTFont faceName="Verdana-I"		fileName="static/ttf/verdanai.ttf"/>
+		<registerTTFont faceName="Verdana-BI"		fileName="static/ttf/verdanaz.ttf"/>
+		<registerTTFont faceName="Mono"			fileName="static/ttf/LiberationMono-Regular.ttf"/>
+		<registerTTFont faceName="Mono-B"		fileName="static/ttf/LiberationMono-Bold.ttf"/>
+		<registerTTFont faceName="Mono-I"		fileName="static/ttf/LiberationMono-Italic.ttf"/>
+		<registerTTFont faceName="Mono-BI"		fileName="static/ttf/LiberationMono-BoldItalic.ttf"/>
+		<registerTTFont faceName="Sans"			fileName="static/ttf/LiberationSans-Regular.ttf"/>
+		<registerTTFont faceName="Sans-B"		fileName="static/ttf/LiberationSans-Bold.ttf"/>
+		<registerTTFont faceName="Sans-I"		fileName="static/ttf/LiberationSans-Italic.ttf"/>
+		<registerTTFont faceName="Sans-BI"		fileName="static/ttf/LiberationSans-BoldItalic.ttf"/>
+		<registerTTFont faceName="Serif"		fileName="static/ttf/LiberationSerif-Regular.ttf"/>
+		<registerTTFont faceName="Serif-B"		fileName="static/ttf/LiberationSerif-Bold.ttf"/>
+		<registerTTFont faceName="Serif-I"		fileName="static/ttf/LiberationSerif-Italic.ttf"/>
+		<registerTTFont faceName="Serif-BI"		fileName="static/ttf/LiberationSerif-BoldItalic.ttf"/>
+
+		<registerFontFamily normal="Arial"	bold="Arial-B"		italic="Arial-I"	boldItalic="Arial-BI"/>
+		<registerFontFamily normal="Courier"	bold="Courier-B"	italic="Courier-I"	boldItalic="Courier-BI"/>
+		<registerFontFamily normal="Georgia"	bold="Georgia-B"	italic="Georgia-I"	boldItalic="Georgia-BI"/>
+		<registerFontFamily normal="Times"	bold="Times-B"		italic="Times-I"	boldItalic="Times-BI"/>
+		<registerFontFamily normal="Trebuchet"	bold="Trebuchet-B"	italic="Trebuchet-I"	boldItalic="Trebuchet-BI"/>
+		<registerFontFamily normal="Verdana"	bold="Verdana-B"	italic="Verdana-I"	boldItalic="Verdana-BI"/>
+		<registerFontFamily normal="Mono"	bold="Mono-B"		italic="Mono-I"		boldItalic="Mono-BI"/>
+		<registerFontFamily normal="Sans"	bold="Sans-B"		italic="Sans-I"		boldItalic="Sans-BI"/>
+		<registerFontFamily normal="Serif"	bold="Serif-B"		italic="Serif-I"	boldItalic="Serif-BI"/>
+		<!-- Symbol, ZapfDingbats -->
+	</docinit>
+
+	<stylesheet>
+		<initialize/>
+		<paraStyle	name="Serif"	fontName="Serif"/>
+		<paraStyle	name="Sans"	fontName="Sans"/>
+		<paraStyle	name="Mono"	fontName="Mono"/>
+		<boxStyle	name="letter"	fontName="Courier" fontSize="16" boxWidth="5mm" boxHeight="6mm" labelFontName="Helvetica" labelFontSize="9" labelOffsetY="1mm"/>
+	</stylesheet>
+
+	<template pageSize="(21cm, 29.7cm)" title="C-09-1" author="{{ data.user }}" subject="C-09-1" showBoundary="0">
+		<pageTemplate id="main">
+			<!-- for graphics -->
+			<frame id="main"	x1="0.5cm" y1="0.5cm" width="20.2cm" height="28.9cm"/>
+			<!-- for text -->
+			<frame id="next"	x1="0.5cm" y1="0.5cm" width="20.2cm" height="28.9cm"/>
+			<pageGraphics>
+				<image file="page0.png" x="0.5cm" y="0.5cm" width="20cm" height="28.7cm"/>
+				<!-- barcode -->
+				<image file="barcode.png" x="1.5cm" y="27.9cm" width="5.0cm" height="1.3cm"/>
+				<letterBoxes style="letter" x="6.5cm" y="28.6cm" count="15" label="ИНН" labelOffsetX="-9mm">{{inn}}</letterBoxes>
+				<letterBoxes style="letter" x="6.5cm" y="27.85cm" count="9" label="КПП" labelOffsetX="-9mm">{{kpp}}</letterBoxes>
+				<letterBoxes style="letter" x="12.0cm" y="27.85cm" count="3" label="Стр." labelOffsetX="-8mm">00<pageNumber/></letterBoxes>
+				<place x="1cm" y="5cm" width="2cm" height="3cm"> <para> trititi </para> </place>
+			</pageGraphics>
+		</pageTemplate>
+		<!--pageTemplate id="p1">
+			<pageGraphics>
+			</pageGraphics>
+		</pageTemplate-->
+	</template>
+
+	<story>
+		<illustration width="20cm" height="28.2cm">
+			<setFont name="Times-Roman" size="6"/>
+			<drawRightString x="20.0cm" y="28.2cm"> Приложение № 1 к Приказу ФНС РФ от 09.06.2011 № ММВ-7-6/362@ </drawRightString>
+			<letterBoxes x="17.85cm" y="25.05cm" count="4" boxWidth="5mm" boxHeight="6mm" fontName="Courier" fontSize="16">{{kno}}</letterBoxes>
+			<setFont name="Times-Roman" size="10"/>
+			<drawCentredString x="10.0cm" y="24.0cm"> СООБЩЕНИЕ <br/> ОБ ОТКРЫТИИ (ЗАКРЫТИИ) СЧЕТА (ЛИЦЕВОГО СЧЕТА) </drawCentredString>
+			<!--place x="5cm" y="10cm" width="2cm" height="3cm"> <para> tratata tata tata</para> </place-->
+		</illustration>
+		<nextFrame/>
+		<!--para alignment="center" fontSize="10" spaceBefore="2.8cm"> <b> СООБЩЕНИЕ <br/> ОБ ОТКРЫТИИ (ЗАКРЫТИИ) СЧЕТА (ЛИЦЕВОГО СЧЕТА) </b> </para>
+		<para alignment="left" fontSize="10" spaceBefore="0.5cm"> 1 - российская организация <br/> 2 - иностранная организация <br/> 3 - иностранная организация, осуществляющая деятельность на территории Российской Федерации через обособленное подразделение <br/> 4 - индивидуальный предприниматель <br/> 5 - нотариус, занимающийся частной практикой, адвокат, учредивший адвокатский кабинет </para-->
+	<!-- Page #2 -->
+		<!--setNextTemplate name="p1"/-->
+		<pageBreak/>
+		<para alignment="right" fontSize="10"> <b> Лист А </b> </para>
+	</story>
+</document>

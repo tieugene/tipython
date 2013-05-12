@@ -1,0 +1,15 @@
+<!-- Phone -->
+{% extends "core/phone_base.html" %}
+{% block title %} Телефон {% endblock %}
+{% block body_main %}
+<form action=".?next={{ next }}" method="post">
+	<table>
+		<caption>
+			Новый Телефон
+		</caption>
+		{{ form.as_table }}
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{% url apps.core.views.phone_index %}"> <button> Отказаться </button> </a>
+</form>
+{% endblock %}

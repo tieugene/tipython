@@ -1,0 +1,16 @@
+{% extends "gw/tagged/base.html" %}
+{% block title %} LanSite/GW/ {% endblock %}
+{% block topbar %} {% endblock %}
+
+{% block body_main %}
+
+        <form action="." method="post">
+<table>
+{{form.as_table}}
+</table>
+        <input type="submit" value="Записать"/>
+    </form>
+    {% for obj in objs %}
+{{ obj }}<br>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,7 @@
+{# L3 menu /GW/Tasks/ #}
+{% include "gw/menu.html" %}
+<ul idref="menu_gw_task" class="l3">
+	<li id="menu_gw_task_todo"> <a href="{% url gw.views.todo_index %}"> ToDo </a> </li>
+	<li id="menu_gw_task_calendar"> <a href="#"> Календарь </a> </li>
+	<li id="menu_gw_task_all"> <a href="{% url gw.views.task_index_all %}"> Все задачи </a> </li>
+</ul>

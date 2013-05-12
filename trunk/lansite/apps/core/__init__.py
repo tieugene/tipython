@@ -1,0 +1,3 @@
+'''
+lansite.apps.core
+'''

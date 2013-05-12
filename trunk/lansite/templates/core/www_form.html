@@ -1,0 +1,19 @@
+<!-- WWW -->
+{% extends "core/www_base.html" %}
+{% block body_main %}
+<form action="." method="post">
+	<table>
+		<caption>
+			{% if mode %} Новый {% else %} Редактирование {% endif %} WWW
+		</caption>
+		{{ form.as_table }}
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{% url apps.core.views.www_index %}"> <button> Отказаться </button> </a>
+</form>
+{% if item.contactwww_set %}
+<h2> Контакты: </h2>
+{% for i in item.contactwww_set.all %}
+{% endfor %}
+{% endif %}
+{% endblock %}

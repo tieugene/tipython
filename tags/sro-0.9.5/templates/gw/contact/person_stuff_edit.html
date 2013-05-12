@@ -1,0 +1,23 @@
+<!-- Person.Stuff -->
+{% extends "gw/base.html" %}
+{% block title %} Работы {% endblock %}
+{% block topbar %} <a href="{% url gw.views.person_detail item.person.pk %}"> &gt; {{ item.person }} </a> {% endblock %}
+{% block body_main %}
+<p> Новый Персонал </p>
+<form action=".{% if next %}?next={{ next }}{% endif %}" method="post">
+	<table>
+		<tr>
+			<th> Организация </th>
+			<td> <div class="fieldWrapper"> {{ form.org.errors }} {{ form.org }} </div> </td>
+			<td class="button"> <a title="Новая организация" href="{% url gw.views.org_add %}"> &nbsp; + &nbsp; </a> </td>
+		</tr>
+		<tr>
+			<th> Должность </th>
+			<td> <div class="fieldWrapper"> {{ form.role.errors }} {{ form.role }} </div> </td>
+			<td class="button"> <a title="Новая должность" href="{% url gw.views.role_add %}"> &nbsp; + &nbsp; </a> </td>
+		</tr>
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{% url gw.views.contact_detail item.person.pk %}"> Отказаться </a>
+</form>
+{% endblock %}

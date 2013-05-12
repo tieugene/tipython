@@ -1,0 +1,18 @@
+<!-- OKSM -->
+{% extends "ref/base.html" %}
+{% block title %} ОКСМ {% endblock %}
+{% block topbar %} ОКСМ {% endblock %}
+{% block body_main %}
+<table cellpadding="1">
+<tr> <th> Краткое наименование </th> <th> Полное наименование </th> <th> Код </th> <th> Альфа-2 </th> <th> Альфа-3 </th> </tr>
+{% for item in item_list %}
+	<tr>
+		<td> {{ item.name }} </td>
+		<td> {% if item.fullname %} {{ item.fullname }} {% endif %} </td>
+		<td> {{ item.id }} </td>
+		<td> {{ item.alpha2 }} </td>
+		<td> {{ item.alpha3 }} </td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

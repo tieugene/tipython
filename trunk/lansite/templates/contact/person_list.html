@@ -1,0 +1,55 @@
+<!-- Person -->
+{% extends "contact/person_base.html" %}
+{% block head_css %} {{ block.super }}
+	<link type="text/css" href="{{ STATIC_URL }}css/dropdownmenu.css" rel="stylesheet"/>
+{% endblock %}
+{% block head_js %} {{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/selectmenu.js"></script>
+{% endblock %}
+{% block onload_js %} {{ block.super }}
+	setdropdown("#dropdown0");
+	set_selection_menu("item", "#selectitem");
+	set_delete_form('#del_items', 'itemform');
+{% endblock %}
+{% block body_main %}
+<div>
+	{% for abc in abc_list %}
+		<span class="abc"> <a href="{% url apps.contact.views.person_setabc abc.u %}" {% ifequal abc.f 1 %} class="active" {% endifequal %}> {{ abc.c }} </a> </span>
+	{% endfor %}
+</div>
+<table class="itemlist">
+	<caption>
+		<a href="{% url apps.contact.views.person_add %}"> <button title="Добавить нового Человека" style="float:left"> + </button> </a>
+		<div id="dropdown0" class="dropdown" style="float:left">
+			<button title="Всякие действия"> Действия &#9663; </button>
+			<div>
+				<ul>
+					<li> <a href="#del_items"> Удалить </a> </li>
+					<li> <a href="{% url apps.contact.views.person_vcard_export %}"> Экспорт в vCard </a> </li>
+					<li> <a href="{% url apps.contact.views.person_vcard_import %}"> Импорт из vCard </a> </li>
+				</ul>
+			</div>
+		</div>
+		{% include "paginator.html" %}
+	</caption>
+	<thead>
+		<tr>
+			<th> {% with "selecttodo" as id %} {# include "selectmenu.html" #} {% endwith %} </th>
+			<th> Фамилия </th>
+			<th> Имя </th>
+			<th> Отчество </th>
+		</tr>
+	</thead>
+	<form id="itemform" method="post" action="{# url apps.contact.views.person_del_selected #}">
+	<tbody>
+	{% for object in object_list %}
+		<tr bgcolor={% cycle 'lightcyan' 'white' %}>
+			<td nowrap> <input type="checkbox" name="item" value="{{ object.id }}"/> </td>
+			<td> <a href="{{ object.get_absolute_url }}"> {{ object.lastname }} </a> </td>
+			<td> <a href="{{ object.get_absolute_url }}"> {{ object.firstname }} </a> </td>
+			<td> <a href="{{ object.get_absolute_url }}"> {{ object.midname }} </a> </td>
+		</tr>
+	{% endfor %}
+	</form>
+<table>
+{% endblock %}

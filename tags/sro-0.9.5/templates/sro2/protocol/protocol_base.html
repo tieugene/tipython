@@ -1,0 +1,77 @@
+{% extends "sro2/main.html" %}
+
+{% block contentheader %}
+    {% if protocol %}
+    {{ protocol.asstr_full() }}
+    {% if user.is_superuser %}
+        <a href="{{ protocol.get_journal_url() }}">
+                        <div class="ui-state-default ui-corner-all button jbutton">
+                    <span class="ui-icon ui-icon-clock"></span>
+                </div>
+        </a>
+        {% endif %}
+        {% else %}
+        Новый протокол
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <script langauge="JavaScript" type="text/javascript">
+        function confirmDelete(delUrl) {
+            if (confirm("Are you sure you want to delete")) {
+                document.location = delUrl;
+            }
+        }
+        $(function(){
+            $('#dialog').dialog({
+                autoOpen: false,
+                title: 'Скачать отчет',
+                position: 'top',
+                width: 400,
+                height: 200,
+            });
+            {%if protocol.id%}
+                $('#p2rtn').click(function() {
+                    $('#dialog').dialog('open');
+                    $.ajax({
+                        url: '{{ url_for("sro2.views.protocol_rtn", protocol.id)  }}',
+                        success: function(data) {
+                            var down = 'Файл готов. Нажмите на кнопку "Скачать", чтобы загрузить файл к себе на компьютер.<br><br><a href="'
+                            var purl = '{{ url_for('views.index') }}'
+                            var down2 = '" class="ui-state-default button ui-corner-all">Скачать</a>'
+                            $('#down').html(down + purl + 'media/' + data + down2);
+                            $('#wait').html(' ')
+                        }
+                    });
+                })
+            {%endif%}
+        } );
+    </script>
+    <div class='th'><span class='title'>Данные: </span>
+        <div class='ebutton'>{% block body_main_button %} {% endblock %}</div></div>
+
+    {% block body_main %}
+        <table border="0">
+            <tr>
+                <td> Номер:</td>
+                <td> {{ protocol.no }} </td>
+            </tr>
+            <tr>
+                <td> Дата:</td>
+                <td> {{ protocol.date }} </td>
+            </tr>
+        </table>
+    {% endblock %}
+    {% block permits %}
+    {% endblock %}
+    <p>
+    <div id="dialog" title="Скачать отчет">
+        <div id='wait'>Файл формируется. Подождите, пожалуйста. <img src='{{ url_for('views.index') }}static/ajax-loader.gif'
+                                                                     style='margin-bottom: -10px;'></div>
+        <div id='down'></div>
+    </div>
+    {% if protocol.id %}
+        <!--<div class="ui-state-default ui-corner-all button eb" id="p2rtn"> Отчет в РТН</div>  -->
+        <a href='{{ url_for("sro2.views.protocol_report", protocol.id) }}'><div class="ui-state-default ui-corner-all button eb" id="genreport"> Сформировать протокол заседания</div></a>
+    {% endif %}
+{% endblock %}

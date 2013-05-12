@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title> {% block title %}LanSite {{ user.first_name }} {{ user.last_name }} [{{ user.username }}]{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/png" href="{% url views.index %}static/favic.png">
+    <!--CSS-->
+    <link type="text/css" href="{% url views.index %}static/css/gmail/jquery-ui-1.8.5.custom.css" rel="stylesheet">
+    <link type="text/css" href="{% url views.index %}static/css/index.css" rel="stylesheet">
+    <link type="text/css" href="{% url views.index %}static/css/jquery.ui.potato.menu.css" rel="stylesheet">
+    <!--Debug CSS-->
+    <!--<link rel="stylesheet" href="{% url views.index %}static/css/debug.css" type="text/css">-->
+    <!--JS-->
+    <script type="text/javascript" src="{% url views.index %}static/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="{% url views.index %}static/js/jquery.ui.potato.menu.js"></script>
+    <script type="text/javascript" src="{% url views.index %}static/js/jquery-ui-1.8.5.custom.min.js"></script>
+    <script type="text/javascript" src="{% url views.index %}static/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="{% url views.index %}static/js/datepicker_lang.js"></script>
+
+    <!--Tooltips-->
+    <link rel="stylesheet" href="{% url views.index %}static/css/jquery.tooltip.css">
+    {#        <script src="{% url views.index %}static/js/jquery.bgiframe.js" type="text/javascript"></script> #}
+    <!--<script src="{% url views.index %}static/js/jquery.dimensions.js" type="text/javascript"></script> -->
+    <script src="{% url views.index %}static/js/jquery.tooltip.js" type="text/javascript"></script>
+
+    <script>
+        $(function() {
+//            $('.sub li, .orgbottom li .ins, .bb, .menuitem, .smallbutton, .button, input[type=button, ^jsignor]').hover(
+//                      function() {$(this).addClass('ui-state-hover');},function() {$(this).removeClass('ui-state-hover');});
+            $('li .cell, #permits tr:has(.cell), #protocols tr:has(.cell)').hover(
+               function() {$(this).addClass('cell-hover');},function() {$(this).removeClass('cell-hover');});
+            $('#ddm').ptMenu();
+            $('#mw').css('overflow', 'visible')
+            $('*[title]').tooltip({
+                track: true,
+                delay: 0,
+                showURL: false,
+                fade: 200,
+                extraClass:'ui-state-default',
+            });
+			$("ul#ddm li:last.menuitem").addClass('ui-corner-right')
+            $('#id_date, #id_datefrom, #id_datedue, #id_paydate, #id_paydatevv, #datedue, #datetill, #datesince, #id_skilldate, #id_tested, #id_coursedate, #regdateinput, #excludedateinput, #div_startdate input, .enddate').datepicker({dateFormat: 'dd.mm.yy', changeMonth: true,}).datepicker($.datepicker.regional['ru']);
+        })
+    </script>
+</head>
+
+
+<body>
+{% load sro2_extras %}
+<!--Body-->
+{% if user.is_authenticated %}
+    <!--User Toolbar-->
+{#    <div id='userinfo' class='ui-corner-all'>#}
+{#        Пользователь: <b>{{ user.first_name }} {{ user.last_name }} [{{ user.username }}]</b>#}
+{#    </div>#}
+
+    <!--Menu-->
+{#    {% include "sro2/menubar.html" %}#}
+   <!--Page functions-->
+        <div id='mw' style='height: 36px !important; overflow-y: hidden;'>
+        <div id='menu' class="left" style=" width: 660px;">
+            <ul id='ddm'>
+            <li class='ui-state-default ui-corner-left menuitem'><b>СРО</b>
+            <ul>
+            {% for sro in sros %}
+                <li class='ui-state-default ui-corner-all menuitem' style="width: 160px;"><b>{{ sro.sro.displayname }} <span class="right"> ></span> </b>
+                    <ul class='sub sros'>
+                        <a href="{% url sro2.views.orglist_list sro.sro.id %}" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Организации
+                            </li>
+                        </a>
+                        <a href="{% url sro2.views.protocol_list sro.sro.id %}" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Протоколы
+                            </li>
+                        </a>
+                    </ul>
+                </li>
+            {% endfor %}
+            </ul>
+            </li>
+
+                <a href="{% url sro2.views.person_list а %}" class='nu'>
+                    <li class='ui-widget ui-state-default bb menuitem'>
+                        <b>Персонал</b>
+                    </li>
+                </a>
+                <a href="{% url sro2.views.report %}" class='nu'>
+                    <li class='ui-widget ui-state-default bb menuitem'>
+                        <b>Отчёты</b>
+                    </li>
+                </a>
+
+            {% if user.is_superuser %}
+                <li class='ui-state-default menuitem'><b>Управление</b>
+                    <ul class='sub'>
+                        <a href="{% url sro2.views.sro_list %}" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Управление СРО
+                            </li>
+                        </a>
+                        <a href="{% url sro2.views.journal %}" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Журнал
+                            </li>
+                        </a>
+                        <a href="{% url views.index %}admin" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Администрирование
+                            </li>
+                        </a>
+                        <a href="{% url gw.views.wordcombination_list %}" class='nu'>
+                            <li class='ui-widget ui-corner-all ui-state-default'>
+                                Словосочетания
+                            </li>
+                        </a>
+                    </ul>
+                </li>
+                {% endif %}
+
+                    {% block functions %}
+                    {% endblock %}
+            </ul>
+        </div>
+            <div id='toolbar' class='ui-corner-all'>
+                <div class="left" title="Имя пользователя" style="margin-right: 4px; padding-top: 2px;">
+                    <span style="font-size: 10pt;">{{ user }}: {{ user.first_name }} {{ user.last_name }}</span>
+                    <span style="font-size: 10pt;"> [Engine: Django]</span>
+                </div>
+                <div class="ui-state-default ui-corner-all smallbutton" title="Версия" style="width: 48px;">
+                    <span style="font-size: 10pt;">{{ VERSION }}</span>
+                </div>
+            <a href="{% url views.index %}">
+                <div class="ui-state-default ui-corner-all smallbutton" title="Главная страница">
+                    <span class="ui-icon ui-icon-home"></span>
+                </div>
+            </a>
+{#            <a href="{% url sro2.views.journal %}">#}
+{#                <div class="ui-state-default ui-corner-all smallbutton" title="Журнал">#}
+{#                    <span class="ui-icon ui-icon-clock"></span>#}
+{#                </div>#}
+{#            </a>#}
+            <a href="{% url views.index %}admin" target="_blank">
+                <div class="ui-state-default ui-corner-all smallbutton" title="Администрирование">
+                    <span class="ui-icon ui-icon-wrench"></span>
+                </div>
+            </a>
+            <a href="{% url views.index %}about/">
+                <div class="ui-state-default ui-corner-all smallbutton" title="О программе">
+                    <span class="ui-icon ui-icon-info"></span>
+                </div>
+            </a>
+            <a href="{% url views.index %}logout/" style="text-decoration: none !important;">
+                <div class="ui-state-default ui-corner-all smallbutton" title="Выход" style="width: 48px;">
+{#                    <span class="ui-icon ui-icon-closethick"></span>#}
+                    <span style="font-size: 10pt;">Выход</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+
+{% endif %}
+
+
+
+
+<!--Page-->
+<div id='page'>
+    {% if user.is_authenticated %}
+        <!--Main Content-->
+        <div id='content'>
+            <h3 class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-top contentheader">
+                <b>{% block contentheader %}Заголовок{% endblock %}</b>
+            </h3>
+            <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                 id='contentbody'>
+
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    {% else %}
+        <!--If user not logged in-->
+        <div id='login' class='mid'>
+            <h3>
+            	<br><br>
+				Введите, пожалуйста, свои учётные данные для доступа к внутренней корпоративной информационной системе Lansitе.
+				<br><br>
+			    По всем возникающим вопросам обращайтесь на электронную почту <a href='mailto:it@moozs.ru'>it@moozs.ru</a>.
+			</h3>
+
+            <div style='margin: 0 auto; width: 100px;'>
+                <a href="{% url django.contrib.auth.views.login %}?next={% url views.index %}">
+                    <p class='ui-state-default ui-corner-all button'> Вход </p>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

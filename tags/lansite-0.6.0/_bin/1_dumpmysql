@@ -1,0 +1,5 @@
+#!/bin/sh
+# dump all data into SQL
+. ./VARS
+mysqldump --user=$DBUSER --password=$DBPASS -c --compact -e --skip-opt -t $DB | gzip > lansite.`date +%y+m%d%H%M%S`.sql.gz
+#sqlite3 $SQLITEDB ".dump"

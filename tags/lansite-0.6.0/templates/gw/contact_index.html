@@ -1,0 +1,14 @@
+<!-- Contacts -->
+{% extends "gw/base.html" %}
+{% block title %} Контакты {% endblock %}
+{% block topbar %} &gt; Контакты {% endblock %}
+{% block body_main %}
+<table>
+{% for item in item_list %}
+	<tr>
+		<td> <a href="{% url gw.views.contact_detail item.id %}"> {{ item }} </a> </td>
+		<td> {{ item.gettype }} </td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

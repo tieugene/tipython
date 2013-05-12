@@ -1,0 +1,53 @@
+{% extends "gw/tagged/base.html" %}
+{% block title %} LanSite/GW/ {% endblock %}
+{% block topbar %} Добавить Тип{% endblock %}
+
+{% block body_main %}
+
+    <script>
+    function objSel(){
+        if($('#tag #id_type').val()==4){
+//        alert($('#id_type').html())
+            $('#id_options').replaceWith($('#cform select').attr('name','options').attr('id','id_options'))
+            $('label[for="id_options"]').html('Тип объекта')
+        }
+    }
+
+    </script>
+
+    <div style='display: none'>
+    <div id="cform">
+        {{ cform }}
+    </div>
+
+    </div>
+
+    <h3>Существующие типы</h3>
+    <div style="height: 300px; overflow: scroll;">
+    <ul>
+    {% for type in types %}
+        <li>{{ type.tot }} -- {{ type }} <input type='button' value='X' onclick="window.location='{% url gw.tagged.views.to_deltagtype type.id %}'"> </li>
+    {% endfor %}
+    </ul></div>
+    <hr>
+    <h3>Новый тип объекта</h3>
+        <form action="./objtype" method="post">
+    <table>
+    {{ oform.as_table }}
+</table>
+        <input type="submit" value="Добавить"/>
+    </form>
+    <hr>
+    <h3>Новый тип тэга</h3>
+    <form action="./tagtype" method="post">
+    <table id="tag">
+    {{ form.as_table }}
+</table>
+        <input type="submit" value="Добавить"/>
+    </form>
+        <h4>Инструкция</h4>
+    <div style="background: #ccc; padding: 6px;">
+    По добовлению тэгов
+    </div>
+
+{% endblock %}

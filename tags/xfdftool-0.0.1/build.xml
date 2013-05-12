@@ -1,0 +1,22 @@
+<project name="05.jar" default="all" >
+	<target name="make.dirs" description="Make some dirs">
+		<mkdir dir="build"/>
+		<mkdir dir="build/class"/>
+	</target>
+	<target name="compile" description="compile java" depends="make.dirs">
+		<javac destdir="build/class" classpath="itextpdf-5.3.0.jar">
+			<src path="MyPkg"/>
+		</javac>
+	</target>
+	<target name="xfdftool.jar" description="make jar file" depends="compile">
+		<jar destfile="xfdftool.jar">
+			<manifest>
+				<attribute name="Main-class" value="MyPkg.xfdftool"/>
+			</manifest>
+			<fileset dir="build/class">
+				<include name="**/*.class"/>
+			</fileset>
+		</jar>
+	</target>
+	<target name="all" description="Do the build" depends="xfdftool.jar"/>
+</project>

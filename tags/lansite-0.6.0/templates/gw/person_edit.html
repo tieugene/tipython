@@ -1,0 +1,14 @@
+<!-- Person -->
+{% extends "gw/base.html" %}
+{% block title %} Человек {% endblock %}
+{% block topbar %} <a href="{% url gw.views.person_index %}"> Люди </a> {% endblock %}
+{% block body_main %}
+<p> {% if mode %} Новый Человек {% else %} Редактировать Человека {% endif %} </p>
+<form action=".?next={{ next }}" method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{{ next }}"> Отказаться </a>
+</form>
+{% endblock %}

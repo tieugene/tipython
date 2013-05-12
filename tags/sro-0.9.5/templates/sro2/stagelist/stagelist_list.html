@@ -1,0 +1,106 @@
+{% extends "sro2/stagelist/stagelist_base.html" %}
+
+{% block stages %}
+    <script langauge="JavaScript" type="text/javascript">
+        function doMenu(item) {
+            obj = document.getElementById(item);
+            col = document.getElementById("x" + item);
+            if (obj.style.display == "none") {
+                obj.style.display = "block";
+                col.innerHTML = "&#9660";
+            }
+            else {
+                obj.style.display = "none";
+                col.innerHTML = "&#9654;";
+            }
+        }
+        function SelectAll(state) {
+            items = document.myform.set;
+            for (i = 0; i < items.length; i++) {
+                if (items[i].checked = state) {
+                    items[i].checked = state;
+                }
+            }
+        }
+    </script>
+    <table border="0" width="100%">
+        <tr valign="top">
+            <td> <h3>
+                {% ifnotequal danger 1 %}
+                    Основные (<a class="button" href="{% url sro2.views.stagelist_view stagelist.id 0 1 %}">
+                    Опасные </a>)
+                {% else %}
+                    (<a class="button" href="{% url sro2.views.stagelist_view stagelist.id %}?danger=0"> Основные </a>)
+                    Опасные
+                {% endifnotequal %}
+            </h3> </td>
+            {% ifequal stagelist.type.id 2 %}
+                <td><a class="button" title="Напечатать разрешение (HTML)"
+                       href="{% url sro2.views.stagelist_html stagelist.id %}"> HTML </a>
+                    <a class="button" title="Напечатать разрешение (PDF)"
+                       href="{% url sro2.views.stagelist_pdf stagelist.id %}"> PDF </a></td>
+            {% endifequal %}
+            {% if canedit %}
+                <td>
+                    <form action="{% url sro2.views.stagelist_dup stagelist.id %}" method="POST" name="form1">
+                        {{ form.type }}
+                        <input type="submit" value="Дубль" title="Скопировать этот документ в другой"/>
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url sro2.views.stagelist_cmp stagelist.id %}" method="POST" name="form1">
+                        {{ form.other }}
+                        <input type="submit" value="Сравнить" disabled title="Сравнить составы двух документов"/>
+                    </form>
+                </td>
+            {% endif %}
+        </tr> </table>
+    <form action="?danger={{ danger }}" method="POST" name="myform">
+        <table border="0">
+            {% for s, sflag, jobs in stages %}
+                <a name="{{ s.id }}"/>
+                <tr {% if forloop.counter|divisibleby:2 %} bgcolor="lightgrey" {% endif %}>
+                    <td valign="top"> {% if jobs %} <a href="JavaScript:doMenu('{{ s.id }}');" id=x{{ s.id }}>
+                        &#9654;</a> {% endif %} </td>
+                    <td align="center" valign="top"> {% ifequal sflag 1 %} &radic; {% endifequal %} </td>
+                    <td valign="top"> {{ s.no }} </td>
+                    <td> {{ s.name }}
+                        <div id={{ s.id }} style=
+                        "display:none">
+                        {% for j, jflag in jobs %}
+                            <p> {% ifequal jflag 1 %} &radic; {% else %}
+                                &nbsp; {% endifequal %} {{ j.okdp }}: {{ j.name }} </p>
+                        {% endfor %}
+                        </div>
+                    </td>
+                    {% if canedit and perms.sro2.add_permitstage and perms.sro2.add_permitstagejob and perms.sro2.delete_permitstage and perms.sro2.add_permitstagejob %}
+                        <td valign="top"><a class="button"
+                                            href="{% url sro2.views.stagelist_edit_stage stagelist.id, s.id %}?danger={{ danger }}">
+                            Изменить </a></td>
+                        <td align="center" colspan="2" bgcolor="red"><input type="checkbox" name="set"
+                                                                            value="{{ s.id }}"/></td>
+                    {% endif %}
+                <tr>
+            {% endfor %}
+            <tr>
+                <td colspan="8">
+                    <hr/>
+                </td>
+            </tr>
+            {% if canedit and perms.sro2.add_permitstage and perms.sro2.add_permitstagejob and perms.sro2.delete_permitstage and perms.sro2.add_permitstagejob %}
+                <tr bgcolor="red">
+                    <td colspan="5" rowspan="2"><b> ОПТОМ: </b></td>
+                    <td align="center"><input type="button" value="&radic;" title="Выбрать все"
+                                              onClick="SelectAll(true);"/></td>
+                    <td align="center"><input type="button" value="x" title="Удалить все" onClick="SelectAll(false);"/>
+                    </td>
+                </tr>
+                <tr bgcolor="red">
+                    <td align="center" colspan="2"><input type="submit" value="Записать"/></td>
+                </tr>
+            {% endif %}
+        </table>
+    </form>
+    <hr>
+    <p> Итого: {{ jcount }} работ </p>
+{% endblock %}

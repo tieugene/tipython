@@ -1,0 +1,83 @@
+{% extends "sro2/stagelist/stagelist_base.html" %}
+
+{% block stages %}
+    <script langauge="JavaScript" type="text/javascript">
+        function doMenu(item) {
+            obj = document.getElementById(item);
+            col = document.getElementById("x" + item);
+            if (obj.style.display == "none") {
+                obj.style.display = "block";
+                col.innerHTML = "&#9660;";
+            }
+            else {
+                obj.style.display = "none";
+                col.innerHTML = "&#9654;";
+            }
+        }
+    </script>
+    <div id='controls'>
+        <div style='float: right; margin-top: 1px;'><a href="{{ url_for('sro2.views.stagelist_view', stagelist.id, 0, danger) }}">
+            <div class='button ui-state-default eb allb ui-corner-left {% if not full %}ui-self-active{% endif %}'>
+                Краткое
+            </div>
+        </a><a href="{{ url_for('sro2.views.stagelist_view', stagelist.id, 1, danger) }}">
+            <div class='button ui-state-default eb yb ui-corner-right {% if full %}ui-self-active{% endif %}'>Полное
+            </div>
+        </a></div>
+    </div>
+    <div id='stages'>
+        {% for item, value in itemlist.iteritems() %}
+            <p>
+                <tt>
+                    {% if value.children %} <a href="JavaScript:doMenu('{{ item.id }}');" id=x{{ item.id }}>
+                        &#9654;</a> {% else %} &nbsp; {% endif %}
+                </tt>
+                {% if value.exists %} <span style='background: #aaeeaa;'> {% endif %}
+                {{ item.code }}. {{ item.name }}
+                {% if value.exists %} </span> {% endif %}
+            </p>
+            {% if value.children %}
+                <div id={{ item.id }} style="display:none">
+                {% for i, v in value.children.iteritems() %}
+                    <p>
+                        <tt>
+                            &nbsp;
+                            {% if v.children %} <a href="JavaScript:doMenu('{{ i.id }}');" id=x{{ i.id }}>
+                                &#9654;</a> {% else %} &nbsp; {% endif %}
+                        </tt>
+                        {% if v.exists %} <span style='background: #aaeeaa;'> {% endif %}
+                        {{ i.code }}. {{ i.name }}
+                        {% if v.exists %} </span> {% endif %}
+                    </p>
+
+                    {% if v.children %}
+                        <div id={{ i.id }} style="display:none">
+                        {% for x, y in v.children.iteritems() %}
+                            <p>
+                                <tt>
+                                    &nbsp; &nbsp; &nbsp;
+                                </tt>
+                                {% if y.exists %} <span style='background: #aaeeaa;'> {% endif %}
+                                {{ x.code }}. {{ x.name }}
+                                {% if y.exists %} </span> {% endif %}
+                            </p>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    <p> Итого:
+        {% if not danger == 1 %}
+            {{ stagelist.permitstage_set.count_ordinar() }}
+        {% else %}
+            {{ stagelist.permitstage_set.count_danger() }}
+        {% endif %}
+    </p>
+    <br>
+
+
+    </div>
+{% endblock %}

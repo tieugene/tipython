@@ -1,0 +1,204 @@
+#!/bin/sh
+#
+# Startup script for LibreOffice listening Server which can then be used to convert word processing files from one format to another.
+# Deps: libreoffice-core libreoffice-headless xorg-x11-server-Xvfb xorg-x11-xauth util-linux
+# Usage: unoconv 
+#
+# chkconfig: 345 84 16
+# description: LibreOffice Server
+# processname: libreofficed
+# pidfile: /var/run/libreofficed.pid
+
+###############Local Parameters###########################
+JAVA_HOME=/usr/lib/jvm
+export JAVA_HOME
+
+#Virtual Display which LibreOffice will open under (since LO needs a DISPLAY)
+VIRTUAL_DISPLAY=":20"
+
+#Host/Port to start LibreOffice server listening on
+#(IMPORTANT: If $SERVER_HOST is specified as "localhost",
+# ONLY processes on local server can connect to LibreOffice!)
+SERVER_HOST=localhost
+SERVER_PORT=9000
+
+#location of LibreOffice script
+LO_CMD=/usr/bin/soffice
+
+#LibreOffice server parameters (including host and port)
+LO_ACC="-accept=socket,host=$SERVER_HOST,port=$SERVER_PORT;urp;StarOffice.ServiceManager"
+
+#Other LibreOffice parameters 
+LO_PARAM="-invisible -norestore -display $VIRTUAL_DISPLAY.0"
+
+#location of Virtual Frame Buffer X Server (Xvfb)
+Xvfb_CMD=/usr/bin/Xvfb
+
+#Temporary directory which will be used as Xvfb Frame Buffer Directory
+Xvfb_TEMP_DIR=/var/tmp
+
+#Xvfb Parameters 
+Xvfb_PARAM="$VIRTUAL_DISPLAY -screen 0 800x600x16 -fbdir $Xvfb_TEMP_DIR"
+
+#Killall script
+KILL_ALL=/usr/bin/killall
+
+################Optional Parameters#######################
+# NOTE: If $XAUTH is set, then this script will use the 'xauth' command to ensure that this script has access to the specified $VIRTUAL_DISPLAY.
+# This can help solve those pesky "connection refused by server" errors
+
+#Xauth program (to authorize permission in Xvfb)
+XAUTH=/usr/bin/xauth
+
+#mcookie program (creates a Magic Cookie for authorization)
+MCOOKIE=/usr/bin/mcookie
+
+##########################################################
+# Source function library.
+. /etc/rc.d/init.d/functions
+#. /lib/lsb/init-functions
+#. /etc/default/rcS
+
+# Disable these as I'm not sure how they work on Debian
+# Source networking configuration.
+#. /etc/sysconfig/network
+
+# Check that networking is up.
+#[ ${NETWORKING} = "no" ] && exit 0
+
+# Check for LibreOffice
+if [ ! -f $LO_CMD ]; then
+    echo "LibreOffice startup command does not seem to be installed at $LO_CMD"
+    exit
+fi
+
+# Check for Xvfb
+if [ ! -f $Xvfb_CMD ]; then
+    echo "Error: Could not find $Xvfb_CMD (Virtual Frame Buffer X Server), which is needed to run LibreOffice as a server."
+    exit
+fi
+
+# Check for killall
+if [ ! -f $KILL_ALL ]; then
+    echo "Error: Could not find $KILL_ALL (killall command), which is needed for this script to be able to kill a running Xvfb (Virtual Frame Buffer X server)."
+    exit
+fi
+
+# Check for Xvfb Temp Directory
+if [ ! -d $Xvfb_TEMP_DIR ]; then
+    echo "Error: Could not find $Xvfb_TEMP_DIR (Xvfb Temporary Directory), which is needed to run LibreOffice as a server."
+    echo "Please create this location or modify the 'open-office-server' script to use an existing temporary directory."
+    exit
+fi
+
+#specify to start and stop LibreOffice server
+start() {
+
+    echo "Starting Virtual Frame Buffer X Server (Xvfb) on local display $VIRTUAL_DISPLAY.0 - "
+    
+	#try to find Process ID of running X-Server
+	pid=`ps -eaf | grep $Xvfb_CMD | grep $VIRTUAL_DISPLAY | awk '{print $2}'`
+	
+    if [ $pid ]; then
+        echo "Xvfb already running [pid=${pid}]"
+    else
+	# Start Xvfb, since a running X-server is necessary for OOo to run!
+	if [ -x $Xvfb_CMD ]; then
+		
+		#If user has $XAUTH, then set authorizations
+		 if [ $XAUTH ]; then
+			echo "Setting authorization on local display $VIRTUAL_DISPLAY.0"
+			#Give authorization to access this Virtual Display
+		        $XAUTH add $VIRTUAL_DISPLAY . `$MCOOKIE` > /dev/null
+		fi
+		
+		#Start Xvfb
+		$Xvfb_CMD $Xvfb_PARAM  > /dev/null 2>&1 &
+		    
+		#sleep briefly
+		sleep 5
+		    
+		#Make sure it started
+		pid=`ps -eaf | grep $Xvfb_CMD | grep $VIRTUAL_DISPLAY | awk '{print $2}'`
+		if [ $pid ]; then
+        		echo "done."
+        	else
+        		echo "FAILED."
+        	fi	
+	else
+		echo "Error: Could not find $Xvfb_CMD. Cannot start Xvfb."
+	fi 
+     fi
+	
+    echo -n "Starting LibreOffice Server on display $VIRTUAL_DISPLAY.0 - "
+
+    #try to find Process ID of LibreOffice Server
+	pid=`ps -eaf | grep "$LO_CMD " | grep "port=$SERVER_PORT" | awk '{print $2}'`
+
+	if [ $pid ]; then
+	       	echo "LibreOffice Server already running on port '$SERVER_PORT' [pid=${pid}]"
+ 	else
+ 		#start LibreOffice
+        	$LO_CMD $LO_ACC $LO_PARAM  > /dev/null &
+            
+            	#sleep briefly
+		sleep 2
+            
+            	#Test that it started successfully
+            	pid=`ps -eaf | grep "$LO_CMD " | grep "port=$SERVER_PORT" | awk '{print $2}'`
+		if [ $pid ]; then
+        		echo "done."
+        		echo "LibreOffice service is now listening on port $SERVER_PORT."
+        	else
+        		echo "FAILED."
+        	fi	  
+        fi
+}
+stop() {
+        echo "Shutting Down LibreOffice Server on display $VIRTUAL_DISPLAY.0 - "
+
+		#see if Xvfb is even running on that DISPLAY
+		pid=`ps -eaf | grep $Xvfb_CMD | grep $VIRTUAL_DISPLAY | awk '{print $2}'`
+
+		if [ $pid ]; then
+			if [ -x $KILL_ALL ]; then
+	    			echo "Stopping Virtual Frame Buffer X Server (Xvfb) on local display $VIRTUAL_DISPLAY.0"
+	   			$KILL_ALL Xvfb 2> /dev/null
+	   			
+	   			#sleep briefly
+				sleep 6
+	   			 
+	   			#see if Xvfb died successfully
+	   			pid=`ps -eaf | grep $Xvfb_CMD | grep $VIRTUAL_DISPLAY | awk '{print $2}'`
+				if [ $pid ]; then
+	       			 	echo "FAILED to kill Xvfb.  Still running at pid=${pid}"
+	   			else
+	   			 	echo "done."
+	   			fi
+			else
+	    			echo "Error: Could not find $KILL_ALL. Cannot stop Xvfb."
+			fi 
+		else
+			echo "Virtual Frame Buffer X Server (Xvfb) and LibreOffice are not even running"
+		fi
+
+}
+
+# See how script is being called
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        stop
+        sleep 5
+        start
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}  $1"
+esac
+
+exit 0

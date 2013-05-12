@@ -1,0 +1,20 @@
+{% extends "sro2/orgsro/orgsro_base.html" %}
+{% block body_sro %}
+
+    <form action=".#main" method="POST">
+        <table width="100%" border="1" id="ddd">
+            {{ form.as_table() }}
+        </table>
+        <input type="submit" value="Записать и закрыть"/>
+        <input type="button" value="Отказаться"
+               onClick="window.location.href='{{ url_for('sro2.views.orgsro_view', orgsro.id) }}#main'" jsignor='true'/>
+    </form>
+        {% if not orgsro.excludedate %}
+        <script>
+        $(function(){
+//alert($('#id_exprotocol').parent().parent().html());
+            $('select[name="exprotocol"]').parent().parent().hide();
+        })
+        </script>
+    {% endif %}
+{% endblock %}

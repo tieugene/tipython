@@ -1,0 +1,50 @@
+{# / #}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title> {% block title %} Lansite {% endblock %} </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<!--link type="text/css" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui.css" rel="stylesheet"/-->
+	<link type="text/css" href="{{ STATIC_URL }}css/base.css" rel="stylesheet"/>
+	<link type="text/css" href="{{ STATIC_URL }}css/topmenu.css" rel="stylesheet"/>
+	<link type="text/css" href="{{ STATIC_URL }}css/colors.css" rel="stylesheet"/>
+	{% block head_css %}  {% endblock %}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"> </script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui.js"> </script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.maskedinput.js"> </script>
+	<!--script type="text/javascript" src="{{ STATIC_URL }}js/jquery.meio.mask.min.js"> </script-->
+	<!--script type="text/javascript" src="{{ STATIC_URL }}js/datepicker_lang.js"> </script-->
+	<script type="text/javascript" src="{{ STATIC_URL }}js/misc.js"> </script>
+	{% block head_js %}  {% endblock %}
+	<script LANGUAGE="JavaScript">
+	$(document).ready(function() {
+		{% block onload_js %}  {% endblock %}
+	});
+	</script>
+</head>
+<body>
+{% if user.is_authenticated %}
+	<div id="topmenu">
+		{% block topmenu %} {% include "menu.html" %} {% endblock %}
+	</div>
+	<div style="position: absolute; top: 0; right: 1em">
+		<span id="tz"></span>
+		User: {{ user }}
+		| <a href="/logout"> Logout </a>
+	</div>
+	<div>
+	{% block body_main %}
+		<p> Заглушка </p>
+	{% endblock %}
+	</div>
+{% else %}
+	<div id='page'>
+		<!--If user not logged in-->
+		<div align="center">
+			<p> Извините, но для пользования LanSite требуется войти под своими логином и паролем. </p>
+			<a href="{{ LOGIN_URL }}"> <button title="Вход в систему"> Вход </button> </a>
+		</div>
+	</div>
+{% endif %}
+</body>
+</html>

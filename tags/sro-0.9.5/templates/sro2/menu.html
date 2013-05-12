@@ -1,0 +1,21 @@
+<ul>
+        <li>
+            <a href="#"> МООАСП </a>
+            <ul>
+                <li><a href="{% url sro2.views.orglist_list 2 %}"> Организации </a></li>
+                <li><a href="{% url sro2.views.protocol_list 2 %}"> Протоколы </a></li>
+                <li><a href="{% url sro2.views.orglist_find 2 %}"> Поиск </a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#"> МООЖС </a>
+            <ul>
+                <li><a href="{% url sro2.views.orglist_list 1 %}"> Организации </a></li>
+                <li><a href="{% url sro2.views.protocol_list 1 %}"> Протоколы </a></li>
+                <li><a href="{% url sro2.views.orglist_find 1 %}"> Поиск </a></li>
+            </ul>
+        </li>
+        <li> <a href="{% url sro2.views.person_list а %}"> Персонал </a> </li>
+        <li> <a href="{% url sro2.views.journal %}"> Журнал </a> </li>
+        <li> <a href="{% url sro2.views.report %}"> Отчеты </a> </li>
+</ul>

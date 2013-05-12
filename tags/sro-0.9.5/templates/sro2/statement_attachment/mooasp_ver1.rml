@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document filename="{{ statement.date }}.pdf">
+	
+	{% include "sro2/statement_attachment/styles.rml" %}
+
+	<story>
+		{% if data.incorrect_stages %}
+			<para spaceAfter="50">
+			</para>			
+			<para style="style3">
+				Данное завление содержит генподрядные или(и) опасные виды работ, которых не может быть в заявлении первой версии.
+			</para>			
+			<nextFrame/>
+		{% endif %}		
+
+		{% if data.change %}
+		<para style="style2">
+			Приложение
+		</para>
+		<para style="style1"> 
+			к заявлению о внесении изменений в свидетельство о допуске к работам, оказывающим влияние на безопасность объектов капитального
+			строительства
+		</para>
+		{% else %}
+		<para style="style2">
+			Приложение
+		</para>
+		<para style="style1"> 
+			к заявлению о приеме в члены НП «МООАСП»
+		</para>
+		{% endif %}
+		
+		<para style="style3">
+			Перечень видов работ, которые оказывают влияние на безопасность объектов капитального строительства, в отношении которых требуется
+			выдача свидетельства о допуске
+		</para>
+		<para style="style4">
+			(нужное отметить)
+		</para>
+		
+		{% with data.o as list %}
+			{% with data.o as list %}
+				{% include "sro2/statement_attachment/loop_mooasp.rml" %}
+			{% endwith %}
+		{% endwith %}
+				
+		<para style="style0" spaceBefore = "30" spaceAfter = "30">
+			 Всего {{ data.statement.permitstage_set.count_ordinar }} видов работ.
+		</para>
+		
+		{% include "sro2/statement_attachment/footer.rml" %}
+	</story>
+</document>

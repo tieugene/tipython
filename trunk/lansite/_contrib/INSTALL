@@ -1,0 +1,25 @@
+1. Install packages:
+	mysql-server
+	httpd
+	mod_wsgi
+	python-memcached
+	python-trml2pdf
+	python-rtfng
+	python-icalendar
+	python-paramico
+	Django
+	django-treebeard
+	django-polymorphic
+	django-staticfiles
+	(for CentOS - in addition - python-imaging, python-hashlib)
+2. Install this package
+3. Enable WSGI in /etc/httpd/conf.d/wsgi.conf
+4. Create database, user and password (e.g. lansite):
+	echo "CREATE DATABASE lansite; GRANT ALL PRIVILEGES ON lansite.* TO lansite@localhost IDENTIFIED BY 'lansite';" | mysql -u <admin> -p
+5. Create media directory (e.g.: mkdir -p /mnt/shares/lansite/media && chown -R apache:apache /mnt/shares/lansite)
+6. Copy local_settings.py from document directory to /usr/share/lansite/
+7. Tune up settings.py and local_settings.py due your database requisitions and media directory location
+8. chown -R apache:apache /usr/share/lansite
+9. Start mysql server
+10. start httpd
+9. goto http://server/lansite/
