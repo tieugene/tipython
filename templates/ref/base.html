@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title> {% block title %} {% endblock %} </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<style type="text/css">
+		A.button {
+			border: outset;
+			background: lightgrey;
+			padding: 0px;
+			text-decoration: none;
+			color: black;
+			border-width: 2px;
+		}
+		TD.button {
+			border: outset;
+			background: lightgrey;
+			padding: 0px;
+			text-decoration: none;
+			color: black;
+			border-width: 2px;
+			text-align: center;
+		}
+	</style>
+	<script langauge="JavaScript" type="text/javascript"> function confirmDelete(delUrl) { if (confirm("Are you sure you want to delete")) { document.location = delUrl; } } </script>
+</head>
+<body>
+<center> <h1>
+	<a href="{% url views.index %}"> LanSite </a> &gt;
+	<a href="{% url ref.views.index %}"> Справочники </a> &gt;
+	{% block topbar %} {% endblock %}
+</h1> </center>
+<p> User: {{ user }} </p>
+<hr/>
+{% block body_main %}
+{% endblock %}
+</body>
+</html>

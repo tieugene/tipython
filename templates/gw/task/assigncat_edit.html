@@ -1,0 +1,11 @@
+{% extends "gw/task/assigncat_base.html" %}
+{% block body_main %}
+<p> Новая категория Заданий </p>
+	<form action="." method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/>
+	<a class="button" href="{% url gw.views.assign_list %}"> Отказаться </a>
+	</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+<!-- Phone -->
+{% extends "gw/base.html" %}
+{% block title %} Телефон {% endblock %}
+{% block topbar %} <a href="{% url gw.views.phone_index %}"> Телефоны </a> {% endblock %}
+{% block body_main %}
+<p> Новый Телефон </p>
+<form action=".?next={{ next }}" method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{{ next }}"> Отказаться </a>
+</form>
+{% endblock %}

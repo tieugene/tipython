@@ -1,9 +1,0 @@
-<!-- Address.Browse.Short -->
-{% extends "core/address_base.html" %}
-{% block body_detail %}
-<form action=".{% if next %}?next={{ next }}{% endif %}" method="post">
-	<table> {{ form.as_table }} </table>
-	<input type="submit" value="OK"/>
-	<a class="button" href="{% url apps.core.views.address_detail item.id %}{% if next %}?next={{ next }}{% endif %}"> Cancel </a>
-</form>
-{% endblock %}

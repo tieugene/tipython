@@ -1,0 +1,3 @@
+#!/bin/sh
+. ./VARS
+mysqldump --user=$ROOTUSER --password=$ROOTPASS lansite | gzip > lansite.`date +%y%m%d`.sql.gz

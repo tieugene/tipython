@@ -1,0 +1,14 @@
+<!-- JobRole -->
+{% extends "gw/base.html" %}
+{% block title %} Должность {% endblock %}
+{% block topbar %} <a href="{% url gw.views.jobrole_index %}"> Должность </a> {% endblock %}
+{% block body_main %}
+<p> Новая Должность </p>
+<form action=".?next={{ next }}" method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{{ next }}"> Отказаться </a>
+</form>
+{% endblock %}

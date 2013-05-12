@@ -1,0 +1,8 @@
+<!DOCTYPE JuffEd_Project>
+<project name="lansite.xml">
+ <file path="/mnt/shares/home/eugene/Projects/tidjango/lansite/gw/admin.py"/>
+ <file path="/mnt/shares/home/eugene/Projects/tidjango/lansite/gw/forms.py"/>
+ <file path="/mnt/shares/home/eugene/Projects/tidjango/lansite/gw/models.py"/>
+ <file path="/mnt/shares/home/eugene/Projects/tidjango/lansite/gw/urls.py"/>
+ <file path="/mnt/shares/home/eugene/Projects/tidjango/lansite/gw/views.py"/>
+</project>

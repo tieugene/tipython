@@ -1,0 +1,17 @@
+<!-- OKOPF -->
+{% extends "ref/base.html" %}
+{% block title %} ОКОПФ {% endblock %}
+{% block topbar %} ОКОПФ {% endblock %}
+{% block body_main %}
+{% for item in item_list %}
+	<p>
+		{{ item.id }}:
+		{% if item.get_children_count %}
+			<a href="{% url ref.views.okopf_view item.id %}"> {{ item.name }} </a>
+		{% else %}
+			{{ item.name }}
+		{% endif %}
+		{% if item.shortname %} ({{ item.shortname }}) {% endif %}
+	</p>
+{% endfor %}
+{% endblock %}

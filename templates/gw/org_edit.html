@@ -1,0 +1,14 @@
+<!-- Org -->
+{% extends "gw/base.html" %}
+{% block title %} Организация {% endblock %}
+{% block topbar %} <a href="{% url gw.views.org_index %}"> Организации </a> {% endblock %}
+{% block body_main %}
+<p> {% if mode %} Новая Организация {% else %} Редактировать Организацию {% endif %} </p>
+<form action=".?next={{ next }}" method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{{ next }}"> Отказаться </a>
+</form>
+{% endblock %}

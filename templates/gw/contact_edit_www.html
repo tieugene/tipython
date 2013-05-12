@@ -1,0 +1,22 @@
+<!-- ContactWWW -->
+{% extends "gw/base.html" %}
+{% block title %} WWW {% endblock %}
+{% block topbar %} <a href="{% url gw.views.www_idx %}"> WWW </a> {% endblock %}
+{% block body_main %}
+<p> Редактирование WWW </p>
+<form action=".?next={{ next }}" method="post">
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Записать"/> </td>
+	<a class="button" href="{{ next }}"> Отказаться </a>
+</form>
+{% if itemlist %}
+	<hr/>
+	<h2> Контакты: </h2>
+	<p> (<a class="button" href="{% url gw.views.www_edt item.www.id %}?next={{ next }}"> Изменить WWW для всех </a>) </p>
+	{% for i in itemlist %}
+		<p> {{ i.contact }} </p>
+	{% endfor %}
+{% endif %}
+{% endblock %}

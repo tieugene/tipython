@@ -1,0 +1,11 @@
+#!/bin/sh
+# converts tab-separated file into SQL strings
+# in: stdin, out: stdout
+# params: tablename fields
+echo "BEGIN;"
+echo "DELETE FROM gw_addrshort;"
+while read $i
+do
+	gawk -F "\t" 'OFS=""; {print "INSERT INTO gw_addrshort (id, shortname, fullname) VALUES (", $1, ", \"", $2, "\", \"", $3, "\");"}'
+done
+echo "COMMIT;"

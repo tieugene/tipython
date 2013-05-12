@@ -1,0 +1,23 @@
+<!-- Email -->
+{% extends "gw/base.html" %}
+{% block title %} Должность {% endblock %}
+{% block topbar %} <a href="{% url gw.views.jobrole_index %}"> Должность </a> {% endblock %}
+{% block body_main %}
+<h1> {{ item }} </h1>
+<p>
+	<a class="button" title="Изменить" href="{% url gw.views.jobrole_edit item.id %}"> &nbsp; E &nbsp; </a>
+	<a class="button" title="Удалить" href="{% url gw.views.jobrole_del item.id %}"> &nbsp; X &nbsp; </a>
+</p>
+<!-- Stuff -->
+<hr/>
+<h2> Персонал: </h2>
+<table>
+<tr> <th> Организация </th> <th> Человек </th>
+{% for i in item.orgstuff_set.all %}
+	<tr>
+	<td> <a href="{% url gw.views.contact_detail i.org.id %}"> {{ i.org }} </a> </td>
+	<td> <a href="{% url gw.views.contact_detail i.person.id %}"> {{ i.person }} </a> </td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

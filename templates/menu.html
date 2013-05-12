@@ -1,0 +1,62 @@
+<ul class="ddmenu">
+	<li class="tmitem">
+		<a href="#"> Система </a>
+		<ul class="tmenu">
+			<li class="tmitem"> <a href="logout"> Logout </a> </li>
+			<li class="tmitem"> <a href="admin"> Администрирование </a> </li>
+		</ul>
+	</li>
+	<li class="tmitem">
+		<a href="#"> Запись </a>
+		<ul class="tmenu">
+			<li class="tmitem"> <a href="#"> Добавить </a> </li>
+			<li class="tmitem"> <a href="#"> Изменить </a> </li>
+			<li class="tmitem"> <a href="#"> Удалить </a> </li>
+		</ul>
+	</li>
+	<li class="tmitem">
+		<a href="#"> Groupware </a>
+		<ul class="tmenu">
+			<li class="puitem tmitem">
+				<a href="#"> Контакты </a>
+				<ul class="tmenu">
+					<li class="tmitem"> <a href="{% url gw.views.contact_index %}" title="Организации и Люди"> Все Контакты </a> </li>
+					<li class="tmitem"> <a href="{% url gw.views.org_index %}"> Организации </a> </li>
+					<li class="tmitem"> <a href="{% url gw.views.person_index %}"> Люди </a> </li>
+					<li class="puitem tmitem">
+						<a href="#"> Атрибуты </a>
+						<ul class="tmenu">
+							<li class="tmitem"> <a href="{% url gw.views.address_index %}"> Адреса </a> </li>
+							<li class="tmitem"> <a href="{% url gw.views.phone_index %}"> Телефоны </a> </li>
+							<li class="tmitem"> <a href="{% url gw.views.www_index %}"> WWW </a> </li>
+							<li class="tmitem"> <a href="{% url gw.views.email_index %}"> Email </a> </li>
+							<li class="tmitem"> <a href="{% url gw.views.im_index %}"> IM </a> </li>
+							<li class="tmitem"> <a href="{% url gw.views.jobrole_index %}"> Должности </a> </li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="puitem tmitem">
+				<a href="#"> Задачи </a>
+				<ul class="tmenu">
+					<li class="tmitem"> <a href="{% url gw.views.task_list %}"> Все Задачи </a> </li>
+					<li class="tmitem"> <a href="{% url gw.views.todo_list %}"> ToDo </a> </li>
+					<li class="tmitem"> <a href="{% url gw.views.assign_list %}"> Задания </a> </li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li class="tmitem"> <a href="#"> Справочники </a> </li>
+	<li class="tmitem">
+		<a href="#"> Service </a>
+		<ul class="tmenu">
+			<li class="tmitem"> <a href="#"> Settings </a> </li>
+		</ul>
+	</li>
+	<li class="tmitem">
+		<a href="#"> Help </a>
+		<ul class="tmenu">
+			<li class="tmitem"> <a href="#"> About </a> </li>
+		</ul>
+	</li>
+</ul>

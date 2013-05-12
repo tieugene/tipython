@@ -1,0 +1,2 @@
+#!/bin/sh
+gunzip -c $1 | ../manage.py dbshell

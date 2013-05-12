@@ -1,0 +1,18 @@
+<!-- Person -->
+{% extends "gw/base.html" %}
+{% block title %} Люди {% endblock %}
+{% block topbar %} &gt; Люди {% endblock %}
+{% block body_main %}
+<table cellpadding="1">
+<tr> <th/> <th> Фамилия </th> <th> Имя </th> <th> Отчество </th> <td class="button"> <a href="{% url gw.views.person_add %}" title="Добавить"> + </a> </td> </tr>
+{% for item in item_list %}
+	<tr bgcolor={% cycle 'lightcyan' 'white' %}>
+		<td> <input type="checkbox"/> </td>
+		<td> <a href="{% url gw.views.contact_detail item.id %}"> {{ item.lastname }} </a> </td>
+		<td> <a href="{% url gw.views.contact_detail item.id %}"> {{ item.firstname }} </a> </td>
+		<td> <a href="{% url gw.views.contact_detail item.id %}"> {{ item.midname }} </a> </td>
+		</td>
+	</tr>
+{% endfor %}
+<table>
+{% endblock %}

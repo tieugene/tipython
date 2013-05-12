@@ -1,0 +1,29 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title> {% block title %} {% endblock %} </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link type="text/css" href="{% url views.index %}static/css/base.css" rel="stylesheet"/>
+	<link type="text/css" href="{% url views.index %}static/css/colors.css" rel="stylesheet"/>
+	<link type="text/css" href="{% url views.index %}static/css/menu.css" rel="stylesheet"/>
+	{% block head_css %}  {% endblock %}
+	<script type="text/javascript" src="{% url views.index %}static/js/ask2del.js"> </script>
+	{% block head_js %}  {% endblock %}
+</head>
+<body>
+{% if not user.is_authenticated %}
+	<center> <p> <a class="button" href="{% url django.contrib.auth.views.login %}?next={% url views.index %}"> Вход </a> </p> </center>
+{% else %}
+	{% block body_menu %}
+		{% include "menu.html" %}
+	{% endblock %}
+	<div id="header">
+		<table border="0" width="100%"> <tr class="addressbar">
+			<td align="left"> <a href="{% url views.index %}"> LanSite </a> {% block topbar %} {% endblock %} </td>
+			<td align="right"> User: {{ user }} </td>
+		</tr> </table>
+	</div>
+	<div id="content"> {% block body_main %} {% endblock %} </div>
+{% endif %}
+</body>
+</html>

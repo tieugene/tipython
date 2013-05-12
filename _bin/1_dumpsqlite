@@ -1,0 +1,7 @@
+#!/bin/sh
+# dump all data into SQL
+. ./VARS
+echo "BEGIN;"
+echo "DELETE FROM auth_user;"
+sqlite3 $SQLITEDB ".dump" | grep ^INSERT | grep -f dbs
+echo "COMMIT;"

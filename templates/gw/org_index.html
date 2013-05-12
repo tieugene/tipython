@@ -1,0 +1,15 @@
+<!-- Org -->
+{% extends "gw/base.html" %}
+{% block title %} Организации {% endblock %}
+{% block topbar %} &gt; Организации {% endblock %}
+{% block body_main %}
+<table cellpadding="1">
+<tr> <th/> <th> Наименование </th> <td class="button"> <a href="{% url gw.views.org_add %}" title="Добавить"> + </a> </td> </tr>
+{% for item in item_list %}
+	<tr bgcolor={% cycle 'lightcyan' 'white' %}>
+		<td> <input type="checkbox"/> </td>
+		<td> <a href="{% url gw.views.contact_detail item.id %}"> {{ item }} </a> </td>
+	</tr>
+{% endfor %}
+<table>
+{% endblock %}
