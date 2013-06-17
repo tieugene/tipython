@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-It seems that _nested_ formsets are too hard to aprove.
-So - solution is:
-	* just 1 level of formsets
-	* form - separately, formset[s] - separately
+Доверка (на получение мат-ценностей)
 '''
 
 # 1. django
