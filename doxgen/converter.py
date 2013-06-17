@@ -30,7 +30,7 @@ import tempfile, datetime, sys, os, subprocess, time
 
 # 3. 3rd party
 import wkhtmltopdf	#, rml2pdf
-import wkhtmltox
+#import wkhtmltox
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
