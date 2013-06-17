@@ -49,6 +49,8 @@ PDF forms:
 
 ====
 Dependencies:
+	* django-treebeard (http://download.opensuse.org/repositories/home:/TI_Eugene:/python/)
+	* python-wkhtmltopdf (same)
 	* wkhtmltopdf
 	* [python-webodt]
 	* [python-rml2pdf]
