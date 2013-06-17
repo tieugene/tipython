@@ -50,10 +50,10 @@ PDF forms:
 ====
 Dependencies:
 	* django-treebeard (http://download.opensuse.org/repositories/home:/TI_Eugene:/python/)
-	* python-wkhtmltopdf (same)
-	* wkhtmltopdf
+	* python-wkhtmltopdf (same) (html2pdf)
+	* wkhtmltopdf (=> xorg-x11-server-Xvfb) (http://code.google.com/p/wkhtmltopdf/) - (html2pdf)
 	* [python-webodt]
 	* [python-rml2pdf]
-	* xfdftool (<jre)
+	* xfdftool (=>jre) (http://download.opensuse.org/repositories/home:/TI_Eugene/) (pdf2pdf)
 	* *-pymorphy
 	* python-pytils (...)
