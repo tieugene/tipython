@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+'''
+Заявление
+'''
 
 # 1. django
 from django import forms

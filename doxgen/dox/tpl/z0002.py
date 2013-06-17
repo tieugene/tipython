@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 '''
+Форма 21001 (Регистрация ИП)
+
 It seems that _nested_ formsets are too hard to aprove.
 So - solution is:
 	* just 1 level of formsets
