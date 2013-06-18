@@ -1,17 +1,7 @@
 = Description =
 Application to maintain reglament documents.
-Output format - PDF (and html to debug).
-Input formats:
-	* HTML
-	* ODF
-	* RML
-	* PDF (form)
-Todo:
-	* svg
-	* scribus
-	* inkscape (svg)
-	* LyX
-	* tex
+Output format - PDF[, HTML]
+Input formats: HTML, ODF, RML, PDF (form)
 
 = Structures =
 
@@ -49,11 +39,16 @@ PDF forms:
 
 ====
 Dependencies:
-	* django-treebeard (http://download.opensuse.org/repositories/home:/TI_Eugene:/python/)
-	* python-wkhtmltopdf (same) (html2pdf)
-	* wkhtmltopdf (=> xorg-x11-server-Xvfb) (http://code.google.com/p/wkhtmltopdf/) - (html2pdf)
-	* [python-webodt]
-	* [python-rml2pdf]
-	* xfdftool (=>jre) (http://download.opensuse.org/repositories/home:/TI_Eugene/) (pdf2pdf)
-	* *-pymorphy
-	* python-pytils (...)
+= Common =
+* django-treebeard (http://download.opensuse.org/repositories/home:/TI_Eugene:/python/) - OKVED model
+* [*-pymorphy]
+* [python-pytils]
+= HTML =
+** python-wkhtmltopdf (same) (html2pdf)
+** wkhtmltopdf (=> xorg-x11-server-Xvfb) (http://code.google.com/p/wkhtmltopdf/) - (html2pdf)
+= ODF =
+** <s>django-webodt</s>unoconv
+= RML =
+** python-rml2pdf
+= PDF =
+** xfdftool (=>jre) (http://download.opensuse.org/repositories/home:/TI_Eugene/) (pdf2pdf)

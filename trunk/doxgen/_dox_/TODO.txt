@@ -1,3 +1,12 @@
+= 
+
+= Try =
+* svg
+* scribus (svg)
+* inkscape
+* LyX
+* tex
+
 = HTML2PDF =
 * wkhtmltopdf - ext binary
 * http://code.google.com/p/py-webkit-html-manipulator/ - нечто маленькое и странное - но тоже PyQt4
