@@ -6,7 +6,7 @@ Params:
 	* context_dict: data
 	* template:str - path to template (.../*.html/fodf/rml)
 Returns: HttpResponse object
-	
+
 Input:
 	* [x]htm[l] => [html/]pdf
 	* rml => pdf
@@ -29,8 +29,12 @@ from django.template import RequestContext, Context, loader
 import tempfile, datetime, sys, os, subprocess, time
 
 # 3. 3rd party
-import wkhtmltopdf	#, rml2pdf
-#import wkhtmltox
+# html
+import wkhtmltopdf
+# rml
+import rml2pdf as trml2pdf
+# odf - cli (unoconv)
+# pdf - cli (xfdftool)
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -77,7 +81,7 @@ def	rml2pdf(request, context_dict, template):
 	tpl = loader.get_template(template)
 	tc = {'STATIC_ROOT' : settings.STATIC_ROOT}
 	tc.update(context_dict)
-	response.write(rml2pdf.parseString(tpl.render(Context(tc)).encode('utf-8')))
+	response.write(trml2pdf.parseString(tpl.render(Context(tc)).encode('utf-8')))
 	#response.write(tpl.render(Context(tc)).encode('utf-8'))
 	return response
 
@@ -86,7 +90,7 @@ def	xfdf2pdf(request, context_dict, template):
 	@param template: xfdf-file
 	@param pdfname: pdf form
 	1. render xfdf to stdout
-	2. merge pdf and stdin to stdout (pdftk <template.pdf> fill_form <data.xfdf>|- output <out.pdf>|-)
+	2. merge pdf and stdin to stdout
 	'''
 	pdftpl = os.path.join(settings.PROJECT_DIR, 'templates', template.rsplit('.', 1)[0] + '.pdf')
 	out, err = subprocess.Popen(['xfdftool', '-f', pdftpl], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate(str(loader.get_template(template).render(Context(context_dict))))
@@ -101,23 +105,19 @@ def	xfdf2pdf(request, context_dict, template):
 	return response
 
 def	odf2pdf(request, context_dict, template):
-        # 2. render: need request, context_dict
-	doc = request.POST['doc']	# 0..E (string)
-	tplname = 'doc_0004_%s' % doc	# FIXME:
-	tmp = tempfile.NamedTemporaryFile(suffix='.xhtml', delete=True)		# delete=False to debug
-	tmp.write(render(request, tplname + '.xhtml', context_instance=Context(context_dict), content_type='text/xml').content)
+        # 1. prepare
+	tmp = tempfile.NamedTemporaryFile(suffix='.fodt', delete=True)		# delete=False to debug
+	tmp.write(render(request, template, context_instance=Context(context_dict), content_type='text/xml').content)
 	tmp.flush()
-	outfile = tempfile.NamedTemporaryFile(suffix='.pdf', delete=True)	# delete=False to debug
-	kwargs = {'dpi': 300, 'page_footer': '"[page]"' }
-	if (doc == '2'):	# Устав
-		kwargs['footer_right'] =  '"[page]"'
-	if (doc == 'C'):	# Список участников
-		kwargs['orientation'] =  'Landscape'
-	wkh = wkhtmltopdf.WKhtmlToPdf(tmp.name, outfile.name, **kwargs)
-	wkh.render()
-	response = HttpResponse(content=outfile.read(), mimetype='application/pdf', content_type = 'application/pdf')
-	response['Content-Transfer-Encoding'] = 'binary'
-	response['Content-Disposition'] = (u'attachment; filename=\"%s.pdf\";' % tplname)
+	# 2. render
+	out, err = subprocess.Popen(['unoconv', '-f', 'pdf', '--stdout', tmp.name], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	if (err):
+		response = HttpResponse('We had some errors:<pre>%s</pre>' % err)
+	else:
+		response = HttpResponse(content_type = 'application/pdf')
+		response['Content-Transfer-Encoding'] = 'binary'
+		response['Content-Disposition'] = (u'attachment; filename=\"print.pdf\";')
+		response.write(out)
 	return response
 
 x2pdf = {
