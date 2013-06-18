@@ -123,21 +123,19 @@
 </head>
 <body>
 <div id="topmenu">
-	<div id="tm_index" class=""> <a href="{% url views.index %}"> Главная </a> </div>
-	<div id="tm_dox" class=""> <a href="{% url dox.views.index %}"> Шаблоны </a> </div>
-	<div id="tm_about"> <a href="{% url views.about %}"> О программе </a> </div>
-	<div> <a href="mailto:im@eap.su"> Контакты </a> </div>
+	<div id="tm_index" class=""> <a href="{% url dox.views.index %}"> <img src="{{ STATIC_URL }}img/icon-home.png" alt="Главная"/> </a> </div>
 	<div style="width: 100%"> <b> DoxGen </b> </div>
 	{% if user.is_authenticated %}
 		<div> {{ user.username }} : </div>
-		<div> <a href="{% url django.contrib.auth.views.logout %}?next={% url views.index %}"> Выход </a> </div>
+		<div> <a href="{% url django.contrib.auth.views.logout %}?next={% url views.index %}"> <img src="{{ STATIC_URL }}img/icon-exit.png" alt="Выход"/> </a> </div>
 		{% if user.is_superuser %}
 			<div id="tm_admin"> <a href="{% url admin:index %}"> Админка </a> </div>
 			<div id="tm_log"> <a href="{% url dox.views.log_l %}"> Лог </a> </div>
 		{% endif %}
 	{% else %}
-		<div id="tm_login"> <a href="{% url django.contrib.auth.views.login %}?next={% url views.index %}" rel="nofollow"> Вход </a> </div>
+		<div id="tm_login"> <a href="{% url django.contrib.auth.views.login %}?next={% url views.index %}" rel="nofollow"> <img src="{{ STATIC_URL }}img/icon-enter.png" alt="Вход"/> </a> </div>
 	{% endif %}
+	<div id="tm_about"> <a href="{% url views.about %}"> <img src="{{ STATIC_URL }}img/icon-info-sign.png" alt="О программе"/> </a> </div>
 </div>
 	<div>
 	{% block body_main %}
