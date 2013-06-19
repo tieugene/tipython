@@ -145,3 +145,8 @@ def	GenFormSets(formlist):
 	for k, v in formlist.iteritems():	# i:str - formset key, j:{ K_T_FIELD_A: {}, K_T_FIELD_T: SortedDict() } - of fields definitions
 		retvalue[k] = formset_factory(GenForm(v[K_T_FIELD_T], named = False))
 	return retvalue
+
+try:
+        from local_forms import *
+except ImportError:
+        pass
