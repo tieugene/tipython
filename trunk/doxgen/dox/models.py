@@ -4,9 +4,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# 2. 3rd party
-from treebeard.al_tree import AL_Node
-
 # 3. system
 import datetime, json
 
@@ -64,31 +61,7 @@ class   Log(models.Model):
 		verbose_name            = u'Лог'
 		verbose_name_plural     = u'Логи'
 
-class	SSRF(models.Model):
-	'''
-	Справочник Субъектов Российской Федерации
-	'''
-	name		= models.CharField(max_length=64, verbose_name=u'Наименование')
-
-	def     __unicode__(self):
-		return self.name
-
-	class   Meta:
-		ordering = ('name',)
-		verbose_name = u'ССРФ'
-		verbose_name_plural = u'ССРФы'
-
-class   Okved(AL_Node):
-	id	= models.CharField(max_length=8, primary_key=True, verbose_name=u'Код')
-	parent	= models.ForeignKey('self', related_name='children_set', null=True, db_index=True, verbose_name=u'Группа')
-	name	= models.CharField(max_length=400, blank=False, verbose_name=u'Наименование')
-	node_order_by	= ['parent', 'id']
-
-	def     __unicode__(self):
-		return u'%s: %s' % (self.id, self.name[:100])
-
-	class   Meta:
-		ordering = ('id',)
-		#ordering = ('parent', 'id',)
-		verbose_name = u'ОКВЭД'
-		verbose_name_plural = u'ОКВЭДы'
+try:
+        from local_models import *
+except ImportError:
+        pass
