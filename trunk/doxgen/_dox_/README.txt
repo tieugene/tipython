@@ -47,7 +47,8 @@ Dependencies:
 ** python-wkhtmltopdf (same) (html2pdf)
 ** wkhtmltopdf (=> xorg-x11-server-Xvfb) (http://code.google.com/p/wkhtmltopdf/) - (html2pdf)
 = ODF =
-** <s>django-webodt</s>unoconv
+** <s>django-webodt, unoconv</s>
+** libreoffice-headless
 = RML =
 ** python-rml2pdf
 = PDF =
