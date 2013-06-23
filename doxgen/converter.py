@@ -110,14 +110,18 @@ def	odf2pdf(request, context_dict, template):
 	tmp.write(render(request, template, context_instance=Context(context_dict), content_type='text/xml').content)
 	tmp.flush()
 	# 2. render
-	out, err = subprocess.Popen(['unoconv', '-f', 'pdf', '--stdout', tmp.name], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	tmp_dir = os.path.dirname(tmp.name)
+	out_file = os.path.splitext(tmp.name)[0] + '.pdf'
+	out, err = subprocess.Popen(['libreoffice', '--headless', '--convert-to', 'pdf', '--outdir', os.path.dirname(tmp.name), tmp.name], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	#out, err = subprocess.Popen(['unoconv', '-f', 'pdf', '--stdout', tmp.name], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 	if (err):
 		response = HttpResponse('We had some errors:<pre>%s</pre>' % err)
 	else:
 		response = HttpResponse(content_type = 'application/pdf')
 		response['Content-Transfer-Encoding'] = 'binary'
 		response['Content-Disposition'] = (u'attachment; filename=\"print.pdf\";')
-		response.write(out)
+		response.write(open(out_file).read())
+		os.remove(out_file)
 	return response
 
 x2pdf = {
