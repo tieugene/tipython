@@ -53,3 +53,13 @@ Dependencies:
 ** python-rml2pdf
 = PDF =
 ** xfdftool (=>jre) (http://download.opensuse.org/repositories/home:/TI_Eugene/) (pdf2pdf)
+
+== Howto ==
+=== PDF ===
+* Ставим Adobe Acrobat Pro 7.0
+* Если исходный документ:
+-- Word: Create form from - Word
+-- не Word - создаем PDF из ёкселя, записываем, Create form from - PDF
+* Создаем PDF из файла MSO (Указав Compatibility: Acrobat 7.0 (PDF 1.6))
+* В каждом поле - Object - Binding - Name: как будет называться поле
+* Save as - Static или Dynamic индифферентно
