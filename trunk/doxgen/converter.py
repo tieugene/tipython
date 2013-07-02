@@ -105,6 +105,14 @@ def	xfdf2pdf(request, context_dict, template):
 	return response
 
 def	odf2pdf(request, context_dict, template):
+	'''
+	sudo mkdir /usr/share/httpd/.config
+	sudo chmod a+rwX /usr/share/httpd/.config
+	sudo chown -R apache:apache /usr/share/httpd/.config
+	sudo chown :apache /usr/share/httpd
+	sudo chmod g+w /usr/share/httpd
+	sudo -u apache libreoffice --headless --convert-to pdf --outdir /tmp /tmp/test.fodt
+	'''
         # 1. prepare
 	tmp = tempfile.NamedTemporaryFile(suffix='.fodt', delete=True)		# delete=False to debug
 	tmp.write(render(request, template, context_instance=Context(context_dict), content_type='text/xml').content)
@@ -112,7 +120,7 @@ def	odf2pdf(request, context_dict, template):
 	# 2. render
 	tmp_dir = os.path.dirname(tmp.name)
 	out_file = os.path.splitext(tmp.name)[0] + '.pdf'
-	out, err = subprocess.Popen(['libreoffice', '--headless', '--convert-to', 'pdf', '--outdir', os.path.dirname(tmp.name), tmp.name], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	out, err = subprocess.Popen(['libreoffice', '--headless', '--convert-to', 'pdf', '--outdir', tmp_dir, tmp.name], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 	#out, err = subprocess.Popen(['unoconv', '-f', 'pdf', '--stdout', tmp.name], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 	if (err):
 		response = HttpResponse('We had some errors:<pre>%s</pre>' % err)
