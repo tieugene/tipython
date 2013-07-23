@@ -209,7 +209,7 @@ def	__doc_acu(request, id, mode):
 	if request.method == 'POST':
 		#pprint.pprint(request.POST['_action'])
 		form = formclass(request.POST)
-		if (mode == 0):
+		if (mode == 0):	# ANON, Create/Update -> view/print
 			del form.fields[K_T_F_NAME]
 		formlist = SortedDict()
 		isvalid = form.is_valid()
@@ -228,19 +228,19 @@ def	__doc_acu(request, id, mode):
 					data[k] = dataset	# inject datasets into data
 			__try_to_call(tpl, K_T_F_POST_FORM, data)
 			# split
-			if (mode == 0):		# ANON > PRINT
+			if (mode == 0):		# ANON > PRINT, C/U -> V/P
 				if ((K_T_T in tpl[K_V_MODULE].DATA) and (K_T_T_PRINT in tpl[K_V_MODULE].DATA[K_T_T])):
 					context_dict = {'data': data}
 					template = tpl[K_V_MODULE].DATA[K_T_T][K_T_T_PRINT]
 					if (request.POST.get('_action', None) == u'view'):
-						__try_to_call(tpl, K_T_F_PRE_VIEW, data)
+						__try_to_call(tpl, K_T_F_PRE_VIEW, data)	# Create/Update -> View
 						return converter.html2html(request, context_dict, template)
-					else:			# PRINT
+					else:			# Anon/Create/Update -> PRINT
 						__try_to_call(tpl, K_T_F_PRE_PRINT, data)
 						return __doc_print(request, context_dict, template)
 				else:	# tmp dummy
 					return redirect('dox.views.index')
-			else:	# CREATE, UPDATE
+			else:	# CREATE/UPDATE -> SAVE
 				if (mode == 1):	# CREATE
 					name = data[K_T_F_NAME]
 				else:
@@ -310,7 +310,7 @@ def	__doc_acu(request, id, mode):
 def	__doc_rvp(request, id, mode):
 	'''
 	Read/View/Print
-	:param mode:enum - mode (0: read, 1: html, 2: pdf) 
+	:param mode:enum - mode (0: read, 1: html, 2: pdf)
 	'''
 	__log_request(request)
 	#print "__doc_rvp"

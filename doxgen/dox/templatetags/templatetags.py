@@ -40,3 +40,30 @@ def	sljust(s, lc):
 	if isinstance(s, (int, long)):
 		s = unicode(s)
 	return s.ljust(int(l), c)
+
+@register.filter
+def	left(s, l):
+	'''
+	left part of string
+	@param s:string
+	@param l:int - chars to return
+	'''
+	return s[:int(l)]
+
+@register.filter
+def	right(s, l):
+	'''
+	right part of string
+	'''
+	return s[:-int(l)]
+
+@register.filter
+def	mid(s, lc):
+	'''
+	middle of string
+	'''
+	lc = lc.split(',')
+	if (len(lc) == 1):
+		return s[int(lc[0]):]
+	else:
+		return s[int(lc[0]):int(lc[1])]

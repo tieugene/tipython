@@ -14,7 +14,7 @@ K_T_COMMENTS	= 'c'		# inside K_T_DATA
 K_T_LEGEND	= 'legend'	# inside K_T_DATA
 K_T_FIELD	= 'f'		# inside K_T_DATA - fields (main form)
 K_T_FIELD_T	= 't'		# inside K_T_FIELD; hardcoded in auto_form
-K_BOOL_FIELD	= 'b'		# value of K_T_FIELD_T 
+K_BOOL_FIELD	= 'b'		# value of K_T_FIELD_T
 K_CHAR_FIELD	= 'c'
 K_DATE_FIELD	= 'd'
 K_INT_FIELD	= 'i'
@@ -32,8 +32,10 @@ K_T_T_FORM	= 'f'		# inside K_T_T
 K_T_T_READ	= 'r'		# inside K_T_T
 K_T_T_VIEW	= 'v'		# inside K_T_T
 K_T_T_PRINT	= 'p'		# inside K_T_T
+# forms and formsets
 K_T_FORM	= 'FORM'	# in modulelidct too
 K_T_FORMSETS	= 'FORMSETS'	# in modulelidct too
+# triggers
 K_T_F_LIST	= 'LIST'
 K_T_F_ANON	= 'ANON'
 K_T_F_ADD	= 'CREATE'
