@@ -21,13 +21,16 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 		'birthplace':	'Поребрик-сити',
 		'inn':		'123456789093',
 		'addr_zip':	'192001',
-		'addr_street':	'пр-т Большевиков',
-		'addr_house':	'1',
-		'addr_app':	'пом. 1Н',
+		'addr_street_type':	'пр-т',
+		'addr_street_name':	'Большевиков',
+		'addr_house_type':	'д',
+		'addr_house_name':	'1',
+		'addr_app_type':	'пом',
+		'addr_app_name':	'1Н',
 		'doc_series':	'4005',
 		'doc_no':	'321654',
 		'doc_date':	'01.03.2003',
-		'doc_who':	'15-е отделение',
+		'doc_who':	'15-е о/м Выборгского района Санкт-Петербурга',
 		'doc_kp':	'151235',
 	};
 	function populateForm() {
@@ -112,7 +115,6 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 <ul>
  <li> Только Питер </li>
  <li> Только граждане РФ </li>
- <li> Только совершеннолетние </li>
 </ul>
 <p>
 	<button type="submit"> Печать </button>
@@ -138,11 +140,11 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 </div>
 <div>
 <fieldset>
- <legend> Контактные телефоны: </legend>
+ <legend> Контакты: </legend>
 	<div class="table">
 	$:field_row(form.phone_code)
 	$:field_row(form.phone_no)
-	$:field_row(form.phone_fax)
+	$:field_row(form.email)
 	</div>
 </fieldset>
 </div>
@@ -154,11 +156,16 @@ $# ex2: $for f in form.inputs: $:field_row(f)
  <legend> Место жительства </legend>
 	<div class="table">
 	$:field_row(form.addr_zip, 'required')
-	$:field_row(form.addr_locality)
-	$:field_row(form.addr_street, 'required')
-	$:field_row(form.addr_house, 'required')
-	$:field_row(form.addr_building)
-	$:field_row(form.addr_app)
+	$:field_row(form.addr_locality_type)
+	$:field_row(form.addr_locality_name)
+	$:field_row(form.addr_street_type, 'required')
+	$:field_row(form.addr_street_name, 'required')
+	$:field_row(form.addr_house_type, 'required')
+	$:field_row(form.addr_house_name, 'required')
+	$:field_row(form.addr_building_type)
+	$:field_row(form.addr_building_name)
+	$:field_row(form.addr_app_type)
+	$:field_row(form.addr_app_name)
 	</div>
 </fieldset>
 </div>
@@ -175,6 +182,7 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 </fieldset>
 </div>
 </div>
+$:field_row(form.todo, 'required')
 <div class="err"> $:form.note </div>
 <h3> Выбранные ОКВЭДы: </h3> <em> (первый будет основным) </em>
 <ul id="selected">
