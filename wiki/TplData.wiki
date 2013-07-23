@@ -1,0 +1,18 @@
+#summary Template DATA definition
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Note: *Mandatory* items are bolded.
+
+  * *DATA*(dict):
+    * *K_T_UUID*(str) - uuid
+    * *K_T_NAME*(str) - name
+    * K_T_COMMENTS(str) - comments
+    * K_T_FIELD(SortedDict) - field description
+    * K_T_S(SortedDict) - multivolumes:
+    * K_T_T(dict) - input/output templates
