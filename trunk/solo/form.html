@@ -1,6 +1,8 @@
 $def with(form, okveds, selected)
 $def field_row(v, c=''):
 	<div class="row"> <div class="cell $c"> $v.description </div> <div class="cell"> $:v.render() </div> <div class="cell err"> $:v.note </div> </div>
+$def field_row3(d, v1, v2, c=''):
+	<div class="row"> <div class="cell $c"> $d </div> <div class="cell"> $:v1.render() $:v2.render() </div> <div class="cell err"> $:v2.note </div> </div>
 $# ex1: $:form.lastname.render()
 $# ex2: $for f in form.inputs: $:field_row(f)
 
@@ -21,10 +23,11 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 		'birthplace':	'Поребрик-сити',
 		'inn':		'123456789093',
 		'addr_zip':	'192001',
-		'addr_street_type':	'пр-т',
+		'addr_street_type':	'пр-кт',
 		'addr_street_name':	'Большевиков',
-		'addr_house_type':	'д',
 		'addr_house_name':	'1',
+		'addr_building_type':	'лит',
+		'addr_building_name':	'А',
 		'addr_app_type':	'пом',
 		'addr_app_name':	'1Н',
 		'doc_series':	'4005',
@@ -32,6 +35,9 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 		'doc_date':	'01.03.2003',
 		'doc_who':	'15-е о/м Выборгского района Санкт-Петербурга',
 		'doc_kp':	'151235',
+		'phone_code':	'921',
+		'phone_no':	'1234567',
+		'email':	'ivanoff@example.com',
 	};
 	function populateForm() {
 		$$(document.forms['myForm']).populate(sample);
@@ -110,12 +116,7 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 <body>
 <form method="POST" id="myForm">
 <h1> Оформление ИП </h1>
-<p> Здесь можно бесплатно оформить документы на ИП </p>
-<p> Ограничения: </p>
-<ul>
- <li> Только Питер </li>
- <li> Только граждане РФ </li>
-</ul>
+<p> Здесь можно бесплатно оформить документы на ИП (<i>ограничения: 1. СПб, 2. граждане РФ</i>) </p>
 <p>
 	<button type="submit"> Печать </button>
 	<button type="reset"> Стереть </button>
@@ -156,16 +157,11 @@ $# ex2: $for f in form.inputs: $:field_row(f)
  <legend> Место жительства </legend>
 	<div class="table">
 	$:field_row(form.addr_zip, 'required')
-	$:field_row(form.addr_locality_type)
-	$:field_row(form.addr_locality_name)
-	$:field_row(form.addr_street_type, 'required')
-	$:field_row(form.addr_street_name, 'required')
-	$:field_row(form.addr_house_type, 'required')
+	$:field_row(form.addr_locality)
+	$:field_row3("Улица", form.addr_street_type, form.addr_street_name, 'required')
 	$:field_row(form.addr_house_name, 'required')
-	$:field_row(form.addr_building_type)
-	$:field_row(form.addr_building_name)
-	$:field_row(form.addr_app_type)
-	$:field_row(form.addr_app_name)
+	$:field_row3("Корпус", form.addr_building_type, form.addr_building_name)
+	$:field_row3("Квартира", form.addr_app_type, form.addr_app_name)
 	</div>
 </fieldset>
 </div>
@@ -184,7 +180,8 @@ $# ex2: $for f in form.inputs: $:field_row(f)
 </div>
 $:field_row(form.todo, 'required')
 <div class="err"> $:form.note </div>
-<h3> Выбранные ОКВЭДы: </h3> <em> (первый будет основным) </em>
+<hr/>
+<h3> Выбранные ОКВЭДы: </h3> <em> (первый будет основным; не менее 4 цифр в коде) </em>
 <ul id="selected">
 $# $for v, i, s in selected:
 $#	<li> <input type="checkbox" name="selected" checked="checked" value="$v"/> $i: $s </li>
