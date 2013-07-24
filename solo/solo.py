@@ -1,20 +1,8 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 '''
-example: http://ip-nalog.ru/forma-p21001-1.html
 TODO:
 	* set okveds on error
-	* addr_*_type - dropdowns
-	* addr_locality - dropdown (http://www.mk-kadar.ru/service/ipdocs.htm)
-Кладр:
-1. srf
-2. район: р-н, тер, у
-3. город (волость)
-4. нп
-5. ул
-6. дом: дом
-7. корпус, строение, лит
-8. квартира, помещение, офис
 '''
 
 # 3rd parties
@@ -27,9 +15,11 @@ sys.setdefaultencoding('utf-8')
 
 debug = True
 cache = False
-#forward_url = 'http://localhost/doxgen/doxgen/'
-forward_url = 'http://dox.eap.su/doxgen/doxgen/'
+forward_url = 'http://localhost/doxgen/doxgen/'
+#forward_url = 'http://dox.eap.su/doxgen/doxgen/'
 token = 'fb5168457a495de80c5d7f18205740c2'
+#forward_url = 'http://localhost:8000/doxgen/'
+#token = '3oquwrX9ayqVvZNkztWtwlvcwpVhJHIP'
 try:
         from local_settings import *
 except ImportError:
@@ -303,7 +293,6 @@ def	prepare_21001(f, addr, selected):
 	}
 	for i, v in enumerate(selected):
 		retvalue['okved-%d-code' % i] = v.replace('_', '.').lstrip('a')
-	pprint.pprint(retvalue)
 	return retvalue
 
 def	prepare_pd4(f, addr, selected):
@@ -384,7 +373,6 @@ class	index:
 			for key, func in tocall:
 				url = forward_url + forms[key] + '/a/'
 				r = requests.post(url, data=func(f, addr, selected), cookies=dict(csrftoken=token))
-				print url, r.status_code
 				if (r.status_code == 200):	# r - Responce object
 					if (r.headers['content-type'] == 'application/pdf'):
 						tmp = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
@@ -401,7 +389,8 @@ class	index:
 					break
 			if error:
 				deltmp(tmpfile)
-				return r.raw.read()
+				#print r.status_code, r.raw.read()
+				return r.text
 			else:
 				web.header('Content-Type', 'application/pdf')
 				web.header('Content-Transfer-Encoding', 'binary')
