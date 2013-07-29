@@ -196,6 +196,8 @@ $for okved in okveds:
 		<div class="section">
 		<p class="section" id="a$okved.id.replace('.', '_')"> <button class="section" type="button"> + </button> $okved.id.replace('.', '_'): $okved.name </p>
 		<div class="items">
+	$elif len(okved.id) < 5:
+		<p class="item"> <input type="checkbox" disabled="disabled"/> <span> $okved.id: $okved.name </span> </p>
 	$else:
 		<p class="item" id="a$okved.id.replace('.', '_')"> <input type="checkbox"/> <span> $okved.id: $okved.name </span> </p>
 </div>
