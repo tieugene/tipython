@@ -266,8 +266,6 @@ def	prepare_21001(f, addr, selected):
 		'citizenship':		'1',
 		'addr_zip':		f.addr_zip.get_value(),
 		'addr_srf':		'78',
-		'addr_city_type':	'г',
-		'addr_city_name':	'Санкт-Петербург',
 		'addr_locality_type':	ltype,
 		'addr_locality_name':	lname,
 		'addr_street_type':	f.addr_street_type.get_value(),
