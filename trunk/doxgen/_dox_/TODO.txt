@@ -1,4 +1,25 @@
-= 
+* сервис проверки:
+** inn
+** kpp (ssrf(2)+soun?(2)+kpp?(2)+pk(3))
+** ogrn
+** адреса
+* move k-v tables into k-v DBs
+* kpp_field
+* addr_field (с проверкой по КЛАДР)
+* comments - в "?" и/или title
+* прилепить http://dox.eap.su в демки
+* перейти на другой движок
+
+= z0008 =
++ CourierNew, 18pt
++ Все - заглавными
++ для граждан - лист А=003, лист Б=004
++ в примере "г СПб" - убрать
++ лист Б - фио не заполняется
++ solo: ограничить оквэды - 4 символа
++ solo: д => дом
++ solo: серия документа - с пробелом
++ solo: телефон = "+7(код)номер, без пробелов
 
 = Try =
 * svg
@@ -58,7 +79,7 @@ Django: {{ s|make_list|join:" " }}
 			1. find all selected okveds
 			2. find last (or 1st empty) input fieldset
 			3. add values (id_okved-0-code, id_okved-0-name, add_another())
-			4. patch okved-TOTAL_FORMS, okved-INITIAL_FORMS, 
+			4. patch okved-TOTAL_FORMS, okved-INITIAL_FORMS,
 			5. add empty fieldset
 			6. remove checks
 		* ajax
