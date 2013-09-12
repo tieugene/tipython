@@ -1,2 +1,5 @@
 * set ripe.parent:
-beg BETWEEN beg AND end
+-- store beg, end
+-- find parent
+-- set parent
+beg BETWEEN beg AND end ORDER BY end-beg 
