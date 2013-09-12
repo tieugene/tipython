@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %} RIPE {% endblock %}
+{% block body_main %}
+<table class="itemlist" border="1">
+	<caption>
+		{% include "paginator.html" %}
+	</caption>
+	<thead>
+		<tr>
+			<th> Наименование </th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for object in object_list %}
+		<tr>
+			<!--td> <a href="{# object.get_absolute_url #}"> {{ object }} </a> </td-->
+			<td > <a href="{% url az.views.ripe_detail object.pk %}"> {{ object.get_beg }} </a> </td>
+			<td> {{ object.get_end }} </td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
