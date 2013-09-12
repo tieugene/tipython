@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %} RIPE net {% endblock %}
+{% block body_main %}
+<table>
+<thead>
+	<tr> <th> # </td> <td> K </td> <td> V </td> </tr>
+</thead>
+	<tr> <td> 0 </td> <td> inetnum: </td> <td> {{ object.get_beg }} - {{ object.get_end }} </td> </tr>
+	{% for i in object.ripec_set.all %}
+		<tr>
+			<td> {{ i.c }} </td>
+			<td> {{ i.k }} </td>
+			<td> {{ i.v }} </td>
+		</tr>
+	{% endfor %}
+</table>
+{% endblock %}
