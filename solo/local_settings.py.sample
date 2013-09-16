@@ -1,0 +1,4 @@
+debug = False
+cache = True
+forward_url = 'http://localhost/doxgen/doxgen/'
+token = 'notoken'
