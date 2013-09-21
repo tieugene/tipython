@@ -17,7 +17,7 @@
     <br>
 
 
-    <form class="form-horizontal" role="form" action="{% url clients:clients.views.updated client.id %}" method="post">
+    <form class="form-horizontal" role="form" action="{% url clients.views.updated client.id %}" method="post">
         {% csrf_token %}
         <div class="form-inline">
             <label for="id" class="control-label col-lg-1 col-lg-offset-10">ID</label>

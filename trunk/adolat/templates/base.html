@@ -49,13 +49,13 @@
         <ul class="nav navbar-nav">
             {% block topMenu %}
                 <li class="active"><a href="{% url views.index %}">Глагне</a></li>
-                <li><a href="{% url reception:reception.views.index %}" class="">Регистратура</a></li>
+                <li><a href="{% url reception.views.index %}" class="">Регистратура</a></li>
             {% endblock topMenu %}
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Справочники <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{% url clients:clients.views.index %}" class="">Клиенты</a></li>
+                    <li><a href="{% url clients.views.index %}" class="">Клиенты</a></li>
                 </ul>
             </li>
         </ul>

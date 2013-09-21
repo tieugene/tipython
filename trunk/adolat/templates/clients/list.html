@@ -13,7 +13,7 @@
     <table class="">
         <tr>
             <td>
-                <a href="{% url clients:clients.views.add %}"><span class="glyphicon glyphicon-plus-sign"></span>&nbspДобавить</a>
+                <a href="{% url clients.views.add %}"><span class="glyphicon glyphicon-plus-sign"></span>&nbspДобавить</a>
             </td>
             <td><div>&nbsp|&nbsp</div></td>
             <td>
@@ -48,7 +48,7 @@
         {% for client in latest_client_list %}
             <tr class="{% cycle 'row1' 'row2' %}">
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{% url clients:clients.views.detail client.id %}">{{ client.get_fio }}</a></td>
+                <td><a href="{% url clients.views.detail client.id %}">{{ client.get_fio }}</a></td>
                 <td>{{ client.birthDate }}</td>
                 <td>{{ client.phone }}</td>
                 <td>{{ client.email }}</td>
