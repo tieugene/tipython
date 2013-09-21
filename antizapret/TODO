@@ -2,4 +2,17 @@
 -- store beg, end
 -- find parent
 -- set parent
-beg BETWEEN beg AND end ORDER BY end-beg 
+beg BETWEEN beg AND end ORDER BY end-beg
+
+Capcha:
+django-recaptcha.noarch : A Django application for adding ReCAPTCHA to a form
+python-django-recaptcha-works.noarch : Django module for integrate the reCaptcha
+python-django-simple-captcha.noarch : Django application to add captcha images
+
+Confirm:
+
+python-django-helpdesk
+django-todo
+graphite-web.noarch : A Django webapp for enterprise scalable realtime graphing
+python-django-contact-form
+python-django-tracking.noarch : Django site visitor tracking, including basic blacklisting

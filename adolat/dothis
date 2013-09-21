@@ -1,0 +1,22 @@
+#!/bin/sh
+# script to maintain django project
+
+RETVAL=0
+
+MGR="./manage.py"
+case "$1" in
+cleanpyc)
+	find . -type f -name "*.pyc" -delete
+	;;
+sync)	# [re]create DB structure
+	echo "no" | $MGR syncdb
+	;;
+help)
+	echo "Das ist help"
+	;;
+*)
+	echo $"Usage: $0 {cleanpyc|sync||help}"
+	RETVAL=1
+esac
+
+exit $RETVAL

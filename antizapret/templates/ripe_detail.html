@@ -14,4 +14,15 @@
 		</tr>
 	{% endfor %}
 </table>
+{% if object.parent %}
+<p> Parent: <a href="{% url az.views.ripe_detail object.parent.pk %}"> {{ object.parent }} </a> </p>
+{% endif %}
+{% if object.children.all.count %}
+<p> Children: </p>
+<table>
+{% for i in object.children.all %}
+<tr> <td> <a href="{% url az.views.ripe_detail i.pk %}"> {{ i.get_beg }} </a> </td> <td> {{ i.get_end }} </td> </tr>
+{% endfor %}
+</table>
+{% endif %}
 {% endblock %}
