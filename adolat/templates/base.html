@@ -49,7 +49,7 @@
         <ul class="nav navbar-nav">
             {% block topMenu %}
                 <li class="active"><a href="{% url views.index %}">Глагне</a></li>
-                <li><a href="/reception/" class="">Регистратура</a></li>
+                <li><a href="{% url reception:reception.views.index %}" class="">Регистратура</a></li>
             {% endblock topMenu %}
 
             <li class="dropdown">
