@@ -9,9 +9,6 @@ from django.http import Http404
 from django.core.urlresolvers import reverse
 from clients import forms
 
-
-
-
 def index(request):
     try:
         latest_client_list = Client.objects.order_by('-lastName')[:50]
@@ -20,17 +17,9 @@ def index(request):
         raise Http404
     return render(request, 'clients/list.html',context)
 
-
-
-
-
 def detail(request, client_id):
     client = get_object_or_404(Client,pk=client_id)
     return render(request, 'clients/detail.html',{'client': client})
-
-
-
-
 
 def edit(request, client_id):
     client = get_object_or_404(Client, pk=client_id)
@@ -61,21 +50,11 @@ def edit(request, client_id):
         client.save()
         # Always return an HttpResponseRedirect after successfully dealing # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse('clients:updated', args=(client.id,)))
-
-
-
-
-
+        return HttpResponseRedirect(reverse('clients.views.updated', args=(client.id,)))
 
 def updated(request, client_id):
     client = get_object_or_404(Client,pk=client_id)
     return render(request, 'clients/updated.html',{'client': client})
-
-
-
-
-
 
 def add(request):
     if request.method == 'POST': # If the form has been submitted...
@@ -87,23 +66,15 @@ def add(request):
             # ...
             # subject = form.cleaned_data['subject']
             # message = form.cleaned_data['message']
-            return HttpResponseRedirect(reverse('clients:updated', args=(client.id,))) # Redirect after POST
+            return HttpResponseRedirect(reverse('clients.views.updated', args=(client.id,))) # Redirect after POST
     else:
         form = forms.AddClientForm(auto_id=True) # An unbound form
 
     return render(request, 'clients/client.html', {'form': form,})
 
-
-
-
-
-
 def remove(request, client_id):
     client = get_object_or_404(Client,pk=client_id)
     return render(request, 'clients/updated.html',{'client': client})
-
-
-
 
 # TODO: Добавить jQuery UI виджеты для выбора даты и формата даты и телефона
 # TODO: Добавить иконки для выбора действий в списке клиентов
