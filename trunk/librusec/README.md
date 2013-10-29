@@ -15,5 +15,4 @@ Todo:
 - ну или вырезать всё кроме body
 - и/или сначала xmlindent
 
-dos2unix *.fb2
-xmlindent -i0 *.fb2
+cat *.fb2 | dos2unix | xmlindent -i0 | extract_header.py > ...
