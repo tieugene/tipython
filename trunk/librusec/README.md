@@ -1,7 +1,7 @@
 Lib.rus.ec на 20131029:
 * 95GB
 * 64 архива
-* 266100 файлов
+* 266100 файлов (till 453299)
 (zipinfo -t $i | gawk '{pint $1}')
 
 Todo:
@@ -16,3 +16,4 @@ Todo:
 - и/или сначала xmlindent
 
 cat *.fb2 | dos2unix | xmlindent -i0 | extract_header.py > ...
+folders: 453 folders with up to 999 files
