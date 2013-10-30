@@ -12,10 +12,10 @@ output = True	#
 
 for line in sys.stdin:
 	if (output):
-		if line == '<body>\n':
+		if line.startswith('<body'):
 			output = False
 		else:
 			sys.stdout.write(line)
 	else:
-		if line == '</body>\n':
+		if line.startswith('</body'):
 			output = True
