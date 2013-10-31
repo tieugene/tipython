@@ -6,7 +6,7 @@
 # TODO: xmlindent stops on error
 INDIR="/mnt/shares/ftp/pub/_Lib.rus.ec - Официальная/lib.rus.ec"
 TEST="fb2-000024-030559.zip"
-# 293 files
+# 293 files - 1'52"
 #TEST="fb2-203897-204340.zip"
 OUTD="/mnt/shares/tmp/librusec"
 INFILE=$INDIR/$TEST
@@ -19,6 +19,6 @@ do
     DIR=`echo $FULLNAME | cut -c1-3`
     OUTDIR=$OUTD/$DIR
     if [ ! -d "$OUTDIR" ]; then mkdir $OUTDIR; fi
-    unzip -c "$INFILE" $i 2>/dev/null | dos2unix | xmlindent -i0 | ./extract_header.py | xmlindent -i1 > $OUTDIR/$FULLNAME.xml
+    unzip -q -c "$INFILE" $i | dos2unix | XMLLINT_INDENT="" xmllint --recover --nonet --format - 2>/dev/null | ./extract_header.py | xmlindent -i1 > $OUTDIR/$FULLNAME.xml
     # exit
 done
