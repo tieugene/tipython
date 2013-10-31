@@ -17,3 +17,10 @@ Todo:
 
 cat *.fb2 | dos2unix | xmlindent -i0 | extract_header.py > ...
 folders: 453 folders with up to 999 files
+
+Try: xmlwf
+
+----
+Еще вариант xract_header: cp stdin > stdout: (body может быть несколько
+* от начала до </description> и от <binary - и до конца
+* или вырезать <stylesheet ..</stylesheet> и <body..</body>
