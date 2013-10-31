@@ -27,5 +27,4 @@ while(True):
 			output = True
 			idx0 = idx1 + 7
 		else:
-			print "Can't close body"
 			exit(1)
