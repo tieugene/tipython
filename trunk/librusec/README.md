@@ -24,3 +24,15 @@ Try: xmlwf
 Еще вариант xract_header: cp stdin > stdout: (body может быть несколько
 * от начала до </description> и от <binary - и до конца
 * или вырезать <stylesheet ..</stylesheet> и <body..</body>
+* sed?... sed -e '/<body/,/<\/body>/d'
+
+So, stages:
+* dumb extract headers
+* chkeck (xmllint) and format (--format) them [recode (--encode)] [gzip (--compress)]
+* TBC
+
+----
+Серано херня получается.
+Лучше так:
+* выкусить все картинки (id, content-type="image/jpeg"/"image/png")
+* sed _только_ от "<?xml" до "</description>"

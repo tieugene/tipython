@@ -19,6 +19,6 @@ do
     DIR=`echo $FULLNAME | cut -c1-3`
     OUTDIR=$OUTD/$DIR
     if [ ! -d "$OUTDIR" ]; then mkdir $OUTDIR; fi
-    unzip -q -c "$INFILE" $i | dos2unix | XMLLINT_INDENT="" xmllint --recover --nonet --format - 2>/dev/null | ./extract_header.py | xmlindent -i1 > $OUTDIR/$FULLNAME.xml
+    unzip -q -c "$INFILE" $i | dos2unix | XMLLINT_INDENT="" xmllint --recover --nonet --format - 2>/dev/null | ./extract_header-0.py | xmlindent -i1 > $OUTDIR/$FULLNAME.xml
     # exit
 done
