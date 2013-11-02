@@ -62,10 +62,7 @@ def	char_data(cdata):
 		binary += cdata
 
 def	prepare_parsers():
-	global parser_image, parser_binary
-	parser_image = xml.parsers.expat.ParserCreate()
-	parser_image.StartElementHandler = start_image_element
-
+	global parser_binary
 	parser_binary = xml.parsers.expat.ParserCreate()
 	parser_binary.StartElementHandler = start_binary_element
 	parser_binary.EndElementHandler = end_binary_element
@@ -89,6 +86,7 @@ def	xtract_images(start):
 			idx2 = fb2.find('</binary>', idx1)
 			if (idx2 > 0):
 				idx2 += 9
+				prepare_parsers()
 				parser_binary.Parse(fb2[idx1:idx2], True)
 				idx0 = idx2
 			else:
@@ -97,15 +95,16 @@ def	xtract_images(start):
 			break
 
 def	main(fp):
-	global pfx, fb2, header
-	prepare_parsers()
+	global pfx, fb2, header, parser_image
+	parser_image = xml.parsers.expat.ParserCreate()
+	parser_image.StartElementHandler = start_image_element
 	fb2 = sys.stdin.read()
 	eof = xtract_header()
 	if eof < 0:
 		exit(1)
 	pfx = fp
 	xtract_images(eof)
-	#print header
+	print header
 
 if (__name__ == '__main__'):
 	if len(sys.argv) != 2:
