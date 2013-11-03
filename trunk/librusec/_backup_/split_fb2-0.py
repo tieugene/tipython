@@ -18,17 +18,15 @@ Algo:
 * parse header to find all of <cover><image> and store href
 * find all of <binary>..</binary>
 * save if id is in hrefs
-
-Result: 193 files on 1'14.5" (2.6 fps)
 '''
 
-import sys, os, base64, zipfile
+import sys, os, base64
 import xml.parsers.expat
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-ipfx = None
+pfx = None
 fb2 = None
 parser_image = None
 parser_binary = None
@@ -37,13 +35,6 @@ hrefs = set()
 id = None
 mime = None
 binary = ''
-
-errcode = {
-	1: '</description> not found',
-	2: 'invalid description',
-	3: '</binary not found',
-	4: 'invalid binary',
-}
 
 def	start_image_element(name, attrs):
 	global hrefs
@@ -59,9 +50,9 @@ def	start_binary_element(name, attrs):
 		mime = attrs['content-type']
 
 def	end_binary_element(name):
-	global ipfx, id, mime, binary
+	global pfx, id, mime, binary
 	if (id):
-		with open(ipfx + '_' + id, 'w') as f:
+		with open(pfx + '_' + id, 'w') as f:
 			f.write(base64.b64decode(binary))
 		id = None
 		mime = None
@@ -88,7 +79,7 @@ def	xtract_header():
 		try:
 			parser_image.Parse(header, True)
 		except:
-			retvalue = -2
+			exit(2)
 	return retvalue
 
 def	xtract_images(start):
@@ -113,49 +104,22 @@ def	xtract_images(start):
 			break
 	return retvalue
 
-def	parse_fb2(z, fn, hdir, idir):
-	'''
-
-	@param fp - prefix
-	'''
-	global ipfx, fb2, header, parser_image, hrefs
-	# prepare filenames and folders
-	n, e = fn.split('.')
-	fullname = '%06d' % int(n)
-	dirname = fullname[:3]
-	# let's go
+def	main(fp):
+	global pfx, fb2, header, parser_image
 	parser_image = xml.parsers.expat.ParserCreate()
 	parser_image.StartElementHandler = start_image_element
-	fb2 = z.open(fn).read()
-	hrefs.clear()
+	fb2 = sys.stdin.read()
 	eof = xtract_header()
 	if eof < 0:
-		return 0-eof
-	idir = os.path.join(idir, dirname)
-	if not os.path.exists(idir):
-		os.mkdir(idir)
-	ipfx = os.path.join(idir, fullname)
+		exit(1)
+	pfx = fp
 	err = xtract_images(eof)
 	if (err):
-		return err
-	hdir = os.path.join(hdir, dirname)
-	if not os.path.exists(hdir):
-		os.mkdir(hdir)
-	with open(os.path.join(hdir, fullname+'.xml'), 'w') as f:
-		f.write(header)
-
-def	parse_zip(zn, hdir, idir):
-	z = zipfile.ZipFile(zn, 'r')
-	filelist = z.namelist()
-	filelist.sort()
-	for fn in filelist:
-		print fn
-		err = parse_fb2(z, fn, hdir, idir)
-		if err:
-			print >> sys.stderr, errcode[result]
+		exit(err)
+	print header
 
 if (__name__ == '__main__'):
-	if len(sys.argv) != 4:
-		print >> sys.stderr, 'Usage: %s <zipfile> <hdrdir> <imgdir>' % sys.argv[0]
+	if len(sys.argv) != 2:
+		print >> sys.stderr, 'Usage: %s <imgprefix> < fb2' % sys.argv[0]
 		sys.exit(1)
-	parse_zip(sys.argv[1], sys.argv[2], sys.argv[3])
+	main(sys.argv[1])
