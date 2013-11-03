@@ -149,10 +149,10 @@ def	parse_zip(zn, hdir, idir):
 	filelist = z.namelist()
 	filelist.sort()
 	for fn in filelist:
-		print fn
+		#print fn
 		err = parse_fb2(z, fn, hdir, idir)
 		if err:
-			print >> sys.stderr, errcode[result]
+			print >> sys.stderr, fn, errcode[err]
 
 if (__name__ == '__main__'):
 	if len(sys.argv) != 4:

@@ -34,6 +34,15 @@ in descrription/title-info
 * genres (count, count per file)
 * lang
 
+= To test =
+* time unzip -q -c ... > /dev/null
+* => - bash w/ inram tmpfile:
+** unzip to tmpfile
+** cut header (if possible...0
+** enca -r <file> => USC-2 | iconv ... | sed ... | sed (utf-16/utf-8))
+** parse header on images > stdout
+** cut <binaries (sed) | parse_bin
+
 = Ideas =
 * CRC64 as fo zip as for files inside (CRC-64-ISO, CRC-64-ECMA)
 
@@ -65,4 +74,19 @@ FictionBook
 DB:
 = Main =
 = Refs =
-* genre
+* lang:
+    * name
+    * desc[ru]
+    * desk[en]
+    * Aliases[]
+* genre:
+    * name
+    * desk[ru]
+    * desk[en]
+    * Aliases
+* Author:
+    * lastname[ru, en]
+    * firstname[ru, en]
+    * midname[ru, en]
+    * nickname[ru, en]
+    * IDs (lib.rus.ec.id, flibusta id, etc)
