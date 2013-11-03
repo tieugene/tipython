@@ -36,3 +36,33 @@ in descrription/title-info
 
 = Ideas =
 * CRC64 as fo zip as for files inside (CRC-64-ISO, CRC-64-ECMA)
+
+= TODO =
+FictionBook
+- desciption (1)
+  - title-info (1)
+    - author (+)
+      - first-name - str
+      - middle-name - st
+      - last-name - str
+      - nickname
+      - ?id
+    - genre (+) - str
+    - book-title (1) - str
+    - annotation (?)
+      - p
+      - poem
+      - cite
+      - subtitle
+      - empty-line
+      - ?table
+    - coverpage (?)
+      - image (+)
+        - => binary
+    - lang - str
+    - sequence (*) - str, int
+
+DB:
+= Main =
+= Refs =
+* genre
