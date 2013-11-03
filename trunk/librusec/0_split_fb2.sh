@@ -25,6 +25,6 @@ do
         OUTIDIR=$IMGD/$DIRNAME
         if [ ! -d "$OUTHDIR" ]; then mkdir $OUTHDIR; fi
         if [ ! -d "$OUTIDIR" ]; then mkdir $OUTIDIR; fi
-        unzip -q -c "$INFILE" $i | ./split_fb2.py $OUTIDIR/$FULLNAME | dos2unix > $OUTHDIR/$FULLNAME.xml
+        unzip -q -c "$INFILE" $i | ./split_fb2.py $OUTIDIR/$FULLNAME > $OUTHDIR/$FULLNAME.xml 2>/dev/null || echo "Err: $i"
     done
 done

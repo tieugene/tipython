@@ -9,7 +9,9 @@ Output:
 * stdout - fb2 header
 Errors:
 * 1 - </description> not found
-* 2 - </binary> not found
+* 2 - bad description
+* 3 - </binary> not found
+* 4 - bad binary
 Algo:
 * cut off header (till </description>)
 * add trailing </FicionBook>
@@ -74,25 +76,33 @@ def	xtract_header():
 	if retvalue > 0:
 		retvalue += 14
 		header = fb2[:retvalue] + '</FictionBook>'
-		parser_image.Parse(header, True)
+		try:
+			parser_image.Parse(header, True)
+		except:
+			exit(2)
 	return retvalue
 
 def	xtract_images(start):
 	global fb2
 	idx0 = start
-	while (True):
+	retvalue = 0
+	while (retvalue == 0):
 		idx1 = fb2.find('<binary', idx0)
 		if (idx1 > 0):
 			idx2 = fb2.find('</binary>', idx1)
 			if (idx2 > 0):
 				idx2 += 9
 				prepare_parsers()
-				parser_binary.Parse(fb2[idx1:idx2], True)
+				try:
+					parser_binary.Parse(fb2[idx1:idx2], True)
+				except:
+					retvalue = 4
 				idx0 = idx2
 			else:
-				exit(2)
+				retvalue = 3
 		else:
 			break
+	return retvalue
 
 def	main(fp):
 	global pfx, fb2, header, parser_image
@@ -103,7 +113,9 @@ def	main(fp):
 	if eof < 0:
 		exit(1)
 	pfx = fp
-	xtract_images(eof)
+	err = xtract_images(eof)
+	if (err):
+		exit(err)
 	print header
 
 if (__name__ == '__main__'):
