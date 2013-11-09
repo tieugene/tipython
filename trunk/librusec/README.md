@@ -1,5 +1,17 @@
 http://www.linux.org.ru/forum/development/2093852
 http://xmlstar.sourceforge.net/doc/UG/ch05s01.html
+http://www.fictionbook.org/index.php/%D0%AD%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%D1%8B_%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%D0%B0_FictionBook
+
+Timer (1GB):
+* unzip all > /dev/null: 31"
+* unzip all > tmp/: 70"
+* unzip each > null: 61"
+* unzip each > tmp/: 97"
+* unzip all > null: 55'18"
+
+Cover:
+	* in title-info, src-title-info - 0..1
+	* image - 1+
 
 Lib.rus.ec на 20131029 (http://torrent.rus.ec/viewtopic.php?p=60):
 * 95GB
