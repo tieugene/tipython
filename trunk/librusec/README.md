@@ -8,15 +8,32 @@ Timer (1GB):
 * unzip each > null: 61"
 * unzip each > tmp/: 97"
 * unzip all > null: 55'18"
+* 0_split-3 fb2-203897-204340.zip (95MB, 293 files): 75"
+* 0_extract-3 fb2-203897-204340.zip (95MB, 293 files): 23" (1st - 18'27")
+* 0_extract-3 fb2-203897-204340.zip (95MB, 293 files): 19" (1st - 12'12")
+
+01-01:	0732"
+02-10:	0392"
+11-20:	2349"
+21-35:	3276" (fb2-193823-199572.zip..fb2-292000-299999.zip)
+36-65:	127m53.538s (fb2-193823-199572.zip..fb2-292000-299999.zip)
+
+expanded: 270133 (24 oops - это дубли)
+
+Чюдеса:
+--w-rw-rw- 1 eugene users 3375356 янв 20  2009 137241.fb2
+--w-rw-rw- 1 eugene users 4557369 янв 20  2009 137273.fb2
+--w-rw-rw- 1 eugene users 1025894 янв 23  2009 137532.fb2
+--w-rw-rw- 1 eugene users 2326463 янв 23  2009 137579.fb2
 
 Cover:
 	* in title-info, src-title-info - 0..1
 	* image - 1+
 
 Lib.rus.ec на 20131029 (http://torrent.rus.ec/viewtopic.php?p=60):
-* 95GB
-* 64 архива
-* 266100 файлов (till 453299)
+* 97GB
+* 65 архива
+* 270157 файлов (till 453...) - 270133 уникальных (24 - дубли)
 
 Stages:
 +0. split fb2 into dumb headers and cover images (10 zips/6h)
