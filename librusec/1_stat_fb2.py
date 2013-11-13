@@ -6,7 +6,7 @@ Input:
 * 1 - src dir
 Output:
 * stdout - fb2 header
-Result: 6'45" (1240 fps)
+Result: 4m43.229s
 TODO:
 	* add fn column for dicts
 '''
