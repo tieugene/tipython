@@ -1,7 +1,6 @@
 #!/bin/sh
 # tool to extract headers from ziped fb2s (ver.4 - text 1st).
 # Usage: extract_headers.sh <librusec dir> <output dir>
-# Timer: 285m54.375s (4h45m54" == 15 fps)
 SRCDIR="src"
 DSTDIR="dst"
 TMPDIR="tmp"
@@ -13,7 +12,6 @@ TMP1=`mktemp -q`
 
 for j in `cat librusec.lst`; do
 	unzip -q -d $TMPDIR $SRCDIR/$j
-	chmod a+rwX $TMPDIR/*
 	for i in `ls $TMPDIR`; do
 		# 0. prepare
 		FILENAME=`basename $i .fb2`
@@ -26,8 +24,9 @@ for j in `cat librusec.lst`; do
 		SRCFILE="$TMPDIR/$i"
 		DSTFILE="$OUTDIR/$FULLNAME.xml"
 
-		sed -e 's/?>/?>\n/; s/<\/description>/<\/description>\n/' $SRCFILE |\
-		sed -n '1,/<\/description>/p' > $TMP
+		# hack: Там чЮдеса...
+		chmod a+rwX $SRCFILE
+		sed -e 's/<\/description>/<\/description>\n/' $SRCFILE | sed -n -e '/<?xml/,/<\/description>/p' > $TMP
 		# 1. Plan A - not utf-16
 		if [ -s $TMP ]; then
 			(cat $TMP; echo "</FictionBook>") | XMLLINT_INDENT=" " xmllint --format --encode utf-8 --noblanks --nonet --recover --output $DSTFILE - 2>/dev/null
