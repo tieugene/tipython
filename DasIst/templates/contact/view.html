@@ -1,0 +1,14 @@
+{% extends "contact/base.html" %}
+{% block content %}
+Contact:
+<table>
+	<tr> <th> Фамилия: </th> <td> {{ item.lastname }} </td> </tr>
+	<tr> <th> Имя: </th> <td> {{ item.firstname }} </td> </tr>
+	<tr> <th> Отчество: </th> <td> {{ item.midname }} </td> </tr>
+</table>
+<p>
+ [ <a href="{{ url_for('contact.edit', id=item.id) }}"> Edit </a> ]
+ [ <a href="{{ url_for('contact.delete', id=item.id) }}"> Del </a> ]
+</p>
+<p> <a href="{{ url_for('contact.index') }}"> Index </a> </p>
+{% endblock %}
