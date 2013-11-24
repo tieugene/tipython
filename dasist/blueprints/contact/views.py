@@ -39,6 +39,7 @@ def add():
             lastname=form.lastname.data,
             firstname=form.lastname.data,
             midname=form.midname.data,
+            birthdate=form.birthdate.data,
             )
         db.session.add(item)
         db.session.commit()
