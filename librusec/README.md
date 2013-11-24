@@ -2,6 +2,8 @@ http://www.linux.org.ru/forum/development/2093852
 http://xmlstar.sourceforge.net/doc/UG/ch05s01.html
 http://www.fictionbook.org/index.php/%D0%AD%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%D1%8B_%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%D0%B0_FictionBook
 
+http://traumlibrary.net/
+
 Timer (1GB):
 * unzip all > /dev/null: 31"
 * unzip all > tmp/: 70"
@@ -86,10 +88,6 @@ in descrription/title-info
 ? ну или не прошедшие xml (2584) - скипать и ждать патчей (bsdiff, libxdiff, vbindiff, xdelta)
 * compare unpack | epack w/ unpack
 
-To test;
-* repack zip into gz/bz2/lzma/xz
-* unpack from ...
-
 = Ideas =
 * CRC64 as fo zip as for files inside (CRC-64-ISO, CRC-64-ECMA)
 * TheLib - all of fb2s (id == CRC64/MD5)
@@ -138,3 +136,15 @@ DB:
     * midname[ru, en]
     * nickname[ru, en]
     * IDs (lib.rus.ec.id, flibusta id, etc)
+
+= INP format =
+http://forum.home-lib.net/index.php?/forum/17-inpx/
+http://forum.home-lib.net/index.php?/topic/329-%D0%BA%D0%B0%D0%BA-%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D1%82%D1%8C-inpx-%D1%84%D0%B0%D0%B9%D0%BB-librusec-online/
+AUTHOR;GENRE;TITLE;SERIES;SERNO;FILE;SIZE;LIBID;DEL;EXT;DATE;
+* кодировка - UTF-8
+* строка заканчивается ^M
+* каждое поле разделяется ^D:
+-- Фамилия,[Имя],[Отчество]: x *
+-- category:
+-- title
+--
