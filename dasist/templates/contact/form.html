@@ -1,0 +1,17 @@
+{% from "__formhelper.html" import render_field %}
+<form method=post action=".">
+  <dl>
+    {{ render_field(form.lastname) }}
+    {{ render_field(form.firstname) }}
+    {{ render_field(form.midname) }}
+  </dl>
+  <p>
+	<button type="submit"> Save </button>
+	{% if id %}
+	 <a href="{{ url_for('contact.view', id=id) }}">
+	{% else %}
+	 <a href="{{ url_for('contact.index') }}">
+	{% endif %}
+	 <button type="button"> Cancel </button> </a>
+  </p>
+</form>
