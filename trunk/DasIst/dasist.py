@@ -15,8 +15,8 @@ app = flask.Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-from blueprints.contacts.views import contacts
-app.register_blueprint(contacts)
+from blueprints.contact.views import contact
+app.register_blueprint(contact)
 
 @app.errorhandler(404)
 def not_found(error):

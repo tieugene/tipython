@@ -1,7 +1,7 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
-# Description: 
-__author__ = 'sdvinfo@gmail.com'
+# Description:
+__author__ = 'ti.eugene@gmail.com'
 
 from dasist import app
 
