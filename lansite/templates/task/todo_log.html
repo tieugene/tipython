@@ -1,9 +1,0 @@
-{% extends "task/todo_base.html" %}
-{% block onload_js %} {{ block.super }} setmenu("menu_task_todo_log"); {% endblock %}
-{% block body_main %}
-<ul>
-{% for object in object_list %}
-	<li> {{ object.action_time }}: {{ object.user }}, {{ object.action_flag }} {{ object.change_message }} </li>
-{% endfor %}
-<ul>
-{% endblock %}

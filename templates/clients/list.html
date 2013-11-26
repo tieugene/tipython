@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <blockquote class="pull-right">
+        <p>Клиент всегда прав!</p>
+        <small>Возможно, народная мудрость</small>
+    </blockquote>
+    <br><br><br>
+    <h1>Клиенты</h1>
+
+    <table class="">
+        <tr>
+            <td>
+                <a href="{% url clients.views.add %}"><span class="glyphicon glyphicon-plus-sign"></span>&nbspДобавить</a>
+            </td>
+            <td><div>&nbsp|&nbsp</div></td>
+            <td>
+                <a href="#"><span class="glyphicon glyphicon-pencil"></span>&nbspРедактировать</a>
+            </td>
+            <td><div>&nbsp|&nbsp</div></td>
+            <td>
+                <a href="#"><span class="glyphicon glyphicon-minus-sign"></span>&nbspУдалить</a>
+            </td>
+            <td><div>&nbsp|&nbsp</div></td>
+            <td>
+                <a href="#"><span class="glyphicon glyphicon-search"></span>&nbspПоиск</a>
+            </td>
+
+        </tr>
+
+
+    </table>
+
+    <br>
+    <table class="table table-hover">
+        <caption></caption>
+        <thead><h4 class="text-info">Список клиентов клиники:</h4></thead>
+        <tr>
+            <th>#</th>
+            <th>ФИО:</th>
+            <th>Дата рождения:</th>
+            <th>Телефон:</th>
+            <th>E-mail:</th>
+        </tr>
+        <tbody class="text-center">
+        {% for client in latest_client_list %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url clients.views.detail client.id %}">{{ client.get_fio }}</a></td>
+                <td>{{ client.birthDate }}</td>
+                <td>{{ client.phone }}</td>
+                <td>{{ client.email }}</td>
+
+            </tr>
+        {% empty %}
+            К сожалению, по вашему запросу ничего не найдено...
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
