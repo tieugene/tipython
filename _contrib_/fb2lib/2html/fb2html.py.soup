@@ -1,0 +1,16 @@
+#!/bin/env python
+# -*- coding: utf-8 -*-
+'''
+Tool to convert FB2 documents into HTML
+'''
+
+import sys
+from BeautifulSoup import BeautifulStoneSoup as Soup
+
+def	main(argv):
+	xml = open(argv[0]).read()
+	soup = Soup(xml)
+	print soup.prettify()
+
+if (__name__ == '__main__'):
+	main(sys.argv[1:])

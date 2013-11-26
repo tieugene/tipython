@@ -1,0 +1,20 @@
+done	name		tag
+===============================
++	body		body
++	book-title	title
+?	cite		cite?		set forward style
++	description	head
++	empty-line	p/
+?	epigraph	-		set forward style
++	FictionBook	html
++	p		p		?.. due upper level
+?	poem		-		set forward style
+?	section		- (level++)
+?	stanza		-		set forward style
+?	subtitle	p class...
++	table		table
++	tr		tr
++	td		td
++	text-author	p class...
+?	title		Hx?.. (+1)	p inside
+?	v		p class...	1 line in stanzsa => ?..s
