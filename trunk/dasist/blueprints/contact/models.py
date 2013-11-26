@@ -18,7 +18,7 @@ class Contact(db.Model):
     lastname	= db.Column(db.String(length=64))
     midname	= db.Column(db.String(length=64))
     birthdate	= db.Column(db.DateTime())
-    addresses	= db.relationship('Address', backref='contact', lazy='dynamic')
+    addresses	= db.relationship('ContactAddress', backref='contact', lazy='dynamic')
 
     def __unicode__(self):
         return '%s %s %s' % (self.lastname, self.firstname, self.midname)
@@ -27,7 +27,18 @@ class AddressType(db.Model):
     id		= db.Column(db.Integer, autoincrement=True, primary_key=True)
     name	= db.Column(db.String(length=16))
 
-class Address(db.Model):
+class ContactAddress(db.Model):
     id		= db.Column(db.Integer, autoincrement=True, primary_key=True)
-    addr	= db.Column(db.String(length=254))
+    value	= db.Column(db.String(length=254))
+    contact_id	= db.Column(db.Integer, db.ForeignKey('contact.id'))
+
+class IMType(db.Model):
+    id		= db.Column(db.Integer, autoincrement=True, primary_key=True)
+    code	= db.Column(db.String(length=8))
+    name	= db.Column(db.String(length=16))
+
+class ContactIM(db.Model):
+    id		= db.Column(db.Integer, autoincrement=True, primary_key=True)
+    value	= db.Column(db.String(length=254))
+    #type_id	= db.Column(db.Integer, db.ForeignKey('imtype.id'))
     contact_id	= db.Column(db.Integer, db.ForeignKey('contact.id'))
