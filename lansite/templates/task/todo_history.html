@@ -1,8 +1,0 @@
-{% extends "task/assign_base.html" %}
-{% block body_main %}
-<ul>
-{% for object in object_list %}
-	<li> {{ object.action_time }}: {{ object.user }}, {{ object.action_flag }} {{ object.change_message }} </li>
-{% endfor %}
-<ul>
-{% endblock %}

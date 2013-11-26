@@ -1,0 +1,5 @@
+1. download ftp://ftp.ripe.net/ripe/dbase/split/ripe.db.inetnum.gz
+2. gunzip them
+3. filter RU records: db_2_inet_ru.py ripe.db.inetnum > ripe.db.inetnum.ru
+4. create sql: inet_ru_2_sql.py ripe.db.inetnum.ru > ripe.db.inetnum.ru.sql
+5. import data (17'18"): sqlite3 antizapret.db < _contrib_/ripe.db.inetnum.ru.sql

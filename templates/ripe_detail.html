@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %} RIPE net {% endblock %}
+{% block body_main %}
+<table>
+<thead>
+	<tr> <th> # </td> <td> K </td> <td> V </td> </tr>
+</thead>
+	<tr> <td> 0 </td> <td> inetnum: </td> <td> {{ object.get_beg }} - {{ object.get_end }} </td> </tr>
+	{% for i in object.ripec_set.all %}
+		<tr>
+			<td> {{ i.c }} </td>
+			<td> {{ i.k }} </td>
+			<td> {{ i.v }} </td>
+		</tr>
+	{% endfor %}
+</table>
+{% if object.parent %}
+<p> Parent: <a href="{% url az.views.ripe_detail object.parent.pk %}"> {{ object.parent }} </a> </p>
+{% endif %}
+{% if object.children.all.count %}
+<p> Children: </p>
+<table>
+{% for i in object.children.all %}
+<tr> <td> <a href="{% url az.views.ripe_detail i.pk %}"> {{ i.get_beg }} </a> </td> <td> {{ i.get_end }} </td> </tr>
+{% endfor %}
+</table>
+{% endif %}
+{% endblock %}

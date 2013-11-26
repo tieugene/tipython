@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %} RIPE {% endblock %}
+{% block body_main %}
+<table>
+ <tr>
+  <td> <a href="{% url az.views.ripe_list %}"> <button type="button"> All </button> </a> </td>
+  <td> <a href="{% url az.views.ripe_list_top %}"> <button type="button"> Top </button> </a> </td>
+  <td>
+   <form method="post" action="{% url az.views.search_ip %}"> {% csrf_token %}
+    <table>
+     <tr>
+      <td> {{ ipform.as_p }} </td>
+      <td> <button type="submit"> &gt; </button> </td>
+      <td> <button type="reset"> x </button> </td>
+     </tr>
+    </table>
+   </form>
+  </td>
+  <td>
+   <form method="post" action="{% url az.views.search_word %}"> {% csrf_token %}
+    <table>
+     <tr>
+      <td> {{ kwform.as_p }} </td>
+      <td> <button type="submit"> &gt; </button> </td>
+      <td> <button type="reset"> x </button> </td>
+     </tr>
+    </table>
+   </form>
+  </td>
+ </tr>
+</table>
+
+<table class="itemlist" border="1">
+	<caption>
+		{% include "paginator.html" %}
+	</caption>
+	{% for object in object_list %}
+		<tr>
+			<!--td> <a href="{# object.get_absolute_url #}"> {{ object }} </a> </td-->
+			<td> <a href="{% url az.views.ripe_detail object.pk %}"> {{ object.get_beg }} </a> </td>
+			<td> {{ object.get_end }} </td>
+		</tr>
+	{% endfor %}
+</table>
+{% endblock %}
