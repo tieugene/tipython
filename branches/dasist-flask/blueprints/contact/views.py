@@ -40,9 +40,12 @@ def add():
             firstname=form.lastname.data,
             midname=form.midname.data,
             birthdate=form.birthdate.data,
+	    #addresses=form.addresses.entries,	# - dict
             )
-        db.session.add(item)
-        db.session.commit()
+	#item.addresses.add('safg')
+	#print form.addresses.data - [{'value': u'addressssss'}]
+        db.session.add(item)	# item.id = None
+        db.session.commit()	# => item.id = int
 	return redirect(url_for('contact.view', id=item.id))
     return render_template('contact/form.html', form=form, id=None)
 
@@ -58,8 +61,11 @@ def edit(id):
     item = models.Contact.query.get_or_404(id)
     form = forms.ContactForm(request.form, item)
 
-    if form.validate_on_submit():
     #if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
+	# form.data - list
+	# del form.data['addresses'] - ok, addresses not deleted
+	# form.addresses.entries - wtforms.fields.core.FormField object
         form.populate_obj(item)
 	db.session.commit()
         return redirect(url_for('contact.view', id=item.id))

@@ -1,6 +1,7 @@
 {% from "__formhelper.html" import render_field %}
-{{ form.errors }}
+{% if formerrors %} {{ form.errors }} {% endif %}
 <form method=post action=".">
+{{ form.hidden_tag() }}
   <table>
     {{ render_field(form.lastname) }}
     {{ render_field(form.firstname) }}
@@ -20,9 +21,11 @@
 	    </td>
 	  </tr>
           {% endfor %}
+	  <!--tr> <td> <input id="addresses-0-value" name="addresses-0-value" type="text"> </td> </tr-->
         <table>
       </td>
     </tr>
+    {# render_field(form.newaddress) #}
   </table>
   <p>
 	<button type="submit"> Save </button>
