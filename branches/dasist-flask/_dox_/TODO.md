@@ -39,3 +39,15 @@ https://flask-wtf.readthedocs.org/en/latest/
 и всю эту хрень оформить как middleware
 
 Extra row: <input id="addresses-0-value" name="addresses-0-value" type="text" value="">
+
+Right now:
+* Add:
+-- add address
+-- del address
+-- process after error (add, del)
+* Edit:
+-- add new address
+-- del new address
+-- del existant address
+-- recall existant address
+-- process after error

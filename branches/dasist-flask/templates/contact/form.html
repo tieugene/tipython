@@ -1,5 +1,27 @@
+{% extends "contact/base.html" %}
 {% from "__formhelper.html" import render_field %}
+{% block head_js %}
+<script type="text/javascript">
+        function delContactAddress() {
+		// del parent row; update ids below (?)
+		console.log("del:");
+		//target = $(this).parent().parent();
+		//console.log(target);
+		$(this).parent().parent().remove();
+        };
+        function addContactAddress() {
+		// add row to end of children of table (id="contactaddresses")
+
+		parent = $('#contactaddresses');
+		i = parent.children().length;
+		console.log('add: '+i);
+		a = $('<tr> <td> <input id="addresses-'+i+'-value" name="addresses-'+i+'-value" type="text"> </td> <td> <button type="button" onClick="delContactAddress();"> x </button> </td> </tr>');
+		a.appendTo(parent);
+        };
+</script>
+{% endblock %}
 {% if formerrors %} {{ form.errors }} {% endif %}
+{% block content %}
 <form method=post action=".">
 {{ form.hidden_tag() }}
   <table>
@@ -10,20 +32,24 @@
     <tr>
       <th> Адреса: </th>
       <td>
-        <table>
-          <tr> <th> Адрес </th> </tr>
+        <table border="1">
+	  <thead>
+            <tr> <th> Адрес </th> <th/> </tr>
+	  </thead>
+	  <tbody id="contactaddresses">
           {% for address in form.addresses %}
-          <tr>
-	    <td> {{ address.id }} </td>
-	    <td> {{ address.value }}
-              {% if address.value.errors %}
-                <ul class=errors> {% for error in address.value.errors %} <li>{{ error }}</li> {% endfor %} </ul>
-              {% endif %}
-	    </td>
-	  </tr>
+            <tr>
+	      <td> {{ address.value }}
+                {% if address.value.errors %}
+                  <ul class=errors> {% for error in address.value.errors %} <li>{{ error }}</li> {% endfor %} </ul>
+                {% endif %}
+	      </td>
+	      <td/>
+	    </tr>
           {% endfor %}
-	  <!--tr> <td> <input id="addresses-0-value" name="addresses-0-value" type="text"> </td> </tr-->
+	  </tbody>
         <table>
+	<button type="button" onClick='addContactAddress();'> + </button>
       </td>
     </tr>
     {# render_field(form.newaddress) #}
@@ -38,3 +64,4 @@
 	<button type="button"> Cancel </button> </a>
   </p>
 </form>
+{% endblock %}

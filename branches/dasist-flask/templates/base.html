@@ -2,11 +2,15 @@
 <html lang="ru" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8" />
-    <title>{% block title %} Das Ist... {% endblock %}</title>
-    {% block css %}
-    {% endblock css %}
-    {% block script %}
-    {% endblock %}
+    <title> {% block title %} Das Ist... {% endblock %} </title>
+	{% block head_css %}  {% endblock %}
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"> </script>
+        <!--script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui.js"> </script-->
+        <!--script type="text/javascript" src="{{ STATIC_URL }}js/jquery.maskedinput.js"> </script-->
+        <!--script type="text/javascript" src="{{ STATIC_URL }}js/jquery.meio.mask.min.js"> </script-->
+        <!--script type="text/javascript" src="{{ STATIC_URL }}js/datepicker_lang.js"> </script-->
+        <!--script type="text/javascript" src="{{ STATIC_URL }}js/misc.js"> </script-->
+        {% block head_js %}  {% endblock %}
 </head>
 <body>
 {% block content %}  {% endblock %}

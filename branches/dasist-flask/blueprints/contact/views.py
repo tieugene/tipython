@@ -37,7 +37,7 @@ def add():
     if form.validate_on_submit():
         item = models.Contact(
             lastname=form.lastname.data,
-            firstname=form.lastname.data,
+            firstname=form.firstname.data,
             midname=form.midname.data,
             birthdate=form.birthdate.data,
 	    #addresses=form.addresses.entries,	# - dict
