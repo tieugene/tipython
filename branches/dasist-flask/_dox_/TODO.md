@@ -34,4 +34,6 @@ https://flask-wtf.readthedocs.org/en/latest/
 -- записать
 -- новые - добавить
 
+Чтобы добыть id - надо отключить form.addresses и проставить ContactAddressForm's самому (с id)
+
 и всю эту хрень оформить как middleware

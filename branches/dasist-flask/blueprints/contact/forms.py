@@ -31,6 +31,6 @@ class ContactForm(Form):
 	firstname = wtforms.StringField(u'Имя',validators=[Required(),validators.Length(max=64)])
 	midname = wtforms.StringField(u'Отчество',validators=[validators.Length(max=64)])
 	birthdate = wtforms.DateField(u'Дата рождения')
-	addresses = wtforms.FieldList(wtforms.FormField(ContactAddressForm))
+	addresses = wtforms.FieldList(wtforms.FormField(ContactAddressForm), min_entries=1)
 	#newaddress = wtforms.FormField(NewContactAddressForm)
 	#addresses = wtforms.FieldList(wtforms.FormField(ContactAddressForm, default=None), min_entries=1)
