@@ -67,16 +67,21 @@ def edit(id):
     #  form = ContactForm(obj=Person)
     # person = db.session.query(models.Person).get_or_404(person_id)
     item = models.Contact.query.get_or_404(id)
-    form = forms.ContactForm(request.form, item)
+    #form = forms.ContactForm(request.form, item)
 
-    if request.method == 'POST' and form.validate():
     #if form.validate_on_submit():
-	# form.data - list
-	# del form.data['addresses'] - ok, addresses not deleted
-	# form.addresses.entries - wtforms.fields.core.FormField object
-        form.populate_obj(item)
-	db.session.commit()
-        return redirect(url_for('contact.view', id=item.id))
+    if request.method == 'POST':
+	form = forms.ContactForm(request.form)
+	if form.validate():
+		# form.data - list
+		# del form.data['addresses'] - ok, addresses not deleted
+		# form.addresses.entries - wtforms.fields.core.FormField object
+		form.populate_obj(item)
+		db.session.commit()
+		return redirect(url_for('contact.view', id=item.id))
+    else:
+	form = forms.ContactForm(obj=item)
+	#print form.addresses.data
     return render_template('contact/form.html', form=form, id=item.id)
 
 @contact.route('/<int:id>/del/', methods=['GET'])
