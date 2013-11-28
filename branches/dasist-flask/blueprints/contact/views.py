@@ -34,7 +34,8 @@ def index():
 @contact.route('/add/', methods=['GET','POST'])
 def add():
     form = forms.ContactForm(request.form)
-    if form.validate_on_submit():
+    if request.method == 'POST' and form.validate():
+    #if form.validate_on_submit():
         item = models.Contact(
             lastname=form.lastname.data,
             firstname=form.firstname.data,
@@ -63,12 +64,13 @@ def view(id):
 
 @contact.route('/<int:id>/edit/', methods=['GET','POST'])
 def edit(id):
+    #  form = ContactForm(obj=Person)
     # person = db.session.query(models.Person).get_or_404(person_id)
     item = models.Contact.query.get_or_404(id)
     form = forms.ContactForm(request.form, item)
 
-    #if request.method == 'POST' and form.validate():
-    if form.validate_on_submit():
+    if request.method == 'POST' and form.validate():
+    #if form.validate_on_submit():
 	# form.data - list
 	# del form.data['addresses'] - ok, addresses not deleted
 	# form.addresses.entries - wtforms.fields.core.FormField object
