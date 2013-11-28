@@ -37,3 +37,5 @@ https://flask-wtf.readthedocs.org/en/latest/
 Чтобы добыть id - надо отключить form.addresses и проставить ContactAddressForm's самому (с id)
 
 и всю эту хрень оформить как middleware
+
+Extra row: <input id="addresses-0-value" name="addresses-0-value" type="text" value="">

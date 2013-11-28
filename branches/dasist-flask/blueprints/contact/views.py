@@ -46,6 +46,12 @@ def add():
 	#print form.addresses.data - [{'value': u'addressssss'}]
         db.session.add(item)	# item.id = None
         db.session.commit()	# => item.id = int
+	for child in form.addresses.entries:
+		db.session.add(models.ContactAddress(
+			value=child.value.data,
+			contact_id=item.id,
+		))
+	db.session.commit()
 	return redirect(url_for('contact.view', id=item.id))
     return render_template('contact/form.html', form=form, id=None)
 
