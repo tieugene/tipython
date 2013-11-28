@@ -2,20 +2,23 @@
 {% from "__formhelper.html" import render_field %}
 {% block head_js %}
 <script type="text/javascript">
-        function delContactAddress() {
+        function delContactAddress(n) {
 		// del parent row; update ids below (?)
 		console.log("del:");
+		//todel = $(this).parent().parent();
+		//console.log(todel.children().length);
 		//target = $(this).parent().parent();
 		//console.log(target);
-		$(this).parent().parent().remove();
+		//todel.remove();
+		n.parentNode.parentNode.parentNode.removeChild(n.parentNode.parentNode);
+		// TODO: replce ids and names
         };
         function addContactAddress() {
 		// add row to end of children of table (id="contactaddresses")
-
 		parent = $('#contactaddresses');
 		i = parent.children().length;
 		console.log('add: '+i);
-		a = $('<tr> <td> <input id="addresses-'+i+'-value" name="addresses-'+i+'-value" type="text"> </td> <td> <button type="button" onClick="delContactAddress();"> x </button> </td> </tr>');
+		a = $('<tr> <td> <input id="addresses-'+i+'-value" name="addresses-'+i+'-value" type="text"> </td> <td> <button type="button" onClick="delContactAddress(this);"> x </button> </td> </tr>');
 		a.appendTo(parent);
         };
 </script>
