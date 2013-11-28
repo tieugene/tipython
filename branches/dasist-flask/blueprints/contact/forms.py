@@ -16,6 +16,7 @@ from wtforms import validators
 class ContactAddressForm(Form):
 	id = wtforms.IntegerField(u'ID')
 	value = wtforms.StringField(u'Адрес',validators=[Required(), validators.Length(max=254)])
+	todel = wtforms.BooleanField(u'X')
 
 	def __init__(self, csrf_enabled=False, *args, **kwargs):
 		super(ContactAddressForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
