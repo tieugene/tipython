@@ -3,21 +3,15 @@
 {% block head_js %}
 <script type="text/javascript">
         function delContactAddress(n) {
-		// del parent row; update ids below (?)
-		console.log("del:");
-		//todel = $(this).parent().parent();
-		//console.log(todel.children().length);
-		//target = $(this).parent().parent();
-		//console.log(target);
-		//todel.remove();
-		n.parentNode.parentNode.parentNode.removeChild(n.parentNode.parentNode);
+		//console.log("del:");
+		$(n).parent().parent().remove();
 		// TODO: replce ids and names
         };
         function addContactAddress() {
 		// add row to end of children of table (id="contactaddresses")
 		parent = $('#contactaddresses');
 		i = parent.children().length;
-		console.log('add: '+i);
+		//console.log('add: '+i);
 		a = $('<tr> <td> <input id="addresses-'+i+'-value" name="addresses-'+i+'-value" type="text"> </td> <td> <button type="button" onClick="delContactAddress(this);"> x </button> </td> </tr>');
 		a.appendTo(parent);
         };
@@ -33,7 +27,7 @@
     {{ render_field(form.midname) }}
     {{ render_field(form.birthdate) }}
     <tr>
-      <th> Адреса: </th>
+      <th valign="top"> Адреса: </th>
       <td>
         <table border="1">
 	  <thead>
