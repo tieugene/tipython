@@ -12,7 +12,7 @@
 		parent = $('#contactaddresses');
 		i = parent.children().length;
 		//console.log('add: '+i);
-		a = $('<tr> <td/> <td> <input id="addresses-'+i+'-value" name="addresses-'+i+'-value" type="text"> </td> <td> <button type="button" onClick="delContactAddress(this);"> x </button> </td> </tr>');
+		a = $('<tr> <td/> <td> <input id="newaddresses-'+i+'-value" name="newaddresses-'+i+'-value" type="text"> </td> <td> <button type="button" onClick="delContactAddress(this);"> x </button> </td> </tr>');
 		a.appendTo(parent);
         };
 </script>
@@ -21,7 +21,7 @@
 {% block content %}
 <form method=post action=".">
 {{ form.hidden_tag() }}
-  <table>
+  <table border="1">
     {{ render_field(form.lastname) }}
     {{ render_field(form.firstname) }}
     {{ render_field(form.midname) }}
@@ -30,23 +30,28 @@
       <th valign="top"> Адреса: </th>
       <td>
         <table border="1">
-	  <thead>
+	  <!--thead>
             <tr> <th/> <th> Адрес </th> <th/> </tr>
-	  </thead>
+	  </thead-->
 	  <tbody id="contactaddresses">
-          {% for address in form.addresses %}
+	  {{ render_field(form.addresses) }}
+          {% for address in form.newaddresses %}
             <tr>
-	      <td> <input id="{{address.id}}-id" name="{{address.id}}-id" type="hidden" value="{{address.data.id}}"> </td>
+	      <!--td> <input id="{{address.id}}-id" name="{{address.id}}-id" type="hidden" value="{{address.data.id}}"> </td-->
 	      <td> {{ address.value }}
                 {% if address.value.errors %}
-                  <ul class=errors> {% for error in address.value.errors %} <li>{{ error }}</li> {% endfor %} </ul>
+                  <ul class=errors>
+		    {% for error in address.value.errors %}
+		      <li> {{ error }} </li>
+		    {% endfor %}
+		  </ul>
                 {% endif %}
 	      </td>
-	      <td> {{address.todel}} </td>
+	      <!--td> {{address.todel}} </td-->
 	    </tr>
           {% endfor %}
 	  </tbody>
-        <table>
+        </table>
 	<button type="button" onClick='addContactAddress();'> + </button>
       </td>
     </tr>

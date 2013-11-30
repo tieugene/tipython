@@ -47,9 +47,9 @@ def add():
 	#print form.addresses.data - [{'value': u'addressssss'}]
         db.session.add(item)	# item.id = None
         db.session.commit()	# => item.id = int
-	for child in form.addresses.entries:
+	for address in form.addresses.entries:
 		db.session.add(models.ContactAddress(
-			value=child.value.data,
+			value=address.value.data,
 			contact_id=item.id,
 		))
 	db.session.commit()
@@ -71,12 +71,23 @@ def edit(id):
 
     #if form.validate_on_submit():
     if request.method == 'POST':
-	form = forms.ContactForm(request.form)
+	form = forms.ContactForm(request.form)	# , item
 	if form.validate():
-		# form.data - list
-		# del form.data['addresses'] - ok, addresses not deleted
-		# form.addresses.entries - wtforms.fields.core.FormField object
+		# 1. what to del:
+		todel = set()
+		for address in form.addresses.entries:
+			if (address.todel.data):
+				todel.add(int(address.data['id']))
+		# 2. what to add:
+		while len(form.newaddresses.entries):
+			address = form.newaddresses.pop_entry()
+			db.session.add(models.ContactAddress(
+					value=address.value.data,
+					contact_id=item.id,
+				))
 		form.populate_obj(item)
+		for id in todel:
+			db.session.delete(models.ContactAddress.query.get(id))
 		db.session.commit()
 		return redirect(url_for('contact.view', id=item.id))
     else:
