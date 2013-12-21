@@ -55,13 +55,10 @@ def	bill_add(request):
 	'''
 	if request.method == 'POST':
 		#path = request.POST['path']
-		form = forms.BillForm(request.POST, request.FILES)
+		form = forms.BillAddForm(request.POST, request.FILES)
 		if form.is_valid():
-			#print "Form is valid"
-			#print form.cleaned_data['img'].content_type	# image/jpeg
-			#src_path = os.path.join(settings.INBOX_ROOT, path)
-			image = form.cleaned_data['img']
 			bill = form.save(commit=False)
+			image = form.cleaned_data['img']
 			bill.filename	= image.name
 			bill.mimetype	= image.content_type
 			bill.assign	= request.user
@@ -81,7 +78,7 @@ def	bill_add(request):
 			else:
 				return redirect('bills.views.bill_list')
 	else:
-		form = forms.BillForm()
+		form = forms.BillAddForm()
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
@@ -103,6 +100,7 @@ def	bill_get(request, id):
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
 	response = HttpResponse(mimetype=bill.mimetype)
+	response['Content-Transfer-Encoding'] = 'binary'
 	response['Content-Disposition'] = '; filename=' + bill.filename
 	response.write(open(bill.get_path()).read())
 	return response
@@ -113,7 +111,23 @@ def	bill_edit(request, id):
 	'''
 	Update (edit) bill
 	'''
-	return __doc_acu(request, id, 2)
+	bill = models.Bill.objects.get(pk=int(id))
+	if request.method == 'POST':
+		form = forms.BillEditForm(request.POST, request.FILES, instance = bill)
+		if form.is_valid():
+			image = form.cleaned_data['img']
+			if image:
+				bill = form.save(commit=False)
+				bill.filename	= image.name
+				bill.mimetype	= image.content_type
+				with open(bill.get_path(), 'wb') as file:
+					file.write(image.read())
+			bill.save()
+			#f.save_m2m()
+			return redirect('bills.views.bill_list')
+	else:
+		form = forms.BillEditForm(instance = bill)
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
 def	bill_delete(request, id):

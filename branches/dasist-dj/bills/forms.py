@@ -31,9 +31,21 @@ class	BillForm(forms.ModelForm):
 		model = models.Bill
 		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood',)
 
+class	BillAddForm(BillForm):
+	img = forms.FileField()
+
 	def clean_img(self):
 		image = self.cleaned_data['img']
 		if image.content_type not in mime_available:
 			raise forms.ValidationError('File must be PNG, TIF or PDF!')
-		#print image.content_type
+		return image
+
+class	BillEditForm(BillForm):
+	img = forms.FileField(required=False)
+
+	def clean_img(self):
+		image = self.cleaned_data['img']
+		if image:
+			if image.content_type not in mime_available:
+				raise forms.ValidationError('File must be PNG, TIF or PDF!')
 		return image
