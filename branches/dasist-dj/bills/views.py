@@ -120,8 +120,12 @@ def	bill_delete(request, id):
 	'''
 	Delete bill
 	'''
-	#os.unlink(f.name)
-	return __doc_rvp(request, id, 1)
+	bill = models.Bill.objects.get(pk=int(id))
+	path = bill.get_path()
+	if os.path.exists(path):
+		os.unlink(path)
+	bill.delete()
+	return redirect('bills.views.bill_list')
 
 @login_required
 def	bill_accept(request, id):

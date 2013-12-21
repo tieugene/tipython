@@ -10,7 +10,9 @@ import os, datetime
 
 class	File(models.Model):
 	'''
-	TODO: cache
+	TODO:
+	* cache
+	* delete
 	'''
 	filename	= models.CharField(max_length=255, db_index=True, blank=False, verbose_name=u'Filename')
 	mimetype	= models.CharField(max_length=64, verbose_name=u'MIME')
