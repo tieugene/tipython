@@ -11,13 +11,12 @@ from django.views.generic.list_detail import object_list, object_detail
 from django.utils.datastructures import SortedDict
 
 # 2. system
-import os, imp, pprint
+import os, imp, pprint, tempfile
 
 # 3. 3rd party
 
 # 4. my
-#import forms, models
-import models
+import models, forms
 
 PAGE_SIZE = 20
 
@@ -27,7 +26,6 @@ def	bill_list(request):
 	List of bills
 	ACL: assign|approve=user
 	'''
-	#tpl = moduledict[uuid]
 	#if request.user.is_authenticated():
 	#	queryset = models.Doc.objects.filter(user=request.user, type=uuid).order_by('name')
 	#else:
@@ -44,34 +42,85 @@ def	bill_list(request):
 @login_required
 def	bill_add(request):
 	'''
-	Anonymous form
+	Add new (draft) bill
+	TODO:
+	- BillRoute
+	So (transaction):
+	- pre-save form
+	- fill all fields
+	- save bill
+	- save m2m
+	- save file
 	'''
-	return __doc_acu(request, uuid, 0)
+	if request.method == 'POST':
+		#path = request.POST['path']
+		form = forms.BillForm(request.POST, request.FILES)
+		if form.is_valid():
+			#print "Form is valid"
+			#print form.cleaned_data['img'].content_type	# image/jpeg
+			#src_path = os.path.join(settings.INBOX_ROOT, path)
+			image = form.cleaned_data['img']
+			bill = form.save(commit=False)
+			bill.filename	= image.name
+			bill.mimetype	= image.content_type
+			bill.assign	= request.user
+			bill.approve	= request.user
+			bill.isalive	= True
+			bill.isgood	= False
+			bill.save()
+			#bill.flush()
+			with open(os.path.join(settings.BILLS_ROOT, '%08d' % bill.pk), 'wb') as file:
+				file.write(image.read())
+			#f.save_m2m()
+			return redirect('bills.views.bill_list')
+			try:
+				os.makedirs(file.get_full_dir())
+				os.rename(src_path, file.get_full_path())
+			except:
+				transaction.rollback()
+			else:
+				return redirect('bills.views.bill_list')
+	else:
+		form = forms.BillForm()
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
 def	bill_view(request, id):
 	'''
-	Read (view) document
+	Read (view) bill
 	'''
-	return __doc_rvp(request, id, 0)
+	return  object_detail (
+		request,
+		queryset = models.Bill.objects.all(),
+		object_id = id,
+		template_name = 'bills/detail.html',
+	)
 
 @login_required
 def	bill_edit(request, id):
 	'''
-	Update (edit) document
+	Update (edit) bill
 	'''
 	return __doc_acu(request, id, 2)
 
 @login_required
 def	bill_accept(request, id):
 	'''
-	Preview document
+	Accept bill
 	'''
 	return __doc_rvp(request, id, 1)
 
 @login_required
 def	bill_reject(request, id):
 	'''
-	Print document
+	Reject bill
 	'''
 	return __doc_rvp(request, id, 2)
+
+@login_required
+def	bill_delete(request, id):
+	'''
+	Delete bill
+	'''
+	return __doc_rvp(request, id, 1)
+

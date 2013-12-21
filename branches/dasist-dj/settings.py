@@ -133,9 +133,7 @@ LOGGING = {
     }
 }
 
-PYMORPHY_DICTS = {
-    'ru': { 'dir': '/usr/share/pymorphy/dict/ru' },
-}
+BILLS_ROOT = '/mnt/shares/tmp/bills'
 
 try:
         from local_settings import *

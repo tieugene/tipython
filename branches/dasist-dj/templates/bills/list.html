@@ -1,4 +1,28 @@
 {% extends "bills/base.html" %}
 {% block body_main %}
-<center> Das ist The List of Bills </center>
+<table width="100%">
+<caption> Bills: </caption>
+<thead>
+ <tr>
+  <td> # </td>
+  <td> Объект </td>
+  <td> Направление </td>
+  <td> Согласующий </td>
+  <td> Состояние </td>
+ </tr>
+</thead>
+<tbody>
+{% for object in object_list %}
+
+ <tr>
+  <td> <a href="{% url bills.views.bill_view %}"> {{ object.pk }} </a> </td>
+  <td> {{ object.project }} </td>
+  <td> {{ object.depart }} </td>
+  <td> {{ object.approve }} </td>
+  <td>  </td>
+ </tr>
+{% endfor %}
+</tbody>
+</table>
+<a href="{% url bills.views.bill_add %}"> <button type="button"> + </button> </a>
 {% endblock %}

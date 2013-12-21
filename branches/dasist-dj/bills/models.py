@@ -7,14 +7,15 @@ from django.contrib.auth.models import User
 # 3. system
 import datetime
 
-class	ScanFile(models.Model):
+class	File(models.Model):
 	'''
 	TODO: cache
 	'''
-	mime	= models.CharField(max_length=64, verbose_name=u'MIME')
-	name    = models.CharField(max_length=255, db_index=True, blank=False, verbose_name=u'Наименование')
+	filename	= models.CharField(max_length=255, db_index=True, blank=False, verbose_name=u'Filename')
+	mimetype	= models.CharField(max_length=64, verbose_name=u'MIME')
+	#size
 
-class	Bill(models.Model):
+class	Bill(File):
 	'''
 	Fields:
 	[Assigne]
@@ -26,20 +27,23 @@ class	Bill(models.Model):
 	??Номер счета
 	??Дата счета
 	??Сумма счета
+	TODO:
+	* route = ManyToMany(User)
+	* history = ManyToMany(User)
+	* Object = FK
+	* Depart = FK
+	#created	= models.DateTimeField(auto_now_add=True, verbose_name=u'Создан')	# editable-False
+	#updated	= models.DateTimeField(auto_now=True, verbose_name=u'Изменен')		# editable-False
 	'''
-	scan	= models.OneToOneField(ScanFile, primary_key=True, verbose_name=u'Скан')
-	project	= models.CharField(max_length=64, verbose_name=u'Объект')
-	depart	= models.CharField(max_length=64, verbose_name=u'Направление')
+	project	= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Объект')
+	depart	= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
 	assign	= models.ForeignKey(User, related_name='assigned', verbose_name=u'Исполнитель')
 	approve	= models.ForeignKey(User, related_name='inbox',    verbose_name=u'Согласующий')
 	isalive	= models.BooleanField(verbose_name=u'Живой')
 	isgood	= models.BooleanField(verbose_name=u'Хороший')
-	#created	= models.DateTimeField(auto_now_add=True, verbose_name=u'Создан')	# editable-False
-	#updated	= models.DateTimeField(auto_now=True, verbose_name=u'Изменен')		# editable-False
-	#data	= models.TextField(verbose_name=u'Данные')
 
 	def     __unicode__(self):
-		return self.name
+		return self.filename
 
 	class   Meta:
 		#unique_together		= (('scan', 'type', 'name'),)
@@ -61,7 +65,7 @@ class	BillRoute(models.Model):
 		verbose_name_plural     = u'ТочкиМаршрута'
 
 class	BillEvent(models.Model):
-	bill	= models.ForeignKey(Bill, related_name='history', verbose_name=u'Счет')
+	bill	= models.ForeignKey(Bill, null=False, blank=False, related_name='history', verbose_name=u'Счет')
 	user	= models.ForeignKey(User, verbose_name=u'Пользователь')
 	ctime	= models.DateTimeField(auto_now_add=True, verbose_name=u'ДатаВремя')
 	comment	= models.TextField(verbose_name=u'Камменты')
@@ -78,6 +82,9 @@ class	Role(models.Model):
 	id	= models.PositiveSmallIntegerField(primary_key=True, verbose_name=u'ID')
 	name	= models.CharField(max_length=16, verbose_name=u'Наименование')
 
+	def	__unicode__(self):
+		return self.name
+
 	class   Meta:
 		unique_together		= (('name',),)
 		ordering                = ('id', )
@@ -93,3 +100,7 @@ class	Approver(models.Model):
 		ordering                = ('user', )
 		verbose_name            = u'РольПользователя'
 		verbose_name_plural     = u'РолиПользователей'
+
+	def	__unicode__(self):
+		return '%s %s (%s)' % (self.user.first_name, self.user.last_name, self.role.name)
+

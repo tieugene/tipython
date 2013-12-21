@@ -1,0 +1,14 @@
+{% extends "bills/base.html" %}
+{% block body_main %}
+<form enctype="multipart/form-data" action="" method="POST">
+	{% csrf_token %}
+	<table>
+		<caption>
+			<p> Caption </p>
+		</caption>
+		{{ form.as_table }}
+	</table>
+	<button type="submit"> Записать </button>
+	<a href="{% url bills.views.bill_list %}"> <button type="button"> Отказаться </button> </a>
+</form>
+{% endblock %}
