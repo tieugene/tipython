@@ -27,8 +27,6 @@ class	File(models.Model):
 class	Bill(File):
 	'''
 	Fields:
-	[Assigne]
-	[Approver]
 	?desc:txt
 	?ctime:datetime - время создания
 	?etime:datetime - время окончания
@@ -50,6 +48,7 @@ class	Bill(File):
 	approve	= models.ForeignKey(User, related_name='inbox',    verbose_name=u'Согласующий')
 	isalive	= models.BooleanField(verbose_name=u'Живой')
 	isgood	= models.BooleanField(verbose_name=u'Хороший')
+	route	= models.ManyToManyField(User, null=True, blank=True, through='BillRoute', verbose_name=u'Маршрут')
 
 	def     __unicode__(self):
 		return self.filename
@@ -61,9 +60,11 @@ class	Bill(File):
 		verbose_name_plural     = u'Счета'
 
 class	BillRoute(models.Model):
-	bill	= models.ForeignKey(Bill, related_name='route', verbose_name=u'Счет')
-	orderno	= models.PositiveSmallIntegerField(verbose_name=u'#')
+	bill	= models.ForeignKey(Bill, verbose_name=u'Счет')
 	user	= models.ForeignKey(User, verbose_name=u'Пользователь')
+	orderno	= models.PositiveSmallIntegerField(verbose_name=u'#')
+	ctime	= models.DateTimeField(null=True, blank=True, verbose_name=u'ДатаВремя')
+	comment	= models.TextField(null=True, blank=True, verbose_name=u'Камменты')
 
 	def	__unicode__(self):
 		return self.user
@@ -73,21 +74,11 @@ class	BillRoute(models.Model):
 		verbose_name            = u'ТочкаМаршрута'
 		verbose_name_plural     = u'ТочкиМаршрута'
 
-class	BillEvent(models.Model):
-	bill	= models.ForeignKey(Bill, null=False, blank=False, related_name='history', verbose_name=u'Счет')
-	user	= models.ForeignKey(User, verbose_name=u'Пользователь')
-	ctime	= models.DateTimeField(auto_now_add=True, verbose_name=u'ДатаВремя')
-	comment	= models.TextField(verbose_name=u'Камменты')
-
-	def	__unicode__(self):
-		return self.user
-
-	class   Meta:
-		ordering                = ('ctime',)
-		verbose_name            = u'Событие'
-		verbose_name_plural     = u'События'
-
 class	Role(models.Model):
+	'''
+	Predefined role model
+	Try: m2m user (via Approver)
+	'''
 	id	= models.PositiveSmallIntegerField(primary_key=True, verbose_name=u'ID')
 	name	= models.CharField(max_length=16, verbose_name=u'Наименование')
 
@@ -101,6 +92,10 @@ class	Role(models.Model):
 		verbose_name_plural     = u'Роли'
 
 class	Approver(models.Model):
+	'''
+	User as Roler
+	Try: inherit User
+	'''
 	user	= models.OneToOneField(User, primary_key=True, verbose_name=u'Юзверь')
 	role	= models.ForeignKey(Role, verbose_name=u'Роль')
 

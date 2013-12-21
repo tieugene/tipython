@@ -7,6 +7,17 @@
 			<p> Caption </p>
 		</caption>
 		{{ form.as_table }}
+		<tr>
+		 <th> Маршрут: </th>
+		 <td>
+			{{ formset.management_form }}
+			<table>
+				{% for form in formset %}
+					{{ form }}
+				{% endfor %}
+			</table>
+		 </td>
+		</tr>
 	</table>
 	<button type="submit"> Записать </button>
 	<a href="{% url bills.views.bill_list %}"> <button type="button"> Отказаться </button> </a>

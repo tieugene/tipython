@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 http://snipt.net/danfreak/how-to-generate-a-dynamic-at-runtime-form-in-django/
+TODO: widget=TinyMCE(
 '''
 
 from django import forms
@@ -27,9 +28,15 @@ mime_available = set((
 class	BillForm(forms.ModelForm):
 	img = forms.FileField()	# name, size, content_type, temporary_file_path,
 
+#	def __init__ (self, *args, **kwargs):
+#		super(BillForm, self).__init__(*args, **kwargs)
+#		self.fields['route'].widget = forms.widgets.CheckboxSelectMultiple()
+#		#self.fields["diets"].help_text = ""
+#		#self.fields["diets"].queryset = Diet.objects.all()
+
 	class Meta:
 		model = models.Bill
-		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood',)
+		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood', 'route')
 
 class	BillAddForm(BillForm):
 	img = forms.FileField()
@@ -49,3 +56,8 @@ class	BillEditForm(BillForm):
 			if image.content_type not in mime_available:
 				raise forms.ValidationError('File must be PNG, TIF or PDF!')
 		return image
+
+class	BillRouteForm(forms.Form):
+	approve = forms.ModelChoiceField(queryset=models.Approver.objects.all())
+
+BillRouteFormSetFactory = formset_factory(BillRouteForm, extra=1)

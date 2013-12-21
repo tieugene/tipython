@@ -1,14 +1,14 @@
 {% extends "bills/base.html" %}
 {% block body_main %}
-<table width="100%">
+<table width="100%" border="1">
 <caption> Bills: </caption>
 <thead>
  <tr>
-  <td> # </td>
-  <td> Объект </td>
-  <td> Направление </td>
-  <td> Согласующий </td>
-  <td> Состояние </td>
+  <th> # </th>
+  <th> Объект </th>
+  <th> Направление </th>
+  <th> Согласующий </th>
+  <th> Состояние </th>
  </tr>
 </thead>
 <tbody>
@@ -19,7 +19,13 @@
   <td> {{ object.project }} </td>
   <td> {{ object.depart }} </td>
   <td> {{ object.approve }} </td>
-  <td>  </td>
+  <td>
+   {% if object.isalive %}
+    {% if object.isgood %} В пути {% else %} Черновик {% endif %}
+   {% else %}
+    {% if object.isgood %} Не согласован {% else %} Согласован {% endif %}
+   {% endif %}
+  </td>
  </tr>
 {% endfor %}
 </tbody>

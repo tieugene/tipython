@@ -7,10 +7,6 @@ class   BillRouteInLine(admin.TabularInline):
         model           = BillRoute
         extra           = 1
 
-class   BillEventInLine(admin.TabularInline):
-        model           = BillEvent
-        extra           = 1
-
 # 2. odmins
 class	BillAdmin(admin.ModelAdmin):
 	#ordering	= ('pk',)

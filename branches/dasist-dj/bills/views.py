@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+'''
+TODO:
+* get_object_or_404(
+'''
 
 # 1. django
 from django.conf import settings
@@ -56,7 +60,13 @@ def	bill_add(request):
 	if request.method == 'POST':
 		#path = request.POST['path']
 		form = forms.BillAddForm(request.POST, request.FILES)
-		if form.is_valid():
+		formset = forms.BillRouteFormSetFactory(request.POST)
+		if form.is_valid() and formset.is_valid():
+			#print formset
+			#for form in formset:
+			#	print form.cleaned_data
+			#return redirect('bills.views.bill_list')
+			# 1. bill at all
 			bill = form.save(commit=False)
 			image = form.cleaned_data['img']
 			bill.filename	= image.name
@@ -66,9 +76,18 @@ def	bill_add(request):
 			bill.isalive	= True
 			bill.isgood	= False
 			bill.save()
+			# 2. file
 			with open(bill.get_path(), 'wb') as file:
 				file.write(image.read())
+			# 3. route
+			for i, form in enumerate(formset):
+				models.BillRoute(
+					bill = bill,
+					user = form.cleaned_data['approve'].user,
+					orderno = i+1
+				).save()
 			#f.save_m2m()
+			#formset.save()
 			return redirect('bills.views.bill_list')
 			try:
 				os.makedirs(file.get_full_dir())
@@ -79,7 +98,32 @@ def	bill_add(request):
 				return redirect('bills.views.bill_list')
 	else:
 		form = forms.BillAddForm()
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
+		formset = forms.BillRouteFormSetFactory()
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset}))
+
+@login_required
+def	bill_edit(request, id):
+	'''
+	Update (edit) bill
+	'''
+	bill = models.Bill.objects.get(pk=int(id))
+	if request.method == 'POST':
+		form = forms.BillEditForm(request.POST, request.FILES, instance = bill)
+		if form.is_valid():
+			image = form.cleaned_data['img']
+			if image:
+				bill = form.save(commit=False)
+				bill.filename	= image.name
+				bill.mimetype	= image.content_type
+				with open(bill.get_path(), 'wb') as file:
+					file.write(image.read())
+			bill.save()
+			bill.save_m2m()
+			return redirect('bills.views.bill_list')
+	else:
+		form = forms.BillEditForm(instance = bill)
+		formset = forms.BillRouteFormSetFactory()
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset}))
 
 @login_required
 def	bill_view(request, id):
@@ -105,29 +149,6 @@ def	bill_get(request, id):
 	response.write(open(bill.get_path()).read())
 	return response
 
-
-@login_required
-def	bill_edit(request, id):
-	'''
-	Update (edit) bill
-	'''
-	bill = models.Bill.objects.get(pk=int(id))
-	if request.method == 'POST':
-		form = forms.BillEditForm(request.POST, request.FILES, instance = bill)
-		if form.is_valid():
-			image = form.cleaned_data['img']
-			if image:
-				bill = form.save(commit=False)
-				bill.filename	= image.name
-				bill.mimetype	= image.content_type
-				with open(bill.get_path(), 'wb') as file:
-					file.write(image.read())
-			bill.save()
-			#f.save_m2m()
-			return redirect('bills.views.bill_list')
-	else:
-		form = forms.BillEditForm(instance = bill)
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
 def	bill_delete(request, id):

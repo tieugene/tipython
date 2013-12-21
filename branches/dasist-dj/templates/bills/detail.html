@@ -15,6 +15,13 @@
    {% if object.isgood %} Не согласован {% else %} Согласован {% endif %}
   {% endif %}
  </td> </tr>
+ <tr> <th> Маршрут </th> <td>
+  <ol>
+  {% for i in object.route.all %}
+   <li> {{ i }} </li>
+  {% endfor %}
+  </ol>
+ </td> </tr>
 </tbody>
 </table>
 <a href="{% url bills.views.bill_get object.pk %}"> <button type="button"> Get </button> </a>
