@@ -4,6 +4,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext, Context, loader
 from django.views.generic.simple import direct_to_template, redirect_to
@@ -68,8 +69,7 @@ def	bill_add(request):
 			bill.isalive	= True
 			bill.isgood	= False
 			bill.save()
-			#bill.flush()
-			with open(os.path.join(settings.BILLS_ROOT, '%08d' % bill.pk), 'wb') as file:
+			with open(bill.get_path(), 'wb') as file:
 				file.write(image.read())
 			#f.save_m2m()
 			return redirect('bills.views.bill_list')
@@ -97,11 +97,31 @@ def	bill_view(request, id):
 	)
 
 @login_required
+def	bill_get(request, id):
+	'''
+	Download bill
+	'''
+	bill = models.Bill.objects.get(pk=int(id))
+	response = HttpResponse(mimetype=bill.mimetype)
+	response['Content-Disposition'] = '; filename=' + bill.filename
+	response.write(open(bill.get_path()).read())
+	return response
+
+
+@login_required
 def	bill_edit(request, id):
 	'''
 	Update (edit) bill
 	'''
 	return __doc_acu(request, id, 2)
+
+@login_required
+def	bill_delete(request, id):
+	'''
+	Delete bill
+	'''
+	#os.unlink(f.name)
+	return __doc_rvp(request, id, 1)
 
 @login_required
 def	bill_accept(request, id):
@@ -116,11 +136,4 @@ def	bill_reject(request, id):
 	Reject bill
 	'''
 	return __doc_rvp(request, id, 2)
-
-@login_required
-def	bill_delete(request, id):
-	'''
-	Delete bill
-	'''
-	return __doc_rvp(request, id, 1)
 

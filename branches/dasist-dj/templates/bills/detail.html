@@ -1,15 +1,25 @@
 {% extends "bills/base.html" %}
 {% block body_main %}
-<table width="100%">
-<caption> Bill: </caption>
+<table border="1">
+<caption> <a href="{% url bills.views.bill_list %}"> Bill: </a> </caption>
 <tbody>
  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
  <tr> <th> Объект </th> <td> {{ object.project }} </td> </tr>
  <tr> <th> Направление </th> <td> {{ object.depart }} </td> </tr>
  <tr> <th> Ответственный </th> <td> {{ object.assign }} </td> </tr>
  <tr> <th> Согласующий </th> <td> {{ object.approve }} </td> </tr>
- <tr> <th> Состояние </th> <td> </td> </tr>
+ <tr> <th> Состояние </th> <td>
+  {% if object.isalive %}
+   {% if object.isgood %} В пути {% else %} Черновик {% endif %}
+  {% else %}
+   {% if object.isgood %} Не согласован {% else %} Согласован {% endif %}
+  {% endif %}
+ </td> </tr>
 </tbody>
 </table>
-<a href="{% url bills.views.bill_add %}"> <button type="button"> + </button> </a>
+<a href="{% url bills.views.bill_get object.pk %}"> <button type="button"> Get </button> </a>
+<a href="{% url bills.views.bill_edit object.pk %}"> <button type="button"> Edit </button> </a>
+<a href="{% url bills.views.bill_accept object.pk %}"> <button type="button"> Accept </button> </a>
+<a href="{% url bills.views.bill_reject object.pk %}"> <button type="button"> Reject </button> </a>
+<a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a>
 {% endblock %}

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 # 1. django
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 
 # 3. system
-import datetime
+import os, datetime
 
 class	File(models.Model):
 	'''
@@ -14,6 +15,12 @@ class	File(models.Model):
 	filename	= models.CharField(max_length=255, db_index=True, blank=False, verbose_name=u'Filename')
 	mimetype	= models.CharField(max_length=64, verbose_name=u'MIME')
 	#size
+
+	def     __unicode__(self):
+		return self.filename
+
+	def	get_path(self):
+		return os.path.join(settings.BILLS_ROOT, '%08d' % self.pk)
 
 class	Bill(File):
 	'''
