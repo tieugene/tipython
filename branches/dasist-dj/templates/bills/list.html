@@ -15,7 +15,7 @@
 {% for object in object_list %}
 
  <tr>
-  <td> <a href="{% url bills.views.bill_view %}"> {{ object.pk }} </a> </td>
+  <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.project }} </td>
   <td> {{ object.depart }} </td>
   <td> {{ object.approve }} </td>
