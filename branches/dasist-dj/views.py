@@ -4,14 +4,11 @@ from django.views.generic.simple import direct_to_template
 from django.conf import settings
 
 def	index(request):
-	return redirect('bills.views.bill_list')
-	#return direct_to_template(request, 'index.html')
+	#return redirect('bills.views.bill_list')
+	return direct_to_template(request, 'index.html')
 
 def	about(request):
 	return direct_to_template(request, 'about.html')
-
-def	service(request):
-	return direct_to_template(request, 'service.html')
 
 def	common_context(context):
 	'''

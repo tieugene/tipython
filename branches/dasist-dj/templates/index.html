@@ -3,5 +3,11 @@
 $("#tm_index").addClass("active");
 {% endblock %}
 {% block body_main %}
-<center> DasIst </center>
+<center>
+{% if user.is_authenticated %}
+ <a href="{% url bills.views.bill_list %}"> <button type="button"> Счета </button> </a>
+{% else %}
+Залогиньтесь
+{% endif %}
+</center>
 {% endblock %}
