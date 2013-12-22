@@ -47,6 +47,7 @@ def	bill_list(request):
 def	bill_add(request):
 	'''
 	Add new (draft) bill
+	ACL: root|Исполнитель
 	So (transaction):
 	- pre-save form
 	- fill all fields
@@ -54,6 +55,10 @@ def	bill_add(request):
 	- save m2m
 	- save file
 	'''
+	if not request.user.is_superuser:
+		approvers = models.Approver.objects.filter(user=request.user)
+		if (approvers.count() == 0) or (approvers[0].role.pk != 1):
+			return redirect('bills.views.bill_list')
 	if request.method == 'POST':
 		#path = request.POST['path']
 		form = forms.BillAddForm(request.POST, request.FILES)
@@ -90,8 +95,15 @@ def	bill_add(request):
 def	bill_edit(request, id):
 	'''
 	Update (edit) bill
+	ACL: (root|assignee) & Draft
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
+	#print bill.assign, bill.isalive, bill.isgood
+	if (not request.user.is_superuser) and (\
+	   (bill.assign != request.user) or\
+	   (bill.isalive == False) or\
+	   (bill.isgood == True)):
+		return redirect('bills.views.bill_view', bill.pk)
 	if request.method == 'POST':
 		form = forms.BillEditForm(request.POST, request.FILES, instance = bill)
 		if form.is_valid():
@@ -113,6 +125,7 @@ def	bill_edit(request, id):
 def	bill_view(request, id):
 	'''
 	Read (view) bill
+	ACL: anybody?
 	'''
 	return  object_detail (
 		request,
@@ -128,6 +141,7 @@ def	bill_view(request, id):
 def	bill_get(request, id):
 	'''
 	Download bill
+	ACL: any?
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
 	response = HttpResponse(mimetype=bill.mimetype)
@@ -141,8 +155,14 @@ def	bill_get(request, id):
 def	bill_delete(request, id):
 	'''
 	Delete bill
+	ACL: (root|assignee) & Draft
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
+	if (not request.user.is_superuser) and (\
+	   (bill.assign != request.user) or\
+	   (bill.isalive == False) or\
+	   (bill.isgood == True)):
+		return redirect('bills.views.bill_view', bill.pk)
 	path = bill.get_path()
 	if os.path.exists(path):
 		os.unlink(path)
@@ -169,10 +189,14 @@ def	bill_resume(request, id):
 	+--- isalive = False
 	+--- isgood = False
 	* goto list
+	ACL: (assignee & Draft) | (approver & OnWay)
 	'''
-	if request.POST['resume'] in set(['accept', 'reject']):
+	bill = models.Bill.objects.get(pk=int(id))
+	if (request.POST['resume'] in set(['accept', 'reject'])) and (\
+	   ((request.user == bill.assign) and (bill.isalive == True) and (bill.isgood == False)) or\
+	   ((request.user == bill.approve) and (bill.isalive == True) and (bill.isgood == True)) \
+	   ):
 		resume = (request.POST['resume'] == 'accept')
-		bill = models.Bill.objects.get(pk=int(id))
 		user = request.user
 		form = forms.ResumeForm(request.POST)
 		if form.is_valid():
@@ -209,4 +233,5 @@ def	bill_resume(request, id):
 				bill.isalive = False
 				bill.isgood = False
 			bill.save()
-	return redirect('bills.views.bill_list')
+			return redirect('bills.views.bill_list')
+	return redirect('bills.views.bill_view', bill.pk)

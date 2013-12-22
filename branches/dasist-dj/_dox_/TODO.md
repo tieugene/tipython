@@ -2,9 +2,13 @@
 +2. CRUD Route to Bill (as m2m) - views, forms, tpl
 +3. Route Bills (w/ comments)
 +4. Filter list by Role (comment out)
-5. ACL by Role and Bill:
--	views
++5. admin
+ 6. ACL by Role and Bill:
++	views
 -	buttons
+
+Fixme:
+* form: add/edit header and cancel
 
 Feature:
 * Check route (user can't be in route, end must be accounter)
@@ -19,7 +23,6 @@ Feature:
 
 Tuning:
 * paging
-* admin
 * зачеркивать пройденный маршрут
 * login=>ФИО+должность
 * users in groups

@@ -81,10 +81,11 @@ class	BillEvent(models.Model):
 class	Role(models.Model):
 	'''
 	Predefined role model
-	Try: m2m user (via Approver)
+	TODO: m2m user [via Approver]
 	'''
 	id	= models.PositiveSmallIntegerField(primary_key=True, verbose_name=u'ID')
 	name	= models.CharField(max_length=16, verbose_name=u'Наименование')
+	users	= models.ManyToManyField(User, null=True, blank=True, through='Approver', verbose_name=u'Пользователи')
 
 	def	__unicode__(self):
 		return self.name
@@ -98,7 +99,7 @@ class	Role(models.Model):
 class	Approver(models.Model):
 	'''
 	User as Roler
-	Try: inherit User
+	TODO: inherit User
 	'''
 	user	= models.OneToOneField(User, primary_key=True, verbose_name=u'Юзверь')
 	role	= models.ForeignKey(Role, verbose_name=u'Роль')
