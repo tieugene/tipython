@@ -1,5 +1,8 @@
 {% extends "bills/base.html" %}
 {% block body_main %}
+<table border="0">
+<tr>
+<td valign="top">
 <table border="1">
 <caption>  Bill: </caption>
 <tbody>
@@ -24,24 +27,45 @@
  </td> </tr>
  <tr> <th> История </th> <td>
   <ol>
-  {% for i in object.billevent_set.all %}
-   <li> {{i.ctime }} - {{ i.user }}: <pre> {{ i.comment }} </pre> </li>
-  {% endfor %}
   </ol>
  </td> </tr>
 </tbody>
 </table>
+</td>
+<td valign="top">
+<table border="1">
+<caption> История: </caption>
+<thead>
+ <th> Когда </th>
+ <th> Кто </th>
+ <th> Камменты </th>
+</thead>
+<tbody>
+  {% for i in object.billevent_set.all %}
+  <tr>
+   <td valign="top"> {{i.ctime|date:"y.m.d H:i:d" }} </td>
+   <td valign="top"> {{ i.user }} </td>
+   <td valign="top"> <pre> {{ i.comment }} </pre> </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</td>
+</tr>
+</table>
 <p>
-<a href="{% url bills.views.bill_get object.pk %}"> <button type="button"> Get </button> </a>
-<a href="{% url bills.views.bill_edit object.pk %}"> <button type="button"> Edit </button> </a>
-<a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a>
+<a href="{% url bills.views.bill_get object.pk %}"> <button type="button"> Скан </button> </a>
+{% if canedit %} <a href="{% url bills.views.bill_edit object.pk %}"> <button type="button"> Edit </button> </a> {% endif %}
+{% if candel %} <a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a> {% endif %}
 </p>
+{% if canaccept %}
 <form action="{% url bills.views.bill_resume object.pk %}" method="POST">
 	{% csrf_token %}
 	{{ form.as_p }}
 <p>
 <button type="submit" name="resume" value="accept"> Accept </button>
-<button type="submit" name="resume" value="reject"> Reject </button>
+{% if canreject %} <button type="submit" name="resume" value="reject"> Reject </button> {% endif %}
 </p>
 </form>
+{% endif %}
 {% endblock %}

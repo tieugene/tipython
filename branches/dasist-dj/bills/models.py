@@ -11,6 +11,13 @@ from sortedm2m.fields import SortedManyToManyField
 # 3. system
 import os, datetime
 
+states = {	# isalive, isgood
+	(True,  False): 1,	# Draft
+	(True,  True ): 2,	# OnWay
+	(False, True ): 3,	# Accepted
+	(False, False): 4,	# Rejected
+}
+
 class	File(models.Model):
 	'''
 	TODO:
@@ -44,6 +51,10 @@ class	Bill(File):
 	* Depart = FK
 	#created	= models.DateTimeField(auto_now_add=True, verbose_name=u'Создан')	# editable-False
 	#updated	= models.DateTimeField(auto_now=True, verbose_name=u'Изменен')		# editable-False
+	TODO: get_route_ok(user):
+	* user not in route
+	* route ends w/ accounter
+	* route len > 0
 	'''
 	project	= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Объект')
 	depart	= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
@@ -57,6 +68,9 @@ class	Bill(File):
 
 	def     __unicode__(self):
 		return self.filename
+
+	def	get_state(self):
+		return states[(self.isalive, self.isgood)]
 
 	class   Meta:
 		#unique_together		= (('scan', 'type', 'name'),)

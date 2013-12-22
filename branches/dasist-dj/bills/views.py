@@ -98,11 +98,9 @@ def	bill_edit(request, id):
 	ACL: (root|assignee) & Draft
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
-	#print bill.assign, bill.isalive, bill.isgood
 	if (not request.user.is_superuser) and (\
 	   (bill.assign != request.user) or\
-	   (bill.isalive == False) or\
-	   (bill.isgood == True)):
+	   (bill.get_state() != 1)):
 		return redirect('bills.views.bill_view', bill.pk)
 	if request.method == 'POST':
 		form = forms.BillEditForm(request.POST, request.FILES, instance = bill)
@@ -119,7 +117,7 @@ def	bill_edit(request, id):
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillEditForm(instance = bill)
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'object': bill}))
 
 @login_required
 def	bill_view(request, id):
@@ -127,6 +125,21 @@ def	bill_view(request, id):
 	Read (view) bill
 	ACL: anybody?
 	'''
+	bill = models.Bill.objects.get(pk=int(id))
+	user = request.user
+	bill_state = bill.get_state()
+	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
+		'object': bill,
+		'form': forms.ResumeForm(),
+		# root | (assignee & Draft)
+		'canedit': (user.is_superuser or ((bill.assign == user) and (bill_state == 1))),
+		# root | (assignee & (Draft|Rejected)==bad)
+		'candel': (user.is_superuser or ((bill.assign == user) and (bill.isgood == False))),
+		# (assignee & Draft) | (approver & OnWay)
+		'canaccept': (((bill.assign == user) and (bill_state == 1)) or ((bill.approve == user) and (bill_state == 2))),
+		# approver & OnWay
+		'canreject': ((bill.approve == user) and (bill_state == 2)),
+	}))
 	return  object_detail (
 		request,
 		queryset = models.Bill.objects.all(),
@@ -155,12 +168,11 @@ def	bill_get(request, id):
 def	bill_delete(request, id):
 	'''
 	Delete bill
-	ACL: (root|assignee) & Draft
+	ACL: (root|assignee) & (Draft|Rejected (bad))
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
 	if (not request.user.is_superuser) and (\
 	   (bill.assign != request.user) or\
-	   (bill.isalive == False) or\
 	   (bill.isgood == True)):
 		return redirect('bills.views.bill_view', bill.pk)
 	path = bill.get_path()
@@ -189,12 +201,12 @@ def	bill_resume(request, id):
 	+--- isalive = False
 	+--- isgood = False
 	* goto list
-	ACL: (assignee & Draft) | (approver & OnWay)
+	ACL: (assignee & Draft & Route ok) | (approver & OnWay)
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
 	if (request.POST['resume'] in set(['accept', 'reject'])) and (\
-	   ((request.user == bill.assign) and (bill.isalive == True) and (bill.isgood == False)) or\
-	   ((request.user == bill.approve) and (bill.isalive == True) and (bill.isgood == True)) \
+	   ((request.user == bill.assign) and (bill.get_state() == 1)) or\
+	   ((request.user == bill.approve) and (bill.get_state() == 2)) \
 	   ):
 		resume = (request.POST['resume'] == 'accept')
 		user = request.user
@@ -226,7 +238,7 @@ def	bill_resume(request, id):
 							break
 						i += 1
 					if (found):
-						print 'Found:', i, 'Next:', user_list[i + 1]
+						#print 'Found:', i, 'Next:', user_list[i + 1]
 						bill.approve = user_list[i + 1]
 			else:
 				bill.approve = bill.assign
