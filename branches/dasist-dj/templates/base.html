@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title> Das Ist... {% block title %} {% endblock %} </title>
+	<title> Das Ist {% block title %} ... {% endblock %} </title>
 	<link type="text/css" href="{{ STATIC_URL }}css/base.css" rel="stylesheet">
 	<link type="text/css" href="{{ STATIC_URL }}css/colors.css" rel="stylesheet"/>
 	<link type="text/css" href="{{ STATIC_URL }}css/fieldset.css" rel="stylesheet"/>
@@ -36,7 +36,7 @@
 <body>
 <div id="topmenu">
 	<div id="tm_index" class=""> <a href="{% url bills.views.bill_list %}"> <img src="{{ STATIC_URL }}img/icon-home.png" alt="Главная" title="Главная"/> </a> </div>
-	<div style="width: 100%"> <b> Das Ist ... </b> </div>
+	<div style="width: 100%"> <b> Das Ist {% block menu_title %} ... {% endblock %} </b> </div>
 	{% if user.is_authenticated %}
 		<div> {{ user.username }} : </div>
 		<div> <a href="{% url django.contrib.auth.views.logout %}?next={% url views.index %}"> <img src="{{ STATIC_URL }}img/icon-exit.png" alt="Выход" title="Выход"/> </a> </div>

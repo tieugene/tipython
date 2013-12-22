@@ -1,7 +1,7 @@
 {% extends "bills/base.html" %}
 {% block body_main %}
 <table border="1">
-<caption> <a href="{% url bills.views.bill_list %}"> Bill: </a> </caption>
+<caption>  Bill: </caption>
 <tbody>
  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
  <tr> <th> Объект </th> <td> {{ object.project }} </td> </tr>

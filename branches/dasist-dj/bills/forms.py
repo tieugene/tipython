@@ -58,6 +58,6 @@ class	BillEditForm(BillForm):
 		return image
 
 class	BillRouteForm(forms.Form):
-	approve = forms.ModelChoiceField(queryset=models.Approver.objects.all())
+	approve = forms.ModelChoiceField(queryset=models.Approver.objects.all(), empty_label=None)
 
-BillRouteFormSetFactory = formset_factory(BillRouteForm, extra=1)
+BillRouteFormSetFactory = formset_factory(BillRouteForm, extra=0)

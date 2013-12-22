@@ -7,6 +7,7 @@ TODO:
 # 1. django
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, render, redirect
@@ -99,7 +100,7 @@ def	bill_add(request):
 	else:
 		form = forms.BillAddForm()
 		formset = forms.BillRouteFormSetFactory()
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset}))
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset, 'users': User.objects.all()}))
 
 @login_required
 def	bill_edit(request, id):
@@ -122,8 +123,12 @@ def	bill_edit(request, id):
 			return redirect('bills.views.bill_list')
 	else:
 		form = forms.BillEditForm(instance = bill)
-		formset = forms.BillRouteFormSetFactory()
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset}))
+		routeset = list()
+		for i in bill.route.all():
+			routeset.append({'approve': i})
+		#print routeset
+		formset = forms.BillRouteFormSetFactory(initial = routeset)
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset, 'users': User.objects.all()}))
 
 @login_required
 def	bill_view(request, id):
