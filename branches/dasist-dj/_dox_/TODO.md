@@ -1,6 +1,6 @@
 +1. CRUD Bill (w/o m2ms)
 +2. CRUD Route to Bill (as m2m) - views, forms, tpl
-3. Route Bills (w/ comments)
++3. Route Bills (w/ comments)
 4. Filter list by Role
 5. ACL by Role: buttons, views
 
