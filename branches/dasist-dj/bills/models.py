@@ -5,6 +5,9 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 
+# 2. 3rd parties
+from sortedm2m.fields import SortedManyToManyField
+
 # 3. system
 import os, datetime
 
@@ -48,7 +51,8 @@ class	Bill(File):
 	approve	= models.ForeignKey(User, related_name='inbox',    verbose_name=u'Согласующий')
 	isalive	= models.BooleanField(verbose_name=u'Живой')
 	isgood	= models.BooleanField(verbose_name=u'Хороший')
-	route	= models.ManyToManyField(User, null=True, blank=True, through='BillRoute', verbose_name=u'Маршрут')
+	#route	= SortedManyToManyField(User, null=True, blank=True, through='BillRoute', verbose_name=u'Маршрут', sort_value_field_name='orderno')
+	route	= SortedManyToManyField(User, null=True, blank=True, verbose_name=u'Маршрут')
 
 	def     __unicode__(self):
 		return self.filename
@@ -58,7 +62,7 @@ class	Bill(File):
 		#ordering                = ('id',)
 		verbose_name            = u'Счет'
 		verbose_name_plural     = u'Счета'
-
+'''
 class	BillRoute(models.Model):
 	bill	= models.ForeignKey(Bill, verbose_name=u'Счет')
 	user	= models.ForeignKey(User, verbose_name=u'Пользователь')
@@ -73,7 +77,7 @@ class	BillRoute(models.Model):
 		ordering                = ('orderno',)
 		verbose_name            = u'ТочкаМаршрута'
 		verbose_name_plural     = u'ТочкиМаршрута'
-
+'''
 class	Role(models.Model):
 	'''
 	Predefined role model

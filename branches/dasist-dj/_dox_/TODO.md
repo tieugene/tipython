@@ -1,5 +1,5 @@
 +1. CRUD Bill (w/o m2ms)
-2. Add Route to Bill (as m2m):
++2. Add Route to Bill (as m2m):
 -- views:
 --- C
 --- U

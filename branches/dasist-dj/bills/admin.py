@@ -3,9 +3,9 @@ from django.contrib import admin
 from models import *
 
 # 1. inlines
-class   BillRouteInLine(admin.TabularInline):
-        model           = BillRoute
-        extra           = 1
+#class   BillRouteInLine(admin.TabularInline):
+#        model           = BillRoute
+#        extra           = 1
 
 # 2. odmins
 class	BillAdmin(admin.ModelAdmin):

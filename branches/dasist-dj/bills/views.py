@@ -49,8 +49,6 @@ def	bill_list(request):
 def	bill_add(request):
 	'''
 	Add new (draft) bill
-	TODO:
-	- BillRoute
 	So (transaction):
 	- pre-save form
 	- fill all fields
@@ -61,12 +59,7 @@ def	bill_add(request):
 	if request.method == 'POST':
 		#path = request.POST['path']
 		form = forms.BillAddForm(request.POST, request.FILES)
-		formset = forms.BillRouteFormSetFactory(request.POST)
-		if form.is_valid() and formset.is_valid():
-			#print formset
-			#for form in formset:
-			#	print form.cleaned_data
-			#return redirect('bills.views.bill_list')
+		if form.is_valid():
 			# 1. bill at all
 			bill = form.save(commit=False)
 			image = form.cleaned_data['img']
@@ -77,19 +70,13 @@ def	bill_add(request):
 			bill.isalive	= True
 			bill.isgood	= False
 			bill.save()
-			# 2. file
+			# 2. route
+			form.save_m2m()
+			# 3. file
 			with open(bill.get_path(), 'wb') as file:
 				file.write(image.read())
-			# 3. route
-			for i, form in enumerate(formset):
-				models.BillRoute(
-					bill = bill,
-					user = form.cleaned_data['approve'].user,
-					orderno = i+1
-				).save()
-			#f.save_m2m()
-			#formset.save()
-			return redirect('bills.views.bill_list')
+			# x. the end
+			return redirect('bills.views.bill_view', bill.pk)
 			try:
 				os.makedirs(file.get_full_dir())
 				os.rename(src_path, file.get_full_path())
@@ -99,8 +86,7 @@ def	bill_add(request):
 				return redirect('bills.views.bill_list')
 	else:
 		form = forms.BillAddForm()
-		formset = forms.BillRouteFormSetFactory()
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset, 'users': User.objects.all()}))
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
 def	bill_edit(request, id):
@@ -111,24 +97,19 @@ def	bill_edit(request, id):
 	if request.method == 'POST':
 		form = forms.BillEditForm(request.POST, request.FILES, instance = bill)
 		if form.is_valid():
+			bill = form.save(commit=False)
 			image = form.cleaned_data['img']
 			if image:
-				bill = form.save(commit=False)
 				bill.filename	= image.name
 				bill.mimetype	= image.content_type
 				with open(bill.get_path(), 'wb') as file:
 					file.write(image.read())
 			bill.save()
-			bill.save_m2m()
-			return redirect('bills.views.bill_list')
+			form.save_m2m()
+			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillEditForm(instance = bill)
-		routeset = list()
-		for i in bill.route.all():
-			routeset.append({'approve': i})
-		#print routeset
-		formset = forms.BillRouteFormSetFactory(initial = routeset)
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'formset': formset, 'users': User.objects.all()}))
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
 def	bill_view(request, id):

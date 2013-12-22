@@ -20,15 +20,7 @@
 	<!-- /admin -->
 	{% block js %}
 	{% endblock %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			{% block jsready %}
-			{% endblock %}
-		})
-		function populateForm(form, data) {
-			$(document.forms['myForm']).populate(json[data]);
-		}
-	</script>
+	<style>
 	{% block css %}
 	{% endblock %}
 	</style>

@@ -1,42 +1,15 @@
 {% extends "bills/base.html" %}
 {% block js %}
-<script type="text/javascript">
-</script>
+{{ form.media }}
 {% endblock %}
 {% block body_main %}
-<table border="1">
- <tr>
-  <td>
    <form enctype="multipart/form-data" action="" method="POST">
 	{% csrf_token %}
 	<table border="1">
-		<caption>
-			<p> Caption </p>
-		</caption>
+		<caption> Caption </caption>
 		{{ form.as_table }}
-		<tr>
-		 <th valign="top"> Маршрут: </th>
-		 <td>
-			{{ formset.management_form }}
-			<ol>
-				{% for form in formset %}
-					<li> {{ form.approve }} <button type="button" onClick='item_del()'>&gt;</button> </li>
-				{% endfor %}
-			</ol>
-		 </td>
-		</tr>
 	</table>
 	<button type="submit"> Записать </button>
 	<a href="{% url bills.views.bill_list %}"> <button type="button"> Отказаться </button> </a>
    </form>
-  </td>
-  <td>
-   <ul>
-    {% for user in users %}
-     <li> <button type="button" onClick='item_add()'>&lt;</button> {{ user }} </li>
-    {% endfor %}
-   </ul>
-  </td>
- </tr>
-<table>
 {% endblock %}

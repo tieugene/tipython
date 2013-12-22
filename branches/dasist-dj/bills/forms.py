@@ -36,7 +36,7 @@ class	BillForm(forms.ModelForm):
 
 	class Meta:
 		model = models.Bill
-		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood', 'route')
+		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood')
 
 class	BillAddForm(BillForm):
 	img = forms.FileField()
