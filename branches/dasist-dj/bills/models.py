@@ -52,7 +52,8 @@ class	Bill(File):
 	isalive	= models.BooleanField(verbose_name=u'Живой')
 	isgood	= models.BooleanField(verbose_name=u'Хороший')
 	#route	= SortedManyToManyField(User, null=True, blank=True, through='BillRoute', verbose_name=u'Маршрут', sort_value_field_name='orderno')
-	route	= SortedManyToManyField(User, null=True, blank=True, verbose_name=u'Маршрут')
+	route	= SortedManyToManyField(User, null=True, blank=True, related_name='route', verbose_name=u'Маршрут')
+	history	= models.ManyToManyField(User, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
 
 	def     __unicode__(self):
 		return self.filename
@@ -62,22 +63,21 @@ class	Bill(File):
 		#ordering                = ('id',)
 		verbose_name            = u'Счет'
 		verbose_name_plural     = u'Счета'
-'''
-class	BillRoute(models.Model):
+
+class	BillEvent(models.Model):
 	bill	= models.ForeignKey(Bill, verbose_name=u'Счет')
 	user	= models.ForeignKey(User, verbose_name=u'Пользователь')
-	orderno	= models.PositiveSmallIntegerField(verbose_name=u'#')
-	ctime	= models.DateTimeField(null=True, blank=True, verbose_name=u'ДатаВремя')
+	ctime	= models.DateTimeField(auto_now_add=True, verbose_name=u'ДатаВремя')
 	comment	= models.TextField(null=True, blank=True, verbose_name=u'Камменты')
 
 	def	__unicode__(self):
 		return self.user
 
 	class   Meta:
-		ordering                = ('orderno',)
-		verbose_name            = u'ТочкаМаршрута'
-		verbose_name_plural     = u'ТочкиМаршрута'
-'''
+		ordering                = ('ctime',)
+		verbose_name            = u'Резолюция'
+		verbose_name_plural     = u'Резолюции'
+
 class	Role(models.Model):
 	'''
 	Predefined role model

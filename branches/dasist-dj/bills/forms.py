@@ -26,20 +26,14 @@ mime_available = set((
 ))
 
 class	BillForm(forms.ModelForm):
-	img = forms.FileField()	# name, size, content_type, temporary_file_path,
-
-#	def __init__ (self, *args, **kwargs):
-#		super(BillForm, self).__init__(*args, **kwargs)
-#		self.fields['route'].widget = forms.widgets.CheckboxSelectMultiple()
-#		#self.fields["diets"].help_text = ""
-#		#self.fields["diets"].queryset = Diet.objects.all()
+	#img = forms.FileField()	# name, size, content_type, temporary_file_path,
 
 	class Meta:
 		model = models.Bill
-		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood')
+		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood', 'history')
 
 class	BillAddForm(BillForm):
-	img = forms.FileField()
+	img = forms.FileField(label='Скан')
 
 	def clean_img(self):
 		image = self.cleaned_data['img']
@@ -48,7 +42,7 @@ class	BillAddForm(BillForm):
 		return image
 
 class	BillEditForm(BillForm):
-	img = forms.FileField(required=False)
+	img = forms.FileField(label='Скан', required=False)
 
 	def clean_img(self):
 		image = self.cleaned_data['img']
@@ -57,7 +51,6 @@ class	BillEditForm(BillForm):
 				raise forms.ValidationError('File must be PNG, TIF or PDF!')
 		return image
 
-class	BillRouteForm(forms.Form):
-	approve = forms.ModelChoiceField(queryset=models.Approver.objects.all(), empty_label=None)
-
-BillRouteFormSetFactory = formset_factory(BillRouteForm, extra=0)
+class	ResumeForm(forms.Form):
+	#pass
+	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea)

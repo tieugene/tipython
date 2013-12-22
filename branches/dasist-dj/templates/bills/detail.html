@@ -22,11 +22,26 @@
   {% endfor %}
   </ol>
  </td> </tr>
+ <tr> <th> История </th> <td>
+  <ol>
+  {% for i in object.history.all %}
+   <li> {{ i }} </li>
+  {% endfor %}
+  </ol>
+ </td> </tr>
 </tbody>
 </table>
+<p>
 <a href="{% url bills.views.bill_get object.pk %}"> <button type="button"> Get </button> </a>
 <a href="{% url bills.views.bill_edit object.pk %}"> <button type="button"> Edit </button> </a>
-<a href="{% url bills.views.bill_accept object.pk %}"> <button type="button"> Accept </button> </a>
-<a href="{% url bills.views.bill_reject object.pk %}"> <button type="button"> Reject </button> </a>
 <a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a>
+</p>
+<form action="" method="POST">
+	{% csrf_token %}
+	{{ form.as_p }}
+</form>
+<p>
+<a href="{% url bills.views.bill_accept object.pk %}"> <button type="submit"> Accept </button> </a>
+<a href="{% url bills.views.bill_reject object.pk %}"> <button type="submit"> Reject </button> </a>
+</p>
 {% endblock %}

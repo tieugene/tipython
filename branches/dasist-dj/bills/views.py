@@ -121,6 +121,9 @@ def	bill_view(request, id):
 		queryset = models.Bill.objects.all(),
 		object_id = id,
 		template_name = 'bills/detail.html',
+		extra_context = {
+			'form': forms.ResumeForm(),
+		},
 	)
 
 @login_required
