@@ -30,13 +30,11 @@ PAGE_SIZE = 20
 def	bill_list(request):
 	'''
 	List of bills
-	ACL: assign|approve=user
+	ACL: user=assign|approve|root
 	'''
-	#if request.user.is_authenticated():
-	#	queryset = models.Doc.objects.filter(user=request.user, type=uuid).order_by('name')
-	#else:
-	#	queryset = models.Doc.objects.none()
 	queryset = models.Bill.objects.all()
+	#if not request.user.is_superuser:
+	#	queryset = queryset.filter(assign=request.user)
 	return  object_list (
 		request,
 		queryset = queryset,
@@ -187,15 +185,15 @@ def	bill_resume(request, id):
 				#print user_list, len(user_list), user_list[len(user_list)-1]
 				routes = bill.route.count()
 				if (bill.isgood == False):			# 1st (draft)
-					print "1st"
+					#print "1st"
 					bill.isgood = True
 					bill.approve = user_list[0]
 				elif (user == user_list[len(user_list)-1]):	# last
-					print "Last"
+					#print "Last"
 					bill.approve = bill.assign
 					bill.isalive = False
 				else:						# intermediate
-					print "Intermediate"
+					#print "Intermediate"
 					i = 0
 					found = False
 					for u in user_list:
@@ -207,7 +205,7 @@ def	bill_resume(request, id):
 						print 'Found:', i, 'Next:', user_list[i + 1]
 						bill.approve = user_list[i + 1]
 			else:
-				bill.assign = bill.approve
+				bill.approve = bill.assign
 				bill.isalive = False
 				bill.isgood = False
 			bill.save()

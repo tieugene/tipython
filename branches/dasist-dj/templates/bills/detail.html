@@ -24,8 +24,8 @@
  </td> </tr>
  <tr> <th> История </th> <td>
   <ol>
-  {% for i in object.history.all %}
-   <li> {{ i }} </pre> </li>
+  {% for i in object.billevent_set.all %}
+   <li> {{ i.user }}: <pre> {{ i.comment }} </pre> </li>
   {% endfor %}
   </ol>
  </td> </tr>
