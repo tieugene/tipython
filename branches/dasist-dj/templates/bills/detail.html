@@ -12,7 +12,7 @@
   {% if object.isalive %}
    {% if object.isgood %} В пути {% else %} Черновик {% endif %}
   {% else %}
-   {% if object.isgood %} Не согласован {% else %} Согласован {% endif %}
+   {% if object.isgood %} Согласован {% else %} Не согласован {% endif %}
   {% endif %}
  </td> </tr>
  <tr> <th> Маршрут </th> <td>
@@ -25,7 +25,7 @@
  <tr> <th> История </th> <td>
   <ol>
   {% for i in object.history.all %}
-   <li> {{ i }} </li>
+   <li> {{ i }} </pre> </li>
   {% endfor %}
   </ol>
  </td> </tr>
@@ -36,12 +36,12 @@
 <a href="{% url bills.views.bill_edit object.pk %}"> <button type="button"> Edit </button> </a>
 <a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a>
 </p>
-<form action="" method="POST">
+<form action="{% url bills.views.bill_resume object.pk %}" method="POST">
 	{% csrf_token %}
 	{{ form.as_p }}
-</form>
 <p>
-<a href="{% url bills.views.bill_accept object.pk %}"> <button type="submit"> Accept </button> </a>
-<a href="{% url bills.views.bill_reject object.pk %}"> <button type="submit"> Reject </button> </a>
+<button type="submit" name="resume" value="accept"> Accept </button>
+<button type="submit" name="resume" value="reject"> Reject </button>
 </p>
+</form>
 {% endblock %}

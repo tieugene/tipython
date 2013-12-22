@@ -152,16 +152,63 @@ def	bill_delete(request, id):
 	return redirect('bills.views.bill_list')
 
 @login_required
-def	bill_accept(request, id):
+def	bill_resume(request, id):
 	'''
-	Accept bill
+	Accept/Reject bill
+	* create note
+	* update bill:
+	-- if accept:
+	+-- case 1st (history len = 0 (bad) | approve == assign | user == approve | Draft):
+	+--- approve = next (2nd) in route
+	+--- isgood = True
+	--- case last (user = route.last()):
+	---- approve = assignee
+	---- isalive = False
+	--- case intermediate:
+	---- approve = next in route
+	+- if reject:
+	+--- approve = assignee
+	+--- isalive = False
+	+--- isgood = False
+	* goto list
 	'''
-	return __doc_rvp(request, id, 1)
-
-@login_required
-def	bill_reject(request, id):
-	'''
-	Reject bill
-	'''
-	return __doc_rvp(request, id, 2)
-
+	if request.POST['resume'] in set(['accept', 'reject']):
+		resume = (request.POST['resume'] == 'accept')
+		bill = models.Bill.objects.get(pk=int(id))
+		user = request.user
+		form = forms.ResumeForm(request.POST)
+		if form.is_valid():
+			#return redirect('bills.views.bill_list')
+			# 1. new comment
+			models.BillEvent.objects.create(bill=bill, user=user, comment=form.cleaned_data['note'])
+			# 2. update bill
+			if resume:
+				user_list = bill.route.all()
+				#print user_list, len(user_list), user_list[len(user_list)-1]
+				routes = bill.route.count()
+				if (bill.isgood == False):			# 1st (draft)
+					print "1st"
+					bill.isgood = True
+					bill.approve = user_list[0]
+				elif (user == user_list[len(user_list)-1]):	# last
+					print "Last"
+					bill.approve = bill.assign
+					bill.isalive = False
+				else:						# intermediate
+					print "Intermediate"
+					i = 0
+					found = False
+					for u in user_list:
+						if user == u:
+							found = True
+							break
+						i += 1
+					if (found):
+						print 'Found:', i, 'Next:', user_list[i + 1]
+						bill.approve = user_list[i + 1]
+			else:
+				bill.assign = bill.approve
+				bill.isalive = False
+				bill.isgood = False
+			bill.save()
+	return redirect('bills.views.bill_list')

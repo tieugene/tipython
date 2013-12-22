@@ -71,7 +71,7 @@ class	BillEvent(models.Model):
 	comment	= models.TextField(null=True, blank=True, verbose_name=u'Камменты')
 
 	def	__unicode__(self):
-		return self.user
+		return '%s: %s' % (self.user, self.comment)
 
 	class   Meta:
 		ordering                = ('ctime',)
