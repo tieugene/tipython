@@ -13,15 +13,15 @@ Fixme:
 Feature:
 * Check route (user can't be in route, end must be accounter)
 * Check note on reject
-* Filters (state & user)
+* Filters (state & user; view bill by intermediate approver)
 * Project and Depart as models (?)
 * mailto
 * preview
-* view bill by intermediate approver
-* перехват соглашенных счетов
+* перехват счетов в пути
 * Перезапуск несогласованного счет
 
 Tuning:
+* colorify (lightgrey/white, yellow, green, red)
 * paging
 * зачеркивать пройденный маршрут
 * login=>ФИО+должность
