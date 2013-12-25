@@ -14,3 +14,10 @@ ACL:
 * Del: root | (Исполнитель + (Draft|Rejected))
 * Accept: (Исполнитель + Draft) | (Согласователь + OnWay)
 * Reject: Согласователь + OnWay
+
+Idea:
+* DasIst must be socnet-like:
+-- Like
+-- Unlike
+-- Comment
+-- Advanced
