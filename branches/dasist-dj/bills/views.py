@@ -32,6 +32,9 @@ def	bill_list(request):
 	List of bills
 	ACL: user=assign|approve|root
 	'''
+	user = request.user
+	approver = models.Approver.objects.get(pk=user.pk)
+	#print approver.role.pk == 1
 	queryset = models.Bill.objects.all()
 	#if not request.user.is_superuser:
 	#	queryset = queryset.filter(assign=request.user)
@@ -41,6 +44,7 @@ def	bill_list(request):
 		paginate_by = PAGE_SIZE,
 		page = int(request.GET.get('page', '1')),
 		template_name = 'bills/list.html',
+		extra_context = {'canadd': approver.role.pk == 1 }
 	)
 
 @login_required
@@ -55,9 +59,10 @@ def	bill_add(request):
 	- save m2m
 	- save file
 	'''
-	if not request.user.is_superuser:
-		approvers = models.Approver.objects.filter(user=request.user)
-		if (approvers.count() == 0) or (approvers[0].role.pk != 1):
+	user = request.user
+	approver = models.Approver.objects.get(pk=user.pk)
+	if not user.is_superuser:
+		if (approver.role.pk != 1):
 			return redirect('bills.views.bill_list')
 	if request.method == 'POST':
 		#path = request.POST['path']
@@ -68,8 +73,8 @@ def	bill_add(request):
 			image = form.cleaned_data['img']
 			bill.filename	= image.name
 			bill.mimetype	= image.content_type
-			bill.assign	= request.user
-			bill.approve	= request.user
+			bill.assign	= approver
+			bill.approve	= approver
 			bill.isalive	= True
 			bill.isgood	= False
 			bill.save()
@@ -97,9 +102,11 @@ def	bill_edit(request, id):
 	Update (edit) bill
 	ACL: (root|assignee) & Draft
 	'''
+	user = request.user
+	approver = models.Approver.objects.get(pk=user.pk)
 	bill = models.Bill.objects.get(pk=int(id))
 	if (not request.user.is_superuser) and (\
-	   (bill.assign != request.user) or\
+	   (bill.assign != approver) or\
 	   (bill.get_state() != 1)):
 		return redirect('bills.views.bill_view', bill.pk)
 	if request.method == 'POST':
@@ -125,30 +132,23 @@ def	bill_view(request, id):
 	Read (view) bill
 	ACL: anybody?
 	'''
-	bill = models.Bill.objects.get(pk=int(id))
 	user = request.user
+	approver = models.Approver.objects.get(pk=user.pk)
+	print approver
+	bill = models.Bill.objects.get(pk=int(id))
 	bill_state = bill.get_state()
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
 		'object': bill,
 		'form': forms.ResumeForm(),
 		# root | (assignee & Draft)
-		'canedit': (user.is_superuser or ((bill.assign == user) and (bill_state == 1))),
+		'canedit': (user.is_superuser or ((bill.assign == approver) and (bill_state == 1))),
 		# root | (assignee & (Draft|Rejected)==bad)
-		'candel': (user.is_superuser or ((bill.assign == user) and (bill.isgood == False))),
+		'candel': (user.is_superuser or ((bill.assign == approver) and (bill.isgood == False))),
 		# (assignee & Draft) | (approver & OnWay)
-		'canaccept': (((bill.assign == user) and (bill_state == 1)) or ((bill.approve == user) and (bill_state == 2))),
+		'canaccept': (((bill.assign == approver) and (bill_state == 1)) or ((bill.approve == approver) and (bill_state == 2))),
 		# approver & OnWay
-		'canreject': ((bill.approve == user) and (bill_state == 2)),
+		'canreject': ((bill.approve == approver) and (bill_state == 2)),
 	}))
-	return  object_detail (
-		request,
-		queryset = models.Bill.objects.all(),
-		object_id = id,
-		template_name = 'bills/detail.html',
-		extra_context = {
-			'form': forms.ResumeForm(),
-		},
-	)
 
 @login_required
 def	bill_get(request, id):
@@ -172,7 +172,7 @@ def	bill_delete(request, id):
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
 	if (not request.user.is_superuser) and (\
-	   (bill.assign != request.user) or\
+	   (bill.assign.pk != request.user.pk) or\
 	   (bill.isgood == True)):
 		return redirect('bills.views.bill_view', bill.pk)
 	path = bill.get_path()
@@ -203,18 +203,19 @@ def	bill_resume(request, id):
 	* goto list
 	ACL: (assignee & Draft & Route ok) | (approver & OnWay)
 	'''
+	user = request.user
+	approver = models.Approver.objects.get(pk=user.pk)
 	bill = models.Bill.objects.get(pk=int(id))
 	if (request.POST['resume'] in set(['accept', 'reject'])) and (\
-	   ((request.user == bill.assign) and (bill.get_state() == 1)) or\
-	   ((request.user == bill.approve) and (bill.get_state() == 2)) \
+	   ((approver == bill.assign) and (bill.get_state() == 1)) or\
+	   ((approver == bill.approve) and (bill.get_state() == 2)) \
 	   ):
 		resume = (request.POST['resume'] == 'accept')
-		user = request.user
 		form = forms.ResumeForm(request.POST)
 		if form.is_valid():
 			#return redirect('bills.views.bill_list')
 			# 1. new comment
-			models.BillEvent.objects.create(bill=bill, user=user, comment=form.cleaned_data['note'])
+			models.BillEvent.objects.create(bill=bill, user=approver, comment=form.cleaned_data['note'])
 			# 2. update bill
 			if resume:
 				user_list = bill.route.all()
@@ -224,7 +225,7 @@ def	bill_resume(request, id):
 					#print "1st"
 					bill.isgood = True
 					bill.approve = user_list[0]
-				elif (user == user_list[len(user_list)-1]):	# last
+				elif (approver == user_list[len(user_list)-1]):	# last
 					#print "Last"
 					bill.approve = bill.assign
 					bill.isalive = False
@@ -233,7 +234,7 @@ def	bill_resume(request, id):
 					i = 0
 					found = False
 					for u in user_list:
-						if user == u:
+						if approver == u:
 							found = True
 							break
 						i += 1

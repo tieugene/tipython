@@ -18,8 +18,8 @@ class	BillAdmin(admin.ModelAdmin):
 	inlines		= [BillEventInLine,]
 
 class	ApproverAdmin(admin.ModelAdmin):
-	ordering	= ('user',)
-	list_display	= ('user', 'role',)
+	ordering	= ('last_name', 'first_name')
+	list_display	= ('last_name', 'first_name', 'role', 'jobtit',)
 
 class	RoleAdmin(admin.ModelAdmin):
 	ordering	= ('id',)

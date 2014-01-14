@@ -32,6 +32,7 @@
 </tbody>
 </table>
 <!-- ACL: root|Исполнитель -->
-{# if user.is_superuser #}
+{% if canadd %}
 <a href="{% url bills.views.bill_add %}"> <button type="button"> + </button> </a>
+{% endif %}
 {% endblock %}
