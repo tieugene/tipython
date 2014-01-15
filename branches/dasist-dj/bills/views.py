@@ -77,9 +77,9 @@ def	bill_add(request):
 			bill.approve	= approver
 			bill.isalive	= True
 			bill.isgood	= False
-			bill.save()
+			#bill.save()
 			# 2. route
-			form.save_m2m()
+			#form.save_m2m()
 			# 3. file
 			with open(bill.get_path(), 'wb') as file:
 				file.write(image.read())
@@ -134,7 +134,6 @@ def	bill_view(request, id):
 	'''
 	user = request.user
 	approver = models.Approver.objects.get(pk=user.pk)
-	print approver
 	bill = models.Bill.objects.get(pk=int(id))
 	bill_state = bill.get_state()
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
@@ -202,6 +201,11 @@ def	bill_resume(request, id):
 	+--- isgood = False
 	* goto list
 	ACL: (assignee & Draft & Route ok) | (approver & OnWay)
+	TODO:
+	- check resume not empty on start
+	- check resume not empty on reject
+	- check assign can't be in route
+
 	'''
 	user = request.user
 	approver = models.Approver.objects.get(pk=user.pk)
@@ -213,6 +217,7 @@ def	bill_resume(request, id):
 		resume = (request.POST['resume'] == 'accept')
 		form = forms.ResumeForm(request.POST)
 		if form.is_valid():
+			# 0. check prerequisites
 			#return redirect('bills.views.bill_list')
 			# 1. new comment
 			models.BillEvent.objects.create(bill=bill, user=approver, comment=form.cleaned_data['note'])

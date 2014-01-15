@@ -32,6 +32,15 @@ class	BillForm(forms.ModelForm):
 		model = models.Bill
 		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood', 'history')
 
+	def clean(self):
+		cleaned_data = super(BillForm, self).clean()
+		route = cleaned_data.get('route')
+		if (len(route) == 0):	# 1. can't be empty
+			raise forms.ValidationError('Маршрут не может быть пустым')
+		if (route[-1].role.pk != 3):	# 2. must ends with accounter
+			raise forms.ValidationError('Маршрут должен заканчиваться бухгалтером')
+		return cleaned_data
+
 class	BillAddForm(BillForm):
 	img = forms.FileField(label='Скан')
 

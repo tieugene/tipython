@@ -59,8 +59,8 @@
 	{% csrf_token %}
 	{{ form.as_p }}
 <p>
-<button type="submit" name="resume" value="accept"> Accept </button>
-{% if canreject %} <button type="submit" name="resume" value="reject"> Reject </button> {% endif %}
+<button type="submit" name="resume" value="accept"> OK </button>
+{% if canreject %} <button type="submit" name="resume" value="reject"> Отказать </button> {% endif %}
 </p>
 </form>
 {% endif %}
