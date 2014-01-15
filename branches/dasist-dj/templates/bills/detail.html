@@ -55,7 +55,7 @@
 {% if candel %} <a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a> {% endif %}
 </p>
 {% if canaccept %}
-<form action="{% url bills.views.bill_resume object.pk %}" method="POST">
+<form action="" method="POST">
 	{% csrf_token %}
 	{{ form.as_p }}
 <p>
@@ -64,4 +64,5 @@
 </p>
 </form>
 {% endif %}
+{% if err %} <p> Error: {{ err }} </p> {% endif %}
 {% endblock %}

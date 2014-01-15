@@ -12,5 +12,4 @@ urlpatterns = patterns('bills.views',
 	url(r'^(?P<id>\d+)/u/$',	'bill_edit'),	# GET/POST; ACL: assign+draft;
 	url(r'^(?P<id>\d+)/d/$',	'bill_delete'),	# GET; ACL: assign;
 	url(r'^(?P<id>\d+)/g/$',	'bill_get'),	# GET; ACL: assign;
-	url(r'^(?P<id>\d+)/yn/$',	'bill_resume'),	# POST; ACL: approve;
 )
