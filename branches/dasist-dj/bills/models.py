@@ -88,15 +88,16 @@ class	Bill(File):
 	* route ends w/ accounter
 	* route len > 0
 	'''
-	project	= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Объект')
-	depart	= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
-	assign	= models.ForeignKey(Approver, related_name='assigned', verbose_name=u'Исполнитель')
-	approve	= models.ForeignKey(Approver, related_name='inbox',    verbose_name=u'Согласующий')
-	isalive	= models.BooleanField(verbose_name=u'Живой')
-	isgood	= models.BooleanField(verbose_name=u'Хороший')
-	#route	= SortedManyToManyField(User, null=True, blank=True, through='BillRoute', verbose_name=u'Маршрут', sort_value_field_name='orderno')
-	route	= SortedManyToManyField(Approver, null=True, blank=True, related_name='route', verbose_name=u'Маршрут')
-	history	= models.ManyToManyField(Approver, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
+	project		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Объект')
+	depart		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
+	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
+	assign		= models.ForeignKey(Approver, related_name='assigned', verbose_name=u'Исполнитель')
+	approve		= models.ForeignKey(Approver, related_name='inbox',    verbose_name=u'Согласующий')
+	isalive		= models.BooleanField(verbose_name=u'Живой')
+	isgood		= models.BooleanField(verbose_name=u'Хороший')
+	#route		= SortedManyToManyField(User, null=True, blank=True, through='BillRoute', verbose_name=u'Маршрут', sort_value_field_name='orderno')
+	route		= SortedManyToManyField(Approver, null=True, blank=True, related_name='route', verbose_name=u'Маршрут')
+	history		= models.ManyToManyField(Approver, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
 
 	def     __unicode__(self):
 		return self.filename

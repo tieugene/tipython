@@ -8,6 +8,7 @@
   <th> # </th>
   <th> Объект </th>
   <th> Направление </th>
+  <th> Поставщик </th>
   <th> Согласующий </th>
   <th> Состояние </th>
  </tr>
@@ -19,6 +20,7 @@
   <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.project }} </td>
   <td> {{ object.depart }} </td>
+  <td> {{ object.supplier }} </td>
   <td> {{ object.approve }} </td>
   <td>
    {% if object.isalive %}

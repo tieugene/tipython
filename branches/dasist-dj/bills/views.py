@@ -77,9 +77,9 @@ def	bill_add(request):
 			bill.approve	= approver
 			bill.isalive	= True
 			bill.isgood	= False
-			#bill.save()
+			bill.save()
 			# 2. route
-			#form.save_m2m()
+			form.save_m2m()
 			# 3. file
 			with open(bill.get_path(), 'wb') as file:
 				file.write(image.read())
