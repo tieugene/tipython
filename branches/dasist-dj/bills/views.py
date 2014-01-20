@@ -27,6 +27,12 @@ import models, forms
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
 
+ICON = {
+	'application/pdf' : 'application-pdf_16x16.png',
+	'image/png': 'png_16x16.png',
+	'image/tiff': 'tif_16x16.png',
+}
+
 def	__set_filter_state(q, s):
 	'''
 	q - original QuerySet (all)
@@ -186,7 +192,10 @@ def	bill_edit(request, id):
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillEditForm(instance = bill)
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form, 'object': bill}))
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
+		'form': form,
+		'object': bill,
+	}))
 
 @login_required
 def	bill_view(request, id):
@@ -275,6 +284,7 @@ def	bill_view(request, id):
 		form = forms.ResumeForm()
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
 		'object': bill,
+		'icon': ICON[bill.mimetype],
 		'form': form,
 		# root | (assignee & Draft)
 		'canedit': (user.is_superuser or ((bill.assign == approver) and (bill_state == 1))),

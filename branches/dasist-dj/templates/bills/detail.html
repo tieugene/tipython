@@ -26,7 +26,11 @@
   {% endfor %}
   </ol>
  </td> </tr>
-</tbody>
+ <tr>
+  <td> Скан: </td>
+  <td> <a href="{% url bills.views.bill_get object.pk %}"> <img src="{{ STATIC_URL }}img/{{icon}}"/> {{ object.filename }} </a> </td>
+ </tr>
+ </tbody>
 </table>
 </td>
 <td valign="top">
@@ -51,7 +55,6 @@
 </tr>
 </table>
 <p>
-<a href="{% url bills.views.bill_get object.pk %}"> <button type="button"> Скан </button> </a>
 {% if canedit %} <a href="{% url bills.views.bill_edit object.pk %}"> <button type="button"> Edit </button> </a> {% endif %}
 {% if candel %} <a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a> {% endif %}
 </p>
