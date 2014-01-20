@@ -13,8 +13,8 @@ class   ApproverInLine(admin.TabularInline):
 
 # 2. odmins
 class	BillAdmin(admin.ModelAdmin):
-	#ordering	= ('pk',)
-	list_display	= ('project', 'depart', 'assign', 'approve', 'isalive', 'isgood')
+	ordering	= ('id',)
+	list_display	= ('id', 'project', 'depart', 'supplier', 'assign', 'approve', 'isalive', 'isgood')
 	inlines		= [BillEventInLine,]
 
 class	ApproverAdmin(admin.ModelAdmin):

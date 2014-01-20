@@ -33,22 +33,21 @@ def	__set_filter_state(q, s):
 	s - state (0..15)
 	'''
 	if   (s ==  0): return q.none()
-	if   (s ==  1): return q.filter(isalive = False, isgood = False)
-	if   (s ==  2): return q.filter(isalive = False, isgood = True)
-	if   (s ==  3): return q.filter(isalive = False)
-	if   (s ==  4): return q.filter(isalive = True, isgood = False)
-	if   (s ==  5): return q.filter(isgood = False)
-	if   (s ==  6): return q.filter(isalive = False, isgood = True)
-	if   (s ==  7): return q.exclude(isalive = isgood)
-	if   (s ==  8): return q.filter(isalive = True, isgood = True)
-	if   (s ==  9): return q.filter(isalive = isgood)
-	if   (s == 10): return q.filter(isgood = True)
-	if   (s == 11): return q.exclude(isalive = True, isgood = False)
-	if   (s == 12): return q.filter(isgood = True)
-	if   (s == 13): return q.exclude(isalive = False, isgood = True)
-	if   (s == 14): return q.exclude(isalive = False, isgood = False)
-	if   (s == 15): return q
-	#return q
+	elif   (s ==  1): return q.filter(isalive = False, isgood = False)
+	elif   (s ==  2): return q.filter(isalive = False, isgood = True)
+	elif   (s ==  3): return q.filter(isalive = False)
+	elif   (s ==  4): return q.filter(isalive = True, isgood = False)
+	elif   (s ==  5): return q.filter(isgood = False)
+	elif   (s ==  6): return q.filter(isalive = False, isgood = True)
+	elif   (s ==  7): return q.exclude(isalive = isgood)
+	elif   (s ==  8): return q.filter(isalive = True, isgood = True)
+	elif   (s ==  9): return q.filter(isalive = isgood)
+	elif   (s == 10): return q.filter(isgood = True)
+	elif   (s == 11): return q.exclude(isalive = True, isgood = False)
+	elif   (s == 12): return q.filter(isgood = True)
+	elif   (s == 13): return q.exclude(isalive = False, isgood = True)
+	elif   (s == 14): return q.exclude(isalive = False, isgood = False)
+	else: return q
 
 @login_required
 def	bill_list(request):
@@ -245,11 +244,12 @@ def	bill_view(request, id):
 						route_list = bill.route.all()
 						#print route_list, len(route_list), route_list[len(route_list)-1]
 						routes = bill.route.count()
+						print route_list
 						if (bill.isgood == False):			# 1st (draft)
 							#print "1st"
 							bill.isgood = True
 							bill.approve = route_list[0]
-						elif (approver == route_list[-1]):	# last
+						elif (approver == route_list[len(route_list)-1]):		# last
 							#print "Last"
 							bill.approve = bill.assign
 							bill.isalive = False
