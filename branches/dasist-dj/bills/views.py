@@ -28,9 +28,9 @@ PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
 
 ICON = {
-	'application/pdf' : 'application-pdf_16x16.png',
-	'image/png': 'png_16x16.png',
-	'image/tiff': 'tif_16x16.png',
+	'application/pdf' : 'application-pdf_32x32.png',
+	'image/png': 'png_32x32.png',
+	'image/tiff': 'tif_32x32.png',
 }
 
 def	__set_filter_state(q, s):
