@@ -1,8 +1,19 @@
 {% extends "bills/base.html" %}
 {% block meta %} <meta http-equiv="refresh" content="60" > {% endblock %}
 {% block body_main %}
+
+<form action="{% url bills.views.bill_filter_state %}" method="POST">
+{% csrf_token %}
+<p>
+ <button type="submit"> Применить </button>
+ {{ fsform.draft.label }} {{ fsform.draft }} |
+ {{ fsform.onway.label }} {{ fsform.onway }} |
+ {{ fsform.done.label }}  {{ fsform.done }} |
+ {{ fsform.dead.label }}  {{ fsform.dead }}
+</p>
+</form>
+
 <table width="100%" border="1">
-<caption> Bills: </caption>
 <thead>
  <tr>
   <th> # </th>

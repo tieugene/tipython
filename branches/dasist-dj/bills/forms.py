@@ -61,5 +61,10 @@ class	BillEditForm(BillForm):
 		return image
 
 class	ResumeForm(forms.Form):
-	#pass
 	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea)
+
+class	FilterStateForm(forms.Form):
+	draft	= forms.BooleanField(label='Черновики:',	required = False)
+	onway	= forms.BooleanField(label='В пути:',	required = False)
+	done	= forms.BooleanField(label='Исполнены:',	required = False)
+	dead	= forms.BooleanField(label='Завернуты:',	required = False)

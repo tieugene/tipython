@@ -25,6 +25,7 @@ import os, imp, pprint, tempfile
 import models, forms
 
 PAGE_SIZE = 20
+FSNAME = 'fstate'	# 0..3
 
 @login_required
 def	bill_list(request):
@@ -32,10 +33,27 @@ def	bill_list(request):
 	List of bills
 	ACL: user=assign|approve|root
 	'''
+	# 1. pre
 	user = request.user
 	approver = models.Approver.objects.get(pk=user.pk)
 	#print approver.role.pk == 1
 	queryset = models.Bill.objects.all()
+	# 2. filter
+	fsfilter = request.session.get(FSNAME, None)# int 0..15: dropped|done|onway|draft
+	if (fsfilter == None):
+		fsfilter = 15
+		request.session[FSNAME] = fsfilter
+	else:
+		fsfilter = int(fsfilter)
+	print 'List:', fsfilter
+	fsform = forms.FilterStateForm(initial={
+		'dead'	:bool(fsfilter&1),
+		'done'	:bool(fsfilter&2),
+		'draft'	:bool(fsfilter&4),
+		'onway'	:bool(fsfilter&8),
+	})
+	#queryset = queryset.filter(isalive=True)
+	# 3. go
 	#if not request.user.is_superuser:
 	#	queryset = queryset.filter(assign=request.user)
 	return  object_list (
@@ -44,8 +62,29 @@ def	bill_list(request):
 		paginate_by = PAGE_SIZE,
 		page = int(request.GET.get('page', '1')),
 		template_name = 'bills/list.html',
-		extra_context = {'canadd': approver.role.pk == 1 }
+		extra_context = {
+			'canadd': approver.role.pk == 1,
+			'fsform': fsform,
+		}
 	)
+
+@login_required
+def	bill_filter_state(request):
+	'''
+	POST only
+	* set filter iin cookie
+	* redirect
+	'''
+	fsform = forms.FilterStateForm(request.POST)
+	if fsform.is_valid():
+		fsfilter = \
+			int(fsform.cleaned_data['dead']) * 1 | \
+			int(fsform.cleaned_data['done']) * 2 | \
+			int(fsform.cleaned_data['draft'])  * 4 | \
+			int(fsform.cleaned_data['onway'])  * 8
+		print 'Filter:', fsfilter
+		request.session[FSNAME] = fsfilter
+	return redirect('bills.views.bill_list')
 
 @login_required
 def	bill_add(request):
@@ -233,7 +272,7 @@ def	bill_get(request, id):
 	bill = models.Bill.objects.get(pk=int(id))
 	response = HttpResponse(mimetype=bill.mimetype)
 	response['Content-Transfer-Encoding'] = 'binary'
-	response['Content-Disposition'] = '; filename=' + bill.filename
+	response['Content-Disposition'] = '; filename=' + bill.filename.encode('utf-8')
 	response.write(open(bill.get_path()).read())
 	return response
 
@@ -254,3 +293,4 @@ def	bill_delete(request, id):
 		os.unlink(path)
 	bill.delete()
 	return redirect('bills.views.bill_list')
+
