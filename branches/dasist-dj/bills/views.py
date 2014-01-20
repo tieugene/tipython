@@ -27,6 +27,29 @@ import models, forms
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
 
+def	__set_filter_state(q, s):
+	'''
+	q - original QuerySet (all)
+	s - state (0..15)
+	'''
+	if   (s ==  0): return q.none()
+	if   (s ==  1): return q.filter(isalive = False, isgood = False)
+	if   (s ==  2): return q.filter(isalive = False, isgood = True)
+	if   (s ==  3): return q.filter(isalive = False)
+	if   (s ==  4): return q.filter(isalive = True, isgood = False)
+	if   (s ==  5): return q.filter(isgood = False)
+	if   (s ==  6): return q.filter(isalive = False, isgood = True)
+	if   (s ==  7): return q.exclude(isalive = isgood)
+	if   (s ==  8): return q.filter(isalive = True, isgood = True)
+	if   (s ==  9): return q.filter(isalive = isgood)
+	if   (s == 10): return q.filter(isgood = True)
+	if   (s == 11): return q.exclude(isalive = True, isgood = False)
+	if   (s == 12): return q.filter(isgood = True)
+	if   (s == 13): return q.exclude(isalive = False, isgood = True)
+	if   (s == 14): return q.exclude(isalive = False, isgood = False)
+	if   (s == 15): return q
+	#return q
+
 @login_required
 def	bill_list(request):
 	'''
@@ -45,14 +68,15 @@ def	bill_list(request):
 		request.session[FSNAME] = fsfilter
 	else:
 		fsfilter = int(fsfilter)
-	print 'List:', fsfilter
+	#print 'List:', fsfilter
 	fsform = forms.FilterStateForm(initial={
 		'dead'	:bool(fsfilter&1),
 		'done'	:bool(fsfilter&2),
 		'draft'	:bool(fsfilter&4),
 		'onway'	:bool(fsfilter&8),
 	})
-	#queryset = queryset.filter(isalive=True)
+	#queryset = queryset.filter(isalive=True)	# ok
+	queryset = __set_filter_state(queryset, fsfilter)
 	# 3. go
 	#if not request.user.is_superuser:
 	#	queryset = queryset.filter(assign=request.user)
@@ -82,7 +106,7 @@ def	bill_filter_state(request):
 			int(fsform.cleaned_data['done']) * 2 | \
 			int(fsform.cleaned_data['draft'])  * 4 | \
 			int(fsform.cleaned_data['onway'])  * 8
-		print 'Filter:', fsfilter
+		#print 'Filter:', fsfilter
 		request.session[FSNAME] = fsfilter
 	return redirect('bills.views.bill_list')
 
