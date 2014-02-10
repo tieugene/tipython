@@ -30,7 +30,7 @@ class	BillForm(forms.ModelForm):
 
 	class Meta:
 		model = models.Bill
-		exclude = ('filename', 'mimetype', 'assign', 'approve', 'isalive', 'isgood', 'history')
+		exclude = ('file', 'mime', 'assign', 'approve', 'isalive', 'isgood', 'history')
 
 	def clean(self):
 		cleaned_data = super(BillForm, self).clean()

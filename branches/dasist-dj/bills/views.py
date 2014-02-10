@@ -139,8 +139,8 @@ def	bill_add(request):
 			# 1. bill at all
 			bill = form.save(commit=False)
 			image = form.cleaned_data['img']
-			bill.filename	= image.name
-			bill.mimetype	= image.content_type
+			bill.file	= image.name
+			bill.mime	= image.content_type
 			bill.assign	= approver
 			bill.approve	= approver
 			bill.isalive	= True
@@ -183,8 +183,8 @@ def	bill_edit(request, id):
 			bill = form.save(commit=False)
 			image = form.cleaned_data['img']
 			if image:
-				bill.filename	= image.name
-				bill.mimetype	= image.content_type
+				bill.file	= image.name
+				bill.mime	= image.content_type
 				with open(bill.get_path(), 'wb') as file:
 					file.write(image.read())
 			bill.save()
@@ -284,7 +284,7 @@ def	bill_view(request, id):
 		form = forms.ResumeForm()
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
 		'object': bill,
-		'icon': ICON[bill.mimetype],
+		'icon': ICON[bill.mime],
 		'form': form,
 		# root | (assignee & Draft)
 		'canedit': (user.is_superuser or ((bill.assign == approver) and (bill_state == 1))),
@@ -304,7 +304,7 @@ def	bill_get(request, id):
 	ACL: any?
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
-	response = HttpResponse(mimetype=bill.mimetype)
+	response = HttpResponse(mimetype=bill.mime)
 	response['Content-Transfer-Encoding'] = 'binary'
 	response['Content-Disposition'] = '; filename=' + bill.filename.encode('utf-8')
 	response.write(open(bill.get_path()).read())

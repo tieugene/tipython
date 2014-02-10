@@ -11,6 +11,9 @@ from sortedm2m.fields import SortedManyToManyField
 # 3. system
 import os, datetime
 
+# 4. local
+from rfm import RenameFilesModel
+
 states = {	# isalive, isgood
 	(True,  False): 1,	# Draft
 	(True,  True ): 2,	# OnWay
@@ -49,15 +52,63 @@ class	Approver(User):
 	def	__unicode__(self):
 		return '%s %s (%s, %s)' % (self.first_name, self.last_name, self.jobtit, self.role.name)
 
-class	File(models.Model):
+def    my_upload_to(instance, filename):
+    '''
+    Generates upload path for FileField
+    '''
+    instance.name = filename
+    return u'temp/%s' % filename
+
+def file_md5(file, block_size=1024*14):
+    '''
+    file_md5(file, use_system = False) -> md5sum of "file" as hexdigest string.
+    "file" may be a file name or file object, opened for read.
+    If "use_system" is True, if possible use system specific program. This ignore, if file object given.
+    "block_size" -- size in bytes buffer for calc md5. Used with "use_system=False".
+    '''
+    if isinstance(file, basestring):
+        file = open(file, 'rb')
+    h = hashlib.md5()
+    block = file.read(block_size)
+    while block:
+        h.update(block)
+        block = file.read(block_size)
+    return h.hexdigest()
+
+
+class	File(RenameFilesModel):
 	'''
 	TODO:
 	* cache
 	* delete
 	'''
-	filename	= models.CharField(max_length=255, db_index=True, blank=False, verbose_name=u'Filename')
-	mimetype	= models.CharField(max_length=64, verbose_name=u'MIME')
+	#filename	= models.CharField(max_length=255, db_index=True, blank=False, verbose_name=u'Filename')
+	#mimetype	= models.CharField(max_length=64, verbose_name=u'MIME')
 	#size
+
+	file        = models.FileField(null=False, upload_to=my_upload_to, verbose_name=u'Файл')    # attrs: name, path, url, size
+	name        = models.CharField(null=False, db_index=True, blank=False, max_length=255, verbose_name=u'Имя файла')
+	mime        = models.CharField(null=False, blank=False, max_length=255, verbose_name=u'Тип Mime')
+	saved       = models.DateTimeField(null=False, blank=False, auto_now_add=True, verbose_name=u'Записано')
+	size        = models.PositiveIntegerField(null=False, blank=False, verbose_name=u'Размер')
+	md5         = models.CharField(null=False, blank=False, max_length=32, verbose_name=u'MD5')
+	RENAME_FILES    = {'file': {'dest': '', 'keep_ext': False}}
+
+	def    save(self):
+		'''
+		file: <InMemoryUploadedFile: 2.html (text/html)>
+		django...file: _get_size
+		'''
+		self.mime = self.file._file.content_type
+		self.size = self.file._file._size
+		self.md5 = file_md5(self.file._file.file)
+		super(File, self).save()
+
+	def    raw_save(self):
+		'''
+		For import only
+		'''
+		super(File, self).save()
 
 	def     __unicode__(self):
 		return self.filename
