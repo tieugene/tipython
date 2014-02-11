@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from sortedm2m.fields import SortedManyToManyField
 
 # 3. system
-import os, datetime
+import os, datetime, hashlib
 
 # 4. local
 from rfm import RenameFilesModel
@@ -92,6 +92,7 @@ class	File(RenameFilesModel):
 	saved       = models.DateTimeField(null=False, blank=False, auto_now_add=True, verbose_name=u'Записано')
 	size        = models.PositiveIntegerField(null=False, blank=False, verbose_name=u'Размер')
 	md5         = models.CharField(null=False, blank=False, max_length=32, verbose_name=u'MD5')
+	#RENAME_FILES    = {'file': {'dest': settings.BILLS_ROOT, 'keep_ext': False}}
 	RENAME_FILES    = {'file': {'dest': '', 'keep_ext': False}}
 
 	def    save(self):
@@ -99,10 +100,12 @@ class	File(RenameFilesModel):
 		file: <InMemoryUploadedFile: 2.html (text/html)>
 		django...file: _get_size
 		'''
-		self.mime = self.file._file.content_type
-		self.size = self.file._file._size
-		self.md5 = file_md5(self.file._file.file)
-		super(File, self).save()
+		#print self.pk, self.file, self.file._file
+		if (self.file._file):	# костыль
+			self.mime = self.file._file.content_type
+			self.size = self.file._file._size
+			self.md5 = file_md5(self.file._file.file)
+			super(File, self).save()
 
 	def    raw_save(self):
 		'''
@@ -111,10 +114,14 @@ class	File(RenameFilesModel):
 		super(File, self).save()
 
 	def     __unicode__(self):
-		return self.filename
+		return self.name
 
 	def	get_path(self):
 		return os.path.join(settings.BILLS_ROOT, '%08d' % self.pk)
+
+	class   Meta:
+		verbose_name            = u'Файл'
+		verbose_name_plural     = u'Файлы'
 
 class	Bill(File):
 	'''
@@ -151,7 +158,7 @@ class	Bill(File):
 	history		= models.ManyToManyField(Approver, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
 
 	def     __unicode__(self):
-		return self.filename
+		return self.name
 
 	def	get_state(self):
 		return states[(self.isalive, self.isgood)]

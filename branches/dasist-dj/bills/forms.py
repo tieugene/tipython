@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms.formsets import formset_factory
 from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
+from django.db.models.fields.files import FieldFile
 
 import pprint
 
@@ -30,7 +31,7 @@ class	BillForm(forms.ModelForm):
 
 	class Meta:
 		model = models.Bill
-		exclude = ('file', 'mime', 'assign', 'approve', 'isalive', 'isgood', 'history')
+		exclude = ('name', 'mime', 'md5', 'size', 'assign', 'approve', 'isalive', 'isgood', 'history')
 
 	def clean(self):
 		cleaned_data = super(BillForm, self).clean()
@@ -39,6 +40,10 @@ class	BillForm(forms.ModelForm):
 			raise forms.ValidationError('Маршрут не может быть пустым')
 		if (route[-1].role.pk != 3):	# 2. must ends with accounter
 			raise forms.ValidationError('Маршрут должен заканчиваться бухгалтером')
+		img = self.cleaned_data['file']
+		#print img, img.name, type(img),
+		if (not isinstance(img, FieldFile)) and (img.content_type not in mime_available):
+			raise forms.ValidationError('File must be PNG, TIF or PDF!')
 		return cleaned_data
 
 class	BillAddForm(BillForm):

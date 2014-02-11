@@ -134,13 +134,13 @@ def	bill_add(request):
 			return redirect('bills.views.bill_list')
 	if request.method == 'POST':
 		#path = request.POST['path']
-		form = forms.BillAddForm(request.POST, request.FILES)
+		form = forms.BillForm(request.POST, request.FILES)
 		if form.is_valid():
 			# 1. bill at all
 			bill = form.save(commit=False)
-			image = form.cleaned_data['img']
-			bill.file	= image.name
-			bill.mime	= image.content_type
+			#image = form.cleaned_data['img']
+			#bill.file	= image.name
+			#bill.mime	= image.content_type
 			bill.assign	= approver
 			bill.approve	= approver
 			bill.isalive	= True
@@ -149,8 +149,8 @@ def	bill_add(request):
 			# 2. route
 			form.save_m2m()
 			# 3. file
-			with open(bill.get_path(), 'wb') as file:
-				file.write(image.read())
+			#with open(bill.get_path(), 'wb') as file:
+			#	file.write(image.read())
 			# x. the end
 			return redirect('bills.views.bill_view', bill.pk)
 			try:
@@ -161,7 +161,7 @@ def	bill_add(request):
 			else:
 				return redirect('bills.views.bill_list')
 	else:
-		form = forms.BillAddForm()
+		form = forms.BillForm()
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
@@ -178,20 +178,14 @@ def	bill_edit(request, id):
 	   (bill.get_state() != 1)):
 		return redirect('bills.views.bill_view', bill.pk)
 	if request.method == 'POST':
-		form = forms.BillEditForm(request.POST, request.FILES, instance = bill)
+		form = forms.BillForm(request.POST, request.FILES, instance = bill)
 		if form.is_valid():
 			bill = form.save(commit=False)
-			image = form.cleaned_data['img']
-			if image:
-				bill.file	= image.name
-				bill.mime	= image.content_type
-				with open(bill.get_path(), 'wb') as file:
-					file.write(image.read())
 			bill.save()
 			form.save_m2m()
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
-		form = forms.BillEditForm(instance = bill)
+		form = forms.BillForm(instance = bill)
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
 		'form': form,
 		'object': bill,
@@ -284,7 +278,7 @@ def	bill_view(request, id):
 		form = forms.ResumeForm()
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
 		'object': bill,
-		'icon': ICON[bill.mime],
+		'icon': ICON.get(bill.mime, 'none.png'),
 		'form': form,
 		# root | (assignee & Draft)
 		'canedit': (user.is_superuser or ((bill.assign == approver) and (bill_state == 1))),
@@ -306,7 +300,7 @@ def	bill_get(request, id):
 	bill = models.Bill.objects.get(pk=int(id))
 	response = HttpResponse(mimetype=bill.mime)
 	response['Content-Transfer-Encoding'] = 'binary'
-	response['Content-Disposition'] = '; filename=' + bill.filename.encode('utf-8')
+	response['Content-Disposition'] = '; filename=' + bill.name.encode('utf-8')
 	response.write(open(bill.get_path()).read())
 	return response
 

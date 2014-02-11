@@ -12,6 +12,10 @@ class   ApproverInLine(admin.TabularInline):
         extra           = 1
 
 # 2. odmins
+class	FileAdmin(admin.ModelAdmin):
+	ordering	= ('id',)
+	list_display	= ('id', 'name', 'size', 'md5')
+
 class	BillAdmin(admin.ModelAdmin):
 	ordering	= ('id',)
 	list_display	= ('id', 'project', 'depart', 'supplier', 'assign', 'approve', 'isalive', 'isgood')
@@ -26,6 +30,7 @@ class	RoleAdmin(admin.ModelAdmin):
 	list_display	= ('id', 'name')
 	inlines		= [ApproverInLine,]
 
+admin.site.register(File,	FileAdmin)
 admin.site.register(Bill,	BillAdmin)
 admin.site.register(Approver,	ApproverAdmin)
 admin.site.register(Role,	RoleAdmin)
