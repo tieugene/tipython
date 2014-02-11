@@ -4,12 +4,15 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 
 # 2. 3rd parties
 from sortedm2m.fields import SortedManyToManyField
 
 # 3. system
 import os, datetime, hashlib
+from PIL import Image
+from StringIO import StringIO
 
 # 4. local
 from rfm import RenameFilesModel
@@ -92,20 +95,43 @@ class	File(RenameFilesModel):
 	saved       = models.DateTimeField(null=False, blank=False, auto_now_add=True, verbose_name=u'Записано')
 	size        = models.PositiveIntegerField(null=False, blank=False, verbose_name=u'Размер')
 	md5         = models.CharField(null=False, blank=False, max_length=32, verbose_name=u'MD5')
+	pages       = models.PositiveSmallIntegerField(null=False, blank=False, verbose_name=u'Страниц')
 	#RENAME_FILES    = {'file': {'dest': settings.BILLS_ROOT, 'keep_ext': False}}
 	RENAME_FILES    = {'file': {'dest': '', 'keep_ext': False}}
 
-	def    save(self):
+	def	save(self):
 		'''
-		file: <InMemoryUploadedFile: 2.html (text/html)>
+		New: file = <InMemoryUploadedFile: 2.html (text/html)>
 		django...file: _get_size
 		'''
-		#print self.pk, self.file, self.file._file
-		if (self.file._file):	# костыль
+		if (self.file._file):	# FIXME: костыль, надо not isinstance(FieldFile)
 			self.mime = self.file._file.content_type
 			self.size = self.file._file._size
 			self.md5 = file_md5(self.file._file.file)
+			self.pages = 0
 			super(File, self).save()
+			# Now self.pk != None
+			# make thumbnails
+			src_path = os.path.join(settings.MEDIA_ROOT, '%08d' % self.pk)
+			img = Image.open(src_path)
+			thumb_template = os.path.join(settings.PROJECT_DIR, 'static', 'cache', '%08d-%%d.png' % self.pk)
+			for i in range(10):
+				try:
+					img.seek(i)
+					thumb_path = thumb_template % i
+					if (img.mode in set(['1','L'])):
+						img.save(thumb_path)
+					else:
+						img.convert('L').save(thumb_path)
+					self.pages += 1
+				except EOFError:
+					break
+			if (self.pages):
+				super(File, self).save()
+
+	def	delete(self):
+		# TODO: delete thumbnails
+		super(File, self).delete()
 
 	def    raw_save(self):
 		'''
