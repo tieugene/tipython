@@ -41,29 +41,9 @@ class	BillForm(forms.ModelForm):
 		if (route[-1].role.pk != 3):	# 2. must ends with accounter
 			raise forms.ValidationError('Маршрут должен заканчиваться бухгалтером')
 		img = self.cleaned_data['file']
-		#print img, img.name, type(img),
 		if (not isinstance(img, FieldFile)) and (img.content_type not in mime_available):
 			raise forms.ValidationError('File must be PNG, TIF or PDF!')
 		return cleaned_data
-
-class	BillAddForm(BillForm):
-	img = forms.FileField(label='Скан')
-
-	def clean_img(self):
-		image = self.cleaned_data['img']
-		if image.content_type not in mime_available:
-			raise forms.ValidationError('File must be PNG, TIF or PDF!')
-		return image
-
-class	BillEditForm(BillForm):
-	img = forms.FileField(label='Скан', required=False)
-
-	def clean_img(self):
-		image = self.cleaned_data['img']
-		if image:
-			if image.content_type not in mime_available:
-				raise forms.ValidationError('File must be PNG, TIF or PDF!')
-		return image
 
 class	ResumeForm(forms.Form):
 	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea)

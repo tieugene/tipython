@@ -27,8 +27,8 @@
   </ol>
  </td> </tr>
  <tr>
-  <td> Скан: </td>
-  <td> <a href="{% url bills.views.bill_get object.pk %}"> <img src="{{ STATIC_URL }}img/{{icon}}"/> {{ object.filename }} </a> </td>
+  <td> Оригинал: </td>
+  <td> <a href="{% url bills.views.bill_get object.pk %}"> <img src="{{ STATIC_URL }}img/{{icon}}"/> {{ object.name }} </a> </td>
  </tr>
  </tbody>
 </table>
@@ -54,6 +54,17 @@
 </td>
 </tr>
 </table>
+<p>
+ <ul class="enlarge">
+  <li>
+   <img src="{{ STATIC_URL }}cache/128/00000001.png" width="128px" alt="Page 1" />
+   <span>
+    <img src="{{ STATIC_URL }}cache/0/00000001.png" alt="Page 1" /> <br />
+    Page 1
+   </span>
+  </li>
+ </ul>
+</p>
 <p>
 {% if canedit %} <a href="{% url bills.views.bill_edit object.pk %}"> <button type="button"> Edit </button> </a> {% endif %}
 {% if candel %} <a href="{% url bills.views.bill_delete object.pk %}"> <button type="button"> Delete </button> </a> {% endif %}
