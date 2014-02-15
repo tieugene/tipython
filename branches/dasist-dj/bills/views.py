@@ -288,6 +288,7 @@ def	bill_view(request, id):
 		'canaccept': (((bill.assign == approver) and (bill_state == 1)) or ((bill.approve == approver) and (bill_state == 2))),
 		# approver & OnWay
 		'canreject': ((bill.approve == approver) and (bill_state == 2)),
+		'pagelist': range(bill.pages),
 		'err': err
 	}))
 

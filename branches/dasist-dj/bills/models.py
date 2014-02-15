@@ -8,10 +8,12 @@ from django.core.files.base import ContentFile
 
 # 2. 3rd parties
 from sortedm2m.fields import SortedManyToManyField
+from pyPdf import PdfFileReader
+from PIL import Image as PIL_Image
+from wand.image import Image as Wand_Image
 
 # 3. system
 import os, datetime, hashlib
-from PIL import Image
 from StringIO import StringIO
 
 # 4. local
@@ -99,6 +101,56 @@ class	File(RenameFilesModel):
 	#RENAME_FILES    = {'file': {'dest': settings.BILLS_ROOT, 'keep_ext': False}}
 	RENAME_FILES    = {'file': {'dest': '', 'keep_ext': False}}
 
+	def	__rm_cache(self):
+		'''
+		Delete cached thumbnails
+		'''
+		src_path = os.path.join(settings.MEDIA_ROOT, '%08d' % self.pk)
+		thumb_template = os.path.join(settings.PROJECT_DIR, 'static', 'cache', '%08d-%%d.png' % self.pk)
+		for i in range(10):
+			thumb = thumb_template % i
+			if os.path.exists(thumb):
+				os.remove(thumb)
+
+	def	__mk_cache(self):
+		'''
+		Created cached thumbnails
+		'''
+		# make thumbnails
+		src_path = os.path.join(settings.MEDIA_ROOT, '%08d' % self.pk)
+		thumb_template = os.path.join(settings.PROJECT_DIR, 'static', 'cache', '%08d-%%d.png' % self.pk)
+		if (self.mime == 'image/png'):
+			img = PIL_Image.open(src_path)
+			if (img.mode not in set(['P', '1', 'L'])):	# paletted, bw, grey
+				thumb = img.convert('L')
+			else:
+				thumb = img
+			thumb.save(thumb_template % 0, 'PNG')
+			self.pages = 1
+		elif (self.mime == 'image/tiff'):
+			img = PIL_Image.open(src_path)
+			for i in range(10):
+				try:
+					img.seek(i)
+					if (img.mode in set(['1','L'])):
+						thumb = img
+					else:
+						thumb = img.convert('L')
+					thumb.save(thumb_template % i, 'PNG')
+					self.pages += 1
+				except EOFError:
+					break
+		elif (self.mime == 'application/pdf'):
+			pages = PdfFileReader(file(src_path, 'rb')).getNumPages()
+			for page in range(min(pages, 10)):
+				img = Wand_Image(filename = src_path + '[%d]' % page)
+				if (img.colorspace != 'gray'):
+					img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
+				img.format = 'png'
+				img.save(filename = thumb_template % page)
+				self.pages += 1
+		super(File, self).save()	# for pages
+
 	def	save(self):
 		'''
 		New: file = <InMemoryUploadedFile: 2.html (text/html)>
@@ -111,29 +163,14 @@ class	File(RenameFilesModel):
 			self.pages = 0
 			super(File, self).save()
 			# Now self.pk != None
-			# make thumbnails
-			src_path = os.path.join(settings.MEDIA_ROOT, '%08d' % self.pk)
-			img = Image.open(src_path)
-			thumb_template = os.path.join(settings.PROJECT_DIR, 'static', 'cache', '%08d-%%d.png' % self.pk)
-			for i in range(10):
-				try:
-					img.seek(i)
-					thumb_path = thumb_template % i
-					if (img.mode in set(['1','L'])):
-						img.save(thumb_path)
-					else:
-						img.convert('L').save(thumb_path)
-					self.pages += 1
-				except EOFError:
-					break
-			if (self.pages):
-				super(File, self).save()
+			self.__rm_cache()
+			self.__mk_cache()
 
 	def	delete(self):
-		# TODO: delete thumbnails
+		self.__rm_cache()
 		super(File, self).delete()
 
-	def    raw_save(self):
+	def	raw_save(self):
 		'''
 		For import only
 		'''
@@ -141,6 +178,9 @@ class	File(RenameFilesModel):
 
 	def     __unicode__(self):
 		return self.name
+
+	def	get_filename(self):
+		return '%08d' % self.pk
 
 	def	get_path(self):
 		return os.path.join(settings.BILLS_ROOT, '%08d' % self.pk)
