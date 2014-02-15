@@ -181,8 +181,9 @@ def	bill_edit(request, id):
 		form = forms.BillForm(request.POST, request.FILES, instance = bill)
 		if form.is_valid():
 			bill = form.save(commit=False)
-			bill.save()
 			form.save_m2m()
+			bill.save()
+			#bill = form.save(commit=True)
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillForm(instance = bill)

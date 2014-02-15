@@ -165,6 +165,8 @@ class	File(RenameFilesModel):
 			# Now self.pk != None
 			self.__rm_cache()
 			self.__mk_cache()
+		else:
+			super(File, self).save()
 
 	def	delete(self):
 		self.__rm_cache()
