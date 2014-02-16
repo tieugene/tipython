@@ -15,6 +15,7 @@ from django.template import RequestContext, Context, loader
 from django.views.generic.simple import direct_to_template, redirect_to
 from django.views.generic.list_detail import object_list, object_detail
 from django.utils.datastructures import SortedDict
+from django.db.models import F
 
 # 2. system
 import os, imp, pprint, tempfile
@@ -44,13 +45,13 @@ def	__set_filter_state(q, s):
 	elif   (s ==  3): return q.filter(isalive = False)
 	elif   (s ==  4): return q.filter(isalive = True, isgood = False)
 	elif   (s ==  5): return q.filter(isgood = False)
-	elif   (s ==  6): return q.filter(isalive = False, isgood = True)
-	elif   (s ==  7): return q.exclude(isalive = isgood)
+	elif   (s ==  6): return q.exclude(isalive = F('isgood'))
+	elif   (s ==  7): return q.exclude(isalive = True, isgood = True)
 	elif   (s ==  8): return q.filter(isalive = True, isgood = True)
-	elif   (s ==  9): return q.filter(isalive = isgood)
+	elif   (s ==  9): return q.filter(isalive = F('isgood'))
 	elif   (s == 10): return q.filter(isgood = True)
 	elif   (s == 11): return q.exclude(isalive = True, isgood = False)
-	elif   (s == 12): return q.filter(isgood = True)
+	elif   (s == 12): return q.filter(isalive = True)
 	elif   (s == 13): return q.exclude(isalive = False, isgood = True)
 	elif   (s == 14): return q.exclude(isalive = False, isgood = False)
 	else: return q
