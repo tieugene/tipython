@@ -146,7 +146,7 @@ def	bill_add(request):
 			bill.approve	= approver
 			bill.isalive	= True
 			bill.isgood	= False
-			bill.save()
+			bill.save()	# FIXME: unicode error
 			# 2. route
 			form.save_m2m()
 			# 3. file

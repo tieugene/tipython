@@ -4,7 +4,10 @@ from django.db import models
 from django import forms
 from django.utils.encoding import force_unicode
 
-import os.path
+import sys, os.path
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class RenameFilesModel(models.Model):
 	"""
@@ -55,14 +58,14 @@ class RenameFilesModel(models.Model):
 	def save(self, force_insert=False, force_update=False):
 		rename_files = getattr(self, 'RENAME_FILES', None)
 		if rename_files:
-			super(RenameFilesModel, self).save(force_insert, force_update)
+			super(RenameFilesModel, self).save(force_insert, force_update)	# unicode error
 			force_insert, force_update = False, True
 			for field_name, options in rename_files.iteritems():
 				field = getattr(self, field_name)
 				#print "Field:"
 				#print field
 				file_name = force_unicode(field)
-				file_name = file_name.encode('utf-8')
+				#file_name = file_name.encode('utf-8')
 				name, ext = os.path.splitext(file_name)
 				keep_ext = options.get('keep_ext', True)
 				final_dest = options['dest']
