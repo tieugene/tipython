@@ -113,6 +113,28 @@ class	File(RenameFilesModel):
 			if os.path.exists(thumb):
 				os.remove(thumb)
 
+	def	__pdf2png(self, src_path, thumb_template, pages):
+		for page in range(pages, 10):
+			img = Wand_Image(filename = src_path + '[%d]' % page, resolution=(150,150))
+			#print img.size
+			if (img.colorspace != 'gray'):
+				img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
+			img.format = 'png'
+			#img.resolution = (300, 300)
+			img.save(filename = thumb_template % page)
+
+	def	__pdf2png2(self, src_path, thumb_template, pages):
+		import subprocess
+		arglist = ["gs",
+			"-dBATCH",
+			"-dNOPAUSE",
+			"-sOutputFile=%s" % thumb_template,
+			"-sDEVICE=pnggray",
+			"-r150",
+			src_path]
+		sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		sp.communicate()
+
 	def	__mk_cache(self):
 		'''
 		Created cached thumbnails
@@ -126,33 +148,26 @@ class	File(RenameFilesModel):
 				thumb = img.convert('L')
 			else:
 				thumb = img
-			thumb.save(thumb_template % 0, 'PNG')
+			thumb.save(thumb_template % 1, 'PNG')
 			self.pages = 1
 		elif (self.mime == 'image/tiff'):
 			img = PIL_Image.open(src_path)
-			for i in range(10):
+			for i in range(9):
 				try:
 					img.seek(i)
 					if (img.mode in set(['1','L'])):
 						thumb = img
 					else:
 						thumb = img.convert('L')
-					thumb.save(thumb_template % i, 'PNG')
+					thumb.save(thumb_template % (i+1), 'PNG')
 					self.pages += 1
 				except EOFError:
 					break
 		elif (self.mime == 'application/pdf'):
 			#pages = PdfFileReader(file(src_path, 'rb')).getNumPages()
-			pages = len(PdfReader(file(src_path, 'rb')).pages)
-			for page in range(min(pages, 10)):
-				img = Wand_Image(filename = src_path + '[%d]' % page)
-				#print img.size
-				if (img.colorspace != 'gray'):
-					img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
-				img.format = 'png'
-				#img.resolution = (300, 300)
-				img.save(filename = thumb_template % page)
-				self.pages += 1
+			pages = min(9, len(PdfReader(file(src_path, 'rb')).pages))
+			self.__pdf2png2(src_path, thumb_template, pages)
+			self.pages = pages
 		super(File, self).save()	# for pages
 
 	def	save(self):

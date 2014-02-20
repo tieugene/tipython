@@ -34,9 +34,9 @@
     <ul class="enlarge">
     {% for i in pagelist %}
      <li>
-      <img src="{{ STATIC_URL }}cache/{{object.get_filename}}-{{i}}.png" width="64px" alt="Page {{i}}" />
+      <img src="{{ STATIC_URL }}cache/{{object.get_filename}}-{{i|add:"1"}}.png" width="64px" alt="Page {{i|add:"1"}}" />
       <span>
-       <img src="{{ STATIC_URL }}cache/{{object.get_filename}}-{{i}}.png" alt="Page {{i}}" /> <br />
+       <img src="{{ STATIC_URL }}cache/{{object.get_filename}}-{{i|add:"1"}}.png" alt="Page {{i}}" /> <br />
        Page 1
       </span>
      </li>
