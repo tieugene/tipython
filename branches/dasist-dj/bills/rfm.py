@@ -62,6 +62,7 @@ class RenameFilesModel(models.Model):
 				#print "Field:"
 				#print field
 				file_name = force_unicode(field)
+				file_name = file_name.encode('utf-8')
 				name, ext = os.path.splitext(file_name)
 				keep_ext = options.get('keep_ext', True)
 				final_dest = options['dest']
