@@ -9,6 +9,7 @@ from django.core.files.base import ContentFile
 # 2. 3rd parties
 from sortedm2m.fields import SortedManyToManyField
 from pyPdf import PdfFileReader
+from pdfrw import PdfReader
 from PIL import Image as PIL_Image
 from wand.image import Image as Wand_Image
 
@@ -141,12 +142,15 @@ class	File(RenameFilesModel):
 				except EOFError:
 					break
 		elif (self.mime == 'application/pdf'):
-			pages = PdfFileReader(file(src_path, 'rb')).getNumPages()
+			#pages = PdfFileReader(file(src_path, 'rb')).getNumPages()
+			pages = len(PdfReader(file(src_path, 'rb')).pages)
 			for page in range(min(pages, 10)):
 				img = Wand_Image(filename = src_path + '[%d]' % page)
+				#print img.size
 				if (img.colorspace != 'gray'):
 					img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
 				img.format = 'png'
+				#img.resolution = (300, 300)
 				img.save(filename = thumb_template % page)
 				self.pages += 1
 		super(File, self).save()	# for pages
