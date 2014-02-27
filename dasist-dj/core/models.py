@@ -7,11 +7,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 
 # 2. 3rd parties
-from sortedm2m.fields import SortedManyToManyField
-from pyPdf import PdfFileReader
-from pdfrw import PdfReader
-from PIL import Image as PIL_Image
-from wand.image import Image as Wand_Image
+#from sortedm2m.fields import SortedManyToManyField
 
 # 3. system
 import os, datetime, hashlib
@@ -129,6 +125,12 @@ class	FileSeqItem(models.Model):
 
 	#def	__unicode__(self):
 	#	return '%s: %s' % (self.user, self.comment)
+
+	#def	delete(self):
+	#	pass
+
+	#def	swap(self, sibling):
+	#	pass
 
 	class   Meta:
 		ordering                = ('file', 'order',)
