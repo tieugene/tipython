@@ -14,12 +14,13 @@ from PIL import Image as PIL_Image
 from wand.image import Image as Wand_Image
 
 # 3. system
-import os, datetime, hashlib
+import os, sys, datetime, hashlib
 from StringIO import StringIO
 
 # 4. local
-#from core import File, FileSeq
-import core
+#print sys.path
+from core.models import File, FileSeq
+#import core
 
 states = {	# isalive, isgood
 	(True,  False): 1,	# Draft
@@ -99,13 +100,14 @@ class	Bill(models.Model):
 	* route ends w/ accounter
 	* route len > 0
 	'''
-	fileseq		= models.ForeignKey(core.FileSeq, related_name='bills',    verbose_name=u'Файлы')
+	fileseq		= models.ForeignKey(FileSeq, related_name='bills',    verbose_name=u'Файлы')
 	project		= models.CharField(max_length=64, verbose_name=u'Объект')
 	depart		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
 	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
 	assign		= models.ForeignKey(Approver, related_name='assigned', verbose_name=u'Исполнитель')
-	rpoint		= models.ForeignKey(Approver, related_name='inbox',    verbose_name=u'Согласующий')
-	route		= SortedManyToManyField(Approver, null=True, blank=True, related_name='route', verbose_name=u'Маршрут')
+	rpoint		= models.ForeignKey('Route', null=True, blank=True, related_name='rbill', verbose_name=u'Точка маршрута')
+	done		= models.NullBooleanField(null=True, blank=True, verbose_name=u'Закрыт')
+	#route		= SortedManyToManyField(Approver, null=True, blank=True, related_name='route', verbose_name=u'Маршрут')
 	#history		= models.ManyToManyField(Approver, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
 
 	def     __unicode__(self):
@@ -129,20 +131,21 @@ class	RouteTemplate(models.Model):
 	class   Meta:
 		#unique_together		= (('scan', 'type', 'name'),)
 		#ordering                = ('id',)
-		verbose_name            = u'Счет'
-		verbose_name_plural     = u'Счета'
+		verbose_name            = u'Шаблон маршрута'
+		verbose_name_plural     = u'Шаблоны маршрутов'
 
 class	Route(models.Model):
-	bill	= models.ForeignKey(Bill, related_name='route', verbose_name=u'Счет')
-	role	= models.ForeignKey(Role, related_name='route', verbose_name=u'Роль')
+	bill	= models.ForeignKey(Bill, verbose_name=u'Счет')
+	order	= models.PositiveSmallIntegerField(null=False, blank=False, verbose_name=u'#')
+	role	= models.ForeignKey(Role, verbose_name=u'Роль')
 	approve	= models.ForeignKey(Approver, null=True, blank=True, verbose_name=u'Подписант')
 	state	= models.ForeignKey(State, verbose_name=u'Состояние')
 
 	class   Meta:
-		#unique_together		= (('scan', 'type', 'name'),)
-		#ordering                = ('id',)
-		verbose_name            = u'Счет'
-		verbose_name_plural     = u'Счета'
+		unique_together		= (('bill', 'order',),)
+		ordering                = ('order',)
+		verbose_name            = u'Точка маршрута'
+		verbose_name_plural     = u'Точки маршрута'
 
 class	Event(models.Model):
 	bill	= models.ForeignKey(Bill, related_name='events', verbose_name=u'Счет')
