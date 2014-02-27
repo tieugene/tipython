@@ -3,8 +3,12 @@ from django.contrib import admin
 from models import *
 
 # 1. inlines
-class   BillEventInLine(admin.TabularInline):
-        model           = BillEvent
+class   RouteInLine(admin.TabularInline):
+        model           = Route
+        extra           = 1
+
+class   EventInLine(admin.TabularInline):
+        model           = Event
         extra           = 1
 
 class   ApproverInLine(admin.TabularInline):
@@ -12,25 +16,26 @@ class   ApproverInLine(admin.TabularInline):
         extra           = 1
 
 # 2. odmins
-class	FileAdmin(admin.ModelAdmin):
+class	StateAdmin(admin.ModelAdmin):
 	ordering	= ('id',)
-	list_display	= ('id', 'name', 'size', 'md5')
-
-class	BillAdmin(admin.ModelAdmin):
-	ordering	= ('id',)
-	list_display	= ('id', 'project', 'depart', 'supplier', 'assign', 'approve', 'isalive', 'isgood')
-	inlines		= [BillEventInLine,]
-
-class	ApproverAdmin(admin.ModelAdmin):
-	ordering	= ('last_name', 'first_name')
-	list_display	= ('last_name', 'first_name', 'role', 'jobtit',)
+	list_display	= ('id', 'name')
 
 class	RoleAdmin(admin.ModelAdmin):
 	ordering	= ('id',)
 	list_display	= ('id', 'name')
-	inlines		= [ApproverInLine,]
+	inlines		= (ApproverInLine,)
 
-admin.site.register(File,	FileAdmin)
-admin.site.register(Bill,	BillAdmin)
-admin.site.register(Approver,	ApproverAdmin)
+class	ApproverAdmin(admin.ModelAdmin):
+	#ordering	= ('user.last_name', 'user.first_name')
+	ordering	= ('user',)
+	#list_display	= ('user.last_name', 'user.first_name', 'role', 'jobtit',)
+
+class	BillAdmin(admin.ModelAdmin):
+	ordering	= ('id',)
+	list_display	= ('id', 'project', 'depart', 'supplier', 'assign', 'rpoint', 'done',)
+	inlines		= (RouteInLine, EventInLine,)
+
+admin.site.register(State,	StateAdmin)
 admin.site.register(Role,	RoleAdmin)
+admin.site.register(Approver,	ApproverAdmin)
+admin.site.register(Bill,	BillAdmin)
