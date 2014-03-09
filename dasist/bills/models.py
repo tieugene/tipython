@@ -31,7 +31,10 @@ states = {	# isalive, isgood
 
 class	State(models.Model):
 	'''
-	Predefined Bill states
+	Predefined Bill states:
+	* onWay
+	* согласовано
+	[* оплачено]
 	'''
 	id	= models.PositiveSmallIntegerField(primary_key=True, verbose_name=u'#')
 	name	= models.CharField(max_length=16, verbose_name=u'Наименование')
@@ -68,6 +71,7 @@ class	Approver(models.Model):
 	user	= models.OneToOneField(User, verbose_name=u'Пользователь')
 	role	= models.ForeignKey(Role, verbose_name=u'Роль')
 	jobtit	= models.CharField(max_length=32, verbose_name=u'Должность')
+	canadd	= models.BooleanField(verbose_name=u'Может создавать')
 
 	class   Meta:
 		ordering                = ('role', )
@@ -121,7 +125,7 @@ class	Bill(models.Model):
 		#ordering                = ('id',)
 		verbose_name            = u'Счет'
 		verbose_name_plural     = u'Счета'
-
+'''
 class	RouteTemplate(models.Model):
 	role	= models.ForeignKey(Role, verbose_name=u'Роль')
 	approve	= models.ForeignKey(Approver, null=True, blank=True, verbose_name=u'Подписант')
@@ -133,13 +137,14 @@ class	RouteTemplate(models.Model):
 		#ordering                = ('id',)
 		verbose_name            = u'Шаблон маршрута'
 		verbose_name_plural     = u'Шаблоны маршрутов'
-
+'''
 class	Route(models.Model):
 	bill	= models.ForeignKey(Bill, verbose_name=u'Счет')
 	order	= models.PositiveSmallIntegerField(null=False, blank=False, verbose_name=u'#')
 	role	= models.ForeignKey(Role, verbose_name=u'Роль')
 	approve	= models.ForeignKey(Approver, null=True, blank=True, verbose_name=u'Подписант')
 	state	= models.ForeignKey(State, verbose_name=u'Состояние')
+	action	= models.CharField(max_length=16, verbose_name=u'Действие')
 
 	class   Meta:
 		unique_together		= (('bill', 'order',),)
