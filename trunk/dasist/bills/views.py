@@ -307,7 +307,6 @@ def	bill_get(request, id):
 	response.write(open(bill.get_path()).read())
 	return response
 
-
 @login_required
 def	bill_delete(request, id):
 	'''

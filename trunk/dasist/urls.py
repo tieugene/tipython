@@ -13,6 +13,7 @@ urlpatterns = patterns('',
 	#(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 	url(r'^accounts/login/$',		'django.contrib.auth.views.login'),
 	url(r'^logout$',	'django.contrib.auth.views.logout'),
-	url(r'^bills/',	include('bills.urls')),
+	url(r'^core/',		include('core.urls')),
+	url(r'^bills/',		include('bills.urls')),
 	url(r'^about$',		'views.about'),
 )
