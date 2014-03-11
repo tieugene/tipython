@@ -72,6 +72,10 @@ class	File(RenameFilesModel):
 		#else:
 		#	super(File, self).save()
 
+	#def	delete(self):
+	#	os.unlink(self.get_path())
+	#	super(File, self).delete()
+
 	def	raw_save(self):
 		'''
 		For import only
@@ -94,23 +98,30 @@ class	File(RenameFilesModel):
 class	FileSeq(models.Model):
 	'''
 	File sequence
+	TODO:
+	- del file
 	'''
 	files	= models.ManyToManyField(File, null=True, blank=True, through='FileSeqItem', verbose_name=u'Файлы')
 
 	def     __unicode__(self):
 		return str(self.pk)
 
+	def	clean_children(self):
+		'''
+		'''
+		self.files.all().delete()
+
 	def	purge(self):
 		'''
 		Delete self and all files in
 		'''
-		pass
+		self.clean_children()
+		super(FileSeq, self).delete()
 
-	def	add_file(self):
+	def	add_file(self, f):
 		'''
-		Delete self and all files in
 		'''
-		pass
+		FileSeqItem(file=f, fileseq=self, order=self.files.count()+1).save()
 
 	class   Meta:
 		#unique_together		= (('scan', 'type', 'name'),)

@@ -16,23 +16,46 @@ from django.views.generic.simple import direct_to_template, redirect_to
 from django.views.generic.list_detail import object_list, object_detail
 from django.utils.datastructures import SortedDict
 from django.db.models import F
+from django.core.files.storage import default_storage	# MEDIA_ROOT
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # 2. system
-import os, imp, pprint, tempfile
+import os, imp, pprint, tempfile, subprocess
 
 # 3. 3rd party
+from pyPdf import PdfFileReader
+from pdfrw import PdfReader
+from PIL import Image as PIL_Image
+from wand.image import Image as Wand_Image
 
 # 4. my
 import models, forms
+from core.models import File, FileSeq
 
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
 
-ICON = {
-	'application/pdf' : 'application-pdf_32x32.png',
-	'image/png': 'png_32x32.png',
-	'image/tiff': 'tif_32x32.png',
-}
+def	__pdf2png(self, src_path, thumb_template, pages):
+	for page in range(pages, 10):
+		img = Wand_Image(filename = src_path + '[%d]' % page, resolution=(150,150))
+		#print img.size
+		if (img.colorspace != 'gray'):
+			img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
+		img.format = 'png'
+		#img.resolution = (300, 300)
+		img.save(filename = thumb_template % page)
+
+def	__pdf2png2(self, src_path, thumb_template, pages):
+	arglist = ["gs",
+		"-dBATCH",
+		"-dNOPAUSE",
+		"-sOutputFile=%s" % thumb_template,
+		"-sDEVICE=pnggray",
+		"-r150",
+		src_path]
+	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	sp.communicate()
 
 def	__set_filter_state(q, s):
 	'''
@@ -81,8 +104,7 @@ def	bill_list(request):
 		'draft'	:bool(fsfilter&4),
 		'onway'	:bool(fsfilter&8),
 	})
-	#queryset = queryset.filter(isalive=True)	# ok
-	queryset = __set_filter_state(queryset, fsfilter)
+	#queryset = __set_filter_state(queryset, fsfilter)
 	# 3. go
 	#if not request.user.is_superuser:
 	#	queryset = queryset.filter(assign=request.user)
@@ -93,7 +115,7 @@ def	bill_list(request):
 		page = int(request.GET.get('page', '1')),
 		template_name = 'bills/list.html',
 		extra_context = {
-			'canadd': approver.role.pk == 1,
+			'canadd': approver.canadd,
 			'fsform': fsform,
 		}
 	)
@@ -116,78 +138,169 @@ def	bill_filter_state(request):
 		request.session[FSNAME] = fsfilter
 	return redirect('bills.views.bill_list')
 
+def	__convert_img(file):
+	'''
+	Convert image
+	@param img:django.core.files.uploadedfile.InMemoryUploadedFile
+	@return list of output filepaths
+	'''
+	retvalue = list()
+	filename = file.name
+	filemime = file.content_type
+	src_filename = default_storage.save(file.name, ContentFile(file.read()))	# unicode
+	src_path = os.path.join(settings.MEDIA_ROOT, filename)
+	basename = filename.rsplit('.', 1)[0]
+	dirname = settings.MEDIA_ROOT
+	if (filemime == 'image/png'):
+		img = PIL_Image.open(src_path)
+		if (img.mode not in set(['1', 'L'])):	# [paletted ('P')], bw, grey
+			img.convert('L').save(src_path)
+		retvalue.append(filename)
+	elif (filemime == 'image/jpeg'):
+		img = PIL_Image.open(src_path)
+		dst_filename = basename + '.png'
+		img.convert('L').save(os.path.join(settings.MEDIA_ROOT, dst_filename), 'PNG')
+		os.unlink(src_path)
+		retvalue.append(dst_filename)
+	elif (filemime == 'image/tiff'):
+		img = PIL_Image.open(src_path)
+		for i in range(9):
+			try:
+				img.seek(i)
+				if (img.mode in set(['1','L'])):
+					thumb = img
+				else:
+					thumb = img.convert('L')
+				dst_filename = '%s-%d.png' % (basename, i+1)
+				thumb.save(os.path.join(settings.MEDIA_ROOT, dst_filename), 'PNG')
+				retvalue.append(dst_filename)
+			except EOFError:
+				break
+		os.unlink(src_path)
+	elif (self.mime == 'application/pdf'):
+		#pages = PdfFileReader(file(src_path, 'rb')).getNumPages()
+		pages = min(9, len(PdfReader(file(src_path, 'rb')).pages))
+		self.__pdf2png2(src_path, thumb_template, pages)
+	return retvalue
+
+def	__update_fileseq(f, fileseq):
+	for file in __convert_img(f):
+		myfile = File(file=SimpleUploadedFile(file, default_storage.open(file).read()))
+		myfile.save()
+		default_storage.delete(file)
+		fileseq.add_file(myfile)
+
 @login_required
 def	bill_add(request):
 	'''
 	Add new (draft) bill
-	ACL: root|Исполнитель
-	So (transaction):
-	- pre-save form
-	- fill all fields
-	- save bill
-	- save m2m
-	- save file
+	ACL: Исполнитель
+	- add Bill
+	- add Route to them
+	- convert image
+	- add images into fileseq
 	'''
 	user = request.user
-	approver = models.Approver.objects.get(pk=user.pk)
-	if not user.is_superuser:
-		if (approver.role.pk != 1):
-			return redirect('bills.views.bill_list')
+	#approver = models.Approver.objects.get(pk=user.pk)	# !!!
+	approver = models.Approver.objects.get(user=user)	# !!!
+	#if not user.is_superuser:
+	#	if (approver.role.pk != 1):
+	#		return redirect('bills.views.bill_list')
 	if request.method == 'POST':
 		#path = request.POST['path']
-		form = forms.BillForm(request.POST, request.FILES)
+		form = forms.BillAddForm(request.POST, request.FILES)
 		if form.is_valid():
-			# 1. bill at all
-			bill = form.save(commit=False)
-			#image = form.cleaned_data['img']
-			#bill.file	= image.name
-			#bill.mime	= image.content_type
-			bill.assign	= approver
-			bill.approve	= approver
-			bill.isalive	= True
-			bill.isgood	= False
-			bill.save()	# FIXME: unicode error
-			# 2. route
-			form.save_m2m()
-			# 3. file
-			#with open(bill.get_path(), 'wb') as file:
-			#	file.write(image.read())
-			# x. the end
+			# 1. create fileseq
+			fileseq = FileSeq()
+			fileseq.save()
+			# 2. convert image and add to fileseq
+			__update_fileseq(request.FILES['file'], fileseq)
+			# 3. bill at all
+			bill = models.Bill(
+				fileseq		= fileseq,
+				project		= form.cleaned_data['project'],
+				depart		= form.cleaned_data['depart'],
+				supplier	= form.cleaned_data['supplier'],
+				assign		= approver,
+				rpoint		= None,
+				done		= None,
+			)
+			bill.save()
+			# 4. add route
+			std_route1 = [
+				(2, models.Approver.objects.get(pk=11), 1, 'Ok'),	# начОМТС
+				(3, form.cleaned_data['approver'], 1, 'Ok'),		# Руководитель
+				(4, None, 1, 'Ok'),					# Директор
+				(5, models.Approver.objects.get(pk=1), 1, 'Ok'),	# Гендир
+				(6, models.Approver.objects.get(pk=2), 2, 'Oплачено'),	# Бухгалтер
+			]
+			for i, r in enumerate(std_route1):
+				bill.route_set.add(
+					models.Route(
+						bill	= bill,
+						order	= i+1,
+						role	= models.Role.objects.get(pk=r[0]),
+						approve	= r[1],
+						state	= models.State.objects.get(pk=r[2]),
+						action	= r[3],
+					),
+				)
+			#bill = form.save(commit=False)
 			return redirect('bills.views.bill_view', bill.pk)
-			try:
-				os.makedirs(file.get_full_dir())
-				os.rename(src_path, file.get_full_path())
-			except:
-				transaction.rollback()
-			else:
-				return redirect('bills.views.bill_list')
 	else:
-		form = forms.BillForm()
+		form = forms.BillAddForm()
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
 
 @login_required
 def	bill_edit(request, id):
 	'''
 	Update (edit) bill
-	ACL: (root|assignee) & Draft
+	ACL: (assignee) & Draft
 	'''
 	user = request.user
 	approver = models.Approver.objects.get(pk=user.pk)
 	bill = models.Bill.objects.get(pk=int(id))
-	if (not request.user.is_superuser) and (\
-	   (bill.assign != approver) or\
-	   (bill.get_state() != 1)):
-		return redirect('bills.views.bill_view', bill.pk)
+	#if (not request.user.is_superuser) and (\
+	#   (bill.assign != approver) or\
+	#   (bill.rpoint != None) or\
+	#   (bill.done != None)):
+	#	return redirect('bills.views.bill_view', bill.pk)
 	if request.method == 'POST':
-		form = forms.BillForm(request.POST, request.FILES, instance = bill)
+		form = forms.BillEditForm(request.POST, request.FILES)
 		if form.is_valid():
-			bill = form.save(commit=False)
-			form.save_m2m()
-			bill.save()
-			#bill = form.save(commit=True)
+			tosave = False
+			# 1. update bill
+			if (bill.project != form.cleaned_data['project']):
+				bill.project = form.cleaned_data['project']
+				tosave = True
+			if (bill.depart != form.cleaned_data['depart']):
+				bill.depart = form.cleaned_data['depart']
+				tosave = True
+			if (bill.supplier != form.cleaned_data['supplier']):
+				bill.supplier = form.cleaned_data['supplier']
+				tosave = True
+			if (tosave):
+				bill.save()
+			# 2. update approver (if required)
+			special = bill.route_set.get(order=2)
+			if (special.approve != form.cleaned_data['approver']):
+				special.approve = form.cleaned_data['approver']
+				special.save()
+			# 3. update image
+			file = request.FILES.get('file', None)
+			if (file):
+				fileseq = bill.fileseq
+				fileseq.clean_children()
+				__update_fileseq(file, fileseq)
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
-		form = forms.BillForm(instance = bill)
+		form = forms.BillEditForm(initial={
+			'project':	bill.project,
+			'depart':	bill.depart,
+			'supplier':	bill.supplier,
+			'approver':	bill.route_set.get(order=2).approve,
+			#'approver':	6,
+		})
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
 		'form': form,
 		'object': bill,
@@ -280,17 +393,20 @@ def	bill_view(request, id):
 		form = forms.ResumeForm()
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
 		'object': bill,
-		'icon': ICON.get(bill.mime, 'none.png'),
 		'form': form,
-		# root | (assignee & Draft)
-		'canedit': (user.is_superuser or ((bill.assign == approver) and (bill_state == 1))),
-		# root | (assignee & (Draft|Rejected)==bad)
-		'candel': (user.is_superuser or ((bill.assign == approver) and (bill.isgood == False))),
-		# (assignee & Draft) | (approver & OnWay)
-		'canaccept': (((bill.assign == approver) and (bill_state == 1)) or ((bill.approve == approver) and (bill_state == 2))),
-		# approver & OnWay
-		'canreject': ((bill.approve == approver) and (bill_state == 2)),
-		'pagelist': range(bill.pages),
+		## root | (assignee & Draft)
+		#'canedit': (user.is_superuser or ((bill.assign == approver) and (bill_state == 1))),
+		'canedit': True,
+		## root | (assignee & (Draft|Rejected)==bad)
+		#'candel': (user.is_superuser or ((bill.assign == approver) and (bill.isgood == False))),
+		'candel': True,
+		## (assignee & Draft) | (approver & OnWay)
+		#'canaccept': (((bill.assign == approver) and (bill_state == 1)) or ((bill.approve == approver) and (bill_state == 2))),
+		'canaccept': True,
+		## approver & OnWay
+		#'canreject': ((bill.approve == approver) and (bill_state == 2)),
+		'canreject': True,
+		#'pagelist': range(bill.pages),
 		'err': err
 	}))
 
@@ -315,12 +431,12 @@ def	bill_delete(request, id):
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
 	if (not request.user.is_superuser) and (\
-	   (bill.assign.pk != request.user.pk) or\
-	   (bill.isgood == True)):
+	   (bill.assign.user.pk != request.user.pk) or\
+	   (bill.done != None) or\
+	   (bill.rpoint != None)):
 		return redirect('bills.views.bill_view', bill.pk)
-	path = bill.get_path()
-	if os.path.exists(path):
-		os.unlink(path)
+	fileseq = bill.fileseq
 	bill.delete()
+	fileseq.purge()
 	return redirect('bills.views.bill_list')
 
