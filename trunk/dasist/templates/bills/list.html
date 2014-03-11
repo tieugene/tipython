@@ -13,26 +13,27 @@
 </p>
 </form>
 
-<table width="100%" border="1">
-<thead>
+<table>
+ <thead>
  <tr>
   <th> # </th>
   <th> Объект </th>
   <th> Направление </th>
   <th> Поставщик </th>
+  <th> Исполнитель </th>
   <th> Подписант </th>
   <th> Состояние </th>
  </tr>
-</thead>
-<tbody>
+ </thead>
+ <tbody>
 {% for object in object_list %}
-
  <tr>
   <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.project }} </td>
-  <td> {{ object.depart }} </td>
+  <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
   <td> {{ object.supplier }} </td>
-  <td> {{ object.approve }} </td>
+  <td> {{ object.assign.get_fio }} </td>
+  <td> {% if object.rpoint %} {{ object.rpoint }} {% else %} --- {% endif %} </td>
   <td>
    {% if object.isalive %}
     {% if object.isgood %} В пути {% else %} Черновик {% endif %}
@@ -42,7 +43,6 @@
   </td>
  </tr>
 {% endfor %}
-</tbody>
 </table>
 <!-- ACL: root|Исполнитель -->
 {% if canadd %}

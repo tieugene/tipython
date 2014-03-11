@@ -1,12 +1,29 @@
 = 2014-03-09 =
-== Core ==
-* File:
--- list
--- get
-* FileSet:
--- list
--- view
 == Bills ==
++ create users
++ CRUD bill
+* route bill
+* FIXME:
+	* files not deleted:
+		https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.pre_delete
+		http://stackoverflow.com/questions/2747118/django-deleting-models-and-overriding-delete-method
+	* list: state
+	* list: can*
+	* list: filter
+	* view: state
+	* view: can
+	* view: download image
+	* convert: PDF
+	* convert: tiff not deleted
+
+States (list):
+* Draft: done=None, rpoint=None
+* OnWay: done=None, rpoint!=None
+* Accepted: done=True
+* Rejected: done=False
+
+FIXME:
+* Approver.user == PK
 
 ====
 Fixme:

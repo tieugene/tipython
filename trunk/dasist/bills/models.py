@@ -7,14 +7,9 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 
 # 2. 3rd parties
-from sortedm2m.fields import SortedManyToManyField
-from pyPdf import PdfFileReader
-from pdfrw import PdfReader
-from PIL import Image as PIL_Image
-from wand.image import Image as Wand_Image
 
 # 3. system
-import os, sys, datetime, hashlib
+import os, sys, datetime
 from StringIO import StringIO
 
 # 4. local
@@ -22,11 +17,11 @@ from StringIO import StringIO
 from core.models import File, FileSeq
 #import core
 
-states = {	# isalive, isgood
-	(True,  False): 1,	# Draft
-	(True,  True ): 2,	# OnWay
-	(False, True ): 3,	# Accepted
-	(False, False): 4,	# Rejected
+states = {	# rpoint==None, done
+	(True,  None): 1,	# Draft
+	(False,  None ): 2,	# OnWay
+	(True, True ): 3,	# Accepted
+	(True, False): 4,	# Rejected
 }
 
 class	State(models.Model):
@@ -78,8 +73,12 @@ class	Approver(models.Model):
 		verbose_name            = u'Подписант'
 		verbose_name_plural     = u'Подписанты'
 
+	def	get_fio(self):
+		io = self.user.first_name.split()
+		return '%s %s. %s.' % (self.user.last_name, io[0][0], io[1][0])
+
 	def	__unicode__(self):
-		return '%s %s (%s, %s)' % (self.user.first_name, self.user.last_name, self.jobtit, self.role.name)
+		return '%s %s (%s, %s)' % (self.user.last_name, self.user.first_name, self.jobtit, self.role.name)
 
 class	Bill(models.Model):
 	'''
@@ -104,7 +103,7 @@ class	Bill(models.Model):
 	* route ends w/ accounter
 	* route len > 0
 	'''
-	fileseq		= models.ForeignKey(FileSeq, related_name='bills',    verbose_name=u'Файлы')
+	fileseq		= models.ForeignKey(FileSeq, related_name='bills', verbose_name=u'Файлы')
 	project		= models.CharField(max_length=64, verbose_name=u'Объект')
 	depart		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
 	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
@@ -115,10 +114,10 @@ class	Bill(models.Model):
 	#history		= models.ManyToManyField(Approver, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
 
 	def     __unicode__(self):
-		return self.name
+		return str(self.pk)
 
 	def	get_state(self):
-		return states[(self.isalive, self.isgood)]
+		return states[(self.rpoint==None, self.done)]
 
 	class   Meta:
 		#unique_together		= (('scan', 'type', 'name'),)
@@ -145,6 +144,9 @@ class	Route(models.Model):
 	approve	= models.ForeignKey(Approver, null=True, blank=True, verbose_name=u'Подписант')
 	state	= models.ForeignKey(State, verbose_name=u'Состояние')
 	action	= models.CharField(max_length=16, verbose_name=u'Действие')
+
+	def	__unicode__(self):
+		return self.approve.get_fio() if self.approve else self.role.name
 
 	class   Meta:
 		unique_together		= (('bill', 'order',),)

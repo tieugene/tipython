@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 '''
-http://snipt.net/danfreak/how-to-generate-a-dynamic-at-runtime-form-in-django/
-TODO: widget=TinyMCE(
 '''
 
 from django import forms
@@ -13,7 +11,8 @@ from django.db.models.fields.files import FieldFile
 
 import pprint
 
-import models
+#import models
+from bills.models import Approver
 
 #class	BillAddForm(forms.Form):
 #	img = forms.ImageField()
@@ -23,33 +22,46 @@ import models
 mime_available = set((
 	'image/png',
 	'image/tiff',
+	'image/jpeg',
 	'application/pdf',
 ))
 
-class	BillForm(forms.ModelForm):
-	#img = forms.FileField()	# name, size, content_type, temporary_file_path,
+class ApproverModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.get_fio()
 
-	class Meta:
-		model = models.Bill
-		exclude = ('name', 'mime', 'md5', 'size', 'pages', 'assign', 'approve', 'isalive', 'isgood', 'history')
+class	BillAddForm(forms.Form):
+	file		= forms.FileField(label=u'Скан')
+	project		= forms.CharField(max_length=64, label=u'Объект')
+	depart		= forms.CharField(max_length=64, label=u'Направление')
+	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
+	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
 
-	def clean(self):
-		cleaned_data = super(BillForm, self).clean()
-		route = cleaned_data.get('route')
-		if (len(route) == 0):	# 1. can't be empty
-			raise forms.ValidationError('Маршрут не может быть пустым')
-		if (route[-1].role.pk != 3):	# 2. must ends with accounter
-			raise forms.ValidationError('Маршрут должен заканчиваться бухгалтером')
-		img = self.cleaned_data['file']
-		if (not isinstance(img, FieldFile)) and (img.content_type not in mime_available):
-			raise forms.ValidationError('File must be PNG, TIF or PDF!')
-		return cleaned_data
+	def clean_file(self):
+		file = self.cleaned_data['file']
+		if (not isinstance(file, FieldFile)) and (file.content_type not in mime_available):
+			raise forms.ValidationError('File must be PNG, TIF, JPG or PDF!')
+		return None
+
+class	BillEditForm(forms.Form):
+	file		= forms.FileField(label=u'Скан', required=False, help_text=u'(Выберите файл, если хотите заменить скан)')
+	project		= forms.CharField(max_length=64, label=u'Объект')
+	depart		= forms.CharField(max_length=64, label=u'Направление')
+	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
+	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
+
+	def clean_file(self):
+		file = self.cleaned_data['file']
+		if (file):
+			if (not isinstance(file, FieldFile)) and (file.content_type not in mime_available):
+				raise forms.ValidationError('File must be PNG, TIF, JPG or PDF!')
+		return None
 
 class	ResumeForm(forms.Form):
 	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea)
 
 class	FilterStateForm(forms.Form):
 	draft	= forms.BooleanField(label='Черновики:',	required = False)
-	onway	= forms.BooleanField(label='В пути:',	required = False)
+	onway	= forms.BooleanField(label='В пути:',		required = False)
 	done	= forms.BooleanField(label='Исполнены:',	required = False)
 	dead	= forms.BooleanField(label='Завернуты:',	required = False)

@@ -4,14 +4,14 @@
 <tr>
 <td valign="top">
 <table border="1">
-<caption>  Bill: </caption>
+<caption>  Счет: </caption>
 <tbody>
  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
  <tr> <th> Объект </th> <td> {{ object.project }} </td> </tr>
  <tr> <th> Направление </th> <td> {{ object.depart }} </td> </tr>
  <tr> <th> Поставщик </th> <td> {{ object.supplier }} </td> </tr>
- <tr> <th> Ответственный </th> <td> {{ object.assign }} </td> </tr>
- <tr> <th> Подписант </th> <td> {{ object.approve }} </td> </tr>
+ <tr> <th> Ответственный </th> <td> {{ object.assign.get_fio }} </td> </tr>
+ <tr> <th> Подписант </th> <td> {% if object.rpoint %} {{ object.rpoint }} {% else %} --- {% endif %} </td> </tr>
  <tr> <th> Состояние </th> <td>
   {% if object.isalive %}
    {% if object.isgood %} В пути {% else %} Черновик {% endif %}
@@ -21,7 +21,7 @@
  </td> </tr>
  <tr> <th> Маршрут </th> <td>
   <ol>
-  {% for i in object.route.all %}
+  {% for i in object.route_set.all %}
    <li> {{ i }} </li>
   {% endfor %}
   </ol>
@@ -29,20 +29,9 @@
  <tr>
   <td> Оригинал: </td>
   <td>
-   <p> <a href="{% url bills.views.bill_get object.pk %}"> <img src="{{ STATIC_URL }}img/{{icon}}"/> {{ object.name }} </a> (Страниц: {{ object.pages }}) </p>
-   <p>
-    <ul class="enlarge">
-    {% for i in pagelist %}
-     <li>
-      <img src="{{ STATIC_URL }}cache/{{object.get_filename}}-{{i|add:"1"}}.png" width="64px" alt="Page {{i|add:"1"}}" />
-      <span>
-       <img src="{{ STATIC_URL }}cache/{{object.get_filename}}-{{i|add:"1"}}.png" alt="Page {{i}}" /> <br />
-       Page 1
-      </span>
-     </li>
-    {% endfor %}
-    </ul>
-   </p>
+   {% for img in object.fileseq.fileseqitem_set.all %}
+    <a href="{% url core.views.file_get img.pk %}" data-lightbox="roadtrip" title="{{ img.file.name }}">{{ img.file.name }}</a>
+   {% endfor %}
   </td>
  </tr>
  </tbody>

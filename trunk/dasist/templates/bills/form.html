@@ -6,10 +6,9 @@
    <form enctype="multipart/form-data" action="" method="POST">
 	{% csrf_token %}
 	<table border="1">
-		<caption> Caption </caption>
+		<caption> Новый счет </caption>
 		{{ form.as_table }}
 	</table>
-	<p> <i> (Исполнитель счета не должен входить в маршрут) </i> </p>
 	<button type="submit"> Записать </button>
 	<a href="{% url bills.views.bill_list %}"> <button type="button"> Отказаться </button> </a>
    </form>
