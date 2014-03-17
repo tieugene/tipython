@@ -231,7 +231,7 @@ def	bill_add(request):
 				(2, models.Approver.objects.get(pk=13), 1, 'Ok'),	# начОМТС
 				(3, form.cleaned_data['approver'], 1, 'Ok'),		# Руководитель
 				(4, None, 1, 'Ok'),					# Директор
-				(5, models.Approver.objects.get(pk=3), 1, 'Ok'),	# Гендир
+				(5, models.Approver.objects.get(pk=3), 1, 'Согласовано'),	# Гендир
 				(6, models.Approver.objects.get(pk=4), 2, 'Oплачено'),	# Бухгалтер
 			]
 			for i, r in enumerate(std_route1):
@@ -310,28 +310,7 @@ def	bill_edit(request, id):
 def	bill_view(request, id):
 	'''
 	View/Accept/Reject bill
-	* create note
-	* update bill:
-	-- if accept:
-	+-- case 1st (history len = 0 (bad) | approve == assign | user == approve | Draft):
-	+--- approve = next (2nd) in route
-	+--- isgood = True
-	--- case last (user = route.last()):
-	---- approve = assignee
-	---- isalive = False
-	--- case intermediate:
-	---- approve = next in route
-	+- if reject:
-	+--- approve = assignee
-	+--- isalive = False
-	+--- isgood = False
-	* goto list
 	ACL: (assignee & Draft & Route ok) | (approver & OnWay)
-	TODO:
-	+ check resume not empty on reject
-	+ check resume not empty on start
-	- check assign can't be in route
-
 	'''
 	user = request.user
 	approver = models.Approver.objects.get(user=user)
@@ -341,8 +320,12 @@ def	bill_view(request, id):
 	err = ''
 	if (request.method == 'POST'):
 		if (request.POST['resume'] in set(['accept', 'reject'])) and (\
-		   ((approver == bill.assign) and (bill_state_id == 1)) or\
-		   ((approver == bill.approve) and (bill_state_id == 2)) \
+		   ((bill_state_id == 1) and (approver == bill.assign)) or\
+		   ((bill_state_id == 2) and ( \
+			((bill.rpoint.approve != None) and (approver == bill.rpoint.approve)) or\
+			((bill.rpoint.approve == None) and (approver.role == bill.rpoint.role))\
+		    ) \
+		    )
 		   ):
 			resume = (request.POST['resume'] == 'accept')
 			form = forms.ResumeForm(request.POST)
@@ -350,43 +333,31 @@ def	bill_view(request, id):
 				# 0. check prerequisites
 				if (not resume) and (not form.cleaned_data['note']):				# resume not empty on reject
 					err = 'Отказ необходимо комментировать'
-				elif (bill_state == 1) and (resume) and (not form.cleaned_data['note']):	# check resume not empty on start
+				elif (bill_state_id == 1) and (not form.cleaned_data['note']):	# check resume not empty on start
 					err = 'Запуск по маршруту необходимо комментировать'
-				elif (bill_state == 1) and (resume) and (approver in bill.route.all()):	# check resume not empty on start
-					err = 'Исполнитель не должен быть в маршруте'
 				else:
 					# 1. new comment
-					models.BillEvent.objects.create(bill=bill, user=approver, comment=form.cleaned_data['note'])
+					models.Event.objects.create(
+						bill=bill,
+						approve=approver,
+						resume=resume,
+						comment=form.cleaned_data['note']
+					)
 					# 2. update bill
 					if resume:
-						route_list = bill.route.all()
-						#print route_list, len(route_list), route_list[len(route_list)-1]
-						routes = bill.route.count()
-						print route_list
-						if (bill.isgood == False):			# 1st (draft)
-							#print "1st"
-							bill.isgood = True
-							bill.approve = route_list[0]
-						elif (approver == route_list[len(route_list)-1]):		# last
-							#print "Last"
-							bill.approve = bill.assign
-							bill.isalive = False
-						else:						# intermediate
-							#print "Intermediate"
-							i = 0
-							found = False
-							for u in route_list:
-								if approver == u:
-									found = True
-									break
-								i += 1
-							if (found):
-								#print 'Found:', i, 'Next:', route_list[i + 1]
-								bill.approve = route_list[i + 1]
-					else:
-						bill.approve = bill.assign
-						bill.isalive = False
-						bill.isgood = False
+						route_list = bill.route_set.all().order_by('order')
+						if (bill_state_id == 1):				# 1. 1st (draft)
+							bill.rpoint = route_list[0]
+						else:
+							rpoint = bill.rpoint
+							if (rpoint.order == len(route_list)):		# 2. last
+								bill.rpoint = None
+								bill.done = True
+							else:						# 3. intermediate
+								bill.rpoint = bill.route_set.get(order=rpoint.order+1)
+					else:	# Reject
+						bill.rpoint = None
+						bill.done = False
 					bill.save()
 					return redirect('bills.views.bill_list')
 	if (form == None):
@@ -399,7 +370,14 @@ def	bill_view(request, id):
 		## root | (assignee & (Draft|Rejected)==bad)
 		'candel':	(user.is_superuser or (((bill_state_id == 1) or (bill_state_id == 4)) and (bill.assign == approver))),
 		## (assignee & Draft) | (approver & OnWay)
-		'canaccept': (((bill_state_id == 1) and (bill.assign == approver)) or ((bill_state_id == 2) and (bill.rpoint.approve == approver))),
+		'canaccept': (
+			((bill_state_id == 1) and (bill.assign == approver)) or\
+			((bill_state_id == 2) and (
+			  ((bill.rpoint.approve != None) and (bill.rpoint.approve == approver)) or\
+			  ((bill.rpoint.approve == None) and (bill.rpoint.role == approver.role))\
+			 )\
+			)\
+		),
 		#'pagelist': range(bill.pages),
 		'err': err
 	}))
