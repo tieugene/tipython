@@ -16,6 +16,7 @@
 	* view: download image
 	* convert: PDF
 	* convert: tiff not deleted
+	* ерунда с этим done и rpoint получается...
 
 States (list):
 * Draft: done=None, rpoint=None

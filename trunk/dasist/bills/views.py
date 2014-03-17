@@ -334,15 +334,15 @@ def	bill_view(request, id):
 
 	'''
 	user = request.user
-	approver = models.Approver.objects.get(pk=user.pk)
+	approver = models.Approver.objects.get(user=user)
 	bill = models.Bill.objects.get(pk=int(id))
-	bill_state = bill.get_state()
+	bill_state_id = bill.get_state_id()
 	form = None
 	err = ''
 	if (request.method == 'POST'):
 		if (request.POST['resume'] in set(['accept', 'reject'])) and (\
-		   ((approver == bill.assign) and (bill.get_state() == 1)) or\
-		   ((approver == bill.approve) and (bill.get_state() == 2)) \
+		   ((approver == bill.assign) and (bill_state_id == 1)) or\
+		   ((approver == bill.approve) and (bill_state_id == 2)) \
 		   ):
 			resume = (request.POST['resume'] == 'accept')
 			form = forms.ResumeForm(request.POST)
@@ -395,34 +395,24 @@ def	bill_view(request, id):
 		'object': bill,
 		'form': form,
 		## root | (assignee & Draft)
-		#'canedit': (user.is_superuser or ((bill.assign == approver) and (bill_state == 1))),
-		'canedit': True,
+		'canedit':	(user.is_superuser or ((bill_state_id == 1) and (bill.assign == approver))),
 		## root | (assignee & (Draft|Rejected)==bad)
-		#'candel': (user.is_superuser or ((bill.assign == approver) and (bill.isgood == False))),
-		'candel': True,
+		'candel':	(user.is_superuser or (((bill_state_id == 1) or (bill_state_id == 4)) and (bill.assign == approver))),
 		## (assignee & Draft) | (approver & OnWay)
-		#'canaccept': (((bill.assign == approver) and (bill_state == 1)) or ((bill.approve == approver) and (bill_state == 2))),
-		'canaccept': True,
-		## approver & OnWay
-		#'canreject': ((bill.approve == approver) and (bill_state == 2)),
-		'canreject': True,
+		'canaccept': (((bill_state_id == 1) and (bill.assign == approver)) or ((bill_state_id == 2) and (bill.rpoint.approve == approver))),
 		#'pagelist': range(bill.pages),
 		'err': err
 	}))
-
+'''
 @login_required
 def	bill_get(request, id):
-	'''
-	Download bill
-	ACL: any?
-	'''
 	bill = models.Bill.objects.get(pk=int(id))
 	response = HttpResponse(mimetype=bill.mime)
 	response['Content-Transfer-Encoding'] = 'binary'
 	response['Content-Disposition'] = '; filename=' + bill.name.encode('utf-8')
 	response.write(open(bill.get_path()).read())
 	return response
-
+'''
 @login_required
 def	bill_delete(request, id):
 	'''
