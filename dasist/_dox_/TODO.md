@@ -3,6 +3,7 @@
 + create users
 + CRUD bill
 * route bill
+* permissions
 * FIXME:
 	* files not deleted:
 		https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.pre_delete

@@ -36,27 +36,6 @@ from core.models import File, FileSeq
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
 
-def	__pdf2png(self, src_path, thumb_template, pages):
-	for page in range(pages, 10):
-		img = Wand_Image(filename = src_path + '[%d]' % page, resolution=(150,150))
-		#print img.size
-		if (img.colorspace != 'gray'):
-			img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
-		img.format = 'png'
-		#img.resolution = (300, 300)
-		img.save(filename = thumb_template % page)
-
-def	__pdf2png2(self, src_path, thumb_template, pages):
-	arglist = ["gs",
-		"-dBATCH",
-		"-dNOPAUSE",
-		"-sOutputFile=%s" % thumb_template,
-		"-sDEVICE=pnggray",
-		"-r150",
-		src_path]
-	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	sp.communicate()
-
 def	__set_filter_state(q, s):
 	'''
 	q - original QuerySet (all)
@@ -137,6 +116,27 @@ def	bill_filter_state(request):
 		#print 'Filter:', fsfilter
 		request.session[FSNAME] = fsfilter
 	return redirect('bills.views.bill_list')
+
+def	__pdf2png(self, src_path, thumb_template, pages):
+	for page in range(pages, 10):
+		img = Wand_Image(filename = src_path + '[%d]' % page, resolution=(150,150))
+		#print img.size
+		if (img.colorspace != 'gray'):
+			img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
+		img.format = 'png'
+		#img.resolution = (300, 300)
+		img.save(filename = thumb_template % page)
+
+def	__pdf2png2(self, src_path, thumb_template, pages):
+	arglist = ["gs",
+		"-dBATCH",
+		"-dNOPAUSE",
+		"-sOutputFile=%s" % thumb_template,
+		"-sDEVICE=pnggray",
+		"-r150",
+		src_path]
+	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	sp.communicate()
 
 def	__convert_img(file):
 	'''
