@@ -24,10 +24,10 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import os, imp, pprint, tempfile, subprocess
 
 # 3. 3rd party
-from pyPdf import PdfFileReader
-from pdfrw import PdfReader
+#from pyPdf import PdfFileReader
+#from pdfrw import PdfReader
 from PIL import Image as PIL_Image
-from wand.image import Image as Wand_Image
+#from wand.image import Image as Wand_Image
 
 # 4. my
 import models, forms
