@@ -106,7 +106,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'sortedm2m',
+#    'sortedm2m',
     'core',
     'bills',
 )

@@ -1,3 +1,8 @@
+Depends:
+* python-django14
+* httpd
+* mod_wsgi
+
 Done:
 * CRUD Bill (w/o m2ms)
 * CRUD Route to Bill (as m2m) - views, forms, tpl
