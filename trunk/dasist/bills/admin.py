@@ -28,7 +28,7 @@ class	RoleAdmin(admin.ModelAdmin):
 class	ApproverAdmin(admin.ModelAdmin):
 	#ordering	= ('user.last_name', 'user.first_name')
 	ordering	= ('user',)
-	#list_display	= ('user.last_name', 'user.first_name', 'role', 'jobtit',)
+	list_display	= ('pk', 'user', 'role', 'jobtit', 'canadd')
 
 class	BillAdmin(admin.ModelAdmin):
 	ordering	= ('id',)

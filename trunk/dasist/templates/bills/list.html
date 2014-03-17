@@ -33,14 +33,8 @@
   <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
   <td> {{ object.supplier }} </td>
   <td> {{ object.assign.get_fio }} </td>
-  <td> {% if object.rpoint %} {{ object.rpoint }} {% else %} --- {% endif %} </td>
-  <td>
-   {% if object.isalive %}
-    {% if object.isgood %} В пути {% else %} Черновик {% endif %}
-   {% else %}
-    {% if object.isgood %} Исполнен {% else %} Завернут {% endif %}
-   {% endif %}
-  </td>
+  <td> {% if object.rpoint %} {{ object.rpoint.get_str }} {% else %} --- {% endif %} </td>
+  <td> {{ object.get_state_name }} </td>
  </tr>
 {% endfor %}
 </table>

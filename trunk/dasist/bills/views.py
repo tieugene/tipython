@@ -66,7 +66,7 @@ def	bill_list(request):
 	'''
 	# 1. pre
 	user = request.user
-	approver = models.Approver.objects.get(pk=user.pk)
+	approver = models.Approver.objects.get(user=user)
 	#print approver.role.pk == 1
 	queryset = models.Bill.objects.all()
 	# 2. filter
@@ -177,7 +177,7 @@ def	__convert_img(file):
 			except EOFError:
 				break
 		os.unlink(src_path)
-	elif (self.mime == 'application/pdf'):
+	elif (filemime == 'application/pdf'):
 		#pages = PdfFileReader(file(src_path, 'rb')).getNumPages()
 		pages = min(9, len(PdfReader(file(src_path, 'rb')).pages))
 		self.__pdf2png2(src_path, thumb_template, pages)
@@ -228,11 +228,11 @@ def	bill_add(request):
 			bill.save()
 			# 4. add route
 			std_route1 = [
-				(2, models.Approver.objects.get(pk=11), 1, 'Ok'),	# начОМТС
+				(2, models.Approver.objects.get(pk=13), 1, 'Ok'),	# начОМТС
 				(3, form.cleaned_data['approver'], 1, 'Ok'),		# Руководитель
 				(4, None, 1, 'Ok'),					# Директор
-				(5, models.Approver.objects.get(pk=1), 1, 'Ok'),	# Гендир
-				(6, models.Approver.objects.get(pk=2), 2, 'Oплачено'),	# Бухгалтер
+				(5, models.Approver.objects.get(pk=3), 1, 'Ok'),	# Гендир
+				(6, models.Approver.objects.get(pk=4), 2, 'Oплачено'),	# Бухгалтер
 			]
 			for i, r in enumerate(std_route1):
 				bill.route_set.add(

@@ -17,11 +17,18 @@ from StringIO import StringIO
 from core.models import File, FileSeq
 #import core
 
-states = {	# rpoint==None, done
+state_id = {	# rpoint==None, done
 	(True,  None): 1,	# Draft
 	(False,  None ): 2,	# OnWay
 	(True, True ): 3,	# Accepted
 	(True, False): 4,	# Rejected
+}
+
+state_name = {	# rpoint==None, done
+	(True,  None): 'Черновик',	# Draft
+	(False,  None ): 'В пути',	# OnWay
+	(True, True ): 'Исполнен',	# Accepted
+	(True, False): 'Завернут',	# Rejected
 }
 
 class	State(models.Model):
@@ -63,7 +70,7 @@ class	Role(models.Model):
 class	Approver(models.Model):
 	'''
 	'''
-	user	= models.OneToOneField(User, verbose_name=u'Пользователь')
+	user	= models.OneToOneField(User, primary_key=True, verbose_name=u'Пользователь')
 	role	= models.ForeignKey(Role, verbose_name=u'Роль')
 	jobtit	= models.CharField(max_length=32, verbose_name=u'Должность')
 	canadd	= models.BooleanField(verbose_name=u'Может создавать')
@@ -117,7 +124,10 @@ class	Bill(models.Model):
 		return str(self.pk)
 
 	def	get_state(self):
-		return states[(self.rpoint==None, self.done)]
+		return state_id[(self.rpoint==None, self.done)]
+
+	def	get_state_name(self):
+		return state_name[(self.rpoint==None, self.done)]
 
 	class   Meta:
 		#unique_together		= (('scan', 'type', 'name'),)
@@ -146,6 +156,9 @@ class	Route(models.Model):
 	action	= models.CharField(max_length=16, verbose_name=u'Действие')
 
 	def	__unicode__(self):
+		return '%d: %s' % (self.bill.pk, self.approve.get_fio() if self.approve else self.role.name)
+
+	def	get_str(self):
 		return self.approve.get_fio() if self.approve else self.role.name
 
 	class   Meta:
