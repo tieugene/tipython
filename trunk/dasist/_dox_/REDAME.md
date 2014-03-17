@@ -2,6 +2,9 @@ Depends:
 * python-django14
 * httpd
 * mod_wsgi
+* memcached
+* python-memcached
+* python-pillow (PIL)
 
 Done:
 * CRUD Bill (w/o m2ms)

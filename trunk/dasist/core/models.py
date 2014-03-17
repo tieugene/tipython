@@ -89,7 +89,7 @@ class	File(RenameFilesModel):
 		return '%08d' % self.pk
 
 	def	get_path(self):
-		return os.path.join(settings.BILLS_ROOT, '%08d' % self.pk)
+		return os.path.join(settings.MEDIA_ROOT, '%08d' % self.pk)
 
 	class   Meta:
 		verbose_name            = u'Файл'
