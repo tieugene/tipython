@@ -123,7 +123,7 @@ class	Bill(models.Model):
 	def     __unicode__(self):
 		return str(self.pk)
 
-	def	get_state(self):
+	def	get_state_id(self):
 		return state_id[(self.rpoint==None, self.done)]
 
 	def	get_state_name(self):
