@@ -17,6 +17,7 @@
 	* convert: PDF
 	* convert: tiff not deleted
 	* ерунда с этим done и rpoint получается...
+	* обязательность камментов - в форме
 
 States (list):
 * Draft: done=None, rpoint=None

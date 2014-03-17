@@ -16,7 +16,7 @@
  <tr> <th> Маршрут </th> <td>
   <ol>
   {% for i in object.route_set.all %}
-   <li> {{ i.get_str }} </li>
+   <li> <p {% if i.order < object.rpoint.order %} style="text-decoration: line-through"{% endif %}> {{ i.get_str }} </p> </li>
   {% endfor %}
   </ol>
  </td> </tr>
@@ -35,15 +35,17 @@
 <table border="1">
 <caption> История: </caption>
 <thead>
+ <th> Ok </th>
  <th> Когда </th>
  <th> Кто </th>
  <th> Камменты </th>
 </thead>
 <tbody>
-  {% for i in object.billevent_set.all %}
+  {% for i in object.events.all %}
   <tr>
+   <td valign="top"> {% if i.resume %} &radic; {% else %} &dagger; {% endif %} </td>
    <td valign="top"> {{i.ctime|date:"y.m.d H:i:d" }} </td>
-   <td valign="top"> {{ i.user }} </td>
+   <td valign="top"> {{ i.approve.get_fio }} </td>
    <td valign="top"> <pre> {{ i.comment }} </pre> </td>
   </tr>
   {% endfor %}
@@ -61,8 +63,12 @@
 	{% csrf_token %}
 	{{ form.as_p }}
 <p>
-<button type="submit" name="resume" value="accept"> OK </button>
-{% if canreject %} <button type="submit" name="resume" value="reject"> Отказать </button> {% endif %}
+{% if object.rpoint %}
+<button type="submit" name="resume" value="accept"> {{ object.rpoint.action }} </button>
+<button type="submit" name="resume" value="reject"> Отказать </button>
+{% else %}
+<button type="submit" name="resume" value="accept"> Вперед </button>
+{% endif %}
 </p>
 </form>
 {% endif %}

@@ -134,19 +134,7 @@ class	Bill(models.Model):
 		#ordering                = ('id',)
 		verbose_name            = u'Счет'
 		verbose_name_plural     = u'Счета'
-'''
-class	RouteTemplate(models.Model):
-	role	= models.ForeignKey(Role, verbose_name=u'Роль')
-	approve	= models.ForeignKey(Approver, null=True, blank=True, verbose_name=u'Подписант')
-	state	= models.ForeignKey(State, verbose_name=u'Состояние')
-	areq	= models.BooleanField(verbose_name=u'Требует Подписанта')
 
-	class   Meta:
-		#unique_together		= (('scan', 'type', 'name'),)
-		#ordering                = ('id',)
-		verbose_name            = u'Шаблон маршрута'
-		verbose_name_plural     = u'Шаблоны маршрутов'
-'''
 class	Route(models.Model):
 	bill	= models.ForeignKey(Bill, verbose_name=u'Счет')
 	order	= models.PositiveSmallIntegerField(null=False, blank=False, verbose_name=u'#')
@@ -156,14 +144,14 @@ class	Route(models.Model):
 	action	= models.CharField(max_length=16, verbose_name=u'Действие')
 
 	def	__unicode__(self):
-		return '%d: %s' % (self.bill.pk, self.approve.get_fio() if self.approve else self.role.name)
+		return '%d.%d: %s' % (self.bill.pk, self.order, self.approve.get_fio() if self.approve else self.role.name)
 
 	def	get_str(self):
 		return self.approve.get_fio() if self.approve else self.role.name
 
 	class   Meta:
 		unique_together		= (('bill', 'order',),)
-		ordering                = ('order',)
+		ordering                = ('bill', 'order',)
 		verbose_name            = u'Точка маршрута'
 		verbose_name_plural     = u'Точки маршрута'
 
@@ -181,3 +169,17 @@ class	Event(models.Model):
 		ordering                = ('ctime',)
 		verbose_name            = u'Резолюция'
 		verbose_name_plural     = u'Резолюции'
+
+'''
+class	RouteTemplate(models.Model):
+	role	= models.ForeignKey(Role, verbose_name=u'Роль')
+	approve	= models.ForeignKey(Approver, null=True, blank=True, verbose_name=u'Подписант')
+	state	= models.ForeignKey(State, verbose_name=u'Состояние')
+	areq	= models.BooleanField(verbose_name=u'Требует Подписанта')
+
+	class   Meta:
+		#unique_together		= (('scan', 'type', 'name'),)
+		#ordering                = ('id',)
+		verbose_name            = u'Шаблон маршрута'
+		verbose_name_plural     = u'Шаблоны маршрутов'
+'''
