@@ -2,15 +2,15 @@
 == Bills ==
 + create users
 + CRUD bill
-* route bill
++ route bill
+* convert: PDF
+* list: filter
 * permissions
 * FIXME:
 	* files not deleted:
 		https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.pre_delete
 		http://stackoverflow.com/questions/2747118/django-deleting-models-and-overriding-delete-method
-	* list: filter
 	* view: download image
-	* convert: PDF
 	* convert: tiff not deleted
 	* ерунда с этим done и rpoint получается...
 	* обязательность камментов - в форме

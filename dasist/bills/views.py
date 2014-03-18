@@ -117,7 +117,7 @@ def	bill_filter_state(request):
 		request.session[FSNAME] = fsfilter
 	return redirect('bills.views.bill_list')
 
-def	__pdf2png(self, src_path, thumb_template, pages):
+def	__pdf2png1(self, src_path, thumb_template, pages):
 	for page in range(pages, 10):
 		img = Wand_Image(filename = src_path + '[%d]' % page, resolution=(150,150))
 		#print img.size
@@ -138,6 +138,33 @@ def	__pdf2png2(self, src_path, thumb_template, pages):
 	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	sp.communicate()
 
+def	__pdf2png3(src_path, basename):
+	'''
+	src_path - full path to src file
+	dst_folder - dest tmp folder
+	basename - source file name w/o ext
+	'''
+	retvalue = list()
+	tmpdir = tempfile.mkdtemp()
+	# 1. extract
+	arglist = ['pdfimages', '-q', '-j', src_path, os.path.join(tmpdir, basename)]
+	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	sp.communicate()
+	# 2. convert
+	for f in os.listdir(tmpdir):
+		chunk_path = os.path.join(tmpdir, f)
+		with open(chunk_path, 'rb') as fh:
+			img = PIL_Image.open(fh)
+			name, ext = f.rsplit('.', 1)
+			dst_filename = name + '.png'
+			flag = {'jpg': 'L', 'ppm': 'L', 'pbm': '1'}[ext]
+			img.convert('L').save(os.path.join(settings.MEDIA_ROOT, dst_filename), 'PNG')
+			del img
+			retvalue.append(dst_filename)
+		os.unlink(chunk_path)
+	os.rmdir(tmpdir)
+	return retvalue
+
 def	__convert_img(file):
 	'''
 	Convert image
@@ -145,9 +172,9 @@ def	__convert_img(file):
 	@return list of output filepaths
 	'''
 	retvalue = list()
+	default_storage.save(file.name, ContentFile(file.read()))	# unicode
 	filename = file.name
 	filemime = file.content_type
-	src_filename = default_storage.save(file.name, ContentFile(file.read()))	# unicode
 	src_path = os.path.join(settings.MEDIA_ROOT, filename)
 	basename = filename.rsplit('.', 1)[0]
 	dirname = settings.MEDIA_ROOT
@@ -178,9 +205,8 @@ def	__convert_img(file):
 				break
 		os.unlink(src_path)
 	elif (filemime == 'application/pdf'):
-		#pages = PdfFileReader(file(src_path, 'rb')).getNumPages()
-		pages = min(9, len(PdfReader(file(src_path, 'rb')).pages))
-		self.__pdf2png2(src_path, thumb_template, pages)
+		retvalue = __pdf2png3(src_path, basename)
+		os.unlink(src_path)
 	return retvalue
 
 def	__update_fileseq(f, fileseq):
