@@ -5,6 +5,7 @@ Depends:
 * memcached
 * python-memcached
 * python-pillow (PIL)
+* poppler-utils (pdfimages)
 
 Done:
 * CRUD Bill (w/o m2ms)
