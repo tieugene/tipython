@@ -3,8 +3,8 @@
 + create users
 + CRUD bill
 + route bill
-* convert: PDF
-* list: filter
++ convert: PDF
++ list: filter
 * permissions
 * FIXME:
 	* files not deleted:
