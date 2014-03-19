@@ -17,9 +17,6 @@ from StringIO import StringIO
 from core.models import File, FileSeq
 #import core
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 state_id = {	# rpoint==None, done
 	(True,  None): 1,	# Draft
 	(False,  None ): 2,	# OnWay
