@@ -4,26 +4,25 @@
 + route bill
 + convert: PDF
 + list: filter
-* permissions
-* FIXME:
-	* files not deleted:
-		https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.pre_delete
-		http://stackoverflow.com/questions/2747118/django-deleting-models-and-overriding-delete-method
-	* view: download image
-	* convert: tiff not deleted
-	* ерунда с этим done и rpoint получается...
-	* обязательность камментов - в форме
 
 = FIXME =
 * cyrillic scans
 * PDF - add gs
-* paging
+* convert: tiff not deleted
+* files not deleted:
+	https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.pre_delete
+	http://stackoverflow.com/questions/2747118/django-deleting-models-and-overriding-delete-method
 
 = Tuning =
 * Значки исполнено/завернуто
-* colorify (lightgrey/white, yellow, green, red)
+* colorify Ok/Reject
+* colorify lines (lightgrey/white, yellow, green, red)
+* paging
+* обязательность камментов - в форме
+* view: download image
 
 = Feature requests =
+* permissions
 * Убрать в архив
 * Уведомления (mailto)
 * Сортировка по направлению и по ответственному
@@ -34,6 +33,7 @@
 * Перезапуск несогласованного счет
 * thunderbird-lightning.Tasks
 * webp
+* ерунда с этим done и rpoint получается...
 
 ----
 Format-specific tools:
