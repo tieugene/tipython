@@ -175,7 +175,7 @@ def	__convert_img(file):
 	@return list of output filepaths
 	'''
 	retvalue = list()
-	default_storage.save(file.name, ContentFile(file.read()))	# unicode
+	default_storage.save(str(file.name), ContentFile(file.read()))	# unicode
 	filename = file.name
 	filemime = file.content_type
 	src_path = os.path.join(settings.MEDIA_ROOT, filename)
