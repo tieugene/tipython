@@ -176,7 +176,10 @@ def	__convert_img(file):
 	'''
 	retvalue = list()
 	#default_storage.save(file.name, ContentFile(file.read()))	# unicode
-	open(file.name, 'rb').save(file.read())
+	buffer = file.read()
+	f = open(file.name, 'wb')
+	f.write(buffer)
+	f.close()
 	filename = file.name
 	filemime = file.content_type
 	src_path = os.path.join(settings.MEDIA_ROOT, filename)
