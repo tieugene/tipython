@@ -21,7 +21,7 @@ from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 # 2. system
-import os, imp, pprint, tempfile, subprocess
+import os, sys, imp, pprint, tempfile, subprocess
 
 # 3. 3rd party
 #from pyPdf import PdfFileReader
