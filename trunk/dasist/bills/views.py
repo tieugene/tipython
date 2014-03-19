@@ -36,6 +36,9 @@ from core.models import File, FileSeq
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 def	__set_filter_state(q, s):
 	'''
 	q - original QuerySet (all)
