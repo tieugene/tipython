@@ -175,16 +175,18 @@ def	__convert_img(file):
 	@return list of output filepaths
 	'''
 	retvalue = list()
+	dirname = settings.MEDIA_ROOT
+	filemime = file.content_type
+	filename = file.name
+	src_path = os.path.join(settings.MEDIA_ROOT, filename)
+	# beg
 	#default_storage.save(file.name, ContentFile(file.read()))	# unicode
 	buffer = file.read()
-	f = open(file.name, 'wb')
+	f = open(src_path, 'wb')
 	f.write(buffer)
 	f.close()
-	filename = file.name
-	filemime = file.content_type
-	src_path = os.path.join(settings.MEDIA_ROOT, filename)
+	# end
 	basename = filename.rsplit('.', 1)[0]
-	dirname = settings.MEDIA_ROOT
 	if (filemime == 'image/png'):
 		img = PIL_Image.open(src_path)
 		if (img.mode not in set(['1', 'L'])):	# [paletted ('P')], bw, grey
