@@ -177,14 +177,14 @@ def	__convert_img(file):
 	retvalue = list()
 	dirname = settings.MEDIA_ROOT
 	filemime = file.content_type
-	filename = file.name.encode('utf-8')
+	filename = str(file.name.encode('utf-8'))
 	src_path = os.path.join(settings.MEDIA_ROOT, filename)
 	# beg
-	#default_storage.save(file.name, ContentFile(file.read()))	# unicode
-	buffer = file.read()
-	f = open(src_path, 'wb')
-	f.write(buffer)
-	f.close()
+	default_storage.save(filename, ContentFile(file.read()))	# unicode
+	#buffer = file.read()
+	#f = open(src_path, 'wb')
+	#f.write(buffer)
+	#f.close()
 	# end
 	basename = filename.rsplit('.', 1)[0]
 	if (filemime == 'image/png'):
