@@ -219,10 +219,13 @@ def	__convert_img(file):
 	return retvalue
 
 def	__update_fileseq(f, fileseq):
-	for file in __convert_img(f):
-		myfile = File(file=SimpleUploadedFile(file, default_storage.open(file).read()))
+	for filename in __convert_img(f):
+		src_path = os.path.join(settings.MEDIA_ROOT, filename)
+		#myfile = File(file=SimpleUploadedFile(filename, default_storage.open(filename).read()))
+		myfile = File(file=SimpleUploadedFile(filename, open(src_path).read()))
 		myfile.save()
-		default_storage.delete(file)
+		#default_storage.delete(filename)
+		os.unlink(src_path)
 		fileseq.add_file(myfile)
 
 @login_required
