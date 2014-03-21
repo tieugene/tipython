@@ -21,7 +21,8 @@ def    my_upload_to(instance, filename):
 	Generates upload path for FileField
 	'''
 	instance.name = filename
-	return u'temp/%s' % filename
+	#return u'temp/%s' % filename
+	return filename
 
 def file_md5(file, block_size=1024*14):
     '''
@@ -49,6 +50,7 @@ class	File(RenameFilesModel):
 	#mimetype	= models.CharField(max_length=64, verbose_name=u'MIME')
 	#size
 
+	#file	= models.FileField(null=False, upload_to=my_upload_to, verbose_name=u'Файл')    # attrs: name, path, url, size
 	file	= models.FileField(null=False, upload_to=my_upload_to, verbose_name=u'Файл')    # attrs: name, path, url, size
 	name	= models.CharField(null=False, db_index=True, blank=False, max_length=255, verbose_name=u'Имя файла')
 	mime	= models.CharField(null=False, blank=False, max_length=255, verbose_name=u'Тип Mime')
