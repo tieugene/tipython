@@ -43,7 +43,7 @@ def	file_get(request, id):
 	file = models.File.objects.get(pk=int(id))
 	response = HttpResponse(mimetype=file.mime)
 	response['Content-Transfer-Encoding'] = 'binary'
-	response['Content-Disposition'] = '; filename=' + file.name.encode('utf-8')
+	response['Content-Disposition'] = '; filename=\"%s\"' % file.name.encode('utf-8')
 	response.write(open(file.get_path()).read())
 	return response
 
