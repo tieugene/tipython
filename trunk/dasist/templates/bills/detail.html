@@ -43,7 +43,7 @@
 <tbody>
   {% for i in object.events.all %}
   <tr>
-   <td valign="top"> {% if i.resume %} &radic; {% else %} &dagger; {% endif %} </td>
+   <td valign="top"> {% if i.resume %} &radic; {% else %} X {% endif %} </td>
    <td valign="top"> {{i.ctime|date:"y.m.d H:i:d" }} </td>
    <td valign="top"> {{ i.approve.get_fio }} </td>
    <td valign="top"> <pre> {{ i.comment }} </pre> </td>
