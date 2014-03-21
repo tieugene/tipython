@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 #from sortedm2m.fields import SortedManyToManyField
 
 # 3. system
-import os, datetime, hashlib
+import os, datetime, hashlib, uuid
 from StringIO import StringIO
 
 # 4. local
@@ -22,24 +22,23 @@ def    my_upload_to(instance, filename):
 	'''
 	instance.name = filename
 	#return u'temp/%s' % filename
-	return filename
+	return u'temp/%s' % uuid.uuid4().hex.upper()
 
 def file_md5(file, block_size=1024*14):
-    '''
-    file_md5(file, use_system = False) -> md5sum of "file" as hexdigest string.
-    "file" may be a file name or file object, opened for read.
-    If "use_system" is True, if possible use system specific program. This ignore, if file object given.
-    "block_size" -- size in bytes buffer for calc md5. Used with "use_system=False".
-    '''
-    if isinstance(file, basestring):
-        file = open(file, 'rb')
-    h = hashlib.md5()
-    block = file.read(block_size)
-    while block:
-        h.update(block)
-        block = file.read(block_size)
-    return h.hexdigest()
-
+	'''
+	file_md5(file, use_system = False) -> md5sum of "file" as hexdigest string.
+	"file" may be a file name or file object, opened for read.
+	If "use_system" is True, if possible use system specific program. This ignore, if file object given.
+	"block_size" -- size in bytes buffer for calc md5. Used with "use_system=False".
+	'''
+	if isinstance(file, basestring):
+		file = open(file, 'rb')
+	h = hashlib.md5()
+	block = file.read(block_size)
+	while block:
+		h.update(block)
+		block = file.read(block_size)
+	return h.hexdigest()
 
 class	File(RenameFilesModel):
 	'''
