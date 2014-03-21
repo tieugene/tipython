@@ -1,0 +1,27 @@
+{% extends "filer/base.html" %}
+{% block body_main %}
+
+<table width="auto" border="1">
+<thead>
+ <tr>
+  <th> # </th>
+  <th> Name </th>
+  <th> Ctime </th>
+  <th> Size </th>
+  <th> X </th>
+ </tr>
+</thead>
+<tbody>
+{% for object in object_list %}
+ <tr>
+  <td> {{ object.pk }} </td>
+  <td> <a href="{% url filer.views.file_view object.pk %}"> {{ object.name }} </a> </td>
+  <td> {{ object.ctime|date:"y.m.d H:i:d" }} </td>
+  <td> {{ object.size }} </td>
+  <td> <a href="{% url filer.views.file_del object.pk %}"> <button type="button"> X </button> </a> </td>
+ </tr>
+{% endfor %}
+</tbody>
+</table>
+<a href="{% url filer.views.file_add %}"> <button type="button"> + </button> </a>
+{% endblock %}

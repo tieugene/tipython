@@ -1,0 +1,13 @@
+DEBUG = True
+#DEBUG = False
+
+STATIC_URL = '/static_sandbox/'
+MEDIA_ROOT = '/mnt/shares/tmp/sandbox/'
+
+DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': '/mnt/shares/tmp/sandbox.db'}}
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'unix:/tmp/memcached.sock',
+    }
+}
