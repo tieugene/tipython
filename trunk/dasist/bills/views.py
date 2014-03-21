@@ -177,7 +177,11 @@ def	__convert_img(file):
 	retvalue = list()
 	dirname = settings.MEDIA_ROOT
 	filemime = file.content_type
-	filename = file.name.encode('utf-8')
+	# test
+	file.name = file.name.encode('utf-8')
+	filename = file.name
+	# /test
+	#filename = file.name.encode('utf-8')
 	src_path = os.path.join(settings.MEDIA_ROOT, filename)
 	# beg
 	#default_storage.save(filename, ContentFile(file.read()))	# unicode

@@ -47,8 +47,6 @@ class RenameFilesModel(models.Model):
 	If 'keep_ext' is True (the default), the extension of the previously saved
 	filename will be appended to the primary key to construct the filename.
 	The value of 'keep_ext' is not considered if 'dest' is a callable.
-
-	Too: http://www.ivankin.net/?p=70
 	"""
 	RENAME_FILES = {}
 
@@ -58,6 +56,7 @@ class RenameFilesModel(models.Model):
 	def save(self, force_insert=False, force_update=False):
 		rename_files = getattr(self, 'RENAME_FILES', None)
 		if rename_files:
+			#print dir(self)
 			super(RenameFilesModel, self).save(force_insert, force_update)	# unicode error
 			force_insert, force_update = False, True
 			for field_name, options in rename_files.iteritems():

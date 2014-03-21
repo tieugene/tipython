@@ -43,7 +43,6 @@ def file_md5(file, block_size=1024*14):
 class	File(RenameFilesModel):
 	'''
 	TODO:
-	* cache
 	* delete
 	'''
 	#filename	= models.CharField(max_length=255, db_index=True, blank=False, verbose_name=u'Filename')
