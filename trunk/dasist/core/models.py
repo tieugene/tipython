@@ -81,8 +81,8 @@ class	File(RenameFilesModel):
 		'''
 		super(File, self).save()
 
-	def     __unicode__(self):
-		return self.name
+	#def     __unicode__(self):
+	#	return self.name
 
 	def	get_filename(self):
 		return '%08d' % self.pk
