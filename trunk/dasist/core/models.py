@@ -67,7 +67,7 @@ class	File(RenameFilesModel):
 		self.mime = self.file._file.content_type
 		self.size = self.file._file._size
 		self.md5 = file_md5(self.file._file.file)
-		super(File, self).save()
+		super(File, self).save()	# unicode error
 		#else:
 		#	super(File, self).save()
 

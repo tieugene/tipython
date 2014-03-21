@@ -225,8 +225,8 @@ def	__convert_img(file):
 def	__update_fileseq(f, fileseq):
 	for filename in __convert_img(f):
 		src_path = os.path.join(settings.MEDIA_ROOT, filename)
-		#myfile = File(file=SimpleUploadedFile(filename, default_storage.open(filename).read()))
-		myfile = File(file=SimpleUploadedFile(filename, open(src_path).read()))
+		myfile = File(file=SimpleUploadedFile(filename, default_storage.open(filename).read()))
+		#myfile = File(file=SimpleUploadedFile(filename, open(src_path).read()))	# unicode error
 		myfile.save()
 		#default_storage.delete(filename)
 		os.unlink(src_path)
@@ -333,7 +333,7 @@ def	bill_edit(request, id):
 			if (file):
 				fileseq = bill.fileseq
 				fileseq.clean_children()
-				__update_fileseq(file, fileseq)
+				__update_fileseq(file, fileseq)	# unicode error
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillEditForm(initial={
