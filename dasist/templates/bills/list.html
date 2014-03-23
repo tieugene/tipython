@@ -12,7 +12,7 @@
  {{ fsform.dead.label }}  {{ fsform.dead }}
 </p>
 </form>
-
+{% include "paginator.html" %}
 <table>
  <thead>
  <tr>
@@ -27,7 +27,7 @@
  </thead>
  <tbody>
 {% for object in object_list %}
- <tr>
+ <tr bgcolor="{{object.get_state_color}}">
   <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.project }} </td>
   <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
@@ -40,6 +40,6 @@
 </table>
 <!-- ACL: root|Исполнитель -->
 {% if canadd %}
-<a href="{% url bills.views.bill_add %}"> <button type="button"> + </button> </a>
+<a href="{% url bills.views.bill_add %}"> {% include "button/new.html" %} </a>
 {% endif %}
 {% endblock %}

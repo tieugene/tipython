@@ -5,28 +5,41 @@
 + convert: PDF
 + list: filter
 
++ cyrillic scans
++ remove Files and FileSeq
++ Значки исполнено/завернуто
++ colorify Ok/Reject
++ colorify lines (lightgrey/white, yellow, green, red)
++ paging
++ PDF - add gs
++ download image
++ remove route from Accepted
+
 = FIXME =
-* cyrillic scans
-* PDF - add gs
+* login redirect
+* https
+* about
+* add img to bill
 * convert: tiff not deleted
+* filters (who see what)
 * files not deleted:
 	https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.pre_delete
 	http://stackoverflow.com/questions/2747118/django-deleting-models-and-overriding-delete-method
+* fullscreen images:
+-- open in new window (popup, 100%)
+-- show scaled
+-- click switch to full/100%
 
 = Tuning =
-* Значки исполнено/завернуто
-* colorify Ok/Reject
-* colorify lines (lightgrey/white, yellow, green, red)
-* paging
 * обязательность камментов - в форме
 * view: download image
 
 = Feature requests =
+* GDrive
 * permissions
 * Убрать в архив
 * Уведомления (mailto)
 * Сортировка по направлению и по ответственному
-* Горелов и завьялов
 * Filters (state & user; view bill by intermediate approver)
 * Project and Depart as models (?)
 * перехват счетов в пути
