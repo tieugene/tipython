@@ -31,6 +31,13 @@ state_name = {	# rpoint==None, done
 	(True, False): 'Завернут',	# Rejected
 }
 
+state_color = {	# rpoint==None, done	http://www.w3schools.com/html/html_colornames.asp
+	(True,  None):		'white',	# Draft
+	(False,  None ):	'FFFF99',	# OnWay
+	(True, True ):		'Chartreuse',	# Accepted
+	(True, False):		'silver',	# Rejected
+}
+
 class	State(models.Model):
 	'''
 	Predefined Bill states:
@@ -123,11 +130,17 @@ class	Bill(models.Model):
 	def     __unicode__(self):
 		return str(self.pk)
 
+	def	__get_state(self):
+		return (self.rpoint==None, self.done)
+
 	def	get_state_id(self):
-		return state_id[(self.rpoint==None, self.done)]
+		return state_id[self.__get_state()]
 
 	def	get_state_name(self):
-		return state_name[(self.rpoint==None, self.done)]
+		return state_name[self.__get_state()]
+
+	def	get_state_color(self):
+		return state_color[self.__get_state()]
 
 	class   Meta:
 		#unique_together		= (('scan', 'type', 'name'),)

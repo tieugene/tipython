@@ -32,6 +32,7 @@ class ApproverModelChoiceField(forms.ModelChoiceField):
 
 class	BillAddForm(forms.Form):
 	file		= forms.FileField(label=u'Скан')
+	rawpdf		= forms.BooleanField(label=u'Конвертировать PDF', required=False)
 	project		= forms.CharField(max_length=64, label=u'Объект')
 	depart		= forms.CharField(max_length=64, label=u'Направление')
 	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
@@ -45,6 +46,7 @@ class	BillAddForm(forms.Form):
 
 class	BillEditForm(forms.Form):
 	file		= forms.FileField(label=u'Скан', required=False, help_text=u'(Выберите файл, если хотите заменить скан)')
+	rawpdf		= forms.BooleanField(label=u'Конвертировать PDF', required=False)
 	project		= forms.CharField(max_length=64, label=u'Объект')
 	depart		= forms.CharField(max_length=64, label=u'Направление')
 	supplier	= forms.CharField(max_length=64, label=u'Поставщик')

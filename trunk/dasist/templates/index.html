@@ -5,8 +5,10 @@ $("#tm_index").addClass("active");
 {% block body_main %}
 <center>
 {% if user.is_authenticated %}
+ {% if user.is_superuser %}
  <a href="{% url core.views.file_list %}"> <button type="button"> Файлы </button> </a>
  <a href="{% url core.views.fileseq_list %}"> <button type="button"> Последовательности </button> </a>
+ {% endif %}
  <a href="{% url bills.views.bill_list %}"> <button type="button"> Счета </button> </a>
 {% else %}
 Залогиньтесь

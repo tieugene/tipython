@@ -21,7 +21,7 @@ from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 # 2. system
-import os, sys, imp, pprint, tempfile, subprocess
+import os, sys, imp, pprint, tempfile, subprocess, shutil
 
 # 3. 3rd party
 #from pyPdf import PdfFileReader
@@ -33,7 +33,7 @@ from PIL import Image as PIL_Image
 import models, forms
 from core.models import File, FileSeq
 
-PAGE_SIZE = 20
+PAGE_SIZE = 10
 FSNAME = 'fstate'	# 0..3
 
 reload(sys)
@@ -130,21 +130,23 @@ def	__pdf2png1(self, src_path, thumb_template, pages):
 		#img.resolution = (300, 300)
 		img.save(filename = thumb_template % page)
 
-def	__pdf2png2(self, src_path, thumb_template, pages):
-	arglist = ["gs",
-		"-dBATCH",
-		"-dNOPAUSE",
-		"-sOutputFile=%s" % thumb_template,
-		"-sDEVICE=pnggray",
-		"-r150",
-		src_path]
+def	__pdf2png2(src_path, basename):
+	tmpdir = tempfile.mkdtemp()
+	# 1. extract
+	arglist = ["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pnggray", "-r150", "-sOutputFile=%s-%%d.png" % os.path.join(tmpdir, basename), src_path]
 	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	sp.communicate()
+	# 2. mv
+	retvalue = os.listdir(tmpdir)
+	retvalue.sort()
+	for f in retvalue:
+		shutil.move(os.path.join(tmpdir, f), os.path.join(settings.MEDIA_ROOT, f))
+	os.rmdir(tmpdir)
+	return retvalue
 
 def	__pdf2png3(src_path, basename):
 	'''
 	src_path - full path to src file
-	dst_folder - dest tmp folder
 	basename - source file name w/o ext
 	'''
 	retvalue = list()
@@ -154,7 +156,9 @@ def	__pdf2png3(src_path, basename):
 	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	sp.communicate()
 	# 2. convert
-	for f in os.listdir(tmpdir):
+	filelist = os.listdir(tmpdir)
+	filelist.sort()
+	for f in filelist:
 		chunk_path = os.path.join(tmpdir, f)
 		with open(chunk_path, 'rb') as fh:
 			img = PIL_Image.open(fh)
@@ -168,7 +172,7 @@ def	__pdf2png3(src_path, basename):
 	os.rmdir(tmpdir)
 	return retvalue
 
-def	__convert_img(file):
+def	__convert_img(file, rawpdf=False):
 	'''
 	Convert image
 	@param img:django.core.files.uploadedfile.InMemoryUploadedFile
@@ -214,12 +218,15 @@ def	__convert_img(file):
 				break
 		os.unlink(src_path)
 	elif (filemime == 'application/pdf'):
-		retvalue = __pdf2png3(src_path, basename)
+		if (rawpdf):
+			retvalue = __pdf2png2(src_path, basename)
+		else:
+			retvalue = __pdf2png3(src_path, basename)
 		os.unlink(src_path)
 	return retvalue
 
-def	__update_fileseq(f, fileseq):
-	for filename in __convert_img(f):
+def	__update_fileseq(f, fileseq, rawpdf=False):
+	for filename in __convert_img(f, rawpdf):
 		src_path = os.path.join(settings.MEDIA_ROOT, filename)
 		#myfile = File(file=SimpleUploadedFile(filename, default_storage.open(filename).read()))
 		myfile = File(file=SimpleUploadedFile(filename, open(src_path).read()))	# unicode error
@@ -252,7 +259,7 @@ def	bill_add(request):
 			fileseq = FileSeq()
 			fileseq.save()
 			# 2. convert image and add to fileseq
-			__update_fileseq(request.FILES['file'], fileseq)
+			__update_fileseq(request.FILES['file'], fileseq, form.cleaned_data['rawpdf'])
 			# 3. bill at all
 			bill = models.Bill(
 				fileseq		= fileseq,
@@ -329,7 +336,7 @@ def	bill_edit(request, id):
 			if (file):
 				fileseq = bill.fileseq
 				fileseq.clean_children()
-				__update_fileseq(file, fileseq)	# unicode error
+				__update_fileseq(file, fileseq, form.cleaned_data['rawpdf'])	# unicode error
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillEditForm(initial={
@@ -397,6 +404,8 @@ def	bill_view(request, id):
 						bill.rpoint = None
 						bill.done = False
 					bill.save()
+					if bill.done == True:
+						bill.rpoint = bill.route_set.all().delete()
 					return redirect('bills.views.bill_list')
 	if (form == None):
 		form = forms.ResumeForm()

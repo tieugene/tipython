@@ -7,6 +7,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic.list_detail import object_list, object_detail
+from django.shortcuts import render_to_response, render, redirect
+from django.template import RequestContext, Context, loader
 
 # 4. my
 import models
@@ -15,8 +17,6 @@ PAGE_SIZE = 20
 
 @login_required
 def	file_list(request):
-	'''
-	'''
 	return  object_list (
 		request,
 		queryset = models.File.objects.all(),
@@ -27,14 +27,16 @@ def	file_list(request):
 
 @login_required
 def	file_view(request, id):
-	'''
-	'''
         return  object_detail (
                 request,
                 queryset = models.File.objects.all(),
                 object_id = id,
                 template_name = 'core/file_view.html',
         )
+
+@login_required
+def	file_preview(request, id):
+	return render_to_response('core/file_img.html', context_instance=RequestContext(request, {'file': models.File.objects.get(pk=int(id))}))
 
 @login_required
 def	file_get(request, id):
