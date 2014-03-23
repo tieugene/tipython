@@ -16,7 +16,7 @@
  <tr> <th> Маршрут </th> <td>
   <ol style="margin: 0">
   {% for i in object.route_set.all %}
-   <li> <p style="margin: 0" {% if i.order < object.rpoint.order %} style="text-decoration: line-through"{% endif %}> {{ i.get_str }} </p> </li>
+   <li> <p style="margin: 0{% if i.order < object.rpoint.order %}; text-decoration: line-through{% endif %}"> {{ i.get_str }} </p> </li>
   {% endfor %}
   </ol>
  </td> </tr>
