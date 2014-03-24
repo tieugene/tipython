@@ -33,7 +33,7 @@ from PIL import Image as PIL_Image
 import models, forms
 from core.models import File, FileSeq
 
-PAGE_SIZE = 10
+PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
 
 reload(sys)
