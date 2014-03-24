@@ -447,8 +447,7 @@ def	bill_delete(request, id):
 	bill = models.Bill.objects.get(pk=int(id))
 	if (not request.user.is_superuser) and (\
 	   (bill.assign.user.pk != request.user.pk) or\
-	   (bill.done != None) or\
-	   (bill.rpoint != None)):
+	   (bill.done != False)):
 		return redirect('bills.views.bill_view', bill.pk)
 	fileseq = bill.fileseq
 	bill.delete()
