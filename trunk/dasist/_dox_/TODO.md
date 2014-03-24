@@ -17,7 +17,11 @@
 
 = FIXME =
 * login redirect
-* https
+* Security:
+	* https
+	* session timeout
+	* change passwords
+	* logging
 * about
 * add img to bill
 * convert: tiff not deleted
