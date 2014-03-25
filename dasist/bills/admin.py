@@ -28,7 +28,10 @@ class	RoleAdmin(admin.ModelAdmin):
 class	ApproverAdmin(admin.ModelAdmin):
 	#ordering	= ('user.last_name', 'user.first_name')
 	ordering	= ('user',)
-	list_display	= ('pk', 'user', 'role', 'jobtit', 'canadd')
+	list_display	= ('pk', 'user', 'fio', 'role', 'jobtit', 'canadd')
+	def fio(self, obj):
+		return ('%s %s' % (obj.user.last_name, obj.user.first_name))
+	fio.short_description = 'ФИО'
 
 class	BillAdmin(admin.ModelAdmin):
 	ordering	= ('id',)
