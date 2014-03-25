@@ -18,24 +18,24 @@ from core.models import File, FileSeq
 #import core
 
 state_id = {	# rpoint==None, done
-	(True,  None): 1,	# Draft
-	(False,  None ): 2,	# OnWay
-	(True, True ): 3,	# Accepted
-	(True, False): 4,	# Rejected
+	(True,	None):	1,		# Draft
+	(False,	None ):	2,		# OnWay
+	(True,	True ):	3,		# Accepted
+	(True,	False):	4,		# Rejected
 }
 
 state_name = {	# rpoint==None, done
-	(True,  None): 'Черновик',	# Draft
-	(False,  None ): 'В пути',	# OnWay
-	(True, True ): 'Исполнен',	# Accepted
-	(True, False): 'Завернут',	# Rejected
+	(True,	None):	'Черновик',	# Draft
+	(False,	None ):	'В пути',	# OnWay
+	(True,	True ):	'Исполнен',	# Accepted
+	(True,	False):	'Завернут',	# Rejected
 }
 
 state_color = {	# rpoint==None, done	http://www.w3schools.com/html/html_colornames.asp
-	(True,  None):		'white',	# Draft
-	(False,  None ):	'FFFF99',	# OnWay
-	(True, True ):		'Chartreuse',	# Accepted
-	(True, False):		'silver',	# Rejected
+	(True,	None):	'white',	# Draft
+	(False,	None ):	'FFFF99',	# OnWay
+	(True,	True ):	'chartreuse',	# Accepted
+	(True,	False):	'silver',	# Rejected
 }
 
 class	State(models.Model):
