@@ -1,7 +1,7 @@
 {% extends "bills/base.html" %}
 {% block meta %} <meta http-equiv="refresh" content="60" > {% endblock %}
 {% block body_main %}
-
+{% if fsform %}
 <form action="{% url bills.views.bill_filter_state %}" method="POST">
 {% csrf_token %}
 <p>
@@ -12,6 +12,7 @@
  {{ fsform.dead.label }}  {{ fsform.dead }}
 </p>
 </form>
+{% endif %}
 {% include "paginator.html" %}
 <table>
  <thead>
