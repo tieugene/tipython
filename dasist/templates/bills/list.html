@@ -1,5 +1,5 @@
 {% extends "bills/base.html" %}
-{% block meta %} <meta http-equiv="refresh" content="60" > {% endblock %}
+{% block meta %} <meta http-equiv="refresh" content="60"> {% endblock %}
 {% block body_main %}
 {% if fsform %}
 <form action="{% url bills.views.bill_filter_state %}" method="POST">
@@ -9,7 +9,16 @@
  {{ fsform.draft.label }} {{ fsform.draft }} |
  {{ fsform.onway.label }} {{ fsform.onway }} |
  {{ fsform.done.label }}  {{ fsform.done }} |
- {{ fsform.dead.label }}  {{ fsform.dead }}
+ {{ fsform.dead.label }}  {{ fsform.dead }} |
+ <label for="lpp">Строк на странице:</label>
+ <!--select onchange="document.location=this.options[this.selectedIndex].value"-->
+ <select onchange="document.location=this.options[this.selectedIndex].value">
+  <option value="{% url bills.views.bill_set_lpp 10 %}" {% ifequal lpp 10 %}selected{% endifequal %}>10</option>
+  <option value="{% url bills.views.bill_set_lpp 15 %}" {% ifequal lpp 15 %}selected{% endifequal %}>15</option>
+  <option value="{% url bills.views.bill_set_lpp 20 %}" {% ifequal lpp 20 %}selected{% endifequal %}>20</option>
+  <option value="{% url bills.views.bill_set_lpp 25 %}" {% ifequal lpp 25 %}selected{% endifequal %}>25</option>
+  <option value="{% url bills.views.bill_set_lpp 50 %}" {% ifequal lpp 50 %}selected{% endifequal %}>50</option>
+ </select>
 </p>
 </form>
 {% endif %}
