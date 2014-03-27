@@ -19,6 +19,7 @@ from django.db.models import F
 from django.core.files.storage import default_storage	# MEDIA_ROOT
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.mail import send_mail
 
 # 2. system
 import os, sys, imp, pprint, tempfile, subprocess, shutil
@@ -71,7 +72,7 @@ def	bill_list(request):
 	user = request.user
 	approver = models.Approver.objects.get(user=user)
 	#print approver.role.pk == 1
-	queryset = models.Bill.objects.all()
+	queryset = models.Bill.objects.all().order_by('-pk')
 	# 2. filter by role
 	role_id = approver.role.pk
 	if (role_id == 3):	# Руководитель # FIXME: remove filter
@@ -90,26 +91,33 @@ def	bill_list(request):
 			request.session[FSNAME] = fsfilter
 		else:
 			fsfilter = int(fsfilter)
-		#print 'List:', fsfilter
+		queryset = __set_filter_state(queryset, fsfilter)
+		# 3. go
+		#if not request.user.is_superuser:
+		#	queryset = queryset.filter(assign=request.user)
 		fsform = forms.FilterStateForm(initial={
 			'dead'	:bool(fsfilter&1),
 			'done'	:bool(fsfilter&2),
 			'onway'	:bool(fsfilter&4),
 			'draft'	:bool(fsfilter&8),
 		})
-		queryset = __set_filter_state(queryset, fsfilter)
-		# 3. go
-		#if not request.user.is_superuser:
-		#	queryset = queryset.filter(assign=request.user)
+	# 4. lpp
+	lpp = request.session.get('lpp', None)
+	if (lpp == None):
+		lpp = 20
+		request.session['lpp'] = lpp
+	else:
+		lpp = int(lpp)
 	return  object_list (
 		request,
 		queryset = queryset,
-		paginate_by = PAGE_SIZE,
+		paginate_by = lpp,
 		page = int(request.GET.get('page', '1')),
 		template_name = 'bills/list.html',
 		extra_context = {
 			'canadd': approver.canadd,
 			'fsform': fsform,
+			'lpp': lpp
 		}
 	)
 
@@ -129,6 +137,11 @@ def	bill_filter_state(request):
 			int(fsform.cleaned_data['draft']) * 8
 		#print 'Filter:', fsfilter
 		request.session[FSNAME] = fsfilter
+	return redirect('bills.views.bill_list')
+
+@login_required
+def	bill_set_lpp(request, lpp):
+	request.session['lpp'] = lpp
 	return redirect('bills.views.bill_list')
 
 def	__pdf2png1(self, src_path, thumb_template, pages):
@@ -465,3 +478,6 @@ def	bill_delete(request, id):
 	fileseq.purge()
 	return redirect('bills.views.bill_list')
 
+@login_required
+def	mailto(request, id):
+	send_mail('Subject here', 'Here is the message.', 'ti.eugene@garantstroyspb.ru', ['ti.eugene@gmail.com'], fail_silently=False)
