@@ -117,7 +117,8 @@ def	bill_list(request):
 		extra_context = {
 			'canadd': approver.canadd,
 			'fsform': fsform,
-			'lpp': lpp
+			'lpp': lpp,
+			'role': approver.role,
 		}
 	)
 

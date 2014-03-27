@@ -37,7 +37,17 @@
  </thead>
  <tbody>
 {% for object in object_list %}
- <tr bgcolor="{{object.get_state_color}}">
+ <tr bgcolor="{{object.get_state_color}}"
+ {% if object.rpoint %}
+  {% ifequal object.rpoint.approve.pk user.pk %}
+   style="font-weight:bold"
+  {% else %}
+   {% ifequal object.rpoint.role role %}
+    style="font-weight:bold"
+   {% endifequal %}
+  {% endifequal %}
+ {% endif %}
+>
   <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.project }} </td>
   <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
