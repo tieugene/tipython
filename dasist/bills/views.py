@@ -377,6 +377,30 @@ def	bill_edit(request, id):
 		'object': bill,
 	}))
 
+def	__mailto(request, bill):
+	'''
+	Sends emails to people:
+	- onway - to rpoint role or aprove
+	- Accept/Reject - to assignee
+	@param bill:Bill
+	'''
+	def	__emailto(email, bill_id, subj):
+		if (email):
+			arglist = ['mail', '-s', 'DasIst.Bills: %s: %d' % (subj, bill_id), email]
+			sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+			stdout_data = sp.communicate(input=request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': bill_id})))
+	state = bill.get_state_id()
+	if (state == 2):	# OnWay
+		if (bill.rpoint.approve):
+			__emailto(bill.rpoint.approve.user.email, bill.pk, 'Новый счет')
+		else:
+			for i in bill.rpoint.role.approver_set.all():
+				__emailto(i.user.email, bill.pk, 'Новый счет')
+	elif (state == 3):	# Accepted
+		__emailto(bill.assign.user.email, bill.pk, 'Счет исполнен')
+	elif (state == 4):	# Reject
+		__emailto(bill.assign.user.email, bill.pk, 'Счет завернут')
+
 @login_required
 def	bill_view(request, id):
 	'''
@@ -432,6 +456,7 @@ def	bill_view(request, id):
 					bill.save()
 					if bill.done == True:
 						bill.rpoint = bill.route_set.all().delete()
+					__mailto(request, bill)
 					return redirect('bills.views.bill_list')
 	if (form == None):
 		form = forms.ResumeForm()
@@ -482,4 +507,10 @@ def	bill_delete(request, id):
 
 @login_required
 def	mailto(request, id):
-	send_mail('Subject here', 'Here is the message.', 'ti.eugene@garantstroyspb.ru', ['ti.eugene@gmail.com'], fail_silently=False)
+	'''
+	@param id: bill id
+	'''
+	arglist = ['mail', '-s', 'DasIst.Bills: Новый счет: %s' % id, 'ti.eugene@gmail.com']
+	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout_data = sp.communicate(input=request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': id})))
+	return redirect('bills.views.bill_list')
