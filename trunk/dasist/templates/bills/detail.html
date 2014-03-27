@@ -61,7 +61,9 @@
 <p>
 {% if canedit %} <a href="{% url bills.views.bill_edit object.pk %}"> {% include "button/edit.html" %} </a> {% endif %}
 {% if candel %} <a href="{% url bills.views.bill_delete object.pk %}"> {% include "button/delete.html" %} </a> {% endif %}
+{% if user.is_superuser %}
 <a href="{% url bills.views.mailto object.pk %}"> <button type="button"> Email </button> </a>
+{% endif %}
 </p>
 {% if canaccept %}
 <form action="" method="POST">
