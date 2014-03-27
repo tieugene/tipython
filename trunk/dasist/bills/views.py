@@ -391,15 +391,16 @@ def	__mailto(request, bill):
 			stdout_data = sp.communicate(input=request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': bill_id})))
 	state = bill.get_state_id()
 	if (state == 2):	# OnWay
+		subj = 'New invoice'
 		if (bill.rpoint.approve):
-			__emailto(bill.rpoint.approve.user.email, bill.pk, 'Новый счет')
+			__emailto(bill.rpoint.approve.user.email, bill.pk, subj)
 		else:
 			for i in bill.rpoint.role.approver_set.all():
-				__emailto(i.user.email, bill.pk, 'Новый счет')
+				__emailto(i.user.email, bill.pk, subj)
 	elif (state == 3):	# Accepted
-		__emailto(bill.assign.user.email, bill.pk, 'Счет исполнен')
+		__emailto(bill.assign.user.email, bill.pk, 'Invoice payed')
 	elif (state == 4):	# Reject
-		__emailto(bill.assign.user.email, bill.pk, 'Счет завернут')
+		__emailto(bill.assign.user.email, bill.pk, 'Invoice rejected')
 
 @login_required
 def	bill_view(request, id):
