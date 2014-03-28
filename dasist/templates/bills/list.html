@@ -21,6 +21,10 @@
   <option value="{% url bills.views.bill_set_lpp 50 %}" {% ifequal lpp 50 %}selected{% endifequal %}>50</option>
  </select>
 </td>
+<td>
+ <a href="{% url bills.views.bill_set_mode 1 %}"> <button type="button" class="rounded" title="Все" {% ifequal mode 1 %} disabled {% endifequal %}> Все </button> </a>
+ <a href="{% url bills.views.bill_set_mode 2 %}"> <button type="button" class="rounded" title="Входящие" {% ifequal mode 2 %} disabled {% endifequal %}> Входящие </button> </a>
+</td>
 {% if fsform %}
 <td>
 <form action="{% url bills.views.bill_filter_state %}" method="POST">
