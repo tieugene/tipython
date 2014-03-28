@@ -1,15 +1,16 @@
 {% extends "bills/base.html" %}
 {% block meta %} <meta http-equiv="refresh" content="60"> {% endblock %}
 {% block body_main %}
-{% if fsform %}
-<form action="{% url bills.views.bill_filter_state %}" method="POST">
-{% csrf_token %}
-<p>
- <button type="submit"> Применить </button>
- {{ fsform.draft.label }} {{ fsform.draft }} |
- {{ fsform.onway.label }} {{ fsform.onway }} |
- {{ fsform.done.label }}  {{ fsform.done }} |
- {{ fsform.dead.label }}  {{ fsform.dead }} |
+<table border="0"> <tr>
+{% if canadd %}
+<td>
+<a href="{% url bills.views.bill_add %}"> {% include "button/new.html" %} </a>
+</td>
+{% endif %}
+<td>
+{% include "paginator.html" %}
+</td>
+<td>
  <label for="lpp">Строк на странице:</label>
  <!--select onchange="document.location=this.options[this.selectedIndex].value"-->
  <select onchange="document.location=this.options[this.selectedIndex].value">
@@ -19,10 +20,20 @@
   <option value="{% url bills.views.bill_set_lpp 25 %}" {% ifequal lpp 25 %}selected{% endifequal %}>25</option>
   <option value="{% url bills.views.bill_set_lpp 50 %}" {% ifequal lpp 50 %}selected{% endifequal %}>50</option>
  </select>
-</p>
+</td>
+{% if fsform %}
+<td>
+<form action="{% url bills.views.bill_filter_state %}" method="POST">
+{% csrf_token %}
+ {% include "button/filter.html" %}
+ {{ fsform.draft.label }} {{ fsform.draft }} |
+ {{ fsform.onway.label }} {{ fsform.onway }} |
+ {{ fsform.done.label }}  {{ fsform.done }} |
+ {{ fsform.dead.label }}  {{ fsform.dead }}
 </form>
+</td>
 {% endif %}
-{% include "paginator.html" %}
+</tr> </table>
 <table>
  <thead>
  <tr>
@@ -58,8 +69,4 @@
  </tr>
 {% endfor %}
 </table>
-<!-- ACL: root|Исполнитель -->
-{% if canadd %}
-<a href="{% url bills.views.bill_add %}"> {% include "button/new.html" %} </a>
-{% endif %}
 {% endblock %}

@@ -101,7 +101,14 @@ def	bill_list(request):
 			'onway'	:bool(fsfilter&4),
 			'draft'	:bool(fsfilter&8),
 		})
-	# 4. lpp
+	# 4. mode
+	mode = request.session.get('mode', None)
+	if (mode == None):
+		mode = 1
+		request.session['mode'] = mode
+	else:
+		mode = int(mode)
+	# 5. lpp
 	lpp = request.session.get('lpp', None)
 	if (lpp == None):
 		lpp = 20
@@ -118,6 +125,7 @@ def	bill_list(request):
 			'canadd': approver.canadd,
 			'fsform': fsform,
 			'lpp': lpp,
+			'mode': mode,
 			'role': approver.role,
 		}
 	)
@@ -143,6 +151,11 @@ def	bill_filter_state(request):
 @login_required
 def	bill_set_lpp(request, lpp):
 	request.session['lpp'] = lpp
+	return redirect('bills.views.bill_list')
+
+@login_required
+def	bill_set_mode(request, mode):
+	request.session['mode'] = mode
 	return redirect('bills.views.bill_list')
 
 def	__pdf2png1(self, src_path, thumb_template, pages):
