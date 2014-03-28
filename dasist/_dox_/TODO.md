@@ -14,6 +14,7 @@
 + PDF - add gs
 + download image
 + remove route from Accepted
++ filters (who see what)
 = 20140327 =
 + Обратный порядок счетов
 + Управление кол-вом счетов на странице (10/15/20/25/50).
@@ -24,8 +25,11 @@
 
 = 201403.. =
 * Все/Входящие
+* Перезапуск счета
 * Объекты и Направления - справочники
 * Бухгалтеру - 2 педали: Принято и Исполнено
+* автоподстановка Поставщика
+* ?Поставщик - справочник (с fullname)
 
 = FIXME =
 * Security:
@@ -36,7 +40,6 @@
 * about
 * add img to bill
 * convert: tiff not deleted
-* filters (who see what)
 * files not deleted:
 	https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.pre_delete
 	http://stackoverflow.com/questions/2747118/django-deleting-models-and-overriding-delete-method
@@ -47,7 +50,6 @@
 
 = Tuning =
 * обязательность камментов - в форме
-* view: download image
 
 = Feature requests =
 * GDrive
