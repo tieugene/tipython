@@ -498,6 +498,7 @@ def	bill_view(request, id):
 			)\
 		),
 		'canarch':	(user.is_superuser or ((bill_state_id == 3) and (bill.assign == approver))),
+		'canrestart':	(user.is_superuser or ((bill_state_id == 4) and (bill.assign == approver))),
 		#'pagelist': range(bill.pages),
 		'err': err
 	}))
@@ -557,6 +558,16 @@ def	bill_toscan(request, id):
 		'form': form,
 		'bill': bill,
 	}))
+
+@login_required
+def	bill_restart(request, id):
+	'''
+	Restart bill
+	'''
+	bill = models.Bill.objects.get(pk=int(id))
+	bill.done = None
+	bill.save()
+	return redirect('bills.views.bill_view', bill.pk)
 
 @login_required
 def	mailto(request, id):
