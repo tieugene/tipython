@@ -11,7 +11,7 @@
 {% include "paginator.html" %}
 </td>
 <td>
- <label for="lpp">Строк на странице:</label>
+ <label for="lpp">Строк:</label>
  <!--select onchange="document.location=this.options[this.selectedIndex].value"-->
  <select onchange="document.location=this.options[this.selectedIndex].value">
   <option value="{% url bills.views.bill_set_lpp 10 %}" {% ifequal lpp 10 %}selected{% endifequal %}>10</option>
