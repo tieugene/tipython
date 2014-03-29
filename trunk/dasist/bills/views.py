@@ -74,42 +74,48 @@ def	bill_list(request):
 	approver = models.Approver.objects.get(user=user)
 	#print approver.role.pk == 1
 	queryset = models.Bill.objects.all().order_by('-pk')
-	# 2. filter by role
-	role_id = approver.role.pk
-	if (role_id == 3):	# Руководитель # FIXME: remove filter
-		queryset = queryset.filter(rpoint__approve=approver)
-		fsform = None
-	elif (role_id == 7):	# Гость # FIXME: remove filter
-		queryset = queryset.filter(done=True)
-		fsform = None
-	else:
-		if (role_id == 1) and (not user.is_superuser):	# Исполнитель
-			queryset = queryset.filter(assign=approver)
-		# 3. filter using Filter
-		fsfilter = request.session.get(FSNAME, None)# int 0..15: dropped|done|onway|draft
-		if (fsfilter == None):
-			fsfilter = 15
-			request.session[FSNAME] = fsfilter
-		else:
-			fsfilter = int(fsfilter)
-		queryset = __set_filter_state(queryset, fsfilter)
-		# 3. go
-		#if not request.user.is_superuser:
-		#	queryset = queryset.filter(assign=request.user)
-		fsform = forms.FilterStateForm(initial={
-			'dead'	:bool(fsfilter&1),
-			'done'	:bool(fsfilter&2),
-			'onway'	:bool(fsfilter&4),
-			'draft'	:bool(fsfilter&8),
-		})
-	# 4. mode
+	# 2. mode (1=All, 2=Inbound)
 	mode = request.session.get('mode', None)
 	if (mode == None):
 		mode = 1
 		request.session['mode'] = mode
 	else:
 		mode = int(mode)
-	# 5. lpp
+	# 3. filter by role
+	role_id = approver.role.pk
+	if (role_id == 3):
+		queryset = queryset.filter(rpoint__approve=approver)
+		fsform = None
+	else:
+		if (mode == 1):
+			if (role_id == 1) and (not user.is_superuser):	# Исполнитель
+				queryset = queryset.filter(assign=approver)
+			# 3. filter using Filter
+			fsfilter = request.session.get(FSNAME, None)# int 0..15: dropped|done|onway|draft
+			if (fsfilter == None):
+				fsfilter = 15
+				request.session[FSNAME] = fsfilter
+			else:
+				fsfilter = int(fsfilter)
+			queryset = __set_filter_state(queryset, fsfilter)
+			# 3. go
+			#if not request.user.is_superuser:
+			#	queryset = queryset.filter(assign=request.user)
+			fsform = forms.FilterStateForm(initial={
+				'dead'	:bool(fsfilter&1),
+				'done'	:bool(fsfilter&2),
+				'onway'	:bool(fsfilter&4),
+				'draft'	:bool(fsfilter&8),
+			})
+		else:
+			fsform = None
+			if (approver.role.pk == 1):		# Исполнитель
+				queryset = queryset.filter(assign=approver, rpoint=None)
+			elif (approver.role.pk in set((4, 6))):	# Директор, Бухгалтер
+				queryset = queryset.filter(rpoint__role=approver.role)
+			else:
+				queryset = queryset.filter(rpoint__approve=approver)
+	# 4. lpp
 	lpp = request.session.get('lpp', None)
 	if (lpp == None):
 		lpp = 20
