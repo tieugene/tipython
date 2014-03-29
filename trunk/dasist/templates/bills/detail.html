@@ -59,6 +59,7 @@
 </tr>
 </table>
 <p>
+{% if canarch %} <a href="{% url bills.views.bill_toscan object.pk %}"> {% include "button/arch.html" %} </a> {% endif %}
 {% if canedit %} <a href="{% url bills.views.bill_edit object.pk %}"> {% include "button/edit.html" %} </a> {% endif %}
 {% if candel %} <a href="{% url bills.views.bill_delete object.pk %}"> {% include "button/delete.html" %} </a> {% endif %}
 {% if user.is_superuser %}

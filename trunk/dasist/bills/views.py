@@ -33,6 +33,7 @@ from PIL import Image as PIL_Image
 # 4. my
 import models, forms
 from core.models import File, FileSeq
+from scan.models import Scan, Event
 
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
@@ -490,6 +491,7 @@ def	bill_view(request, id):
 			 )\
 			)\
 		),
+		'canarch':	(user.is_superuser or ((bill_state_id == 3) and (bill.assign == approver))),
 		#'pagelist': range(bill.pages),
 		'err': err
 	}))
@@ -518,6 +520,37 @@ def	bill_delete(request, id):
 	bill.delete()
 	fileseq.purge()
 	return redirect('bills.views.bill_list')
+
+@login_required
+def	bill_toscan(request, id):
+	'''
+	'''
+	bill = models.Bill.objects.get(pk=int(id))
+	if (request.method == 'POST'):
+		form = forms.ScanAddForm(request.POST)
+		if form.is_valid():
+			scan = form.save()
+			for event in (bill.events.all()):
+				Event.objects.create(
+					scan=scan,
+					approve='%s %s (%s)' % (event.approve.user.last_name, event.approve.user.first_name, event.approve.jobtit),
+					resume=event.resume,
+					ctime=event.ctime,
+					comment=event.comment
+				)
+			bill.delete()
+			return redirect('bills.views.bill_list')
+	else:
+		form = forms.ScanAddForm(initial={
+			'fileseq':	bill.fileseq,
+			'project':	bill.project,
+			'depart':	bill.depart,
+			'supplier':	bill.supplier,
+		})
+	return render_to_response('bills/form_toscan.html', context_instance=RequestContext(request, {
+		'form': form,
+		'bill': bill,
+	}))
 
 @login_required
 def	mailto(request, id):

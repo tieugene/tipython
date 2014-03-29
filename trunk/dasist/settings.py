@@ -109,6 +109,7 @@ INSTALLED_APPS = (
 #    'sortedm2m',
     'core',
     'bills',
+    'scan',
 )
 
 LOGIN_REDIRECT_URL = '/'

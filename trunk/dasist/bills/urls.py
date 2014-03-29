@@ -14,6 +14,7 @@ urlpatterns = patterns('bills.views',
 	url(r'^(?P<id>\d+)/$',		'bill_view'),	# GET; ACL: assign|approv
 	url(r'^(?P<id>\d+)/u/$',	'bill_edit'),	# GET/POST; ACL: assign+draft;
 	url(r'^(?P<id>\d+)/d/$',	'bill_delete'),	# GET; ACL: assign;
+	url(r'^(?P<id>\d+)/s/$',	'bill_toscan'),
 	url(r'^(?P<id>\d+)/mail/$',	'mailto'),
 #	url(r'^(?P<id>\d+)/g/$',	'bill_get'),	# GET; ACL: assign;
 )

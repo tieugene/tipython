@@ -35,6 +35,7 @@
 * ?Поставщик - справочник (с fullname)
 
 = FIXME =
+* bills.model.Bill.fileseq: FK => OneToOne, pk
 * Security:
 	* https
 	* session timeout
