@@ -9,10 +9,9 @@ from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.db.models.fields.files import FieldFile
 
-import pprint
-
 #import models
 from bills.models import Approver
+from scan.models import Scan
 
 #class	BillAddForm(forms.Form):
 #	img = forms.ImageField()
@@ -67,3 +66,8 @@ class	FilterStateForm(forms.Form):
 	onway	= forms.BooleanField(label='В пути:',		required = False)
 	done	= forms.BooleanField(label='Исполнены:',	required = False)
 	dead	= forms.BooleanField(label='Завернуты:',	required = False)
+
+class	ScanAddForm(forms.ModelForm):
+	fileseq = forms.IntegerField(widget=forms.HiddenInput())
+	class	Meta:
+		model = Scan

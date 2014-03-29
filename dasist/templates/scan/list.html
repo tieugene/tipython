@@ -1,0 +1,26 @@
+{% extends "scan/base.html" %}
+{% block body_main %}
+<table>
+ <thead>
+ <tr>
+  <th> # </th>
+  <th> Объект </th>
+  <th> Направление </th>
+  <th> Поставщик </th>
+  <th> Номер </th>
+  <th> Дата </th>
+ </tr>
+ </thead>
+ <tbody>
+{% for object in object_list %}
+ <tr>
+  <td> <a href="{% url scan.views.scan_view object.pk %}"> {{ object.pk }} </a> </td>
+  <td> {{ object.project }} </td>
+  <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
+  <td> {{ object.supplier }} </td>
+  <td> {{ object.no }} </td>
+  <td> {{ object.date }} </td>
+ </tr>
+{% endfor %}
+</table>
+{% endblock %}

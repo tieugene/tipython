@@ -16,5 +16,6 @@ urlpatterns = patterns('',
 	url(r'^logout$',	logout),
 	url(r'^core/',		include('core.urls')),
 	url(r'^bills/',		include('bills.urls')),
+	url(r'^scan/',		include('scan.urls')),
 	url(r'^about$',		'views.about'),
 )
