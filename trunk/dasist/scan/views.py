@@ -34,13 +34,28 @@ def	scan_list(request):
 	'''
 	# 1. pre
 	user = request.user
+	# 2. lpp
+	lpp = request.session.get('lpp', None)
+	if (lpp == None):
+		lpp = 20
+		request.session['lpp'] = lpp
+	else:
+		lpp = int(lpp)
 	return  object_list (
 		request,
 		queryset = models.Scan.objects.all(),
-		paginate_by = 25,
+		paginate_by = lpp,
 		page = int(request.GET.get('page', '1')),
 		template_name = 'scan/list.html',
+		extra_context = {
+			'lpp': lpp,
+		}
 	)
+
+@login_required
+def	scan_set_lpp(request, lpp):
+	request.session['lpp'] = lpp
+	return redirect('scan.views.scan_list')
 
 @login_required
 def	scan_add(request):
