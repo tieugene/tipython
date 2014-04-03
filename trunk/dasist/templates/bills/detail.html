@@ -73,8 +73,8 @@
 	{{ form.as_p }}
 <p>
 {% if object.rpoint %}
-<button type="submit" name="resume" value="accept"> <img src="{{ STATIC_URL }}img/dialog-ok.png" alt="ok" title="{{ object.rpoint.action }}"> </button>
-<button type="submit" name="resume" value="reject"> <img src="{{ STATIC_URL }}img/dialog-cancel.png" alt="cancel" title="Отказать"> </button>
+<button type="submit" name="resume" value="accept" style="padding: 10px; background-color: chartreuse"> Согласовано </button>
+<button type="submit" name="resume" value="reject" style="padding: 10px; background-color: red"> Отказать </button>
 {% else %}
 <button type="submit" name="resume" value="accept"> Вперед </button>
 {% endif %}
