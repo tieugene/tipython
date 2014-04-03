@@ -59,7 +59,7 @@ class	BillEditForm(forms.Form):
 		return None
 
 class	ResumeForm(forms.Form):
-	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea)
+	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea, help_text='(Необязательно)')
 
 class	FilterStateForm(forms.Form):
 	draft	= forms.BooleanField(label='Черновики:',	required = False)
