@@ -62,10 +62,11 @@ class	ResumeForm(forms.Form):
 	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea, help_text='(Необязательно)')
 
 class	FilterStateForm(forms.Form):
-	draft	= forms.BooleanField(label='Черновики:',	required = False)
-	onway	= forms.BooleanField(label='В пути:',		required = False)
-	done	= forms.BooleanField(label='Исполнены:',	required = False)
-	dead	= forms.BooleanField(label='Завернуты:',	required = False)
+	draft	= forms.BooleanField(label='Черновики',	required = False)
+	onway	= forms.BooleanField(label='В пути',	required = False)
+	onpay	= forms.BooleanField(label='В оплате',	required = False)
+	done	= forms.BooleanField(label='Исполнены',	required = False)
+	dead	= forms.BooleanField(label='Завернуты',	required = False)
 
 class	ScanAddForm(forms.ModelForm):
 	fileseq = forms.IntegerField(widget=forms.HiddenInput())

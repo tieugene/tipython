@@ -15,7 +15,7 @@ from django.template import RequestContext, Context, loader
 from django.views.generic.simple import direct_to_template, redirect_to
 from django.views.generic.list_detail import object_list, object_detail
 from django.utils.datastructures import SortedDict
-from django.db.models import F
+from django.db.models import F, Q
 from django.core.files.storage import default_storage	# MEDIA_ROOT
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -44,24 +44,20 @@ sys.setdefaultencoding('utf-8')
 def	__set_filter_state(q, s):
 	'''
 	q - original QuerySet (all)
-	s - state (0..15)
+	s - state (0..31; dead|done|onpay|onway|draft)
 	'''
-	if   (s ==  0): return q.none()
-	elif   (s ==  1): return q.filter(done = False)
-	elif   (s ==  2): return q.filter(done = True)
-	elif   (s ==  3): return q.exclude(done = None)
-	elif   (s ==  4): return q.exclude(rpoint = None)
-	elif   (s ==  5): return q.exclude(rpoint = None) | q.filter(done = False)
-	elif   (s ==  6): return q.exclude(rpoint = None) | q.filter(done = True)
-	elif   (s ==  7): return q.exclude(rpoint = None, done = None)
-	elif   (s ==  8): return q.filter(rpoint = None, done = None)
-	elif   (s ==  9): return q.filter(rpoint = None, done = None) | q.filter(done = False)
-	elif   (s == 10): return q.filter(rpoint = None, done = None) | q.filter(done = True)
-	elif   (s == 11): return q.filter(rpoint = None)
-	elif   (s == 12): return q.filter(done = None)
-	elif   (s == 13): return q.exclude(done = True)
-	elif   (s == 14): return q.exclude(done = False)
-	else: return q
+	retvalue = q
+	if (not bool(s&1)):	# dead
+		retvalue = retvalue.exclude(done = False)
+	if (not bool(s&2)):	# done
+		retvalue = retvalue.exclude(rpoint = None, done = True)
+	if (not bool(s&4)):	# onpay
+		retvalue = retvalue.exclude(~Q(rpoint = None), done = True)
+	if (not bool(s&8)):	# onway
+		retvalue = retvalue.exclude(~Q(rpoint = None), done = None)
+	if (not bool(s&16)):	# draft
+		retvalue = retvalue.exclude(rpoint = None, done = None)
+	return retvalue
 
 @login_required
 def	bill_list(request):
@@ -83,17 +79,17 @@ def	bill_list(request):
 		mode = int(mode)
 	# 3. filter by role
 	role_id = approver.role.pk
-	if (role_id == 3):
+	if (role_id == 3):	# Руководители
 		queryset = queryset.filter(rpoint__approve=approver)
 		fsform = None
 	else:
-		if (mode == 1):
+		if (mode == 1):	# Все
 			if (role_id == 1) and (not user.is_superuser):	# Исполнитель
 				queryset = queryset.filter(assign=approver)
 			# 3. filter using Filter
 			fsfilter = request.session.get(FSNAME, None)# int 0..15: dropped|done|onway|draft
 			if (fsfilter == None):
-				fsfilter = 15
+				fsfilter = 31
 				request.session[FSNAME] = fsfilter
 			else:
 				fsfilter = int(fsfilter)
@@ -104,10 +100,11 @@ def	bill_list(request):
 			fsform = forms.FilterStateForm(initial={
 				'dead'	:bool(fsfilter&1),
 				'done'	:bool(fsfilter&2),
-				'onway'	:bool(fsfilter&4),
-				'draft'	:bool(fsfilter&8),
+				'onpay'	:bool(fsfilter&4),
+				'onway'	:bool(fsfilter&8),
+				'draft'	:bool(fsfilter&16),
 			})
-		else:
+		else:		# Входящие
 			fsform = None
 			if (approver.role.pk == 1):		# Исполнитель
 				queryset = queryset.filter(assign=approver, rpoint=None)
@@ -149,8 +146,9 @@ def	bill_filter_state(request):
 		fsfilter = \
 			int(fsform.cleaned_data['dead'])  * 1 | \
 			int(fsform.cleaned_data['done'])  * 2 | \
-			int(fsform.cleaned_data['onway']) * 4 | \
-			int(fsform.cleaned_data['draft']) * 8
+			int(fsform.cleaned_data['onpay']) * 4 | \
+			int(fsform.cleaned_data['onway']) * 8 | \
+			int(fsform.cleaned_data['draft']) * 16
 		#print 'Filter:', fsfilter
 		request.session[FSNAME] = fsfilter
 	return redirect('bills.views.bill_list')
@@ -437,7 +435,7 @@ def	bill_view(request, id):
 	if (request.method == 'POST'):
 		if (request.POST['resume'] in set(['accept', 'reject'])) and (\
 		   ((bill_state_id == 1) and (approver == bill.assign)) or\
-		   ((bill_state_id == 2) and ( \
+		   (((bill_state_id == 2) or (bill_state_id == 3)) and ( \
 			((bill.rpoint.approve != None) and (approver == bill.rpoint.approve)) or\
 			((bill.rpoint.approve == None) and (approver.role == bill.rpoint.role))\
 		    ) \
@@ -467,15 +465,17 @@ def	bill_view(request, id):
 						else:
 							rpoint = bill.rpoint
 							if (rpoint.order == len(route_list)):		# 2. last
-								bill.rpoint = None
-								bill.done = True
+								if (bill.done == None):		# to pay
+									bill.done = True
+								else:				# done
+									bill.rpoint = None
 							else:						# 3. intermediate
 								bill.rpoint = bill.route_set.get(order=rpoint.order+1)
 					else:	# Reject
 						bill.rpoint = None
 						bill.done = False
 					bill.save()
-					if bill.done == True:
+					if (bill.done == True) and (bill.rpoint == None):
 						bill.rpoint = bill.route_set.all().delete()
 					__mailto(request, bill)
 					return redirect('bills.views.bill_list')
@@ -484,22 +484,25 @@ def	bill_view(request, id):
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
 		'object': bill,
 		'form': form,
-		## root | (assignee & Draft)
-		'canedit':	(user.is_superuser or ((bill_state_id == 1) and (bill.assign == approver))),
-		## root | (assignee & (Draft|Rejected)==bad)
-		'candel':	(user.is_superuser or (((bill_state_id == 1) or (bill_state_id == 4)) and (bill.assign == approver))),
-		## (assignee & Draft) | (approver & OnWay)
-		'canaccept': (
+		'canedit':	## assignee & Draft
+			(user.is_superuser or ((bill_state_id == 1) and (bill.assign == approver))),
+		'candel':	## assignee & (Draft|Rejected)==bad)
+			(user.is_superuser or (((bill_state_id == 1) or (bill_state_id == 5)) and (bill.assign == approver))),
+		'canaccept':	## (assignee & Draft) | (approver & OnWay)
+			(
 			((bill_state_id == 1) and (bill.assign == approver)) or\
-			((bill_state_id == 2) and (
+			(((bill_state_id == 2) or (bill_state_id == 3)) and (
 			  ((bill.rpoint.approve != None) and (bill.rpoint.approve == approver)) or\
 			  ((bill.rpoint.approve == None) and (bill.rpoint.role == approver.role))\
 			 )\
 			)\
 		),
-		'canarch':	(user.is_superuser or ((bill_state_id == 3) and (bill.assign == approver))),
-		'canrestart':	(user.is_superuser or ((bill_state_id == 4) and (bill.assign == approver))),
-		#'pagelist': range(bill.pages),
+		'canreject':	## not Accounter
+			approver.role.pk != 6,
+		'canarch':	## assignee & Done
+			(user.is_superuser or ((bill_state_id == 4) and (bill.assign == approver))),
+		'canrestart':	## assignee & Rejected
+			(user.is_superuser or ((bill_state_id == 5) and (bill.assign == approver))),
 		'err': err
 	}))
 '''

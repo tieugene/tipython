@@ -73,8 +73,20 @@
 	{{ form.as_p }}
 <p>
 {% if object.rpoint %}
-<button type="submit" name="resume" value="accept" style="padding: 10px; background-color: chartreuse"> Согласовано </button>
+<button type="submit" name="resume" value="accept" style="padding: 10px; background-color: chartreuse">
+{% if canreject %}
+ Согласовано
+{% else %}
+ {% if object.done %}
+  Исполнено
+ {% else %}
+  В оплате
+ {% endif %}
+{% endif %}
+</button>
+{% if canreject %}
 <button type="submit" name="resume" value="reject" style="padding: 10px; background-color: red"> Отказать </button>
+{% endif %}
 {% else %}
 <button type="submit" name="resume" value="accept"> Вперед </button>
 {% endif %}

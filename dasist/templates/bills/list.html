@@ -33,10 +33,11 @@
 <form action="{% url bills.views.bill_filter_state %}" method="POST">
 {% csrf_token %}
  {% include "button/filter.html" %}
- {{ fsform.draft.label }} {{ fsform.draft }} |
- {{ fsform.onway.label }} {{ fsform.onway }} |
- {{ fsform.done.label }}  {{ fsform.done }} |
- {{ fsform.dead.label }}  {{ fsform.dead }}
+ {{ fsform.draft }} {{ fsform.draft.label }} |
+ {{ fsform.onway }} {{ fsform.onway.label }} |
+ {{ fsform.onpay }} {{ fsform.onpay.label }} |
+ {{ fsform.done }} {{ fsform.done.label }} |
+ {{ fsform.dead }} {{ fsform.dead.label }}
 </form>
 </td>
 {% endif %}
