@@ -71,6 +71,7 @@
 <form action="" method="POST">
 	{% csrf_token %}
 	{{ form.as_p }}
+<p> <i> (комментарий обязателен только при Отказе) </i> </p>
 <p>
 {% if object.rpoint %}
 <button type="submit" name="resume" value="accept" style="padding: 10px; background-color: chartreuse">

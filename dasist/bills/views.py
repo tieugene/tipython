@@ -447,8 +447,8 @@ def	bill_view(request, id):
 				# 0. check prerequisites
 				if (not resume) and (not form.cleaned_data['note']):				# resume not empty on reject
 					err = 'Отказ необходимо комментировать'
-				elif (bill_state_id == 1) and (not form.cleaned_data['note']):	# check resume not empty on start
-					err = 'Запуск по маршруту необходимо комментировать'
+				#elif (bill_state_id == 1) and (not form.cleaned_data['note']):	# check resume not empty on start
+				#	err = 'Запуск по маршруту необходимо комментировать'
 				else:
 					# 1. new comment
 					models.Event.objects.create(
