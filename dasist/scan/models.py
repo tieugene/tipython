@@ -34,7 +34,7 @@ class	Event(models.Model):
 	scan	= models.ForeignKey(Scan, related_name='events', verbose_name=u'Скан')
 	approve	= models.CharField(max_length=255, verbose_name=u'Подписант')
 	resume	= models.BooleanField(verbose_name=u'Резолюция')
-	ctime	= models.DateTimeField(auto_now_add=True, verbose_name=u'ДатаВремя')
+	ctime	= models.DateTimeField(verbose_name=u'ДатаВремя')
 	comment	= models.TextField(null=True, blank=True, verbose_name=u'Камменты')
 
 	def	__unicode__(self):
