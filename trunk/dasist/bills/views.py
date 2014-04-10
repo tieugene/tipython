@@ -522,14 +522,15 @@ def	bill_delete(request, id):
 	ACL: (root|assignee) & (Draft|Rejected (bad))
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
-	if (not request.user.is_superuser) and (\
-	   (bill.assign.user.pk != request.user.pk) or\
-	   (bill.done != False)):
+	if (request.user.is_superuser) or (\
+	   (bill.assign.user.pk == request.user.pk) and\
+	   (bill.rpoint == None) and (bill.done != True)):
+		fileseq = bill.fileseq
+		bill.delete()
+		fileseq.purge()
+		return redirect('bills.views.bill_list')
+	else:
 		return redirect('bills.views.bill_view', bill.pk)
-	fileseq = bill.fileseq
-	bill.delete()
-	fileseq.purge()
-	return redirect('bills.views.bill_list')
 
 @login_required
 def	bill_toscan(request, id):
