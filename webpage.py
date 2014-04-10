@@ -508,7 +508,7 @@ def	chk_alko():
 	return (parser.ver, None)
 
 #chk('https://dap.center-inform.ru/tehpod/faq/%D0%A6%D0%B5%D0%BD%D1%82%D1%80+%D0%97%D0%B0%D0%B3%D1%80%D1%83%D0%B7%D0%BA%D0%B8/')
-print 'PersW:\t%s\t%s' %	chk_persw()
+#print 'PersW:\t%s\t%s' %	chk_persw()
 print 'PD SPU:\t%s\t%s' %	chk_pdspu()
 print 'ND:\t%s\t%s' %		chk_nd()
 print 'KLADR:\t%s\t%s' %	chk_kladr()
