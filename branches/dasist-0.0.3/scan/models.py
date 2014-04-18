@@ -19,7 +19,7 @@ class	Scan(models.Model):
 	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
 	no		= models.CharField(max_length=16, verbose_name=u'Номер')
 	date		= models.DateField(verbose_name=u'Дата')
-	#comments	= models.TextField(null=True, blank=True, verbose_name=u'Камменты')
+	comments	= models.TextField(null=True, blank=True, verbose_name=u'Камменты')
 
 	def     __unicode__(self):
 		return str(self.pk)
@@ -29,7 +29,7 @@ class	Scan(models.Model):
 		ordering		= ('fileseq',)
 		verbose_name            = u'Скан'
 		verbose_name_plural     = u'Сканы'
-
+'''
 class	Event(models.Model):
 	scan	= models.ForeignKey(Scan, related_name='events', verbose_name=u'Скан')
 	approve	= models.CharField(max_length=255, verbose_name=u'Подписант')
@@ -44,4 +44,4 @@ class	Event(models.Model):
 		ordering                = ('ctime',)
 		verbose_name            = u'Резолюция'
 		verbose_name_plural     = u'Резолюции'
-
+'''

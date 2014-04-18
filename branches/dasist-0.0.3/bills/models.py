@@ -49,25 +49,6 @@ state_color = {	# rpoint==None, done	http://www.w3schools.com/html/html_colornam
 	(True,	False):	'silver',	# Rejected (gray)
 }
 
-class	State(models.Model):
-	'''
-	Predefined Bill states:
-	* onWay
-	* согласовано
-	[* оплачено]
-	'''
-	id	= models.PositiveSmallIntegerField(primary_key=True, verbose_name=u'#')
-	name	= models.CharField(max_length=16, verbose_name=u'Наименование')
-
-	def	__unicode__(self):
-		return self.name
-
-	class   Meta:
-		unique_together		= (('name',),)
-		ordering                = ('id', )
-		verbose_name            = u'Состояние'
-		verbose_name_plural     = u'Состояния'
-
 class	Role(models.Model):
 	'''
 	Predefined roles
@@ -107,28 +88,8 @@ class	Approver(models.Model):
 
 class	Bill(models.Model):
 	'''
-	Fields:
-	?desc:txt
-	?ctime:datetime - время создания
-	?etime:datetime - время окончания
-
-	??Поставщик
-	??Номер счета
-	??Дата счета
-	??Сумма счета
-	TODO:
-	* route = ManyToMany(User)
-	* history = ManyToMany(User)
-	* Object = FK
-	* Depart = FK
-	#created	= models.DateTimeField(auto_now_add=True, verbose_name=u'Создан')	# editable-False
-	#updated	= models.DateTimeField(auto_now=True, verbose_name=u'Изменен')		# editable-False
-	TODO: get_route_ok(user):
-	* user not in route
-	* route ends w/ accounter
-	* route len > 0
 	'''
-	fileseq		= models.ForeignKey(FileSeq, related_name='bills', verbose_name=u'Файлы')
+	fileseq		= models.OneToOneField(FileSeq, primary_key=True, verbose_name=u'Файлы')
 	project		= models.CharField(max_length=64, verbose_name=u'Объект')
 	depart		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
 	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
@@ -164,8 +125,8 @@ class	Route(models.Model):
 	order	= models.PositiveSmallIntegerField(null=False, blank=False, verbose_name=u'#')
 	role	= models.ForeignKey(Role, verbose_name=u'Роль')
 	approve	= models.ForeignKey(Approver, null=True, blank=True, verbose_name=u'Подписант')
-	state	= models.ForeignKey(State, verbose_name=u'Состояние')
-	action	= models.CharField(max_length=16, verbose_name=u'Действие')
+	#state	= models.ForeignKey(State, verbose_name=u'Состояние')
+	#action	= models.CharField(max_length=16, verbose_name=u'Действие')
 
 	def	__unicode__(self):
 		return '%d.%d: %s' % (self.bill.pk, self.order, self.approve.get_fio() if self.approve else self.role.name)
