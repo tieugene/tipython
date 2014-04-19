@@ -33,7 +33,7 @@ from PIL import Image as PIL_Image
 # 4. my
 import models, forms
 from core.models import File, FileSeq
-from scan.models import Scan, Event
+from scan.models import Scan
 
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
@@ -306,22 +306,26 @@ def	bill_add(request):
 			# 3. bill at all
 			bill = models.Bill(
 				fileseq		= fileseq,
-				project		= form.cleaned_data['project'],
+				place		= form.cleaned_data['place'],
+				subject		= form.cleaned_data['subject'],
 				depart		= form.cleaned_data['depart'],
+				payer		= form.cleaned_data['payer'],
 				supplier	= form.cleaned_data['supplier'],
+				billno		= form.cleaned_data['billno'],
+				billdate	= form.cleaned_data['billdate'],
 				assign		= approver,
 				rpoint		= None,
 				done		= None,
 			)
 			bill.save()
 			# 4. add route
-			std_route1 = [	# role_id, approve_id, state_id, button_title
-				(2, models.Approver.objects.get(pk=13), 1, 'Ok'),	# начОМТС
-				(3, form.cleaned_data['approver'], 1, 'Ok'),		# Руководитель
-				(4, None, 1, 'Ok'),					# Директор
-				(5, models.Approver.objects.get(pk=3), 1, 'Согласовано'),	# Гендир
-				#(6, models.Approver.objects.get(pk=4), 2, 'Oплачено'),	# Бухгалтер
-				(6, None, 2, 'Oплачено'),	# Бухгалтер
+			std_route1 = [	# role_id, approve_id
+				(2, models.Approver.objects.get(pk=13)),	# начОМТС
+				(3, form.cleaned_data['approver']),		# Руководитель
+				(4, None),					# Директор
+				(5, models.Approver.objects.get(pk=3)),		# Гендир
+				#(6, models.Approver.objects.get(pk=4)),	# Бухгалтер
+				(6, None),					# Бухгалтер
 			]
 			for i, r in enumerate(std_route1):
 				bill.route_set.add(
@@ -330,8 +334,6 @@ def	bill_add(request):
 						order	= i+1,
 						role	= models.Role.objects.get(pk=r[0]),
 						approve	= r[1],
-						state	= models.State.objects.get(pk=r[2]),
-						action	= r[3],
 					),
 				)
 			#bill = form.save(commit=False)
@@ -359,19 +361,31 @@ def	bill_edit(request, id):
 		if form.is_valid():
 			tosave = False
 			# 1. update bill
-			if (bill.project != form.cleaned_data['project']):
-				bill.project = form.cleaned_data['project']
+			if (bill.place != form.cleaned_data['place']):
+				bill.place = form.cleaned_data['place']
+				tosave = True
+			if (bill.subject != form.cleaned_data['subject']):
+				bill.subject = form.cleaned_data['subject']
 				tosave = True
 			if (bill.depart != form.cleaned_data['depart']):
 				bill.depart = form.cleaned_data['depart']
 				tosave = True
+			if (bill.payer != form.cleaned_data['payer']):
+				bill.payer = form.cleaned_data['payer']
+				tosave = True
 			if (bill.supplier != form.cleaned_data['supplier']):
 				bill.supplier = form.cleaned_data['supplier']
+				tosave = True
+			if (bill.billno != form.cleaned_data['billno']):
+				bill.billno = form.cleaned_data['billno']
+				tosave = True
+			if (bill.billdate != form.cleaned_data['billdate']):
+				bill.billdate = form.cleaned_data['billdate']
 				tosave = True
 			if (tosave):
 				bill.save()
 			# 2. update approver (if required)
-			special = bill.route_set.get(order=2)
+			special = bill.route_set.get(order=2)	# Аня
 			if (special.approve != form.cleaned_data['approver']):
 				special.approve = form.cleaned_data['approver']
 				special.save()
@@ -384,10 +398,14 @@ def	bill_edit(request, id):
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillEditForm(initial={
-			'project':	bill.project,
+			'place':	bill.place,
+			'subject':	bill.subject,
 			'depart':	bill.depart,
+			'payer':	bill.payer,
 			'supplier':	bill.supplier,
-			'approver':	bill.route_set.get(order=2).approve,
+			'billno':	bill.billno,
+			'billdate':	bill.billdate,
+			'approver':	bill.route_set.get(order=2).approve,	# костыль
 			#'approver':	6,
 		})
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {

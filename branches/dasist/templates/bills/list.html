@@ -47,6 +47,7 @@
  <tr>
   <th> # </th>
   <th> Объект </th>
+  <th> Подобъект </th>
   <th> Направление </th>
   <th> Поставщик </th>
   <th> Исполнитель </th>
@@ -68,7 +69,8 @@
  {% endif %}
 >
   <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
-  <td> {{ object.project }} </td>
+  <td> {{ object.place }} </td>
+  <td> {{ object.subject }} </td>
   <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
   <td> {{ object.supplier }} </td>
   <td> {{ object.assign.get_fio }} </td>

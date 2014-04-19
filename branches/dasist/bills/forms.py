@@ -10,7 +10,7 @@ from django.utils.safestring import mark_safe
 from django.db.models.fields.files import FieldFile
 
 #import models
-from bills.models import Approver
+from bills.models import Approver, Place, Subject, Department, Payer
 from scan.models import Scan
 
 #class	BillAddForm(forms.Form):
@@ -32,9 +32,13 @@ class ApproverModelChoiceField(forms.ModelChoiceField):
 class	BillAddForm(forms.Form):
 	file		= forms.FileField(label=u'Скан')
 	rawpdf		= forms.BooleanField(label=u'Конвертировать PDF', required=False)
-	project		= forms.CharField(max_length=64, label=u'Объект')
-	depart		= forms.CharField(max_length=64, label=u'Направление')
+	place		= forms.ModelChoiceField(queryset=Place.objects.all(), empty_label=None, label=u'Объект')
+	subject		= forms.ModelChoiceField(queryset=Subject.objects.all(), label=u'Подобъект', required=False)
+	depart		= forms.ModelChoiceField(queryset=Department.objects.all(), label=u'Направление', required=False)
+	payer		= forms.ModelChoiceField(queryset=Payer.objects.all(), empty_label=None, label=u'Плательщик')
 	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
+	billno		= forms.CharField(max_length=64, label=u'Номер счета')
+	billdate	= forms.DateField(label=u'Дата счета')
 	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
 
 	def clean_file(self):
@@ -46,9 +50,13 @@ class	BillAddForm(forms.Form):
 class	BillEditForm(forms.Form):
 	file		= forms.FileField(label=u'Скан', required=False, help_text=u'(Выберите файл, если хотите заменить скан)')
 	rawpdf		= forms.BooleanField(label=u'Конвертировать PDF', required=False)
-	project		= forms.CharField(max_length=64, label=u'Объект')
-	depart		= forms.CharField(max_length=64, label=u'Направление')
+	place		= forms.ModelChoiceField(queryset=Place.objects.all(), empty_label=None, label=u'Объект')
+	subject		= forms.ModelChoiceField(queryset=Subject.objects.all(), label=u'Подобъект', required=False)
+	depart		= forms.ModelChoiceField(queryset=Department.objects.all(), label=u'Направление', required=False)
+	payer		= forms.ModelChoiceField(queryset=Payer.objects.all(), empty_label=None, label=u'Плательщик')
 	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
+	billno		= forms.CharField(max_length=64, label=u'Номер счета')
+	billdate	= forms.DateField(label=u'Дата счета')
 	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
 
 	def clean_file(self):
@@ -59,7 +67,7 @@ class	BillEditForm(forms.Form):
 		return None
 
 class	ResumeForm(forms.Form):
-	note	= forms.CharField(label='Комментарий', required = False, widget=forms.Textarea)
+	note	= forms.CharField(label='Комментарий', required = False)
 
 class	FilterStateForm(forms.Form):
 	draft	= forms.BooleanField(label='Черновики',	required = False)

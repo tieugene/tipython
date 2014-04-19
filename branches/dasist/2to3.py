@@ -23,6 +23,9 @@ contenttypes.contenttype
 sessions.session
 sites.site
 bills.state
+bills.bill (pk)
+bills.event
+bills.route (-state, -action)
 
 TOINIT:
 auth.user
@@ -30,9 +33,6 @@ bills.approver
 bills.role
 
 TOSAVE:
-bills.bill - pk
-bills.event
-bills.route - -state, -action
 core.file
 core.fileseq
 core.fileseqitem - pk

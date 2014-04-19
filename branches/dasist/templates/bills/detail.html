@@ -7,11 +7,14 @@
 <caption>  Счет: </caption>
 <tbody>
  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
- <tr> <th> Объект </th> <td> {{ object.project }} </td> </tr>
- <tr> <th> Направление </th> <td> {{ object.depart }} </td> </tr>
+ <tr> <th> Объект </th> <td> {{ object.place }} </td> </tr>
+ <tr> <th> ПодОбъект </th> <td> {{ object.subject }} </td> </tr>
+ <tr> <th> Направление </th> <td> {{ object.depart|default:"---" }} </td> </tr>
+ <tr> <th> Плательщик </th> <td> {{ object.payer }} </td> </tr>
  <tr> <th> Поставщик </th> <td> {{ object.supplier }} </td> </tr>
+ <tr> <th> Счет </th> <td> № {{ object.billno }} от {{ object.billdate|date:"d/m/y" }} </td> </tr>
  <tr> <th> Ответственный </th> <td> {{ object.assign.get_fio }} </td> </tr>
- <tr> <th> Подписант </th> <td> {% if object.rpoint %} {{ object.rpoint }} {% else %} --- {% endif %} </td> </tr>
+ <tr> <th> Подписант </th> <td> {{ object.rpoint|default:"---" }} </td> </tr>
  <tr> <th> Состояние </th> <td> {{ object.get_state_name }} </td> </tr>
  <tr> <th> Маршрут </th> <td>
   <ol style="margin: 0">
