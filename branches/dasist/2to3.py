@@ -23,9 +23,6 @@ contenttypes.contenttype
 sessions.session
 sites.site
 bills.state
-bills.bill (pk)
-bills.event
-bills.route (-state, -action)
 
 TOINIT:
 auth.user
@@ -38,6 +35,9 @@ core.fileseq
 core.fileseqitem - pk
 scan.event - tojson
 scan.scan  - +comments field
+bills.bill (pk)
+bills.event
+bills.route (-state, -action)
 '''
 
 TOINIT=set([

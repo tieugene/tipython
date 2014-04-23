@@ -5,26 +5,37 @@
 	* +bills.model.Route.state: delete
 	* +bills.model.Route.action: delete
 	* +bills.model.State: delete
+* Place/Subject subsystem
+* Security:
+	* views
+	* https
+	* session timeout
+	* logging?
+* Добавление/удалений файлов в счете
 * Route templates
 * Вынести прибитую гвоздями логику в плагины
-* Добавление/удалений файлов в счете
-* Place/Subject subsystem
 * Chat
 * Interface:
+	* CSS
+	* Till 1024 width
+	* disable ALLCAPS words in Supplier
 	* bill list:
 		* фильтр состояний - в колонку
+		* брехня... фильтр состояний - 5 педалек с JS (!)
 		* вся строка == URL
+		* select columns to view
+		* state as icon
+		* nowrap
 	* bill detail:
 		* dynamic Subject
 		* Камменты - 1 строка
 		* раскрасить как-нить
 		* Preview переделать
-* Security:
-	* https
-	* session timeout
-	* logging?
+	* bill edit:
+		* ограничить Поставщика (длина, капс)
 * fixtures (JSON, w/ auth.user)
 * unittests
 * django 1.5?
-* pyhon3?
 * MySQL
+* pyhon3?
+http://habrahabr.ru/post/220295/
