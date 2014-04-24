@@ -5,6 +5,9 @@
 	* +bills.model.Route.state: delete
 	* +bills.model.Route.action: delete
 	* +bills.model.State: delete
+* Place=>Subject dynafilter
+* Route templates
+* Вынести прибитую гвоздями логику в плагины
 * Place/Subject subsystem
 * Security:
 	* views
@@ -12,8 +15,6 @@
 	* session timeout
 	* logging?
 * Добавление/удалений файлов в счете
-* Route templates
-* Вынести прибитую гвоздями логику в плагины
 * Chat
 * Interface:
 	* CSS

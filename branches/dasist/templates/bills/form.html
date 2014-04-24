@@ -1,5 +1,41 @@
 {% extends "bills/base.html" %}
 {% block js %}
+<script type="text/javascript">
+
+var place_subjects = {
+	{% for place in places %}
+	{{ place.id }}: { {% for subj in place.subjects.all %}
+		{{ subj.id }}: "{{ subj.name }}", {% endfor %}
+	}, {% endfor %}
+};
+
+function clear_subj () {
+	$('#id_subject').empty();
+}
+
+function fill_subj (place_id) {
+	subj = $('#id_subject');
+	subj.append( $('<option value="" selected="selected">---------</option>'));
+	place = place_subjects[place_id];
+	for (subj_id in place) {
+		subj.append( $('<option value="' + subj_id + '">' + place[subj_id] + '</option>'));
+		//console.log(place[subj_id]);
+	};
+}
+
+function place_select () {
+	place_id = $('#id_place option:selected').val();
+	//console.log(place);
+	clear_subj();
+	fill_subj(place_id);
+}
+
+$(document).ready(function() {
+	$('#id_place').change(place_select);
+	clear_subj();
+	fill_subj(1);
+});
+</script>
 {{ form.media }}
 {% endblock %}
 {% block body_main %}

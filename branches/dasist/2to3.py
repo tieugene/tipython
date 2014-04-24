@@ -41,9 +41,9 @@ bills.route (-state, -action)
 '''
 
 TOINIT=set([
-'auth.user',
-'bills.approver',
-'bills.role',
+	'auth.user',
+	'bills.approver',
+	'bills.role',
 ])
 
 def	main(infile):

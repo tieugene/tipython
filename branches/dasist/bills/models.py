@@ -103,7 +103,7 @@ class	Place(models.Model):
 
 class	Subject(models.Model):
 	#id	= models.PositiveSmallIntegerField(primary_key=True, verbose_name=u'#')
-	place	= models.ForeignKey(Place, verbose_name=u'Объект')
+	place	= models.ForeignKey(Place, related_name='subjects', verbose_name=u'Объект')
 	name	= models.CharField(max_length=32, verbose_name=u'Наименование')
 
 	def	__unicode__(self):

@@ -340,7 +340,10 @@ def	bill_add(request):
 			return redirect('bills.views.bill_view', bill.pk)
 	else:
 		form = forms.BillAddForm()
-	return render_to_response('bills/form.html', context_instance=RequestContext(request, {'form': form,}))
+	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
+		'form': form,
+		'places': models.Place.objects.all()
+	}))
 
 @login_required
 def	bill_edit(request, id):
