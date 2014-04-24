@@ -13,27 +13,36 @@ function clear_subj () {
 	$('#id_subject').empty();
 }
 
-function fill_subj (place_id) {
+function fill_subj (place_id, subj_id) {
 	subj = $('#id_subject');
-	subj.append( $('<option value="" selected="selected">---------</option>'));
+	//subj.append( $('<option value="" selected="selected">---------</option>'));
+	subj.append( $('<option value="">---------</option>'));
 	place = place_subjects[place_id];
-	for (subj_id in place) {
-		subj.append( $('<option value="' + subj_id + '">' + place[subj_id] + '</option>'));
+	for (subj_key in place) {
+		subj.append( $('<option value="' + subj_key + '">' + place[subj_key] + '</option>'));
 		//console.log(place[subj_id]);
 	};
+
+	$("#id_subject [value='"+subj_id+"']").attr("selected", "selected");
 }
 
 function place_select () {
 	place_id = $('#id_place option:selected').val();
 	//console.log(place);
 	clear_subj();
-	fill_subj(place_id);
+	fill_subj(place_id, '');
 }
 
 $(document).ready(function() {
 	$('#id_place').change(place_select);
+	subj_id = $('#id_subject option:selected').val();
+	//console.log(subj_id);	// '' or id
+	// place_select()
+	place_id = $('#id_place option:selected').val();
+	console.log(place_id, ',', subj_id);	// '' or id
 	clear_subj();
-	fill_subj(1);
+	//console.log(place_id);
+	fill_subj(place_id, subj_id);
 });
 </script>
 {{ form.media }}
@@ -42,10 +51,10 @@ $(document).ready(function() {
    <form enctype="multipart/form-data" action="" method="POST">
 	{% csrf_token %}
 	<table border="1">
-		<caption> Новый счет </caption>
+		<caption> {% if object %} Редактировать {% else %} Новый {% endif %} счет </caption>
 		{{ form.as_table }}
 	</table>
 	<button type="submit"> Записать </button>
-	<a href="{% url bills.views.bill_list %}"> <button type="button"> Отказаться </button> </a>
+	<a href="{% if object %} {% url bills.views.bill_view object.pk %} {% else %} {% url bills.views.bill_list %} {% endif %}"> <button type="button"> Отказаться </button> </a>
    </form>
 {% endblock %}

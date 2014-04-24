@@ -342,7 +342,7 @@ def	bill_add(request):
 		form = forms.BillAddForm()
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
 		'form': form,
-		'places': models.Place.objects.all()
+		'places': models.Place.objects.all(),
 	}))
 
 @login_required
@@ -414,6 +414,7 @@ def	bill_edit(request, id):
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
 		'form': form,
 		'object': bill,
+		'places': models.Place.objects.all(),
 	}))
 
 def	__mailto(request, bill):
