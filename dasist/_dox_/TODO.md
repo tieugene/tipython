@@ -7,6 +7,7 @@
 	* +bills.model.State: delete
 * +Place=>Subject dynafilter
 * 0.0.2=>0.0.3 converter
+* !!! сумма счета
 
 * Route templates
 * Вынести прибитую гвоздями логику в плагины
