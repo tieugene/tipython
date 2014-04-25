@@ -5,7 +5,9 @@
 	* +bills.model.Route.state: delete
 	* +bills.model.Route.action: delete
 	* +bills.model.State: delete
-* Place=>Subject dynafilter
+* +Place=>Subject dynafilter
+* 0.0.2=>0.0.3 converter
+
 * Route templates
 * Вынести прибитую гвоздями логику в плагины
 * Place/Subject subsystem
