@@ -505,16 +505,7 @@ def	bill_view(request, id):
 			(user.is_superuser or ((bill_state_id == 5) and (bill.assign == approver))),
 		'err': err
 	}))
-'''
-@login_required
-def	bill_get(request, id):
-	bill = models.Bill.objects.get(pk=int(id))
-	response = HttpResponse(mimetype=bill.mime)
-	response['Content-Transfer-Encoding'] = 'binary'
-	response['Content-Disposition'] = '; filename=' + bill.name.encode('utf-8')
-	response.write(open(bill.get_path()).read())
-	return response
-'''
+
 @login_required
 def	bill_delete(request, id):
 	'''
