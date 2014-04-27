@@ -28,7 +28,13 @@
 	* Visibility:
 		* Till 1024 width
 		* bill list:
-			* states filter == X x buttons
+			* states filter == X x buttons:
+				* Draft: "draft" (Edit)
+				* OnWay: пишаход
+				* OnPay: $
+				* Исполнен: $
+				* Завернут: Trash
+				* +JS
 			* tr == URL
 			* select columns to view
 			* state as icon
