@@ -13,6 +13,7 @@
  <tr> <th> Плательщик </th> <td> {{ object.payer }} </td> </tr>
  <tr> <th> Поставщик </th> <td> {{ object.supplier }} </td> </tr>
  <tr> <th> Счет </th> <td> № {{ object.billno }} от {{ object.billdate|date:"d/m/y" }} </td> </tr>
+ <tr> <th> Сумма </th> <td> {{ object.topaysum }} {% ifnotequal object.topaysum object.billsum %} (из {{ object.billsum }}{% if object.payedsum %}, {{ object.payedsum }} уже{% endif %}) {% endifnotequal %} </td> </tr>
  <tr> <th> Ответственный </th> <td> {{ object.assign.get_fio }} </td> </tr>
  <tr> <th> Подписант </th> <td> {{ object.rpoint|default:"---" }} </td> </tr>
  <tr> <th> Состояние </th> <td> {{ object.get_state_name }} </td> </tr>
@@ -51,7 +52,7 @@
   {% for i in object.events.all %}
   <tr>
    <td valign="top"> <img {% if i.resume %} src="{{ STATIC_URL }}img/dialog-ok.png" title="OK" {% else %} src="{{ STATIC_URL }}img/dialog-cancel.png" title="Canceled" {% endif %} width="16px" height="16px"/> </td>
-   <td valign="top"> {{i.ctime|date:"y.m.d H:i:d" }} </td>
+   <td valign="top"> {{ i.ctime }} </td>
    <td valign="top"> {{ i.approve.get_fio }} </td>
    <td valign="top"> <pre style="margin: 0"> {{ i.comment }} </pre> </td>
   </tr>

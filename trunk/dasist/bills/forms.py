@@ -39,6 +39,9 @@ class	BillAddForm(forms.Form):
 	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
 	billno		= forms.CharField(max_length=64, label=u'Номер счета')
 	billdate	= forms.DateField(label=u'Дата счета')
+	billsum		= forms.IntegerField(min_value=0, label=u'Сумма счета')
+	payedsum	= forms.IntegerField(min_value=0, label=u'Оплачено')
+	topaysum	= forms.IntegerField(min_value=0, label=u'Сумма к оплате')
 	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
 
 	def clean_file(self):
@@ -57,6 +60,9 @@ class	BillEditForm(forms.Form):
 	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
 	billno		= forms.CharField(max_length=64, label=u'Номер счета')
 	billdate	= forms.DateField(label=u'Дата счета')
+	billsum		= forms.IntegerField(min_value=0, label=u'Сумма счета')
+	payedsum	= forms.IntegerField(min_value=0, label=u'Оплачено')
+	topaysum	= forms.IntegerField(min_value=0, label=u'Сумма к оплате')
 	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
 
 	def clean_file(self):
@@ -76,7 +82,7 @@ class	FilterStateForm(forms.Form):
 	done	= forms.BooleanField(label='Исполнены',	required = False)
 	dead	= forms.BooleanField(label='Завернуты',	required = False)
 
-class	ScanAddForm(forms.ModelForm):
-	fileseq = forms.IntegerField(widget=forms.HiddenInput())
-	class	Meta:
-		model = Scan
+#class	ScanAddForm(forms.ModelForm):
+#	fileseq = forms.IntegerField(widget=forms.HiddenInput())
+#	class	Meta:
+#		model = Scan

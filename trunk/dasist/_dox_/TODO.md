@@ -1,3 +1,6 @@
+= 0.0.3 =
+
+== Hot ==
 * +DB struct change:
 	* +core.models.FileSeqItem.file: PrimaryKey
 	* +scan.model.Scan.events: json?
@@ -6,40 +9,54 @@
 	* +bills.model.Route.action: delete
 	* +bills.model.State: delete
 * +Place=>Subject dynafilter
-* 0.0.2=>0.0.3 converter
-* !!! сумма счета
-
-* Route templates
-* Вынести прибитую гвоздями логику в плагины
-* Place/Subject subsystem
-* Security:
-	* views
-	* https
-	* session timeout
-	* logging?
-* Добавление/удалений файлов в счете
-* Chat
-* Interface:
-	* CSS
-	* Till 1024 width
-	* disable ALLCAPS words in Supplier
-	* bill list:
-		* фильтр состояний - в колонку
-		* брехня... фильтр состояний - 5 педалек с JS (!)
-		* вся строка == URL
-		* select columns to view
-		* state as icon
-		* nowrap
-	* bill detail:
-		* dynamic Subject
-		* Камменты - 1 строка
-		* раскрасить как-нить
-		* Preview переделать
-	* bill edit:
-		* ограничить Поставщика (длина, капс)
+* +Cумма счета
+* +Сканы переделать
 * fixtures (JSON, w/ auth.user)
-* unittests
+* 0.0.2=>0.0.3 converter
+
+== Lazy ==
+* Tunes:
+	* Security:
+		* views
+		* https
+		* session timeout
+		* logging?
+	* Perfomance:
+		* Limit CharFields widths
+		* MySQL
+		* 304
+	* Visibility:
+		* Till 1024 width
+		* bill list:
+			* states filter == X x buttons
+			* tr == URL
+			* select columns to view
+			* state as icon
+			* nowrap
+		* bill detail:
+			* +dynamic Subject
+			* +1-line comments
+			* fonts/sizes/colors/formsets
+			* Preview remake
+		* bill edit:
+			* limit Supplier (width, CAPS)
+	* Usability:
+		* <2B continued>
+	* Supportability:
+		* CSS
+* Place/Subject subsystem
+* Add/del images in fileseq
+
+= 0.0.X =
+* new state machine
+** move hardcoded logic into "plugins"
+* Route templates
+* Chat
+
+= Future =
 * django 1.5?
-* MySQL
 * pyhon3?
+* unittests
+
+= misc =
 http://habrahabr.ru/post/220295/

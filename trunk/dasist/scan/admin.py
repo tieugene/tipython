@@ -7,6 +7,6 @@ from models import *
 # 2. odmins
 class	ScanAdmin(admin.ModelAdmin):
 	ordering	= ('date',)
-	list_display	= ('project', 'depart', 'supplier', 'no', 'date')
+	list_display	= ('place', 'subject', 'depart', 'supplier', 'no', 'date', 'sum')
 
 admin.site.register(Scan,	ScanAdmin)

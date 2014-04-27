@@ -20,9 +20,12 @@ from django.core.files.storage import default_storage	# MEDIA_ROOT
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.mail import send_mail
+from django.core import serializers
+from django.utils.encoding import smart_unicode
 
 # 2. system
-import os, sys, imp, pprint, tempfile, subprocess, shutil
+import os, sys, imp, pprint, tempfile, subprocess, shutil, json
+from django.utils import simplejson
 
 # 3. 3rd party
 #from pyPdf import PdfFileReader
@@ -313,6 +316,9 @@ def	bill_add(request):
 				supplier	= form.cleaned_data['supplier'],
 				billno		= form.cleaned_data['billno'],
 				billdate	= form.cleaned_data['billdate'],
+				billsum		= form.cleaned_data['billsum'],
+				payedsum	= form.cleaned_data['payedsum'],
+				topaysum	= form.cleaned_data['topaysum'],
 				assign		= approver,
 				rpoint		= None,
 				done		= None,
@@ -364,29 +370,24 @@ def	bill_edit(request, id):
 		if form.is_valid():
 			tosave = False
 			# 1. update bill
-			if (bill.place != form.cleaned_data['place']):
-				bill.place = form.cleaned_data['place']
-				tosave = True
-			if (bill.subject != form.cleaned_data['subject']):
-				bill.subject = form.cleaned_data['subject']
-				tosave = True
-			if (bill.depart != form.cleaned_data['depart']):
-				bill.depart = form.cleaned_data['depart']
-				tosave = True
-			if (bill.payer != form.cleaned_data['payer']):
-				bill.payer = form.cleaned_data['payer']
-				tosave = True
-			if (bill.supplier != form.cleaned_data['supplier']):
-				bill.supplier = form.cleaned_data['supplier']
-				tosave = True
-			if (bill.billno != form.cleaned_data['billno']):
-				bill.billno = form.cleaned_data['billno']
-				tosave = True
-			if (bill.billdate != form.cleaned_data['billdate']):
-				bill.billdate = form.cleaned_data['billdate']
-				tosave = True
-			if (tosave):
-				bill.save()
+			def	chk_fld(form, fld, fldname):
+				if (fld != form.cleaned_data[fldname]):
+					fld = form.cleaned_data[fldname]
+					return True
+				else:
+					return False
+			bill.place= form.cleaned_data['place']
+			bill.subject= form.cleaned_data['subject']
+			bill.depart= form.cleaned_data['depart']
+			bill.payer= form.cleaned_data['payer']
+			bill.supplier= form.cleaned_data['supplier']
+			bill.billno= form.cleaned_data['billno']
+			bill.billdate= form.cleaned_data['billdate']
+			bill.billsum= form.cleaned_data['billsum']
+			bill.payedsum= form.cleaned_data['payedsum']
+			bill.topaysum= form.cleaned_data['topaysum']
+			#if (tosave):
+			bill.save()
 			# 2. update approver (if required)
 			special = bill.route_set.get(order=2)	# Аня
 			if (special.approve != form.cleaned_data['approver']):
@@ -408,6 +409,9 @@ def	bill_edit(request, id):
 			'supplier':	bill.supplier,
 			'billno':	bill.billno,
 			'billdate':	bill.billdate,
+			'billsum':	bill.billsum,
+			'payedsum':	bill.payedsum,
+			'topaysum':	bill.topaysum,
 			'approver':	bill.route_set.get(order=2).approve,	# костыль
 			#'approver':	6,
 		})
@@ -559,31 +563,31 @@ def	bill_toscan(request, id):
 	'''
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
-	if (request.method == 'POST'):
-		form = forms.ScanAddForm(request.POST)
-		if form.is_valid():
-			scan = form.save()
-			for event in (bill.events.all()):
-				Event.objects.create(
-					scan=scan,
-					approve='%s %s (%s)' % (event.approve.user.last_name, event.approve.user.first_name, event.approve.jobtit),
-					resume=event.resume,
-					ctime=event.ctime,
-					comment=event.comment
-				)
-			bill.delete()
-			return redirect('bills.views.bill_list')
-	else:
-		form = forms.ScanAddForm(initial={
-			'fileseq':	bill.fileseq,
-			'project':	bill.project,
-			'depart':	bill.depart,
-			'supplier':	bill.supplier,
-		})
-	return render_to_response('bills/form_toscan.html', context_instance=RequestContext(request, {
-		'form': form,
-		'bill': bill,
-	}))
+	event_list = []
+	for event in (bill.events.all()):
+		ev = {
+			'approve':	u'%s %s (%s)' % (event.approve.user.last_name, event.approve.user.first_name, event.approve.jobtit),
+			'resume':	event.resume,
+			'ctime':	event.ctime.strftime('%Y-%m-%d %H:%M:%S'),
+			'comment':	u'%s' % event.comment,
+		}
+		#print ev
+		event_list.append(ev)
+	j = json.dumps(event_list, ensure_ascii=False) if event_list else ''
+	scan = Scan.objects.create(
+		fileseq	= bill.fileseq,
+		place	= bill.place.name,
+		subject	= bill.subject.name,
+		depart	= bill.depart.name,
+		payer	= bill.payer.name,
+		supplier= bill.supplier,
+		no	= bill.billno,
+		date	= bill.billdate,
+		sum	= bill.billsum,
+		events	= j
+	)
+	bill.delete()
+	return redirect('bills.views.bill_list')
 
 @login_required
 def	bill_restart(request, id):
