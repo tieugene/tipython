@@ -32,8 +32,8 @@
 				* Draft: "draft" (Edit)
 				* OnWay: пишаход
 				* OnPay: $
-				* Исполнен: $
-				* Завернут: Trash
+				* Done: $
+				* Rejected: Trash
 				* +JS
 			* tr == URL
 			* select columns to view
