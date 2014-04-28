@@ -26,7 +26,7 @@
 		* MySQL
 		* 304
 	* Visibility:
-		* Till 1024 width
+		* 1024x768
 		* bill list:
 			* states filter == X x buttons:
 				* Draft: "draft" (Edit)
@@ -36,7 +36,7 @@
 				* Rejected: Trash
 				* +JS
 			* tr == URL
-			* select columns to view
+			* select columns to view (?)
 			* state as icon
 			* nowrap
 		* bill detail:
