@@ -30,9 +30,9 @@
 		* bill list:
 			* states filter == X x buttons:
 				* Draft: "draft" (Edit)
-				* OnWay: пишаход
+				* OnWay: onway
 				* OnPay: $
-				* Done: $
+				* Done: V
 				* Rejected: Trash
 				* +JS
 			* tr == URL
