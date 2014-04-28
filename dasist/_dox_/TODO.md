@@ -9,8 +9,8 @@
 	* +bills.model.Route.action: delete
 	* +bills.model.State: delete
 * +Place=>Subject dynafilter
-* +Cумма счета
-* +Сканы переделать
+* +summs
+* +remake Scan
 * fixtures (JSON, w/ auth.user)
 * 0.0.2=>0.0.3 converter
 
