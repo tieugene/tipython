@@ -19,7 +19,7 @@ class	Place(models.Model):
 
 	class   Meta:
 		unique_together		= (('name',),)
-		ordering                = ('id', )
+		ordering                = ('name', )
 		verbose_name            = u'Объект'
 		verbose_name_plural     = u'Объекты'
 
@@ -29,11 +29,11 @@ class	Subject(models.Model):
 	name	= models.CharField(max_length=32, verbose_name=u'Наименование')
 
 	def	__unicode__(self):
-		return self.name
+		return u'%s, %s' % (self.place.name, self.name)
 
 	class   Meta:
 		unique_together		= (('place', 'name',),)
-		ordering                = ('place', 'id', )
+		ordering                = ('place', 'name', )
 		verbose_name            = u'ПодОбъект'
 		verbose_name_plural     = u'ПодОбъект'
 
@@ -46,7 +46,7 @@ class	Department(models.Model):
 
 	class   Meta:
 		unique_together		= (('name',),)
-		ordering                = ('id', )
+		ordering                = ('name', )
 		verbose_name            = u'Направление'
 		verbose_name_plural     = u'Направления'
 
@@ -59,16 +59,16 @@ class	Payer(models.Model):
 
 	class   Meta:
 		unique_together		= (('name',),)
-		ordering                = ('id', )
+		ordering                = ('name', )
 		verbose_name            = u'Плательщик'
 		verbose_name_plural     = u'Плательщики'
 
 # Working
 class	AddOn(models.Model):
 	bill		= models.OneToOneField(Bill, primary_key=True, verbose_name=u'Счет')
-	place		= models.ForeignKey(Place, null=False, blank=False, verbose_name=u'Объект')
-	subject		= models.ForeignKey(Subject, null=True, blank=True, verbose_name=u'ПодОбъект')
-	depart		= models.ForeignKey(Department, null=True, blank=True, verbose_name=u'Направление')
+	place		= models.ForeignKey(Place, verbose_name=u'Объект')
+	subject		= models.ForeignKey(Subject, verbose_name=u'ПодОбъект')
+	depart		= models.ForeignKey(Department, verbose_name=u'Направление')
 	#payer		= models.ForeignKey(Payer, null=False, blank=False, verbose_name=u'Плательщик')
 	##billno		= models.CharField(max_length=64, verbose_name=u'Номер счета')
 	##billdate	= models.DateField(verbose_name=u'Дата счета')

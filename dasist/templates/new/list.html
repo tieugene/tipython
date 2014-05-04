@@ -1,81 +1,27 @@
-{% extends "bills/base.html" %}
+{% extends "new/base.html" %}
 {% block meta %} <meta http-equiv="refresh" content="60"> {% endblock %}
 {% block body_main %}
 <table border="0"> <tr>
-{% if canadd %}
-<td>
-<a href="{% url bills.views.bill_add %}"> {% include "button/new.html" %} </a>
-</td>
-{% endif %}
 <td>
 {% include "paginator.html" %}
 </td>
-<td>
- <label for="lpp">Строк:</label>
- <!--select onchange="document.location=this.options[this.selectedIndex].value"-->
- <select onchange="document.location=this.options[this.selectedIndex].value">
-  <option value="{% url bills.views.bill_set_lpp 10 %}" {% ifequal lpp 10 %}selected{% endifequal %}>10</option>
-  <option value="{% url bills.views.bill_set_lpp 15 %}" {% ifequal lpp 15 %}selected{% endifequal %}>15</option>
-  <option value="{% url bills.views.bill_set_lpp 20 %}" {% ifequal lpp 20 %}selected{% endifequal %}>20</option>
-  <option value="{% url bills.views.bill_set_lpp 25 %}" {% ifequal lpp 25 %}selected{% endifequal %}>25</option>
-  <option value="{% url bills.views.bill_set_lpp 50 %}" {% ifequal lpp 50 %}selected{% endifequal %}>50</option>
- </select>
-</td>
-<td> Открыть:
- {% ifequal mode 1 %}
- <a href="{% url bills.views.bill_set_mode 2 %}"> <button type="button" class="rounded" title="Входящие"> Входящие </button> </a>
- {% else %}
- <a href="{% url bills.views.bill_set_mode 1 %}"> <button type="button" class="rounded" title="Все"> Все </button> </a>
- {% endifequal %}
-</td>
-{% if fsform %}
-<td>
-<form action="{% url bills.views.bill_filter_state %}" method="POST">
-{% csrf_token %}
- {% include "button/filter.html" %}
- {{ fsform.draft }} {{ fsform.draft.label }} |
- {{ fsform.onway }} {{ fsform.onway.label }} |
- {{ fsform.onpay }} {{ fsform.onpay.label }} |
- {{ fsform.done }} {{ fsform.done.label }} |
- {{ fsform.dead }} {{ fsform.dead.label }}
-</form>
-</td>
-{% endif %}
 </tr> </table>
 <table>
  <thead>
  <tr>
   <th> # </th>
-  <th> Объект </th>
-  <th> Подобъект </th>
+  <th> Объект[, подобъект] </th>
   <th> Направление </th>
-  <th> Поставщик </th>
   <th> Исполнитель </th>
-  <th> Подписант </th>
-  <th> Состояние </th>
  </tr>
  </thead>
  <tbody>
 {% for object in object_list %}
- <tr bgcolor="{{object.get_state_color}}"
- {% if object.rpoint %}
-  {% ifequal object.rpoint.approve.pk user.pk %}
-   style="font-weight:bold"
-  {% else %}
-   {% ifequal object.rpoint.role role %}
-    style="font-weight:bold"
-   {% endifequal %}
-  {% endifequal %}
- {% endif %}
->
-  <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
-  <td> {{ object.place }} </td>
-  <td> {{ object.subject }} </td>
-  <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
-  <td> {{ object.supplier }} </td>
+ <tr  bgcolor="{% if object.addon %}white{% else %}yellow{% endif %}">
+  <td> {{ object.pk }} </td>
+  <td> {{ object.project }} <br/> {{ object.addon.place.name }}{% if object.addon.subject %}, {{ object.addon.subject.name }}{% endif %}</td>
+  <td> {{ object.depart }} <br/> {{ object.addon.depart }} </td>
   <td> {{ object.assign.get_fio }} </td>
-  <td> {% if object.rpoint %} {{ object.rpoint.get_str }} {% else %} --- {% endif %} </td>
-  <td> {{ object.get_state_name }} </td>
  </tr>
 {% endfor %}
 </table>
