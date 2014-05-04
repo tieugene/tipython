@@ -26,14 +26,11 @@ sys.setdefaultencoding('utf-8')
 
 @login_required
 def	addon_list(request):
-	# 1. pre
 	user = request.user
 	approver = Approver.objects.get(user=user)
 	queryset = Bill.objects.all().order_by('-pk')
-	# 3. filter by role
-	#role_id = approver.role.pk
-	#if (role_id == 3):	# Руководители
-	#	queryset = queryset.filter(rpoint__approve=approver)
+	if (user.pk not in set([0, 1])):
+		queryset = queryset.filter(assign=approver)
 	return  object_list (
 		request,
 		queryset = queryset,
