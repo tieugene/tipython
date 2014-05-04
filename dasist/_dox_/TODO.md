@@ -3,5 +3,5 @@
 + list (page_size=25)
 + add/edit
 + list: bad subject control
-* list ACLs
-* edit ACLs
++ list ACLs: edit == approver
+? edit ACLs

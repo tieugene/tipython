@@ -67,7 +67,7 @@ class	Payer(models.Model):
 class	AddOn(models.Model):
 	bill		= models.OneToOneField(Bill, primary_key=True, verbose_name=u'Счет')
 	place		= models.ForeignKey(Place, verbose_name=u'Объект')
-	subject		= models.ForeignKey(Subject, verbose_name=u'ПодОбъект')
+	subject		= models.ForeignKey(Subject, null=True, blank=True, verbose_name=u'ПодОбъект')
 	depart		= models.ForeignKey(Department, verbose_name=u'Направление')
 	#payer		= models.ForeignKey(Payer, null=False, blank=False, verbose_name=u'Плательщик')
 	##billno		= models.CharField(max_length=64, verbose_name=u'Номер счета')
