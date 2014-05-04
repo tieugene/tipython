@@ -18,7 +18,20 @@
  </thead>
  <tbody>
 {% for object in object_list %}
- <tr bgcolor="{% if object.addon %}white{% else %}yellow{% endif %}">
+ <tr bgcolor="
+ {% if object.addon %}
+  {% if object.addon.subject %}
+   {% ifequal object.addon.subject.place.pk object.addon.place.pk %}
+    white
+   {% else %}
+    red
+   {% endifequal %}
+  {% else %}
+   white
+  {% endif %}
+ {% else %}
+  yellow
+ {% endif %}">
   <td> <a href="{% url new.views.addon_edit object.pk %}"> {% include "button/edit.html" %} </a> </td>
   <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.project }} <br/> {{ object.addon.place.name }}{% if object.addon.subject %}, {{ object.addon.subject.name }}{% endif %}</td>
