@@ -14,112 +14,42 @@ from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext, Context, loader
 from django.views.generic.simple import direct_to_template, redirect_to
 from django.views.generic.list_detail import object_list, object_detail
-from django.utils.datastructures import SortedDict
-from django.db.models import F, Q
-from django.core.files.storage import default_storage	# MEDIA_ROOT
-from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.mail import send_mail
-from django.core import serializers
-from django.utils.encoding import smart_unicode
 
 # 2. system
-import os, sys, imp, pprint, tempfile, subprocess, shutil, json
+import os, sys, pprint
 
 # 3. 3rd party
 
 # 4. my
 import models, forms
+from bills.models import Bill, Approver
 
-PAGE_SIZE = 20
+PAGE_SIZE = 25
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 @login_required
 def	addon_list(request):
-	'''
-	List of bills
-	ACL: user=assign|approve|root
-	'''
 	# 1. pre
 	user = request.user
-	approver = models.Approver.objects.get(user=user)
-	#print approver.role.pk == 1
-	queryset = models.Bill.objects.all().order_by('-pk')
-	# 2. mode (1=All, 2=Inbound)
-	mode = request.session.get('mode', None)
-	if (mode == None):
-		mode = 1
-		request.session['mode'] = mode
-	else:
-		mode = int(mode)
+	approver = Approver.objects.get(user=user)
+	queryset = Bill.objects.all().order_by('-pk')
 	# 3. filter by role
-	role_id = approver.role.pk
-	if (role_id == 3):	# Руководители
-		queryset = queryset.filter(rpoint__approve=approver)
-		fsform = None
-	else:
-		if (mode == 1):	# Все
-			if (role_id == 1) and (not user.is_superuser):	# Исполнитель
-				queryset = queryset.filter(assign=approver)
-			# 3. filter using Filter
-			fsfilter = request.session.get(FSNAME, None)# int 0..15: dropped|done|onway|draft
-			if (fsfilter == None):
-				fsfilter = 31
-				request.session[FSNAME] = fsfilter
-			else:
-				fsfilter = int(fsfilter)
-			queryset = __set_filter_state(queryset, fsfilter)
-			# 3. go
-			#if not request.user.is_superuser:
-			#	queryset = queryset.filter(assign=request.user)
-			fsform = forms.FilterStateForm(initial={
-				'dead'	:bool(fsfilter&1),
-				'done'	:bool(fsfilter&2),
-				'onpay'	:bool(fsfilter&4),
-				'onway'	:bool(fsfilter&8),
-				'draft'	:bool(fsfilter&16),
-			})
-		else:		# Входящие
-			fsform = None
-			if (approver.role.pk == 1):		# Исполнитель
-				queryset = queryset.filter(assign=approver, rpoint=None)
-			elif (approver.role.pk in set((4, 6))):	# Директор, Бухгалтер
-				queryset = queryset.filter(rpoint__role=approver.role)
-			else:
-				queryset = queryset.filter(rpoint__approve=approver)
-	# 4. lpp
-	lpp = request.session.get('lpp', None)
-	if (lpp == None):
-		lpp = 20
-		request.session['lpp'] = lpp
-	else:
-		lpp = int(lpp)
+	#role_id = approver.role.pk
+	#if (role_id == 3):	# Руководители
+	#	queryset = queryset.filter(rpoint__approve=approver)
 	return  object_list (
 		request,
 		queryset = queryset,
-		paginate_by = lpp,
+		paginate_by = PAGE_SIZE,
 		page = int(request.GET.get('page', '1')),
-		template_name = 'bills/list.html',
-		extra_context = {
-			'canadd': approver.canadd,
-			'fsform': fsform,
-			'lpp': lpp,
-			'mode': mode,
-			'role': approver.role,
-		}
+		template_name = 'new/list.html',
 	)
 
 @login_required
 def	addon_add(request):
 	'''
-	Add new (draft) bill
-	ACL: Исполнитель
-	- add Bill
-	- add Route to them
-	- convert image
-	- add images into fileseq
 	'''
 	user = request.user
 	#approver = models.Approver.objects.get(pk=user.pk)	# !!!
