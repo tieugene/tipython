@@ -3,10 +3,10 @@
 '''
 
 from django import forms
-from django.core.exceptions import ValidationError
-from django.forms.formsets import formset_factory
-from django.utils.datastructures import SortedDict
-from django.utils.safestring import mark_safe
-from django.db.models.fields.files import FieldFile
 
-#import models
+from models import AddOn
+
+class	AddOnForm(forms.ModelForm):
+	class       Meta:
+		model = AddOn
+		#fields = ('lastname', 'firstname', 'midname', 'birthdate', 'sex')

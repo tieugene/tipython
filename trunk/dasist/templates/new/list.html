@@ -9,6 +9,7 @@
 <table>
  <thead>
  <tr>
+  <th> &nbsp; </th>
   <th> # </th>
   <th> Объект[, подобъект] </th>
   <th> Направление </th>
@@ -17,8 +18,9 @@
  </thead>
  <tbody>
 {% for object in object_list %}
- <tr  bgcolor="{% if object.addon %}white{% else %}yellow{% endif %}">
-  <td> {{ object.pk }} </td>
+ <tr bgcolor="{% if object.addon %}white{% else %}yellow{% endif %}">
+  <td> <a href="{% url new.views.addon_edit object.pk %}"> {% include "button/edit.html" %} </a> </td>
+  <td> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.project }} <br/> {{ object.addon.place.name }}{% if object.addon.subject %}, {{ object.addon.subject.name }}{% endif %}</td>
   <td> {{ object.depart }} <br/> {{ object.addon.depart }} </td>
   <td> {{ object.assign.get_fio }} </td>
