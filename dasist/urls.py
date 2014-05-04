@@ -18,4 +18,5 @@ urlpatterns = patterns('',
 	url(r'^bills/',		include('bills.urls')),
 	url(r'^scan/',		include('scan.urls')),
 	url(r'^about$',		'views.about'),
+	url(r'^new/',		include('new.urls')),
 )
