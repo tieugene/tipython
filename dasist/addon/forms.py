@@ -11,3 +11,4 @@ class	AddOnForm(forms.ModelForm):
 	class       Meta:
 		model = AddOn
 		#fields = ('lastname', 'firstname', 'midname', 'birthdate', 'sex')
+		widgets = {'bill': forms.HiddenInput()}
