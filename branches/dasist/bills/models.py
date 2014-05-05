@@ -191,7 +191,7 @@ class	Bill(models.Model):
 	place		= models.ForeignKey(Place, null=False, blank=False, verbose_name=u'Объект')
 	subject		= models.ForeignKey(Subject, null=True, blank=True, verbose_name=u'ПодОбъект')
 	depart		= models.ForeignKey(Department, null=True, blank=True, verbose_name=u'Направление')
-	payer		= models.ForeignKey(Payer, null=False, blank=False, verbose_name=u'Плательщик')
+	payer		= models.ForeignKey(Payer, null=True, blank=True, verbose_name=u'Плательщик')
 	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
 	billno		= models.CharField(max_length=64, verbose_name=u'Номер счета')
 	billdate	= models.DateField(verbose_name=u'Дата счета')

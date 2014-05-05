@@ -1,4 +1,4 @@
-= 0.0.3 =
+= 0.1.0 =
 
 == Hot ==
 * +DB struct change:
@@ -12,7 +12,10 @@
 * +summs
 * +remake Scan
 * fixtures (JSON, w/ auth.user)
-* 0.0.2=>0.0.3 converter
+* 0.0.3=>0.1.0 converter
+
+= 0.1.1 =
+* scan.even => scan.comments
 
 == Lazy ==
 * Tunes:
