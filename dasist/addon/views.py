@@ -36,7 +36,7 @@ def	addon_list(request):
 		queryset = queryset,
 		paginate_by = PAGE_SIZE,
 		page = int(request.GET.get('page', '1')),
-		template_name = 'new/list.html',
+		template_name = 'addon/list.html',
 	)
 
 @login_required
@@ -54,13 +54,13 @@ def	addon_edit(request, id):
 		form = forms.AddOnForm(request.POST, instance=addon)
 		if form.is_valid():
 			form.save()
-			return redirect('new.views.addon_list')
+			return redirect('addon.views.addon_list')
 	else:
 		if (addon):
 			form = forms.AddOnForm(instance = addon)
 		else:
 			form = forms.AddOnForm(initial={'bill':	bill})
-	return render_to_response('new/form.html', context_instance=RequestContext(request, {
+	return render_to_response('addon/form.html', context_instance=RequestContext(request, {
 		'object': bill,
 		'form': form,
 	}))

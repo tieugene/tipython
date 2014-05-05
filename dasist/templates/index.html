@@ -8,7 +8,7 @@ $("#tm_index").addClass("active");
 <p>
  <a href="{% url scan.views.scan_list %}"> <button type="button"> Сканы </button> </a>
  <a href="{% url bills.views.bill_list %}"> <button type="button"> Счета </button> </a>
- <a href="{% url new.views.addon_list %}"> <button type="button"> AddOn </button> </a>
+ <a href="{% url addon.views.addon_list %}"> <button type="button"> AddOn </button> </a>
 </p>
  {% if user.is_superuser %}
 <p>
