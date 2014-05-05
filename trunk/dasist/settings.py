@@ -110,7 +110,7 @@ INSTALLED_APPS = (
     'core',
     'bills',
     'scan',
-    'new',
+    'addon',
 )
 
 LOGIN_REDIRECT_URL = '/'

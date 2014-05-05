@@ -1,4 +1,4 @@
-{% extends "new/base.html" %}
+{% extends "addon/base.html" %}
 {% block body_main %}
    <form action="" method="POST">
 	{% csrf_token %}
@@ -11,6 +11,6 @@
 		{{ form.as_table }}
 	</table>
 	<button type="submit"> Записать </button>
-	<a href="{% url new.views.addon_list %}"> <button type="button"> Отказаться </button> </a>
+	<a href="{% url addon.views.addon_list %}"> <button type="button"> Отказаться </button> </a>
    </form>
 {% endblock %}
