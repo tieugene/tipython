@@ -326,7 +326,7 @@ def	bill_add(request):
 			bill.save()
 			# 4. add route
 			std_route1 = [	# role_id, approve_id
-				(2, models.Approver.objects.get(pk=13)),	# начОМТС
+				(2, models.Approver.objects.get(pk=23)),	# Gorbunoff.N.V.
 				(3, form.cleaned_data['approver']),		# Руководитель
 				(4, None),					# Директор
 				(5, models.Approver.objects.get(pk=3)),		# Гендир
@@ -495,13 +495,14 @@ def	bill_view(request, id):
 									bill.done = True
 								else:				# done
 									bill.rpoint = None
+									bill.payedsum = bill.billsum + bill.topaysum
 							else:						# 3. intermediate
 								bill.rpoint = bill.route_set.get(order=rpoint.order+1)
 					else:	# Reject
 						bill.rpoint = None
 						bill.done = False
 					bill.save()
-					if (bill.done == True) and (bill.rpoint == None):
+					if (bill.done == True) and (bill.rpoint == None):	# That's all
 						bill.rpoint = bill.route_set.all().delete()
 					__mailto(request, bill)
 					return redirect('bills.views.bill_list')
@@ -531,16 +532,7 @@ def	bill_view(request, id):
 			(user.is_superuser or ((bill_state_id == 5) and (bill.assign == approver))),
 		'err': err
 	}))
-'''
-@login_required
-def	bill_get(request, id):
-	bill = models.Bill.objects.get(pk=int(id))
-	response = HttpResponse(mimetype=bill.mime)
-	response['Content-Transfer-Encoding'] = 'binary'
-	response['Content-Disposition'] = '; filename=' + bill.name.encode('utf-8')
-	response.write(open(bill.get_path()).read())
-	return response
-'''
+
 @login_required
 def	bill_delete(request, id):
 	'''

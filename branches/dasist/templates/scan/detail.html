@@ -8,9 +8,9 @@
 <tbody>
  <tr> <th> # </th> <td> {{ object.fileseq.pk }} </td> </tr>
  <tr> <th> Объект </th> <td> {{ object.place }} </td> </tr>
- <tr> <th> Подобъект </th> <td> {{ object.subject }} </td> </tr>
+ <tr> <th> Подобъект </th> <td> {{ object.subject|default:"---" }} </td> </tr>
  <tr> <th> Направление </th> <td> {{ object.depart }} </td> </tr>
- <tr> <th> Палтельщик </th> <td> {{ object.payer }} </td> </tr>
+ <tr> <th> Плательщик </th> <td> {{ object.payer|default:"---" }} </td> </tr>
  <tr> <th> Поставщик </th> <td> {{ object.supplier }} </td> </tr>
  <tr> <th> Счет </th> <td> № {{ object.no }} от {{ object.date }} на сумму {{ object.sum }} </td> </tr>
  <tr>

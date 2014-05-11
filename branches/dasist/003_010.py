@@ -18,7 +18,7 @@ Handle:
 -- add record
 '''
 
-import sys, json, pprint
+import sys, json, pprint, decimal
 
 '''
 18/23:
@@ -38,12 +38,8 @@ MODIFY:
 		+payedsum	= 0
 		+topaysum	= 0
 CP:
-	?admin.logentry
 	?auth.group
 	?auth.permission
-	?contenttypes.contenttype
-	?sessions.session
-	?sites.site
 	auth.user
 	core.file
 	core.fileseq
@@ -51,6 +47,7 @@ CP:
 	bills.approver
 	bills.role
 	bills.event (.comment: text => char)
+	bills.state
 	scan.scan
 	scan.event
 RENAME:
@@ -59,11 +56,17 @@ RENAME:
 	bills.depart = addon.depart
 	bills.payer = addon.payer
 TODEL:
+	admin.logentry
+	contenttypes.contenttype
+	sessions.session
+	sites.site
 	addon.addon
-	?bills.state
 '''
 
+NULL = decimal.Decimal('0.00')
 ADDON = dict()	# bill.pk: place, subject, depart
+BILL = dict()	# bill.pk: fileseq_id
+
 MODELS = set()
 TORENAME = {
 	'addon.department':	'bills.department',
@@ -72,59 +75,87 @@ TORENAME = {
 	'addon.subject':	'bills.subject',
 }
 TOSKIP = set([
+	'admin.logentry',
+	'contenttypes.contenttype',
+	'sessions.session',
+	'sites.site',
 	'addon.addon',
+	# tmp
+	#'bills.event',
+	#'bills.route',
 ])
-
-def	bills_event(rec):
-	return {
-		'pk': rec['pk'],
-		'model': rec['model'],
-		'fields': {
-		}
-	}
 
 def	bills_route(rec):
 	return {
 		'pk': rec['pk'],
 		'model': rec['model'],
 		'fields': {
-			'bill':		rec['fields']['bill'],
+			'bill':		BILL[rec['fields']['bill']],
+			#'state':	rec['fields']['state'],
 			'role':		rec['fields']['role'],
+			#'action':	rec['fields']['action'],
 			'approve':	rec['fields']['approve'],
-			'order':	rec['fields']['order']
+			'order':	rec['fields']['order'],
+		}
+	}
+
+def	bills_event(rec):
+	return {
+		'pk': rec['pk'],
+		'model': rec['model'],
+		'fields': {
+			'bill':		BILL[rec['fields']['bill']],
+			'comment':	rec['fields']['comment'],
+			'approve':	rec['fields']['approve'],
+			'ctime':	rec['fields']['ctime'],
+			'resume':	rec['fields']['resume'],
 		}
 	}
 
 def	bills_bill(rec):
 	pk = rec['pk']
-	addon = ADDON.get(pk, None)
-	if addon:
-		return {
-			'pk': rec['pk'],
-			'model': rec['model'],
-			'fields': {
-				'fileseq':	rec['fields']['fileseq'],
-				'rpoint':	rec['fields']['rpoint'],
-				#'project': rec['fields'][''],
-				'done':		rec['fields']['done'],
-				'supplier':	rec['fields']['supplier'],
-				'assign':	rec['fields']['assign'],
-				'place':	addon['place'],
-				'subject':	addon['subject'],
-				'depart':	addon['depart'],
-				'payer':	None,
-				'billdate':	'1970-01-01',
-				'billno':	'-',
-				'billsum':	0,
-				'payedsum':	0,
-				'topaysum':	0,
-			}
+	addon = ADDON[pk]
+	return {
+		'pk': rec['pk'],
+		'model': rec['model'],
+		'fields': {
+			'fileseq':	rec['fields']['fileseq'],
+			'rpoint':	rec['fields']['rpoint'],
+			#'project': rec['fields'][''],
+			'done':		rec['fields']['done'],
+			'supplier':	rec['fields']['supplier'],
+			'assign':	rec['fields']['assign'],
+			'place':	addon['place'],
+			'subject':	addon['subject'],
+			'depart':	addon['depart'],
+			'payer':	None,
+			'billdate':	'1970-01-01',
+			'billno':	'-',
+			'billsum':	'0.00',
+			'payedsum':	'0.00',
+			'topaysum':	'0.00',
 		}
+	}
+
+def	scan_scan(rec):
+	pk = rec['pk']
+	return {
+		'pk': rec['pk'],
+		'model': rec['model'],
+		'fields': {
+			'place':	rec['fields']['project'],
+			'depart':	rec['fields']['depart'],
+			'supplier':	rec['fields']['supplier'],
+			'no':		rec['fields']['no'],
+			'date':		rec['fields']['date'],
+		}
+	}
 
 TOMODIFY = {
-	#'bills.event':	bills_event,
+	'bills.event':	bills_event,
 	'bills.route':	bills_route,
 	'bills.bill':	bills_bill,
+	'scan.scan':	scan_scan,
 }
 
 def	main(infile):
@@ -141,6 +172,8 @@ def	main(infile):
 		# 1.2. preload
 		elif model == u'addon.addon':
 			ADDON[rec['pk']] = rec['fields']
+		elif model == u'bills.bill':
+			BILL[rec['pk']] = rec['fields']['fileseq']
 	# 2. go
 	for rec in data:
 		model = rec['model']

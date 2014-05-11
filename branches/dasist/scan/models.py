@@ -16,12 +16,12 @@ class	Scan(models.Model):
 	fileseq		= models.OneToOneField(FileSeq, primary_key=True, related_name='scans', verbose_name=u'Файлы')
 	place		= models.CharField(max_length=64, verbose_name=u'Объект')
 	subject		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Подобъект')
-	depart		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
-	payer		= models.CharField(max_length=64, verbose_name=u'Плательщик')
+	depart		= models.CharField(max_length=64, verbose_name=u'Направление')
+	payer		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Плательщик')
 	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
 	no		= models.CharField(max_length=16, verbose_name=u'Номер')
 	date		= models.DateField(verbose_name=u'Дата')
-	sum		= models.PositiveIntegerField(verbose_name=u'Сумма')
+	sum		= models.DecimalField(max_digits=11, decimal_places=2, null=True, blank=True, verbose_name=u'Сумма')
 	events		= models.TextField(null=True, blank=True, verbose_name=u'История')
 
 	def	__unicode__(self):
@@ -38,9 +38,9 @@ class	Scan(models.Model):
 		ordering		= ('fileseq',)
 		verbose_name            = u'Скан'
 		verbose_name_plural     = u'Сканы'
-'''
+
 class	Event(models.Model):
-	scan	= models.ForeignKey(Scan, related_name='events', verbose_name=u'Скан')
+	scan	= models.ForeignKey(Scan, verbose_name=u'Скан')
 	approve	= models.CharField(max_length=255, verbose_name=u'Подписант')
 	resume	= models.BooleanField(verbose_name=u'Резолюция')
 	ctime	= models.DateTimeField(verbose_name=u'ДатаВремя')
@@ -53,4 +53,3 @@ class	Event(models.Model):
 		ordering                = ('ctime',)
 		verbose_name            = u'Резолюция'
 		verbose_name_plural     = u'Резолюции'
-'''

@@ -8,9 +8,9 @@
 <tbody>
  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
  <tr> <th> Объект </th> <td> {{ object.place }} </td> </tr>
- <tr> <th> ПодОбъект </th> <td> {{ object.subject }} </td> </tr>
+ <tr> <th> ПодОбъект </th> <td> {{ object.subject|default:"---" }} </td> </tr>
  <tr> <th> Направление </th> <td> {{ object.depart|default:"---" }} </td> </tr>
- <tr> <th> Плательщик </th> <td> {{ object.payer }} </td> </tr>
+ <tr> <th> Плательщик </th> <td> {{ object.payer|default:"---" }} </td> </tr>
  <tr> <th> Поставщик </th> <td> {{ object.supplier }} </td> </tr>
  <tr> <th> Счет </th> <td> № {{ object.billno }} от {{ object.billdate|date:"d/m/y" }} </td> </tr>
  <tr> <th> Сумма </th> <td> {{ object.topaysum }} {% ifnotequal object.topaysum object.billsum %} (из {{ object.billsum }}{% if object.payedsum %}, {{ object.payedsum }} уже{% endif %}) {% endifnotequal %} </td> </tr>

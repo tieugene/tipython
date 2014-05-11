@@ -23,6 +23,7 @@
  <tr>
   <th> # </th>
   <th> Объект </th>
+  <th> Подобъект </th>
   <th> Направление </th>
   <th> Поставщик </th>
   <th> Номер </th>
@@ -35,11 +36,12 @@
  <tr>
   <td> <a href="{% url scan.views.scan_view object.pk %}"> {{ object.pk }} </a> </td>
   <td> {{ object.place }} </td>
-  <td> {{ object.subject }} </td>
+  <td> {{ object.subject|default:"---" }} </td>
   <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
   <td> {{ object.supplier }} </td>
   <td> {{ object.no }} </td>
   <td> {{ object.date|date:"d.m.y" }} </td>
+  <td> {{ object.sum|default:"---" }} </td>
  </tr>
 {% endfor %}
 </table>
