@@ -7,10 +7,10 @@
 <a href="{% url bills.views.bill_add %}"> {% include "button/new.html" %} </a>
 </td>
 {% endif %}
-<td>
+<td nowrap>
 {% include "paginator.html" %}
 </td>
-<td>
+<td nowrap>
  <label for="lpp">Строк:</label>
  <!--select onchange="document.location=this.options[this.selectedIndex].value"-->
  <select onchange="document.location=this.options[this.selectedIndex].value">
@@ -21,7 +21,7 @@
   <option value="{% url bills.views.bill_set_lpp 50 %}" {% ifequal lpp 50 %}selected{% endifequal %}>50</option>
  </select>
 </td>
-<td> Открыть:
+<td nowrap> Открыть:
  {% ifequal mode 1 %}
  <a href="{% url bills.views.bill_set_mode 2 %}"> <button type="button" class="rounded" title="Входящие"> Входящие </button> </a>
  {% else %}
@@ -29,15 +29,15 @@
  {% endifequal %}
 </td>
 {% if fsform %}
-<td>
+<td nowrap>
 <form action="{% url bills.views.bill_filter_state %}" method="POST">
 {% csrf_token %}
- {% include "button/filter.html" %}
  {{ fsform.draft }} {{ fsform.draft.label }} |
  {{ fsform.onway }} {{ fsform.onway.label }} |
  {{ fsform.onpay }} {{ fsform.onpay.label }} |
  {{ fsform.done }} {{ fsform.done.label }} |
  {{ fsform.dead }} {{ fsform.dead.label }}
+ {% include "button/filter.html" %}
 </form>
 </td>
 {% endif %}

@@ -44,4 +44,3 @@ class	Event(models.Model):
 		ordering                = ('ctime',)
 		verbose_name            = u'Резолюция'
 		verbose_name_plural     = u'Резолюции'
-
