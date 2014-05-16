@@ -68,6 +68,26 @@ class	BillEditForm(BillForm):
 				raise forms.ValidationError('File must be PNG, TIF, JPG or PDF!')
 		return None
 
+class	BillReEditForm(forms.Form):
+	topaysum	= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.01'), label=u'Сумма к оплате')
+	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
+
+	def	__init__(self, *args, **kwargs):
+		#print kwargs
+		if ('max_topaysum') in kwargs:
+			self.max_topaysum = kwargs.pop('max_topaysum')
+		else:
+			self.max_topaysum = None
+		super(BillReEditForm, self).__init__(*args, **kwargs)
+
+	def clean_topaysum(self):
+		topaysum = self.cleaned_data['topaysum']
+		if (self.max_topaysum):
+			if  topaysum> self.max_topaysum:
+				raise forms.ValidationError('Больше %s не дадут' % self.max_topaysum)
+				return None
+		return topaysum
+
 class	ResumeForm(forms.Form):
 	note	= forms.CharField(max_length=255, label='Комментарий', required = False)
 

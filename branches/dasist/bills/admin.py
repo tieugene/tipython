@@ -48,8 +48,12 @@ class	PayerAdmin(admin.ModelAdmin):
 
 class	BillAdmin(admin.ModelAdmin):
 	ordering	= ('fileseq',)
-	list_display	= ('fileseq', 'place', 'subject', 'depart', 'supplier', 'assign', 'rpoint', 'done',)
+	list_display	= ('fileseq', 'place', 'subject', 'depart', 'supplier', 'assign', 'rpoint', 'state',)
 	inlines		= (RouteInLine, EventInLine,)
+
+class	StateAdmin(admin.ModelAdmin):
+	ordering	= ('id',)
+	list_display	= ('id', 'name',)
 
 admin.site.register(Role,	RoleAdmin)
 admin.site.register(Approver,	ApproverAdmin)
@@ -57,3 +61,4 @@ admin.site.register(Place,	PlaceAdmin)
 admin.site.register(Department,	DepartmentAdmin)
 admin.site.register(Payer,	PayerAdmin)
 admin.site.register(Bill,	BillAdmin)
+admin.site.register(State,	StateAdmin)

@@ -23,11 +23,14 @@ import sys, json, pprint, decimal
 '''
 18/23:
 MODIFY:
+	bills.state
+		+color
 	bills.route:
 		-state
 		-action
 	bills.bill:
 		-project
+		-done
 		+place = addon.place
 		+subject = addon.subject
 		+depart = addon.depart
@@ -37,6 +40,7 @@ MODIFY:
 		+billsum	= 0
 		+payedsum	= 0
 		+topaysum	= 0
+	scan.scan:
 CP:
 	?auth.group
 	?auth.permission
@@ -48,7 +52,6 @@ CP:
 	bills.role
 	bills.event (.comment: text => char)
 	bills.state
-	scan.scan
 	scan.event
 RENAME:
 	bills.place = addon.place
@@ -85,6 +88,37 @@ TOSKIP = set([
 	#'bills.route',
 ])
 
+STATE_ID = {	# rpoint==None, done
+	(True,	None):	1,	# Draft
+	(False,	None):	2,	# OnWay
+	(True,	False):	3,	# Rejected
+	(False,	True):	4,	# OnPay
+	(True,	True):	5,	# Done
+	#(False,False):	6,	# <impossible>
+}
+
+STATE_COLOR = {
+	1: 'white',
+	2: 'FFFF99',
+	3: 'silver',
+	4: 'aqua',
+	5: 'chartreuse',
+	6: 'white',
+	7: 'FFFF99',
+	8: 'silver',
+	9: 'chartreuse',
+}
+
+def	bills_state(rec):
+	return {
+		'pk': rec['pk'],
+		'model': rec['model'],
+		'fields': {
+			'name':		rec['fields']['name'],
+			'color':	STATE_COLOR[rec['pk']],
+		}
+	}
+
 def	bills_route(rec):
 	return {
 		'pk': rec['pk'],
@@ -120,9 +154,7 @@ def	bills_bill(rec):
 		'model': rec['model'],
 		'fields': {
 			'fileseq':	rec['fields']['fileseq'],
-			'rpoint':	rec['fields']['rpoint'],
 			#'project': rec['fields'][''],
-			'done':		rec['fields']['done'],
 			'supplier':	rec['fields']['supplier'],
 			'assign':	rec['fields']['assign'],
 			'place':	addon['place'],
@@ -134,6 +166,9 @@ def	bills_bill(rec):
 			'billsum':	'0.00',
 			'payedsum':	'0.00',
 			'topaysum':	'0.00',
+			'rpoint':	rec['fields']['rpoint'],
+			#'done':		rec['fields']['done'],
+			'state':	STATE_ID[(rec['fields']['rpoint']==None, rec['fields']['done'])],
 		}
 	}
 
@@ -152,6 +187,7 @@ def	scan_scan(rec):
 	}
 
 TOMODIFY = {
+	'bills.state':	bills_state,
 	'bills.event':	bills_event,
 	'bills.route':	bills_route,
 	'bills.bill':	bills_bill,

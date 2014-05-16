@@ -4,7 +4,7 @@
 <tr>
 <td valign="top">
 <table border="1">
-<caption>  Счет: </caption>
+<caption> Счет: </caption>
 <tbody>
  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
  <tr> <th> Объект </th> <td> {{ object.place }} </td> </tr>
@@ -13,9 +13,11 @@
  <tr> <th> Плательщик </th> <td> {{ object.payer|default:"---" }} </td> </tr>
  <tr> <th> Поставщик </th> <td> {{ object.supplier }} </td> </tr>
  <tr> <th> Счет </th> <td> № {{ object.billno }} от {{ object.billdate|date:"d/m/y" }} </td> </tr>
- <tr> <th> Сумма </th> <td> {{ object.topaysum }} {% ifnotequal object.topaysum object.billsum %} (из {{ object.billsum }}{% if object.payedsum %}, {{ object.payedsum }} уже{% endif %}) {% endifnotequal %} </td> </tr>
+ <tr> <th> Сумма счета </th> <td> {{ object.billsum }} </td> </tr>
+ <tr> <th> Оплачено </th> <td> {{ object.payedsum }} </td> </tr>
+ <tr> <th> К оплате </th> <td> {{ object.topaysum }} </td> </tr>
  <tr> <th> Ответственный </th> <td> {{ object.assign.get_fio }} </td> </tr>
- <tr> <th> Подписант </th> <td> {{ object.rpoint|default:"---" }} </td> </tr>
+ <tr> <th> Подписант </th> <td> {{ object.rpoint.approve.get_fio|default:"---" }} </td> </tr>
  <tr> <th> Состояние </th> <td> {{ object.get_state_name }} </td> </tr>
  <tr> <th> Маршрут </th> <td>
   <ol style="margin: 0">
@@ -46,7 +48,7 @@
  <th> Ok </th>
  <th> Когда </th>
  <th> Кто </th>
- <th> Камменты </th>
+ <th> Комментарий </th>
 </thead>
 <tbody>
   {% for i in object.events.all %}
@@ -63,40 +65,47 @@
 </tr>
 </table>
 <p>
-{% if canarch %}	<a href="{% url bills.views.bill_toscan object.pk %}"> {% include "button/arch.html" %} </a> {% endif %}
-{% if canedit %}	<a href="{% url bills.views.bill_edit object.pk %}"> {% include "button/edit.html" %} </a> {% endif %}
-{% if candel %}		<a href="{% url bills.views.bill_delete object.pk %}"> {% include "button/delete.html" %} </a> {% endif %}
-{% if canrestart %}	<a href="{% url bills.views.bill_restart object.pk %}"> {% include "button/restart.html" %} </a> {% endif %}
-{% if user.is_superuser %}
-<a href="{% url bills.views.mailto object.pk %}"> {% include "button/mailto.html" %} </a>
-{% endif %}
-</p>
-{% if canaccept %}
-<form action="" method="POST">
-	{% csrf_token %}
-	{{ form.as_p }}
-<p> <i> (комментарий обязателен только при Отказе) </i> </p>
-<p>
-{% if object.rpoint %}
-<button type="submit" name="resume" value="accept" style="padding: 10px; background-color: chartreuse">
-{% if canreject %}
- Согласовано
-{% else %}
- {% if object.done %}
-  Исполнено
+{% if button.arch %}	<a href="{% url bills.views.bill_toscan object.pk %}">	{% include "button/arch.html" %} </a> {% endif %}
+{% if button.edit %}
+ {% if object.state.pk == 1 %}
+	<a href="{% url bills.views.bill_edit object.pk %}"> {% include "button/edit.html" %} </a>
  {% else %}
-  В оплате
+	<a href="{% url bills.views.bill_reedit object.pk %}"> {% include "button/edit.html" %} </a>
  {% endif %}
 {% endif %}
-</button>
-{% if canreject %}
-<button type="submit" name="resume" value="reject" style="padding: 10px; background-color: red"> Отказать </button>
-{% endif %}
-{% else %}
-<button type="submit" name="resume" value="accept"> Вперед </button>
-{% endif %}
+{% if button.del %}	<a href="{% url bills.views.bill_delete object.pk %}">	{% include "button/delete.html" %} </a> {% endif %}
+{% if button.restart %}	<a href="{% url bills.views.bill_restart object.pk %}">	{% include "button/restart.html" %} </a> {% endif %}
 </p>
-</form>
+{% if form %} {# was if canaccept #}
+ <form action="" method="POST">
+	{% csrf_token %}
+	{{ form.as_p }}
+ <p> <i> (комментарий обязателен только при Отказе) </i> </p>
+ <p>
+ {% if button.accept %}
+  <button type="submit" name="resume" value="accept" style="padding: 10px; background-color: chartreuse">
+  {% if button.accept == 1 %}
+   Вперед
+  {% elif button.accept == 2 %}
+   Согласовано
+  {% elif button.accept == 3 %}
+   В оплате
+  {% else %}
+   Оплачено
+  {% endif %}
+  </button>
+ {% endif %}
+ {% if button.reject %}
+  <button type="submit" name="resume" value="reject" style="padding: 10px; background-color: red">
+  {% ifequal button.reject 1 %}
+   Отказать
+  {% else %}
+   Дубль
+  {% endifequal %}
+  </button>
+ {% endif %}
+ </p>
+ </form>
 {% endif %}
 {% if err %} <p> Error: {{ err }} </p> {% endif %}
 {% endblock %}

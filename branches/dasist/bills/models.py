@@ -19,46 +19,38 @@ from core.models import File, FileSeq
 
 #state_id = {	# rpoint==None, done
 #	(True,	None):	1,		# Draft
-#	(False,	None ):	2,		# OnWay
-#	(True,	True ):	3,		# Accepted
-#	(True,	False):	4,		# Rejected
+#	(False,	None):	2,		# OnWay
+#	(False,	True):	3,		# OnPay
+#	(True,	True):	4,		# Accepted
+#	(True,	False):	5,		# Rejected
+#	(False,	False):	6,		# <impossible>
 #}
 
-state_id = {	# rpoint==None, done
-	(True,	None):	1,		# Draft
-	(False,	None ):	2,		# OnWay
-	(False,	True):	3,		# OnPay
-	(True,	True):	4,		# Accepted
-	(True,	False):	5,		# Rejected
-	(False,	False):	6,		# <impossible>
-}
+#state_name = {	# rpoint==None, done
+#	(True,	None):	'Черновик',	# Draft
+#	(False,	None ):	'В пути',	# OnWay
+#	(False,	True):	'В оплате',	# OnPay
+#	(True,	True ):	'Исполнен',	# Accepted
+#	(True,	False):	'Завернут',	# Rejected
+#}
 
-state_name = {	# rpoint==None, done
-	(True,	None):	'Черновик',	# Draft
-	(False,	None ):	'В пути',	# OnWay
-	(False,	True):	'В оплате',	# OnPay
-	(True,	True ):	'Исполнен',	# Accepted
-	(True,	False):	'Завернут',	# Rejected
-}
-
-state_color = {	# rpoint==None, done	http://www.w3schools.com/html/html_colornames.asp
-	(True,	None):	'white',	# Draft
-	(False,	None ):	'FFFF99',	# OnWay (yellow)
-	(False,	True):	'aqua',		# OnPay
-	(True,	True ):	'chartreuse',	# Accepted (green)
-	(True,	False):	'silver',	# Rejected (gray)
-}
+#state_color = {	# rpoint==None, done	http://www.w3schools.com/html/html_colornames.asp
+#	(True,	None):	'white',	# Draft
+#	(False,	None ):	'FFFF99',	# OnWay (yellow)
+#	(False,	True):	'aqua',		# OnPay
+#	(True,	True ):	'chartreuse',	# Accepted (green)
+#	(True,	False):	'silver',	# Rejected (gray)
+#}
 
 # Refs
 class	State(models.Model):
 	'''
-	Predefined Bill states:
-	* onWay
-	* согласовано
-	[* оплачено]
+	Predefined Bill states
 	'''
 	id	= models.PositiveSmallIntegerField(primary_key=True, verbose_name=u'#')
 	name	= models.CharField(max_length=16, verbose_name=u'Наименование')
+	color	= models.CharField(max_length=16, verbose_name=u'Цвет')
+	#icon	= models.CharField(max_length=16, blank-True, null=True, verbose_name=u'Пиктограмма')
 
 	def	__unicode__(self):
 		return self.name
@@ -177,30 +169,37 @@ class	Bill(models.Model):
 	topaysum	= models.DecimalField(max_digits=11, decimal_places=2, verbose_name=u'Сумма к оплате')
 	assign		= models.ForeignKey(Approver, related_name='assigned', verbose_name=u'Исполнитель')
 	rpoint		= models.ForeignKey('Route', null=True, blank=True, related_name='rbill', verbose_name=u'Точка маршрута')
-	done		= models.NullBooleanField(null=True, blank=True, verbose_name=u'Закрыт')
+	#done		= models.NullBooleanField(null=True, blank=True, verbose_name=u'Закрыт')
+	state		= models.ForeignKey(State, verbose_name=u'Состояние')
 	#route		= SortedManyToManyField(Approver, null=True, blank=True, related_name='route', verbose_name=u'Маршрут')
-	#history		= models.ManyToManyField(Approver, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
+	#history	= models.ManyToManyField(Approver, null=True, blank=True, related_name='history', through='BillEvent', verbose_name=u'История')
 
 	def     __unicode__(self):
 		return str(self.pk)
 
-	def	__get_state(self):
-		return (self.rpoint==None, self.done)
+	#def	__get_state(self):
+	#	return (self.rpoint==None, self.done)
+
+	def	set_state_id(self, id):
+		self.state = State.objects.get(pk=id)
 
 	def	get_state_id(self):
-		return state_id[self.__get_state()]
+		#return state_id[self.__get_state()]
+		return self.state.pk
 
 	def	get_state_name(self):
-		return state_name[self.__get_state()]
+		#return state_name[self.__get_state()]
+		return self.state.name
 
 	def	get_state_color(self):
-		return state_color[self.__get_state()]
+		#return state_color[self.__get_state()]
+		return self.state.color
 
 	class   Meta:
-		#unique_together		= (('scan', 'type', 'name'),)
-		#ordering                = ('id',)
-		verbose_name            = u'Счет'
-		verbose_name_plural     = u'Счета'
+		#unique_together	= (('scan', 'type', 'name'),)
+		#ordering		= ('id',)
+		verbose_name		= u'Счет'
+		verbose_name_plural	= u'Счета'
 
 class	Route(models.Model):
 	bill	= models.ForeignKey(Bill, verbose_name=u'Счет')

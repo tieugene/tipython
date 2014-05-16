@@ -24,7 +24,7 @@ from django.core import serializers
 from django.utils.encoding import smart_unicode
 
 # 2. system
-import os, sys, imp, pprint, tempfile, subprocess, shutil, json
+import os, sys, imp, pprint, tempfile, subprocess, shutil, json, decimal
 from django.utils import simplejson
 
 # 3. 3rd party
@@ -50,16 +50,16 @@ def	__set_filter_state(q, s):
 	s - state (0..31; dead|done|onpay|onway|draft)
 	'''
 	retvalue = q
-	if (not bool(s&1)):	# dead
-		retvalue = retvalue.exclude(done = False)
-	if (not bool(s&2)):	# done
-		retvalue = retvalue.exclude(rpoint = None, done = True)
-	if (not bool(s&4)):	# onpay
-		retvalue = retvalue.exclude(~Q(rpoint = None), done = True)
-	if (not bool(s&8)):	# onway
-		retvalue = retvalue.exclude(~Q(rpoint = None), done = None)
-	if (not bool(s&16)):	# draft
-		retvalue = retvalue.exclude(rpoint = None, done = None)
+	if (not bool(s&1)):	# Rejected
+		retvalue = retvalue.exclude(state__in = [3, 8])
+	if (not bool(s&2)):	# Done
+		retvalue = retvalue.exclude(state__in = [5, 9])
+	if (not bool(s&4)):	# OnPay
+		retvalue = retvalue.exclude(state = 4)
+	if (not bool(s&8)):	# OnWay
+		retvalue = retvalue.exclude(state__in = [2, 7])
+	if (not bool(s&16)):	# Draft
+		retvalue = retvalue.exclude(state__in = [1, 6])
 	return retvalue
 
 @login_required
@@ -82,39 +82,41 @@ def	bill_list(request):
 		mode = int(mode)
 	# 3. filter by role
 	role_id = approver.role.pk
-	if (role_id == 3):	# Руководители
-		queryset = queryset.filter(rpoint__approve=approver)
-		fsform = None
-	else:
-		if (mode == 1):	# Все
-			if (role_id == 1) and (not user.is_superuser):	# Исполнитель
-				queryset = queryset.filter(assign=approver)
-			# 3. filter using Filter
-			fsfilter = request.session.get(FSNAME, None)# int 0..15: dropped|done|onway|draft
-			if (fsfilter == None):
-				fsfilter = 31
-				request.session[FSNAME] = fsfilter
-			else:
-				fsfilter = int(fsfilter)
-			queryset = __set_filter_state(queryset, fsfilter)
-			# 3. go
-			#if not request.user.is_superuser:
-			#	queryset = queryset.filter(assign=request.user)
-			fsform = forms.FilterStateForm(initial={
-				'dead'	:bool(fsfilter&1),
-				'done'	:bool(fsfilter&2),
-				'onpay'	:bool(fsfilter&4),
-				'onway'	:bool(fsfilter&8),
-				'draft'	:bool(fsfilter&16),
-			})
-		else:		# Входящие
+	if (mode == 1):	# Все
+		if (role_id == 1) and (not user.is_superuser):	# Исполнитель
+			queryset = queryset.filter(assign=approver)
+		elif (role_id == 3):	# Руководитель
 			fsform = None
-			if (approver.role.pk == 1):		# Исполнитель
-				queryset = queryset.filter(assign=approver, rpoint=None)
-			elif (approver.role.pk in set((4, 6))):	# Директор, Бухгалтер
-				queryset = queryset.filter(rpoint__role=approver.role)
-			else:
-				queryset = queryset.filter(rpoint__approve=approver)
+			b_list = models.Event.objects.filter(approve=approver).values_list('bill_id', flat=True)
+			q1 = queryset.filter(rpoint__approve=approver)
+			q2 = queryset.filter(pk__in=b_list)
+			queryset = q1 | q2
+		# 3. filter using Filter
+		fsfilter = request.session.get(FSNAME, None)# int 0..15: dropped|done|onway|draft
+		if (fsfilter == None):
+			fsfilter = 31
+			request.session[FSNAME] = fsfilter
+		else:
+			fsfilter = int(fsfilter)
+		queryset = __set_filter_state(queryset, fsfilter)
+		# 3. go
+		#if not request.user.is_superuser:
+		#	queryset = queryset.filter(assign=request.user)
+		fsform = forms.FilterStateForm(initial={
+			'dead'	:bool(fsfilter&1),
+			'done'	:bool(fsfilter&2),
+			'onpay'	:bool(fsfilter&4),
+			'onway'	:bool(fsfilter&8),
+			'draft'	:bool(fsfilter&16),
+		})
+	else:		# Входящие
+		fsform = None
+		if (approver.role.pk == 1):		# Исполнитель
+			queryset = queryset.filter(assign=approver, rpoint=None)
+		elif (approver.role.pk in set((4, 6))):	# Директор, Бухгалтер
+			queryset = queryset.filter(rpoint__role=approver.role)
+		else:
+			queryset = queryset.filter(rpoint__approve=approver)
 	# 4. lpp
 	lpp = request.session.get('lpp', None)
 	if (lpp == None):
@@ -165,16 +167,6 @@ def	bill_set_lpp(request, lpp):
 def	bill_set_mode(request, mode):
 	request.session['mode'] = mode
 	return redirect('bills.views.bill_list')
-
-def	__pdf2png1(self, src_path, thumb_template, pages):
-	for page in range(pages, 10):
-		img = Wand_Image(filename = src_path + '[%d]' % page, resolution=(150,150))
-		#print img.size
-		if (img.colorspace != 'gray'):
-			img.colorspace = 'gray'		# 'grey' as for bw as for grey (COLORSPACE_TYPES)
-		img.format = 'png'
-		#img.resolution = (300, 300)
-		img.save(filename = thumb_template % page)
 
 def	__pdf2png2(src_path, basename):
 	tmpdir = tempfile.mkdtemp()
@@ -236,7 +228,7 @@ def	__convert_img(file, rawpdf=False):
 	f.write(buffer)
 	f.close()
 	# end
-	basename = filename.rsplit('.', 1)[0]
+	basename = filename.rsplit('.', vei8ahF01)[0]
 	if (filemime == 'image/png'):
 		img = PIL_Image.open(src_path)
 		if (img.mode not in set(['1', 'L'])):	# [paletted ('P')], bw, grey
@@ -321,7 +313,8 @@ def	bill_add(request):
 				topaysum	= form.cleaned_data['topaysum'],
 				assign		= approver,
 				rpoint		= None,
-				done		= None,
+				#done		= None,
+				state		= models.State.objects.get(pk=1),
 			)
 			bill.save()
 			# 4. add route
@@ -354,7 +347,7 @@ def	bill_add(request):
 @login_required
 def	bill_edit(request, id):
 	'''
-	Update (edit) bill
+	Update (edit) Draft bill
 	ACL: (assignee) & Draft
 	'''
 	user = request.user
@@ -368,25 +361,17 @@ def	bill_edit(request, id):
 	if request.method == 'POST':
 		form = forms.BillEditForm(request.POST, request.FILES)
 		if form.is_valid():
-			tosave = False
 			# 1. update bill
-			def	chk_fld(form, fld, fldname):
-				if (fld != form.cleaned_data[fldname]):
-					fld = form.cleaned_data[fldname]
-					return True
-				else:
-					return False
-			bill.place= form.cleaned_data['place']
-			bill.subject= form.cleaned_data['subject']
-			bill.depart= form.cleaned_data['depart']
-			bill.payer= form.cleaned_data['payer']
-			bill.supplier= form.cleaned_data['supplier']
-			bill.billno= form.cleaned_data['billno']
-			bill.billdate= form.cleaned_data['billdate']
-			bill.billsum= form.cleaned_data['billsum']
-			bill.payedsum= form.cleaned_data['payedsum']
-			bill.topaysum= form.cleaned_data['topaysum']
-			#if (tosave):
+			bill.place =	form.cleaned_data['place']
+			bill.subject =	form.cleaned_data['subject']
+			bill.depart =	form.cleaned_data['depart']
+			bill.payer =	form.cleaned_data['payer']
+			bill.supplier =	form.cleaned_data['supplier']
+			bill.billno =	form.cleaned_data['billno']
+			bill.billdate =	form.cleaned_data['billdate']
+			bill.billsum =	form.cleaned_data['billsum']
+			bill.payedsum =	form.cleaned_data['payedsum']
+			bill.topaysum =	form.cleaned_data['topaysum']
 			bill.save()
 			# 2. update approver (if required)
 			special = bill.route_set.get(order=2)	# Аня
@@ -400,7 +385,7 @@ def	bill_edit(request, id):
 				fileseq.clean_children()
 				__update_fileseq(file, fileseq, form.cleaned_data['rawpdf'])	# unicode error
 			return redirect('bills.views.bill_view', bill.pk)
-	else:
+	else:	# GET
 		form = forms.BillEditForm(initial={
 			'place':	bill.place,
 			'subject':	bill.subject,
@@ -412,13 +397,45 @@ def	bill_edit(request, id):
 			'billsum':	bill.billsum,
 			'payedsum':	bill.payedsum,
 			'topaysum':	bill.topaysum,
-			'approver':	bill.route_set.get(order=2).approve,	# костыль
+			'approver':	bill.route_set.get(order=2).approve,	# костыль для initial
 			#'approver':	6,
 		})
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
 		'form': form,
 		'object': bill,
 		'places': models.Place.objects.all(),
+	}))
+
+@login_required
+def	bill_reedit(request, id):
+	'''
+	Update (edit) Draft? bill
+	ACL: (assignee) & Draft?
+	'''
+	user = request.user
+	approver = models.Approver.objects.get(pk=user.pk)
+	bill = models.Bill.objects.get(pk=int(id))
+	max_topaysum = bill.billsum - bill.payedsum
+	if request.method == 'POST':
+		form = forms.BillReEditForm(request.POST, max_topaysum = bill.billsum - bill.payedsum)
+		if form.is_valid():
+			# 1. update bill
+			bill.topaysum =	form.cleaned_data['topaysum']
+			bill.save()
+			# 2. update approver (if required)
+			special = bill.route_set.get(order=2)	# Аня
+			if (special.approve != form.cleaned_data['approver']):
+				special.approve = form.cleaned_data['approver']
+				special.save()
+			return redirect('bills.views.bill_view', bill.pk)
+	else:	# GET
+		form = forms.BillReEditForm(initial={
+			'topaysum': bill.topaysum if bill.topaysum else max_topaysum,
+			'approver':	bill.route_set.get(order=2).approve,
+		})
+	return render_to_response('bills/form_reedit.html', context_instance=RequestContext(request, {
+		'form': form,
+		'object': bill,
 	}))
 
 def	__mailto(request, bill):
@@ -451,6 +468,8 @@ def	bill_view(request, id):
 	'''
 	View/Accept/Reject bill
 	ACL: (assignee & Draft & Route ok) | (approver & OnWay)
+	TODO: подменить approver от root где только можно
+	TODO: assignee+approver == bad way
 	'''
 	user = request.user
 	approver = models.Approver.objects.get(user=user)
@@ -459,22 +478,21 @@ def	bill_view(request, id):
 	form = None
 	err = ''
 	if (request.method == 'POST'):
-		if (request.POST['resume'] in set(['accept', 'reject'])) and (\
-		   ((bill_state_id == 1) and (approver == bill.assign)) or\
-		   (((bill_state_id == 2) or (bill_state_id == 3)) and ( \
-			((bill.rpoint.approve != None) and (approver == bill.rpoint.approve)) or\
-			((bill.rpoint.approve == None) and (approver.role == bill.rpoint.role))\
-		    ) \
-		    )
-		   ):
+		#if (request.POST['resume'] in set(['accept', 'reject'])) and (\
+		#   ((bill_state_id == 1) and (approver == bill.assign)) or\
+		#   (((bill_state_id == 2) or (bill_state_id == 3)) and ( \
+		#	((bill.rpoint.approve != None) and (approver == bill.rpoint.approve)) or\
+		#	((bill.rpoint.approve == None) and (approver.role == bill.rpoint.role))\
+		#    ) \
+		#    )
+		#   ):
+		if (True):	# dummy
 			resume = (request.POST['resume'] == 'accept')
 			form = forms.ResumeForm(request.POST)
 			if form.is_valid():
 				# 0. check prerequisites
 				if (not resume) and (not form.cleaned_data['note']):				# resume not empty on reject
 					err = 'Отказ необходимо комментировать'
-				#elif (bill_state_id == 1) and (not form.cleaned_data['note']):	# check resume not empty on start
-				#	err = 'Запуск по маршруту необходимо комментировать'
 				else:
 					# 1. new comment
 					models.Event.objects.create(
@@ -484,53 +502,82 @@ def	bill_view(request, id):
 						comment=form.cleaned_data['note']
 					)
 					# 2. update bill
-					if resume:
+					if resume:	# Ok
 						route_list = bill.route_set.all().order_by('order')
-						if (bill_state_id == 1):				# 1. 1st (draft)
+						if (bill_state_id in set([1, 6])):	# 1. 1st (draft)
 							bill.rpoint = route_list[0]
-						else:
+							if (bill_state_id == 1):	# draft
+								bill.set_state_id(2)
+							else:				# draft?
+								bill.set_state_id(7)
+						elif (bill_state_id in set([2, 7])):	# 2. onway
 							rpoint = bill.rpoint
-							if (rpoint.order == len(route_list)):		# 2. last
-								if (bill.done == None):		# to pay
-									bill.done = True
-								else:				# done
-									bill.rpoint = None
-									bill.payedsum = bill.billsum + bill.topaysum
-							else:						# 3. intermediate
+							if (rpoint.order == len(route_list)):	# 2. last (accounter)
+								bill.set_state_id(4)
+							else:					# 3. intermediate
 								bill.rpoint = bill.route_set.get(order=rpoint.order+1)
-					else:	# Reject
+						elif (bill_state_id == 4):	# OnPay
+							bill.rpoint = None
+							bill.payedsum += bill.topaysum
+							bill.topaysum = decimal.Decimal('0.00')
+							if (bill.payedsum == bill.billsum):
+								bill.set_state_id(5)
+							else:
+								bill.set_state_id(9)
+					else:		# Reject
 						bill.rpoint = None
-						bill.done = False
+						if (bill_state_id == 2):
+							# TODO: duplication
+							bill.set_state_id(3)
+						else:	# 7
+							bill.set_state_id(8)
 					bill.save()
-					if (bill.done == True) and (bill.rpoint == None):	# That's all
+					if (bill.get_state_id() == 5):	# That's all
 						bill.rpoint = bill.route_set.all().delete()
 					__mailto(request, bill)
 					return redirect('bills.views.bill_list')
 	if (form == None):
 		form = forms.ResumeForm()
+	buttons = {
+		'edit':		# assignee & Draft*
+			(user.is_superuser or ((bill.assign == approver) and (bill_state_id in set([1, 6])))),
+		'del':		# assignee & (Draft|Rejected)
+			(user.is_superuser or ((bill.assign == approver) and (bill_state_id in set([1, 3])))),
+		'restart':	# assignee & (Rejected*|Done?)
+			(user.is_superuser or ((bill.assign == approver) and (bill_state_id in set([3, 8, 9])))),
+		'arch':		# assignee & Done
+			(user.is_superuser or ((bill.assign == approver) and (bill_state_id == 5))),
+	}
+	# Accepting (Вперед, Согласовано, В оплате, Исполнено)
+	buttons['accept'] = 0
+	if (bill_state_id in set([1, 6])):		# Draft
+		if (bill.assign == approver):
+			buttons['accept'] = 1		# Вперед
+	elif (bill_state_id in set([2, 7])):		# OnWay
+		if (approver.role.pk != 6):		# not Accounter
+			if ((bill.rpoint.approve == None) and (bill.rpoint.role == approver.role)) or \
+			   ((bill.rpoint.approve != None) and (bill.rpoint.approve == approver)):
+				buttons['accept'] = 2		# Согласовано
+		else:					# Accounter
+			buttons['accept'] = 3		# В оплате
+	elif (bill_state_id == 4):			# OnPay
+		if (approver.role.pk == 6):		# Accounter
+			buttons['accept'] = 4		# Оплачен
+	# Rejecting (Отказать, Дубль)
+	buttons['reject'] = 0
+	if (bill_state_id in set([2, 7])):		# OnWay
+		if (approver.role.pk != 6):
+			if ((bill.rpoint.approve == None) and (bill.rpoint.role == approver.role)) or \
+			   ((bill.rpoint.approve != None) and (bill.rpoint.approve == approver)):
+				buttons['reject'] = 1	# Отказать
+		else:
+			if (bill.get_state_id() == 2) and (bill.rpoint.role == approver.role):
+				buttons['reject'] = 2	# Дубль
 	return render_to_response('bills/detail.html', context_instance=RequestContext(request, {
 		'object': bill,
-		'form': form,
-		'canedit':	## assignee & Draft
-			(user.is_superuser or ((bill_state_id == 1) and (bill.assign == approver))),
-		'candel':	## assignee & (Draft|Rejected)==bad)
-			(user.is_superuser or (((bill_state_id == 1) or (bill_state_id == 5)) and (bill.assign == approver))),
-		'canaccept':	## (assignee & Draft) | (approver & OnWay)
-			(
-			((bill_state_id == 1) and (bill.assign == approver)) or\
-			(((bill_state_id == 2) or (bill_state_id == 3)) and (
-			  ((bill.rpoint.approve != None) and (bill.rpoint.approve == approver)) or\
-			  ((bill.rpoint.approve == None) and (bill.rpoint.role == approver.role))\
-			 )\
-			)\
-		),
-		'canreject':	## not Accounter
-			approver.role.pk != 6,
-		'canarch':	## assignee & Done
-			(user.is_superuser or ((bill_state_id == 4) and (bill.assign == approver))),
-		'canrestart':	## assignee & Rejected
-			(user.is_superuser or ((bill_state_id == 5) and (bill.assign == approver))),
-		'err': err
+		'form': form if (buttons['accept'] or buttons['reject']) else None,
+		'err': err,
+		'button': buttons,
 	}))
 
 @login_required
@@ -542,7 +589,7 @@ def	bill_delete(request, id):
 	bill = models.Bill.objects.get(pk=int(id))
 	if (request.user.is_superuser) or (\
 	   (bill.assign.user.pk == request.user.pk) and\
-	   (bill.rpoint == None) and (bill.done != True)):
+	   (bill.get_state_id() in set([1, 3]) )):
 		fileseq = bill.fileseq
 		bill.delete()
 		fileseq.purge()
@@ -555,31 +602,36 @@ def	bill_toscan(request, id):
 	'''
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
-	event_list = []
-	for event in (bill.events.all()):
-		ev = {
-			'approve':	u'%s %s (%s)' % (event.approve.user.last_name, event.approve.user.first_name, event.approve.jobtit),
-			'resume':	event.resume,
-			'ctime':	event.ctime.strftime('%Y-%m-%d %H:%M:%S'),
-			'comment':	u'%s' % event.comment,
-		}
-		#print ev
-		event_list.append(ev)
-	j = json.dumps(event_list, ensure_ascii=False) if event_list else ''
-	scan = Scan.objects.create(
-		fileseq	= bill.fileseq,
-		place	= bill.place.name,
-		subject	= bill.subject.name,
-		depart	= bill.depart.name,
-		payer	= bill.payer.name,
-		supplier= bill.supplier,
-		no	= bill.billno,
-		date	= bill.billdate,
-		sum	= bill.billsum,
-		events	= j
-	)
-	bill.delete()
-	return redirect('bills.views.bill_list')
+	if (request.user.is_superuser) or (\
+	   (bill.assign.user.pk == request.user.pk) and\
+	   (bill.get_state_id() == 5)):
+		event_list = []
+		for event in (bill.events.all()):
+			ev = {
+				'approve':	u'%s %s (%s)' % (event.approve.user.last_name, event.approve.user.first_name, event.approve.jobtit),
+				'resume':	event.resume,
+				'ctime':	event.ctime.strftime('%Y-%m-%d %H:%M:%S'),
+				'comment':	u'%s' % event.comment,
+			}
+			#print ev
+			event_list.append(ev)
+		j = json.dumps(event_list, ensure_ascii=False) if event_list else ''
+		scan = Scan.objects.create(
+			fileseq	= bill.fileseq,
+			place	= bill.place.name,
+			subject	= bill.subject.name,
+			depart	= bill.depart.name,
+			payer	= bill.payer.name,
+			supplier= bill.supplier,
+			no	= bill.billno,
+			date	= bill.billdate,
+			sum	= bill.billsum,
+			events	= j
+		)
+		bill.delete()
+		return redirect('bills.views.bill_list')
+	else:
+		return redirect('bills.views.bill_view', bill.pk)
 
 @login_required
 def	bill_restart(request, id):
@@ -587,8 +639,14 @@ def	bill_restart(request, id):
 	Restart bill
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
-	bill.done = None
-	bill.save()
+	if (request.user.is_superuser) or (\
+	   (bill.assign.user.pk == request.user.pk) and\
+	   (bill.get_state_id() in set([3, 8, 9]))):
+		if (bill.get_state_id() == 3):
+			bill.set_state_id(1)
+		else:
+			bill.set_state_id(6)
+		bill.save()
 	return redirect('bills.views.bill_view', bill.pk)
 
 @login_required
