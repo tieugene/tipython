@@ -35,7 +35,7 @@ from PIL import Image as PIL_Image
 #from wand.image import Image as Wand_Image
 
 # 4. my
-import models, forms
+import models, forms, utils
 from core.models import File, FileSeq
 from scan.models import Scan, Event
 
@@ -619,12 +619,13 @@ def	mailto(request, id):
 	'''
 	@param id: bill id
 	'''
-	subj = 'DasIst.Bills: Новый счет: %s' % id
-	body = 'Новый счет на подпись: %s' % request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': id}))
-	arglist = ['mailx', '-s', subj.encode('utf-8'), '-S' 'ttycharset=UTF-8' '-S' 'sendcharsets=UTF-8' '-S' 'encoding=8bit', 'ti.eugene@gmail.com']	# cyrillic depricated
-	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout_data = sp.communicate(input=body.encode('utf-8'))
-	return redirect('bills.views.bill_list')
+	bill = models.Bill.objects.get(pk=int(id))
+	utils.send_mail(
+		['ti.eugene@gmail.com'],
+		'Новый счет на подпись: %s' % id,
+		'Вам на подпись поступил новый счет: %s' % request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': bill.pk})),
+	)
+	return redirect('bills.views.bill_view', bill.pk)
 
 @login_required
 @transaction.commit_on_success
@@ -659,38 +660,3 @@ def	bill_toscan(request, id):
 	else:
 		return redirect('bills.views.bill_view', bill.pk)
 
-@login_required
-def	bill_toscan_json(request, id):
-	'''
-	'''
-	bill = models.Bill.objects.get(pk=int(id))
-	if (request.user.is_superuser) or (\
-	   (bill.assign.user.pk == request.user.pk) and\
-	   (bill.get_state_id() == 5)):
-		event_list = []
-		for event in (bill.events.all()):
-			ev = {
-				'approve':	u'%s %s (%s)' % (event.approve.user.last_name, event.approve.user.first_name, event.approve.jobtit),
-				'resume':	event.resume,
-				'ctime':	event.ctime.strftime('%Y-%m-%d %H:%M:%S'),
-				'comment':	u'%s' % event.comment,
-			}
-			#print ev
-			event_list.append(ev)
-		j = json.dumps(event_list, ensure_ascii=False) if event_list else ''
-		scan = Scan.objects.create(
-			fileseq	= bill.fileseq,
-			place	= bill.place.name,
-			subject	= bill.subject.name,
-			depart	= bill.depart.name,
-			payer	= bill.payer.name,
-			supplier= bill.supplier,
-			no	= bill.billno,
-			date	= bill.billdate,
-			sum	= bill.billsum,
-			events	= j
-		)
-		bill.delete()
-		return redirect('bills.views.bill_list')
-	else:
-		return redirect('bills.views.bill_view', bill.pk)
