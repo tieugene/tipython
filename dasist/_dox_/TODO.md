@@ -1,36 +1,8 @@
-!!! План работы и смета !!!
-
-= Test =
-+Draft > Edit > Delete
-+Draft > OnWay > Reject > Delete
-+Draft > OnWay > Reject > Draft >
-+Draft > OnWay > OnPay > Done
-+Draft > OnWay > OnPay > Dup
-+Draft > OnWay > OnPay > Done? > +Draft? > Edit > Draft? > OnWay? > Reject? > Draft? > OnWay? > OnPay > Done
-
 = 0.1.0 =
-2014-05-06:
-+ 0.0.3 + конвертер
-+ Суммы - с копейками
-+ place, subject, depart - order by name
-+ Иконку фильтра - справа
-+ В список: плательщик, сумма к оплате
-+ Сканы - исправить колонки
-+ Контроль сумм при вводе:
-++ Сумма счета - 0
-++ Оплачено > СуммыСчета
-++ К оплате > (Сумма-Оплачено)
-+ При оплате - пересчет сумм
-+ Состояния: доплата
-+ new state machine
-+ bill_edit (restarated)
-* Дубли:
-++ Завернуть
-** мылом реквизиты и историю - гендиру
-* to scan
+* Дубль - мылом гендиру реквизиты, историю и файлы
 
 = 0.1.1 =
-Tuning:
+Usability:
 * Список счетов: Фильтр: Направление, Поставщик, Исполнитель
 * Педаль "Печать" (бухгалтеру)
 * Добавление файлов в счет
@@ -39,9 +11,6 @@ Tuning:
 * Add/del images in fileseq
 ? scan.even => scan.comments
 * контроль Номер+Дата+СуммаСчета
-
-= 0.1.2 =
-Visibility:
 * 1024x768
 * bill list:
 	* states filter == X x buttons:
@@ -60,6 +29,10 @@ Visibility:
 	* Preview remake
 * bill edit:
 	* limit Supplier (width, CAPS)
+
+= 0.1.2 =
+Reliability:
+* transaction
 
 = 0.1.3 =
 Security:
@@ -89,18 +62,3 @@ Supportability:
 * django 1.5?
 * pyhon3?
 * unittests
-
-= browsers =
-+ firefox
-+ qupzilla
-+ chrome
-+ rekonq
-+ konqueror
-+ opera
-+ arora
-* epiphany
-* dwb
-+ midori
-* kazehakase
-* kazehakase-webkit
-+ Mosaic
