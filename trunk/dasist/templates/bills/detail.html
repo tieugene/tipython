@@ -75,6 +75,7 @@
 {% endif %}
 {% if button.del %}	<a href="{% url bills.views.bill_delete object.pk %}">	{% include "button/delete.html" %} </a> {% endif %}
 {% if button.restart %}	<a href="{% url bills.views.bill_restart object.pk %}">	{% include "button/restart.html" %} </a> {% endif %}
+{% if user.is_superuser %} <a href="{% url bills.views.mailto object.pk %}"> {% include "button/mailto.html" %} </a> {% endif %}
 </p>
 {% if form %} {# was if canaccept #}
  <form action="" method="POST">
