@@ -446,23 +446,29 @@ def	__mailto(request, bill):
 	- Accept/Reject - to assignee
 	@param bill:Bill
 	'''
-	def	__emailto(email, bill_id, subj):
+	def	__emailto(emails, bill_id, subj):
 		if (email):
-			arglist = ['mail', '-s', 'DasIst.Bills: %s: %d' % (subj, bill_id), email]
-			sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
-			stdout_data = sp.communicate(input=request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': bill_id})))
+			utils.send_mail(
+				emails,
+				'%s: %d' % (subj, bill_id),
+				request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': bill_id})),
+			)
 	state = bill.get_state_id()
-	if (state == 2):	# OnWay
-		subj = 'New invoice'
+	if (state in set([2, 7])):	# OnWay
+		subj = 'Новый счет на подпись'
 		if (bill.rpoint.approve):
-			__emailto(bill.rpoint.approve.user.email, bill.pk, subj)
+			emails = [bill.rpoint.approve.user.email]
 		else:
+			emails = list()
 			for i in bill.rpoint.role.approver_set.all():
-				__emailto(i.user.email, bill.pk, subj)
-	elif (state == 3):	# Accepted
-		__emailto(bill.assign.user.email, bill.pk, 'Invoice payed')
-	elif (state == 4):	# Reject
-		__emailto(bill.assign.user.email, bill.pk, 'Invoice rejected')
+				emails.append(i.user.email)
+		__emailto(emails, bill.pk, subj)
+	elif (state in set([3, 8])):	# Reject
+		__emailto([bill.assign.user.email], bill.pk, 'Счет завернут')
+	elif (state == 5):		# Accepted
+		__emailto([bill.assign.user.email], bill.pk, 'Счет оплачен')
+	elif (state == 9):		# Accepted
+		__emailto([bill.assign.user.email], bill.pk, 'Счет частично оплачен')
 
 @login_required
 def	bill_view(request, id):
