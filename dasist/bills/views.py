@@ -621,7 +621,7 @@ def	mailto(request, id):
 	'''
 	subj = 'DasIst.Bills: Новый счет: %s' % id
 	body = 'Новый счет на подпись: %s' % request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': id}))
-	arglist = ['mail', '-s', subj.encode('utf-8'), '-S' 'ttycharset=UTF-8' '-S' 'sendcharsets=UTF-8' '-S' 'encoding=8bit', 'ti.eugene@gmail.com']	# cyrillic depricated
+	arglist = ['mailx', '-s', subj.encode('utf-8'), '-S' 'ttycharset=UTF-8' '-S' 'sendcharsets=UTF-8' '-S' 'encoding=8bit', 'ti.eugene@gmail.com']	# cyrillic depricated
 	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout_data = sp.communicate(input=body.encode('utf-8'))
 	return redirect('bills.views.bill_list')
