@@ -16,7 +16,7 @@ class	Scan(models.Model):
 	fileseq		= models.OneToOneField(FileSeq, primary_key=True, related_name='scans', verbose_name=u'Файлы')
 	place		= models.CharField(max_length=64, verbose_name=u'Объект')
 	subject		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Подобъект')
-	depart		= models.CharField(max_length=64, verbose_name=u'Направление')
+	depart		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Направление')
 	payer		= models.CharField(max_length=64, null=True, blank=True, verbose_name=u'Плательщик')
 	supplier	= models.CharField(max_length=64, verbose_name=u'Поставщик')
 	no		= models.CharField(max_length=16, verbose_name=u'Номер')

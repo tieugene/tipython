@@ -17,31 +17,6 @@ from StringIO import StringIO
 from core.models import File, FileSeq
 #import core
 
-#state_id = {	# rpoint==None, done
-#	(True,	None):	1,		# Draft
-#	(False,	None):	2,		# OnWay
-#	(False,	True):	3,		# OnPay
-#	(True,	True):	4,		# Accepted
-#	(True,	False):	5,		# Rejected
-#	(False,	False):	6,		# <impossible>
-#}
-
-#state_name = {	# rpoint==None, done
-#	(True,	None):	'Черновик',	# Draft
-#	(False,	None ):	'В пути',	# OnWay
-#	(False,	True):	'В оплате',	# OnPay
-#	(True,	True ):	'Исполнен',	# Accepted
-#	(True,	False):	'Завернут',	# Rejected
-#}
-
-#state_color = {	# rpoint==None, done	http://www.w3schools.com/html/html_colornames.asp
-#	(True,	None):	'white',	# Draft
-#	(False,	None ):	'FFFF99',	# OnWay (yellow)
-#	(False,	True):	'aqua',		# OnPay
-#	(True,	True ):	'chartreuse',	# Accepted (green)
-#	(True,	False):	'silver',	# Rejected (gray)
-#}
-
 # Refs
 class	State(models.Model):
 	'''

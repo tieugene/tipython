@@ -65,7 +65,7 @@
 </tr>
 </table>
 <p>
-{% if button.arch %}	<!-- a href="{% url bills.views.bill_toscan object.pk %}">	{% include "button/arch.html" %} </a--> {% endif %}
+{% if button.arch %}	<a href="{% url bills.views.bill_toscan object.pk %}">	{% include "button/arch.html" %} </a> {% endif %}
 {% if button.edit %}
  {% if object.state.pk == 1 %}
 	<a href="{% url bills.views.bill_edit object.pk %}"> {% include "button/edit.html" %} </a>

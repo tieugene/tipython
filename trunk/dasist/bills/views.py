@@ -22,6 +22,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.mail import send_mail
 from django.core import serializers
 from django.utils.encoding import smart_unicode
+from django.db import transaction
 
 # 2. system
 import os, sys, imp, pprint, tempfile, subprocess, shutil, json, decimal
@@ -36,7 +37,7 @@ from PIL import Image as PIL_Image
 # 4. my
 import models, forms
 from core.models import File, FileSeq
-from scan.models import Scan
+from scan.models import Scan, Event
 
 PAGE_SIZE = 20
 FSNAME = 'fstate'	# 0..3
@@ -598,7 +599,66 @@ def	bill_delete(request, id):
 		return redirect('bills.views.bill_view', bill.pk)
 
 @login_required
+def	bill_restart(request, id):
+	'''
+	Restart bill
+	'''
+	bill = models.Bill.objects.get(pk=int(id))
+	if (request.user.is_superuser) or (\
+	   (bill.assign.user.pk == request.user.pk) and\
+	   (bill.get_state_id() in set([3, 8, 9]))):
+		if (bill.get_state_id() == 3):
+			bill.set_state_id(1)
+		else:
+			bill.set_state_id(6)
+		bill.save()
+	return redirect('bills.views.bill_view', bill.pk)
+
+@login_required
+def	mailto(request, id):
+	'''
+	@param id: bill id
+	'''
+	arglist = ['mail', '-s', 'DasIst.Bills: Новый счет: %s' % id, 'ti.eugene@gmail.com']
+	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout_data = sp.communicate(input=request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': id})))
+	return redirect('bills.views.bill_list')
+
+@login_required
+@transaction.commit_on_success
 def	bill_toscan(request, id):
+	'''
+	'''
+	bill = models.Bill.objects.get(pk=int(id))
+	if (request.user.is_superuser) or (\
+	   (bill.assign.user.pk == request.user.pk) and\
+	   (bill.get_state_id() == 5)):
+		scan = Scan.objects.create(
+			fileseq	= bill.fileseq,
+			place	= bill.place.name,
+			subject	= bill.subject.name if bill.subject else None,
+			depart	= bill.depart.name if bill.depart else None,
+			payer	= bill.payer.name if bill.payer else None,
+			supplier= bill.supplier,
+			no	= bill.billno,
+			date	= bill.billdate,
+			sum	= bill.billsum,
+		)
+		for event in (bill.events.all()):
+			Event.objects.create(
+				scan=scan,
+				approve='%s %s (%s)' % (event.approve.user.last_name, event.approve.user.first_name, event.approve.jobtit),
+				resume=event.resume,
+				ctime=event.ctime,
+				comment=event.comment
+			)
+		bill.delete()
+		return redirect('bills.views.bill_list')
+	else:
+		return redirect('bills.views.bill_view', bill.pk)
+
+@login_required
+def	bill_toscan_json(request, id):
 	'''
 	'''
 	bill = models.Bill.objects.get(pk=int(id))
@@ -632,29 +692,3 @@ def	bill_toscan(request, id):
 		return redirect('bills.views.bill_list')
 	else:
 		return redirect('bills.views.bill_view', bill.pk)
-
-@login_required
-def	bill_restart(request, id):
-	'''
-	Restart bill
-	'''
-	bill = models.Bill.objects.get(pk=int(id))
-	if (request.user.is_superuser) or (\
-	   (bill.assign.user.pk == request.user.pk) and\
-	   (bill.get_state_id() in set([3, 8, 9]))):
-		if (bill.get_state_id() == 3):
-			bill.set_state_id(1)
-		else:
-			bill.set_state_id(6)
-		bill.save()
-	return redirect('bills.views.bill_view', bill.pk)
-
-@login_required
-def	mailto(request, id):
-	'''
-	@param id: bill id
-	'''
-	arglist = ['mail', '-s', 'DasIst.Bills: Новый счет: %s' % id, 'ti.eugene@gmail.com']
-	sp = subprocess.Popen(args=arglist, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout_data = sp.communicate(input=request.build_absolute_uri(reverse('bills.views.bill_view', kwargs={'id': id})))
-	return redirect('bills.views.bill_list')
