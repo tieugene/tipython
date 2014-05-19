@@ -45,6 +45,12 @@ class	BillForm(forms.Form):
 		billsum = cleaned_data.get('billsum')
 		payedsum = cleaned_data.get('payedsum')
 		topaysum = cleaned_data.get('topaysum')
+		if (billsum == None):
+			raise forms.ValidationError('Заполните сумму счета.')
+		if (payedsum == None):
+			raise forms.ValidationError('Заполните Оплачено.')
+		if (topaysum == None):
+			raise forms.ValidationError('Заполните сумму к оплате.')
 		if (payedsum > billsum):
 			raise forms.ValidationError('Оплачено больше суммы счета.')
 		if (topaysum > (billsum - payedsum)):
