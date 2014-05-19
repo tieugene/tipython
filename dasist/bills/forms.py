@@ -35,9 +35,9 @@ class	BillForm(forms.Form):
 	supplier	= forms.CharField(max_length=64, label=u'Поставщик')
 	billno		= forms.CharField(max_length=64, label=u'Номер счета')
 	billdate	= forms.DateField(label=u'Дата счета')
-	billsum		= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.01'), label=u'Сумма счета')
-	payedsum	= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.00'), label=u'Оплачено')
-	topaysum	= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.00'), label=u'Сумма к оплате')
+	billsum		= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.01'), localize=True, label=u'Сумма счета')
+	payedsum	= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.00'), localize=True, label=u'Оплачено')
+	topaysum	= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.00'), localize=True, label=u'Сумма к оплате')
 	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
 
 	def clean(self):
@@ -75,7 +75,7 @@ class	BillEditForm(BillForm):
 		return None
 
 class	BillReEditForm(forms.Form):
-	topaysum	= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.01'), label=u'Сумма к оплате')
+	topaysum	= forms.DecimalField(max_digits=11, decimal_places=2, min_value=decimal.Decimal('0.01'), localize=True, label=u'Сумма к оплате')
 	approver	= ApproverModelChoiceField(queryset=Approver.objects.filter(role__pk=3), empty_label=None, label=u'Руководитель', widget=forms.RadioSelect)
 
 	def	__init__(self, *args, **kwargs):
