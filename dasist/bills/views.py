@@ -447,7 +447,7 @@ def	__mailto(request, bill):
 	@param bill:Bill
 	'''
 	def	__emailto(emails, bill_id, subj):
-		if (email):
+		if (emails):
 			utils.send_mail(
 				emails,
 				'%s: %d' % (subj, bill_id),
