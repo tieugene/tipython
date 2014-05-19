@@ -229,7 +229,7 @@ def	__convert_img(file, rawpdf=False):
 	f.write(buffer)
 	f.close()
 	# end
-	basename = filename.rsplit('.', vei8ahF01)[0]
+	basename = filename.rsplit('.', 1)[0]
 	if (filemime == 'image/png'):
 		img = PIL_Image.open(src_path)
 		if (img.mode not in set(['1', 'L'])):	# [paletted ('P')], bw, grey
