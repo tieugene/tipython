@@ -408,6 +408,7 @@ def	bill_edit(request, id):
 	}))
 
 @login_required
+@transaction.commit_on_success
 def	bill_reedit(request, id):
 	'''
 	Update (edit) Draft? bill
@@ -471,6 +472,7 @@ def	__mailto(request, bill):
 		__emailto([bill.assign.user.email], bill.pk, 'Счет частично оплачен')
 
 @login_required
+@transaction.commit_on_success
 def	bill_view(request, id):
 	'''
 	View/Accept/Reject bill
@@ -588,6 +590,7 @@ def	bill_view(request, id):
 	}))
 
 @login_required
+@transaction.commit_on_success
 def	bill_delete(request, id):
 	'''
 	Delete bill
@@ -605,6 +608,7 @@ def	bill_delete(request, id):
 		return redirect('bills.views.bill_view', bill.pk)
 
 @login_required
+@transaction.commit_on_success
 def	bill_restart(request, id):
 	'''
 	Restart bill
@@ -665,4 +669,3 @@ def	bill_toscan(request, id):
 		return redirect('bills.views.bill_list')
 	else:
 		return redirect('bills.views.bill_view', bill.pk)
-
