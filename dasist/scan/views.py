@@ -35,20 +35,67 @@ def	scan_list(request):
 	# 1. pre
 	user = request.user
 	# 2. lpp
-	lpp = request.session.get('lpp', None)
-	if (lpp == None):
-		lpp = 20
-		request.session['lpp'] = lpp
+	lpp = int(request.session.get('lpp', 20))
+	# 3. get values
+	filter = {
+		'place':	request.session.get('scan_place', None),
+		'depart':	request.session.get('scan_depart', None),
+		'supplier':	request.session.get('scan_supplier', None),
+		'billno':	request.session.get('scan_billno', None),
+		'billdate':	request.session.get('scan_billdate', None),
+	}
+	# 4. set filter values
+	if request.method == 'POST':
+		form = forms.FilterScanListForm(request.POST)
+		if form.is_valid():
+			# 4.1. get values
+			filter = {
+				'place':	form.cleaned_data['place'],
+				'depart':	form.cleaned_data['depart'],
+				'supplier':	form.cleaned_data['supplier'],
+				'billno':	form.cleaned_data['billno'],
+				'billdate':	form.cleaned_data['billdate'],
+			}
+			# 4.2. set session values
+			request.session['scan_place'] =		filter['place']
+			request.session['scan_depart'] =	filter['depart']
+			request.session['scan_supplier'] =	filter['supplier']
+			request.session['scan_billno'] =	filter['billno']
+			request.session['scan_billdate'] =	filter['billdate']
+		else:
+			print 'Invalid form'
+	# 5. set default form values
 	else:
-		lpp = int(lpp)
+		# 3.2.2. gen form
+		form = forms.FilterScanListForm(initial={
+			'place':	filter['place'],
+			'depart':	filter['depart'],
+			'supplier':	filter['supplier'],
+			'billno':	filter['billno'],
+			'billdate':	filter['billdate'],
+		})
+	# 6. filter
+	#print 'Place:', filter['place']
+	q = models.Scan.objects.all()
+	if filter['place']:
+		q = q.filter(place=filter['place'])
+	if filter['depart']:
+		q = q.filter(depart=filter['depart'])
+	if filter['supplier']:
+		q = q.filter(supplier=filter['supplier'])
+	if filter['billno']:
+		q = q.filter(no=filter['billno'])
+	if filter['billdate']:
+		q = q.filter(date=filter['billdate'])
 	return  object_list (
 		request,
-		queryset = models.Scan.objects.all(),
+		queryset = q,
 		paginate_by = lpp,
 		page = int(request.GET.get('page', '1')),
 		template_name = 'scan/list.html',
 		extra_context = {
 			'lpp': lpp,
+			'form': form,
 		}
 	)
 

@@ -140,6 +140,9 @@ LOGGING = {
 
 BILLS_ROOT = '/mnt/shares/tmp/bills'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 3600
+
 try:
         from local_settings import *
 except ImportError:

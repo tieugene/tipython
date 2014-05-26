@@ -32,6 +32,7 @@ Usability:
 
 Reliability:
 
+* views prerequisites (ACL)
 * transactions
 * Uniq billno&billdate&billsum
 
@@ -39,9 +40,8 @@ Reliability:
 
 Security:
 
-* views
 * https
-* session timeout
+? session timeout
 * logging?
 
 # 0.1.4
@@ -75,5 +75,12 @@ Expandability:
 
 Scans:
 
-* Search
-* Filters
+* Filters:
+	* Place
+	* Subject
+	* Depart
+	* -Assignee
+* Search:
+	* Supplier
+	* Billno
+	* Billdate
