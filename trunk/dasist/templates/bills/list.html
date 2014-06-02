@@ -45,6 +45,7 @@
 <table>
  <thead>
  <tr>
+  <th/>
   <th nowrap> # </th>
   <th nowrap> Объект </th>
   <th nowrap> Подобъект </th>
@@ -54,7 +55,6 @@
   <th nowrap> К оплате </th>
   <th nowrap> Исполнитель </th>
   <th nowrap> Подписант </th>
-  <th nowrap> Состояние </th>
  </tr>
  </thead>
  <tbody>
@@ -70,6 +70,7 @@
   {% endifequal %}
  {% endif %}
 >
+  <td nowrap> <img src="{{ STATIC_URL }}img/32/{{ object.state.get_icon }}" width="16px" height="16px" title="{{ object.get_state_name }}"/> </td>
   <td nowrap> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
   <td nowrap> {{ object.place }} </td>
   <td nowrap> {{ object.subject|default:"---" }} </td>
@@ -77,9 +78,8 @@
   <td nowrap> {{ object.supplier }} </td>
   <td nowrap> {{ object.payer|default:"---" }} </td>
   <td nowrap align="right"> {{ object.topaysum|stringformat:"d" }} </td>
-  <td nowrap> {{ object.assign.get_fio }} </td>
+  <td nowrap> {{ object.assign.user.last_name }} </td>
   <td nowrap> {% if object.rpoint %} {{ object.rpoint.get_str }} {% else %} --- {% endif %} </td>
-  <td nowrap> {{ object.get_state_name }} </td>
  </tr>
 {% endfor %}
 </table>

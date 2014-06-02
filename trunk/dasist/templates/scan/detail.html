@@ -40,7 +40,7 @@
   {# for i in object.decode_events #}
   {% for i in object.event_set.all %}
   <tr>
-   <td valign="top"> <img {% if i.resume %} src="{{ STATIC_URL }}img/dialog-ok.png" title="OK" {% else %} src="{{ STATIC_URL }}img/dialog-cancel.png" title="Canceled" {% endif %} width="16px" height="16px"/> </td>
+   <td valign="top"> <img {% if i.resume %} src="{{ STATIC_URL }}img/32/dialog-ok.png" title="OK" {% else %} src="{{ STATIC_URL }}img/32/dialog-cancel.png" title="Canceled" {% endif %} width="16px" height="16px"/> </td>
    <td valign="top"> {{ i.ctime }} </td>
    <td valign="top"> {{ i.approve }} </td>
    <td valign="top"> {{ i.comment }} </td>
