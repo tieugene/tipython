@@ -17,6 +17,18 @@ from StringIO import StringIO
 from core.models import File, FileSeq
 #import core
 
+STATE_ICON = (
+	'document-edit.png',
+	'running-man.png',
+	'dialog-cancel.png',
+	'dollar.png',
+	'dialog-ok.png',
+	'document-edit.png',
+	'running-man.png',
+	'dialog-cancel.png',
+	'dialog-ok.png',
+)
+
 # Refs
 class	State(models.Model):
 	'''
@@ -29,6 +41,9 @@ class	State(models.Model):
 
 	def	__unicode__(self):
 		return self.name
+
+	def	get_icon(self):
+		return STATE_ICON[self.id-1]
 
 	class   Meta:
 		unique_together		= (('name',),)
@@ -188,7 +203,8 @@ class	Route(models.Model):
 		return '%d.%d: %s' % (self.bill.pk, self.order, self.approve.get_fio() if self.approve else self.role.name)
 
 	def	get_str(self):
-		return self.approve.get_fio() if self.approve else self.role.name
+		#return self.approve.get_fio() if self.approve else self.role.name
+		return self.approve.user.last_name if self.approve else self.role.name
 
 	class   Meta:
 		unique_together		= (('bill', 'order',),)

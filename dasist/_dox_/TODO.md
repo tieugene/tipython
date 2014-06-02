@@ -9,14 +9,13 @@ Usability:
 + Action comment string must be longer
 + "Print" button (4 Accounter)
 + Bill detail: formsets
++ Bill list: state as icon
 * Add/del images in fileseq
 * 1024x768
 * Bill list:
  * Filter: Depart, Supplier, Assignee
  * states filter: buttons + JS (Ajax)
- * state as icons
  * tr == URL
- + nowrap
  * ?select columns to view
 * fonts/sizes/colors
 * Img preview remake
