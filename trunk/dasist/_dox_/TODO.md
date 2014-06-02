@@ -7,32 +7,23 @@
 Usability:
 
 + Action comment string must be longer
++ "Print" button (4 Accounter)
++ bill detail: formsets
 * Bill list: Filter: Depart, Supplier, Assignee
-* "Print" button (4 Accounter)
 * Place/Subject subsystem
 * Add/del images in fileseq
 * 1024x768
 * bill list:
-  * states filter == X x buttons:
-    * Draft: "draft" (Edit)
-    * OnWay: onway
-    * OnPay: $
-    * Done: V
-    * Rejected: Trash
-    * +JS (Ajax)
+ * states filter: buttons + JS (Ajax)
+ * state as icons
  * tr == URL
- * ?select columns to view
- * state as icon:
-	* Draft: new/edit
-	* OnWay: man
-	* OnPay: $
-	* Done: v
-	* Reject: trash
  * ?nowrap
+ * ?select columns to view
 * fonts/sizes/colors
-* bill detail: formsets
 * Img preview remake
 * bill edit: limit Supplier (width, CAPS)
+* Scan: search/replace place/subj
+* Scan: search/replace depart
 
 # 0.1.2
 

@@ -1,10 +1,38 @@
 {% extends "bills/base.html" %}
+{% block js %}
+<script type="text/javascript">
+	function printimg(img, name) {
+		var mywindow = window.open('', name);
+		mywindow.document.write('<html><head><title>' + name + '</title>');
+		mywindow.document.write('</head><body>');
+		data = "<img src='" + img + "'/>"
+		mywindow.document.write(data);  // data = all image
+		mywindow.document.write('</body></html>');
+		mywindow.print();
+		mywindow.close();
+	}
+</script>
+{% endblock %}
+{% block css %}
+	fieldset {
+		background-color: gainsboro;
+		border-color: gainsboro;
+		border-radius: 5px;
+		padding: 5px;
+		vertical-align: top;
+	}
+	legend {
+		background-color: white;
+		border-radius: 5px;
+		padding: 0px 10px;
+	}
+	fieldset table {
+		background-color: white;
+	}
+{% endblock %}
 {% block body_main %}
-<table border="0">
-<tr>
-<td valign="top">
+<fieldset> <legend> Счет </legend>
 <table border="1">
-<caption> Счет: </caption>
 <tbody>
  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
  <tr> <th> Объект </th> <td> {{ object.place }} </td> </tr>
@@ -34,16 +62,17 @@
      <a href="{% url core.views.file_get img.pk %}" data-lightbox="roadtrip" title="{{ img.file.name }}">{{ img.file.name }}</a>
      <!--a href="#" onClick="window.open('{% url core.views.file_get img.pk %}', '_blank', 'toolbar=0, location=0, directories=0, status=0, scrollbars=0, resizable=0, copyhistory=0, menuBar=0, width=500, height=500');return(false)"> <img src="{{ STATIC_URL }}img/png_16x16.png" title="{{ img.file.name }}"/> </a-->
      <a href="{% url core.views.file_get img.pk %}"> <img src="{{ STATIC_URL }}img/png_16x16.png" title="Download"/> </a>
+     <input type="image" src="{{ STATIC_URL }}img/16/document-print.png" onClick="printimg('{% url core.views.file_get img.pk %}', '{{ img.pk }}');"/>
     </li>
    {% endfor %}
   </ol> </td>
  </tr>
  </tbody>
 </table>
-</td>
-<td valign="top">
+</fieldset>
+
+<fieldset> <legend> История </legend>
 <table border="1">
-<caption> История: </caption>
 <thead>
  <th> Ok </th>
  <th> Когда </th>
@@ -61,9 +90,8 @@
   {% endfor %}
 </tbody>
 </table>
-</td>
-</tr>
-</table>
+</fieldset>
+
 <p style="margin: 0">
 {% if button.arch %}	<a href="{% url bills.views.bill_toscan object.pk %}">	{% include "button/arch.html" %} </a> {% endif %}
 {% if button.edit %}
