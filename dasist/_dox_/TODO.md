@@ -1,13 +1,14 @@
 # 0.1.0
 * Dups - mailto TheBoss bill requisitions and history ([HowTo]((http://stackoverflow.com/questions/882712/sending-html-email-using-python HowTo))
+- Bug: partialy payed stay Drtaft? (6) but not Done? (9) (e.g. 957)
 
 # 0.1.1
 
 Usability:
 
++ Action comment string must be longer
 * Bill list: Filter: Depart, Supplier, Assignee
 * "Print" button (4 Accounter)
-* Action comment string must be longer
 * Place/Subject subsystem
 * Add/del images in fileseq
 * 1024x768
@@ -21,7 +22,12 @@ Usability:
     * +JS (Ajax)
  * tr == URL
  * ?select columns to view
- * state as icon
+ * state as icon:
+	* Draft: new/edit
+	* OnWay: man
+	* OnPay: $
+	* Done: v
+	* Reject: trash
  * ?nowrap
 * fonts/sizes/colors
 * bill detail: formsets
@@ -72,6 +78,10 @@ Expandability:
 * ?pyhon3
 
 # 0.1.Y
+
+* ?History - replace Y/N (bool) with "next state"
+
+# 0.1.Z
 
 Scans:
 

@@ -95,7 +95,7 @@ class	BillReEditForm(forms.Form):
 		return topaysum
 
 class	ResumeForm(forms.Form):
-	note	= forms.CharField(max_length=255, label='Комментарий', required = False)
+	note	= forms.CharField(max_length=255, label='Комментарий', required = False, widget=forms.TextInput(attrs={'size':80}))
 
 class	FilterStateForm(forms.Form):
 	draft	= forms.BooleanField(label='Черновики',	required = False)

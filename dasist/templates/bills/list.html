@@ -76,7 +76,7 @@
   <td nowrap> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
   <td nowrap> {{ object.supplier }} </td>
   <td nowrap> {{ object.payer|default:"---" }} </td>
-  <td nowrap> {{ object.topaysum }} </td>
+  <td nowrap align="right"> {{ object.topaysum|stringformat:"d" }} </td>
   <td nowrap> {{ object.assign.get_fio }} </td>
   <td nowrap> {% if object.rpoint %} {{ object.rpoint.get_str }} {% else %} --- {% endif %} </td>
   <td nowrap> {{ object.get_state_name }} </td>

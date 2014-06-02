@@ -64,7 +64,7 @@
 </td>
 </tr>
 </table>
-<p>
+<p style="margin: 0">
 {% if button.arch %}	<a href="{% url bills.views.bill_toscan object.pk %}">	{% include "button/arch.html" %} </a> {% endif %}
 {% if button.edit %}
  {% if object.state.pk == 1 %}
@@ -81,8 +81,8 @@
  <form action="" method="POST">
 	{% csrf_token %}
 	{{ form.as_p }}
- <p> <i> (комментарий обязателен только при Отказе) </i> </p>
- <p>
+ <p style="margin: 0"> <i> (комментарий обязателен только при Отказе) </i> </p>
+ <p style="margin: 0">
  {% if button.accept %}
   <button type="submit" name="resume" value="accept" style="padding: 10px; background-color: chartreuse">
   {% if button.accept == 1 %}
