@@ -16,8 +16,6 @@ Usability:
 * fonts/sizes/colors
 * Img preview remake
 * Bill edit: limit Supplier (width, CAPS)
-* Scan: search/replace depart
-* Scan: search/replace place/subj
 * Place/Subject subsystem
 
 # 0.1.2

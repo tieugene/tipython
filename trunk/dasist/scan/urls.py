@@ -14,4 +14,5 @@ urlpatterns = patterns('scan.views',
 	url(r'^(?P<id>\d+)/d/$',	'scan_delete'),
 	url(r'^clean_spaces/$',		'scan_clean_spaces'),
 	url(r'^replace_depart/$',	'scan_replace_depart'),
+	url(r'^replace_place/$',	'scan_replace_place'),
 )

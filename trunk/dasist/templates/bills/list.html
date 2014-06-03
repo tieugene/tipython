@@ -5,6 +5,7 @@
   cursor:pointer;
   padding-top: 0;
   padding-bottom: 0;
+  white-space: nowrap;
  }
 {% endblock %}
 {% block body_main %}
@@ -53,15 +54,15 @@
  <thead>
  <tr>
   <th/>
-  <th nowrap> # </th>
-  <th nowrap> Объект </th>
-  <th nowrap> Подобъект </th>
-  <th nowrap> Направление </th>
-  <th nowrap> Поставщик </th>
-  <th nowrap> Плательщик </th>
-  <th nowrap> К оплате </th>
-  <th nowrap> Исполнитель </th>
-  <th nowrap> Подписант </th>
+  <th> # </th>
+  <th> Объект </th>
+  <th> Подобъект </th>
+  <th> Направление </th>
+  <th> Поставщик </th>
+  <th> Плательщик </th>
+  <th> К оплате </th>
+  <th> Исполнитель </th>
+  <th> Подписант </th>
  </tr>
  </thead>
  <tbody>
@@ -77,16 +78,16 @@
   {% endifequal %}
  {% endif %}
 onclick="window.document.location='{% url bills.views.bill_view object.pk %}'">
-  <td nowrap> <img src="{{ STATIC_URL }}img/32/{{ object.state.get_icon }}" width="16px" height="16px" title="{{ object.get_state_name }}"/> </td>
-  <td nowrap> {{ object.pk }} </td>
-  <td nowrap> {{ object.place }} </td>
-  <td nowrap> {{ object.subject|default:"---" }} </td>
-  <td nowrap> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
-  <td nowrap> {{ object.supplier }} </td>
-  <td nowrap> {{ object.payer|default:"---" }} </td>
-  <td nowrap align="right"> {{ object.topaysum|stringformat:"d" }} </td>
-  <td nowrap> {{ object.assign.user.last_name }} </td>
-  <td nowrap> {% if object.rpoint %} {{ object.rpoint.get_str }} {% else %} --- {% endif %} </td>
+  <td> <img src="{{ STATIC_URL }}img/32/{{ object.state.get_icon }}" width="16px" height="16px" title="{{ object.get_state_name }}"/> </td>
+  <td> {{ object.pk }} </td>
+  <td> {{ object.place }} </td>
+  <td> {{ object.subject|default:"---" }} </td>
+  <td> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>
+  <td> {{ object.supplier }} </td>
+  <td> {{ object.payer|default:"---" }} </td>
+  <td align="right"> {{ object.topaysum|stringformat:"d" }} </td>
+  <td> {{ object.assign.user.last_name }} </td>
+  <td> {% if object.rpoint %} {{ object.rpoint.get_str }} {% else %} --- {% endif %} </td>
  </tr>
 {% endfor %}
 </table>
