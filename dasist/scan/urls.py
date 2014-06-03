@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-lansite.apps.core.urls
+dasist.scan.urls
 '''
 
 from django.conf.urls.defaults import *
@@ -12,4 +12,5 @@ urlpatterns = patterns('scan.views',
 	url(r'^(?P<id>\d+)/$',		'scan_view'),
 	url(r'^(?P<id>\d+)/u/$',	'scan_edit'),
 	url(r'^(?P<id>\d+)/d/$',	'scan_delete'),
+	url(r'^clean_spaces/$',		'scan_clean_spaces'),
 )

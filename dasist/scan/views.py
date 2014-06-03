@@ -169,11 +169,12 @@ def	scan_add(request):
 @login_required
 def	scan_edit(request, id):
 	'''
-	Update (edit) bill
+	Update (edit) scan
+	Nothing works
 	ACL: (assignee) & Draft
 	'''
 	user = request.user
-	approver = models.Approver.objects.get(pk=user.pk)
+	#approver = models.Approver.objects.get(pk=user.pk)
 	bill = models.Bill.objects.get(pk=int(id))
 	#if (not request.user.is_superuser) and (\
 	#   (bill.assign != approver) or\
@@ -213,7 +214,6 @@ def	scan_edit(request, id):
 			'project':	bill.project,
 			'depart':	bill.depart,
 			'supplier':	bill.supplier,
-			'approver':	bill.route_set.get(order=2).approve,
 			#'approver':	6,
 		})
 	return render_to_response('bills/form.html', context_instance=RequestContext(request, {
@@ -239,4 +239,35 @@ def	scan_delete(request, id):
 	scan = models.Scan.objects.get(pk=int(id))
 	scan.delete()
 	fileseq.purge()
+	return redirect('scan.views.scan_list')
+
+@login_required
+def	scan_clean_spaces(request):
+	'''
+	place
+	subject
+	depart
+	supplier
+	no
+	'''
+	scans = models.Scan.objects.all()
+	for scan in scans:
+		tosave = False
+		if ((scan.place) and (scan.place != scan.place.strip())):	# scan.place, scan.subject, scan.depart, scan.no
+			scan.place = scan.place.strip()
+			tosave |= True
+		if ((scan.subject) and (scan.subject != scan.subject.strip())):
+			scan.subject = scan.subject.strip()
+			tosave |= True
+		if ((scan.depart) and (scan.depart != scan.depart.strip())):
+			scan.depart = scan.depart.strip()
+			tosave |= True
+		if ((scan.no) and (scan.no != scan.no.strip())):
+			scan.no = scan.no.strip()
+			tosave |= True
+		if (tosave):
+			#print "need to save %d" % scan.pk
+			#print "Place: '%s'" % scan.place
+			scan.save()
+		#print scan.place
 	return redirect('scan.views.scan_list')
