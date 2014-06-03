@@ -271,3 +271,26 @@ def	scan_clean_spaces(request):
 			scan.save()
 		#print scan.place
 	return redirect('scan.views.scan_list')
+
+@login_required
+def	scan_replace_depart(request):
+	if request.method == 'POST':
+		form = forms.ReplaceDepartForm(request.POST)
+		if form.is_valid():
+			src = form.cleaned_data['src']
+			dst = form.cleaned_data['dst']
+			if src == dst:
+				msg = 'Src == Dst'
+			else:
+				scans = models.Scan.objects.filter(depart=src)
+				msg = '%d scans replaced' % scans.count()
+				for scan in scans:
+					scan.depart = dst
+					scan.save()
+	else:
+		form = forms.ReplaceDepartForm()
+		msg = None
+	return render_to_response('scan/form_replace_depart.html', context_instance=RequestContext(request, {
+		'form': form,
+		'msg': msg,
+	}))
