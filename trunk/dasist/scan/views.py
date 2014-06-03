@@ -302,7 +302,7 @@ def	scan_replace_place(request):
 		if form.is_valid():
 			src = form.cleaned_data['src']
 			place = form.cleaned_data['place'].name
-			subject = form.cleaned_data['subject'].name ша form.cleaned_data['subject'] else None
+			subject = form.cleaned_data['subject'].name if form.cleaned_data['subject'] else None
 			if src == place:
 				msg = 'Src == Dst'
 			else:
