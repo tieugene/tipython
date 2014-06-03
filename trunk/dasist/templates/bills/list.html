@@ -1,5 +1,12 @@
 {% extends "bills/base.html" %}
-{% block meta %} <!--meta http-equiv="refresh" content="60"--> {% endblock %}
+{% block meta %} <meta http-equiv="refresh" content="300"> {% endblock %}
+{% block css %}
+ tr.bill td {
+  cursor:pointer;
+  padding-top: 0;
+  padding-bottom: 0;
+ }
+{% endblock %}
 {% block body_main %}
 <table border="0"> <tr>
 {% if canadd %}
@@ -59,7 +66,7 @@
  </thead>
  <tbody>
 {% for object in object_list %}
- <tr bgcolor="{{object.get_state_color}}"
+ <tr class="bill" bgcolor="{{object.get_state_color}}"
  {% if object.rpoint %}
   {% ifequal object.rpoint.approve.pk user.pk %}
    style="font-weight:bold"
@@ -69,9 +76,9 @@
    {% endifequal %}
   {% endifequal %}
  {% endif %}
->
+onclick="window.document.location='{% url bills.views.bill_view object.pk %}'">
   <td nowrap> <img src="{{ STATIC_URL }}img/32/{{ object.state.get_icon }}" width="16px" height="16px" title="{{ object.get_state_name }}"/> </td>
-  <td nowrap> <a href="{% url bills.views.bill_view object.pk %}"> {{ object.pk }} </a> </td>
+  <td nowrap> {{ object.pk }} </td>
   <td nowrap> {{ object.place }} </td>
   <td nowrap> {{ object.subject|default:"---" }} </td>
   <td nowrap> {% if object.depart %} {{ object.depart }} {% else %} --- {% endif %} </td>

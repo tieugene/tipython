@@ -11,20 +11,20 @@ Usability:
 * Bill list:
  * Filter: Depart, Supplier, Assignee
  * states filter: buttons + JS (Ajax)
- * tr == URL
  * ?select columns to view
 * Bill detail: shorter img filenames
 * fonts/sizes/colors
 * Img preview remake
 * Bill edit: limit Supplier (width, CAPS)
-* Scan: search/replace place/subj
 * Scan: search/replace depart
+* Scan: search/replace place/subj
 * Place/Subject subsystem
 
 # 0.1.2
 
 Reliability:
 
++ Bug: http://hz.garantstroyspb.ru/dasist/scan/971/ - multiple "Ok"
 * views prerequisites (ACL)
 * transactions
 * Uniq billno&billdate&billsum
