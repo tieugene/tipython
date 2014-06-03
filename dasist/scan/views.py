@@ -294,3 +294,29 @@ def	scan_replace_depart(request):
 		'form': form,
 		'msg': msg,
 	}))
+
+@login_required
+def	scan_replace_place(request):
+	if request.method == 'POST':
+		form = forms.ReplacePlaceForm(request.POST)
+		if form.is_valid():
+			src = form.cleaned_data['src']
+			place = form.cleaned_data['place'].name
+			subject = form.cleaned_data['subject'].name
+			if src == place:
+				msg = 'Src == Dst'
+			else:
+				scans = models.Scan.objects.filter(place=src)
+				msg = '%d scans replaced' % scans.count()
+				for scan in scans:
+					scan.place = place
+					if (subject):
+						scan.subject = subject
+					scan.save()
+	else:
+		form = forms.ReplacePlaceForm()
+		msg = None
+	return render_to_response('scan/form_replace_place.html', context_instance=RequestContext(request, {
+		'form': form,
+		'msg': msg,
+	}))
