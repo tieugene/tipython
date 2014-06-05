@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import render_to_response, render, redirect, get_object_or_404
 from django.template import RequestContext, Context, loader
 from django.views.generic.simple import direct_to_template, redirect_to
 from django.views.generic.list_detail import object_list, object_detail
@@ -351,9 +351,10 @@ def	bill_edit(request, id):
 	Update (edit) Draft bill
 	ACL: (assignee) & Draft
 	'''
+	bill = get_object_or_404(models.Bill, pk=int(id))
+	#bill = models.Bill.objects.get(pk=int(id))
 	user = request.user
 	approver = models.Approver.objects.get(pk=user.pk)
-	bill = models.Bill.objects.get(pk=int(id))
 	#if (not request.user.is_superuser) and (\
 	#   (bill.assign != approver) or\
 	#   (bill.rpoint != None) or\
@@ -414,9 +415,10 @@ def	bill_reedit(request, id):
 	Update (edit) Draft? bill
 	ACL: (assignee) & Draft?
 	'''
+	bill = get_object_or_404(models.Bill, pk=int(id))
+	#bill = models.Bill.objects.get(pk=int(id))
 	user = request.user
 	approver = models.Approver.objects.get(pk=user.pk)
-	bill = models.Bill.objects.get(pk=int(id))
 	max_topaysum = bill.billsum - bill.payedsum
 	if request.method == 'POST':
 		form = forms.BillReEditForm(request.POST, max_topaysum = bill.billsum - bill.payedsum)
@@ -480,9 +482,10 @@ def	bill_view(request, id):
 	TODO: подменить approver от root где только можно
 	TODO: assignee+approver == bad way
 	'''
+	#bill = models.Bill.objects.get(pk=int(id))
+	bill = get_object_or_404(models.Bill, pk=int(id))
 	user = request.user
 	approver = models.Approver.objects.get(user=user)
-	bill = models.Bill.objects.get(pk=int(id))
 	bill_state_id = bill.get_state_id()
 	form = None
 	err = ''
@@ -596,7 +599,8 @@ def	bill_delete(request, id):
 	Delete bill
 	ACL: (root|assignee) & (Draft|Rejected (bad))
 	'''
-	bill = models.Bill.objects.get(pk=int(id))
+	bill = get_object_or_404(models.Bill, pk=int(id))
+	#bill = models.Bill.objects.get(pk=int(id))
 	if (request.user.is_superuser) or (\
 	   (bill.assign.user.pk == request.user.pk) and\
 	   (bill.get_state_id() in set([1, 3]) )):
@@ -613,7 +617,8 @@ def	bill_restart(request, id):
 	'''
 	Restart bill
 	'''
-	bill = models.Bill.objects.get(pk=int(id))
+	bill = get_object_or_404(models.Bill, pk=int(id))
+	#bill = models.Bill.objects.get(pk=int(id))
 	if (request.user.is_superuser) or (\
 	   (bill.assign.user.pk == request.user.pk) and\
 	   (bill.get_state_id() in set([3, 8, 9]))):
@@ -642,7 +647,8 @@ def	mailto(request, id):
 def	bill_toscan(request, id):
 	'''
 	'''
-	bill = models.Bill.objects.get(pk=int(id))
+	bill = get_object_or_404(models.Bill, pk=int(id))
+	#bill = models.Bill.objects.get(pk=int(id))
 	if (request.user.is_superuser) or (\
 	   (bill.assign.user.pk == request.user.pk) and\
 	   (bill.get_state_id() == 5)):
