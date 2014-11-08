@@ -1,0 +1,49 @@
+$def with(d, ip, proto, port, data)
+$code:
+    def int2ip(v):
+        return '%s.%s.%s.%s' % ((v/16777216)%256, (v/65536)%256, (v/256)%256, v%256)
+    def fmt(v):
+        return '{:,}'.format(long(v)).replace(',', ' ') if v else ''
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
+ <title> Трафик за $d для $ip, протокол $proto, порт $port </title>
+ <style>
+  table.main td {
+   vertical-align: top;
+  }
+  table.thin {
+   border-collapse: collapse;
+  }
+  table.thin th {
+   border: 1px solid grey;
+   text-align: center;
+   font-size: 10pt;
+  }
+  table.thin td {
+   border: 1px solid grey;
+   text-align: right;
+   padding: 0 5px;
+   font-family: courier;
+   font-size: 10pt;
+  }
+ </style>
+</head>
+<body>
+<table class="thin">
+<caption> Трафик за $d для $ip, протокол $proto, порт $port </caption>
+<thead> <tr> <th> IP </th> <th> Summary </th> <th> In </th> <th> Out </th> </tr> </thead>
+<tbody>
+$for i in data:
+	<tr>
+		<td> $int2ip(i.oip) </td>
+		<td align="right" font-family="monospace"> $fmt(i.traffic) </td>
+		<td align="right" font-family="monospace"> $fmt(i.inbound) </td>
+		<td align="right" font-family="monospace"> $fmt(i.outbound) </td>
+	</tr>
+</tbody>
+</table>
+</body>
+</html>
