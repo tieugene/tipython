@@ -42,7 +42,7 @@ $code:
 	$for i in sdata:
 		<tr>
 			<td> $i.proto </td>
-			<td> <a href="/d/$d/i/$ip/p/$i.proto/$i.iport/0/"> $i.iport </a> </td>
+			<td> <a href="p/$i.proto/$i.iport/0/"> $i.iport </a> </td>
 			<td> $fmt(i.traffic) </td>
 			<td> $fmt(i.inbound) </td>
 			<td> $fmt(i.outbound) </td>
@@ -58,7 +58,7 @@ $code:
 	$for i in ddata:
 		<tr>
 			<td> $i.proto </td>
-			<td> <a href="/d/$d/i/$ip/p/$i.proto/$i.oport/1/"> $i.oport </a> </td>
+			<td> <a href="p/$i.proto/$i.oport/1/"> $i.oport </a> </td>
 			<td> $fmt(i.traffic) </td>
 			<td> $fmt(i.inbound) </td>
 			<td> $fmt(i.outbound) </td>
