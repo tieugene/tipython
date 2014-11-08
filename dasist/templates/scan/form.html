@@ -6,7 +6,6 @@
    <form enctype="multipart/form-data" action="" method="POST">
 	{% csrf_token %}
 	<table border="1">
-		<caption> Новый скан </caption>
 		{{ form.as_table }}
 	</table>
 	<button type="submit"> Записать </button>

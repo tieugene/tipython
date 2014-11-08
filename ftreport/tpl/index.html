@@ -1,0 +1,43 @@
+$def with(data)
+$code:
+    def fmt(v):
+        return '{:,}'.format(long(v)).replace(',', ' ') if v else ''
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
+ <title> Трафик </title>
+ <style>
+  table.thin {
+   border-collapse: collapse;
+  }
+  table.thin th {
+   border: 1px solid grey;
+   text-align: center;
+   font-size: 10pt;
+  }
+  table.thin td {
+   border: 1px solid grey;
+   text-align: right;
+   padding: 0 5px;
+   font-family: courier;
+   font-size: 10pt;
+  }
+ </style>
+</head>
+<body>
+<table class="thin">
+<caption> Трафик (KB) </caption>
+<thead> <tr> <th> Date </th> <th> Summary </th> <th> In </th> <th> Out </th> </tr> </thead>
+<tbody>
+$for i in data:
+	<tr>
+		<td> <a href="d/$i.ymd/"> $i.ymd </a> </td>
+		<td> $fmt(i.traffic) </td>
+		<td> $fmt(i.inbound) </td>
+		<td> $fmt(i.outbound) </td>
+	</tr>
+</tbody>
+</body>
+</html>

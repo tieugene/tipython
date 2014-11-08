@@ -1,0 +1,73 @@
+$def with(d, ip, sdata, ddata)
+$code:
+    def fmt(v):
+        return '{:,}'.format(long(v)).replace(',', ' ') if v else ''
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
+ <title> Трафик за $d для $ip </title>
+ <style>
+  table.main td {
+   vertical-align: top;
+  }
+  table.thin {
+   border-collapse: collapse;
+  }
+  table.thin th {
+   border: 1px solid grey;
+   text-align: center;
+   font-size: 10pt;
+  }
+  table.thin td {
+   border: 1px solid grey;
+   text-align: right;
+   padding: 0 5px;
+   font-family: courier;
+   font-size: 10pt;
+  }
+ </style>
+</head>
+<body>
+<table class="main">
+ <caption> <u> Трафик за $d для $ip </u> </caption>
+ <tbody>
+  <tr>
+   <td>
+	<table class="thin">
+	<caption> По SPort (top 50) </caption>
+	<thead> <tr> <th> Proto </th> <th> SPort </th> <th> Summary </th> <th> In </th> <th> Out </th> </tr> </thead>
+	<tbody>
+	$for i in sdata:
+		<tr>
+			<td> $i.proto </td>
+			<td> <a href="/d/$d/i/$ip/p/$i.proto/$i.iport/0/"> $i.iport </a> </td>
+			<td> $fmt(i.traffic) </td>
+			<td> $fmt(i.inbound) </td>
+			<td> $fmt(i.outbound) </td>
+		</tr>
+	</tbody>
+	</table>
+   </td>
+   <td>
+	<table class="thin">
+	<caption> По DPort (top 50) </caption>
+	<thead> <tr> <th> Proto </th> <th> DPort </th> <th> Summary </th> <th> In </th> <th> Out </th> </tr> </thead>
+	<tbody>
+	$for i in ddata:
+		<tr>
+			<td> $i.proto </td>
+			<td> <a href="/d/$d/i/$ip/p/$i.proto/$i.oport/1/"> $i.oport </a> </td>
+			<td> $fmt(i.traffic) </td>
+			<td> $fmt(i.inbound) </td>
+			<td> $fmt(i.outbound) </td>
+		</tr>
+	</tbody>
+	</table>
+   </td>
+  </tr>
+ </tbody>
+</table>
+</body>
+</html>
