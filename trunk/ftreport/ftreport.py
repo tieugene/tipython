@@ -7,6 +7,8 @@
 import web
 # 2. system
 import sys, os, datetime
+# hack
+sys.path.append(os.path.dirname(__file__))
 # 3. my
 from sqltpl import *
 
