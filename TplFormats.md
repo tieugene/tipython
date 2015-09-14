@@ -1,0 +1,8 @@
+  * +html (wkhtmltopdf)
+  * +rml (rml2pdf, нет редактора)
+  * +pdf form (xfdftool | itext | java, poppler?)
+  * +odf (webodt, PyOO?, GDocs?, PyOpenOffice?)
+  * ?svg (inkscape)
+  * ?tex
+  * ?lyx
+  * ?scribus
