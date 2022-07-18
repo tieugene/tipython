@@ -16,3 +16,4 @@ tieugene's python projects (archive)
 - [kupa](kupa) - gift for friend (django), 2016-02-13
 - [uvedomlenie](uvedomlenie) - уведомления о прибытии иностранного гражданина в место пребывания (flask), 2016-06-18
 - [python-wdp](python-wdp) - Python WebDAV provider (pure python), 2012-12-09
+- [smspilot](smspilot) - webhook for smspilot.ru (pure python), 2021-10-30
