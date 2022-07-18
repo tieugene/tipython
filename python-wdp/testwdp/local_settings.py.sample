@@ -1,0 +1,3 @@
+DEBUG = True
+#DEBUG = False
+#MEDIA_ROOT = '/mnt/shares/testwdp'

@@ -1,0 +1,21 @@
+handler = DAVAuthHandler < WebDAVServer.DAVRequestHandler < AuthServer.AuthRequestHandler < BaseHTTPServer.BaseHTTPRequestHandler
+handler.IFACE_CLASS = FilesystemHandler
+AuthRequestHandler:
+	def do_HEAD(self):
+		self._HEAD_GET(with_body=False)
+	def do_PROPFIND(self):
+		return PROPFIND(...).create_response()
+* send_body_chunks - очень низкого уровня - само потрошит в base64
+
+from fileauth import DAVAuthHandler
+handler = DAVAuthHandler
+
+from pywebdav.lib.WebDAVServer import DAVRequestHandler
+class DAVAuthHandler(DAVRequestHandler):
+
+import AuthServer
+from locks import LockManager
+class DAVRequestHandler(AuthServer.AuthRequestHandler, LockManager):
+
+import BaseHTTPServer
+class AuthRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):

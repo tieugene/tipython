@@ -1,0 +1,3 @@
+include setup.py README
+include doc/*
+include pywebdav/lib/*.py pywebdav/server/*.ini

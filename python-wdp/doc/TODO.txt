@@ -1,0 +1,65 @@
+Pylint:
+    + const
+    + dp
+    + ds
+    + dsfs
+    + hr
+    + lock
+    * util
+= check =
++ pep8 (python-pep8);
++ pylint (recomended; pylintrc)
++ pychecker
++ epydoc
++ pyflakes
++ python-coverage
++ python-nose
+? django.unittests
+
+pep8:  pep8 --max-line-length=255 --doctest .
+pylint: pylint -r n -d C0301 -f html wdp>pylint.html
+epydoc: epydoc --check -v wdp
+
+= Web =
+* python-wsgiref
+* python-bottle
+* python-reaquests
+
+= Teach =
+* Tutorial: http://welinux.ru/post/5043/#plan
+* Tutor2: http://habrahabr.ru/post/114745/
+
+python-django-nose
+
+= 20120918 =
+
+== todo ==
+* Lock.re
+* check href urlencoded
+* etag:
+    * collection: digest of [full]uri/path+mtime
+    * member: md5+size+mtime (etag means byte-to-byte eq)
+    * Replace etree:
+        * output: plain text (and common xmlns)
+        * input: sax
+    * propfind:
+       * disable shared locks
+       * expand lockdiscovery
+       * prop.supportedlocks can be empty (but lockentry - not)
+
+== headers ==
+Depth
+Destinations
+If
+Lock-Token
+Overwrite
+TimeOut
+
+= 20120920 =
+Refactor:
+    * DS:
+        * all methods return something (ok) or None
+        * uri2resource
+        * resource2uri (for lock)
+    * DA:
+        * inherit DSFS only

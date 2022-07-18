@@ -14,3 +14,4 @@ tieugene's python projects (archive)
 - [fb2libre](fb2libre) - Web-based FB2 library (django), 2015-12-09
 - [kupa](kupa) - gift for friend (django), 2016-02-13
 - [uvedomlenie](uvedomlenie) - уведомления о прибытии иностранного гражданина в место пребывания (flask), 2016-06-18
+- [python-wdp](python-wdp) - Python WebDAV provider (pure python), 2012-12-09
