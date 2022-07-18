@@ -1,0 +1,214 @@
+{% from "_formhelper.html" import render_field, render_sfield %}
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8" />
+  <title>Уведомление о прибытии иностранного гражданина или лица без гражданства в место пребывания</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="http://www.keyframesandcode.com/resources/javascript/jQuery/populate/jquery.populate.pack.js"></script>
+  <!--script type="text/javascript" src="{{ url_for('static', filename='sample.js') }}"></script-->
+  <script type="text/javascript">
+var sample_min = {
+    'm_lastname':	'Бендер-бей',
+    'm_firstname':	'Остап Сулейман Берта Мария',
+    'm_citizenship':	'Турецкоподданный',
+    'm_arrived':	'01.01.2016',
+    'm_expired':	'01.01.2017',
+    'm_birth_date':	'01.01.1970',
+    'm_doc_type':	'Паспорт',
+    'm_doc_no':		'123456789',
+    'm_doc_date':	'01.01.1970',
+    'addr_city':	'Поребрик-сити',
+    'addr_street':	'3-я улица Строителей',
+    'addr_house':	'25',
+    'a_lastname':	'Воробьянинов',
+    'a_firstname':	'Киса',
+    'a_birth_date':	'01.01.1970',
+    'a_doc_type':	'Паспорт',
+    'a_doc_series':	'0440',
+    'a_doc_no':		'987654321',
+    'a_doc_date':	'01.01.1970',
+    'a_addr_city':	'г.Москва',
+    'a_addr_street':	'Красная пл.',
+    'a_addr_house':	'1',
+};
+// 33/51
+var sample_max = {
+    'm_lastname':	'Бендер-бей',
+    'm_firstname':	'Остап Сулейман Берта Мария',
+    'm_citizenship':	'Турецкоподданный',
+    'm_profession':	'Жулик',
+    'm_arrived':	'01.01.2016',
+    'm_expired':	'01.01.2017',
+    'm_agent':		'Пантелей Иванопуло',
+    'm_prev_addr':	'общежитие им. монаха Бертольда Шварца',
+    'm_birth_date':	'01.01.1970',
+    'm_birth_country':	'Украина',
+    'm_birth_city':	'Одесса',
+    'm_doc_type':	'Паспорт',
+    'm_doc_series':	'1234',
+    'm_doc_no':		'123456789',
+    'm_doc_date':	'01.01.1970',
+    'm_doc_expired':	'31.12.1999',
+    'm_perm_type':	'2',
+    'm_perm_series':	'1234',
+    'm_perm_no':		'123456789',
+    'm_perm_date':	'01.01.1980',
+    'm_perm_expired':	'31.12.1990',
+    'm_mk_series':	'1234',
+    'm_mk_no':		'1234567',
+    'addr_sf':	'Ленинградская область',
+    'addr_region':	'Выборгский',
+    'addr_city':	'Поребрик-сити',
+    'addr_street':	'3-я улица Строителей',
+    'addr_house':	'25',
+    'addr_housing':	'А',
+    'addr_building':	'5',
+    'addr_app':		'12',
+    'addr_tel':		'9211234567',
+    'a_lastname':	'Воробьянинов',
+    'a_firstname':	'Киса',
+    'a_birth_date':	'01.01.1970',
+    'a_doc_type':	'Паспорт',
+    'a_doc_series':		'1234',
+    'a_doc_no':		'987654321',
+    'a_doc_date':	'01.01.1970',
+    'a_doc_expired':	'01.01.1980',
+    'a_addr_sf':	'Московская область',
+    'a_addr_region':	'Московский район',
+    'a_addr_city':	'г.Москва',
+    'a_addr_street':	'Красная пл.',
+    'a_addr_house':	'1',
+    'a_addr_housing':	'1',
+    'a_addr_building':	'1',
+    'a_addr_app':	'1',
+    'a_addr_tel':	'#смольный',
+    'a_org_name':	'Рога и копыта, ООО',
+    'a_org_addr':	'Как зайдешь - налево',
+    'a_org_inn':	'123456789012',
+};
+function populateFormMin() { $(document.forms['myForm']).populate(sample_min); };
+function populateFormMax() { $(document.forms['myForm']).populate(sample_max); };
+  </script>
+  <!--link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"/-->
+  <style>
+    table {
+        border-collapse: collapse;
+    }
+    th, td {
+        border-bottom: 1px solid grey;
+        text-align: left;
+        font-weight: normal;
+        font-size: 9pt;
+    }
+    th {
+        font-family: sans-serif;
+    }
+    th.sect {
+        background-color: silver;
+        text-indent: 10pt;
+    }
+    th.subsect {
+        background-color: gainsboro;
+        text-indent: 20pt;
+    }
+    th.r > label {
+        font-style: normal;
+    }
+    th.o > label {
+        color: grey;
+    }
+    p.err {
+        color: red;
+    }
+    input {
+        font-family: monospace;
+    }
+  </style>
+ </head>
+ <body>
+  <h1 style="font-size: 12pt">Уведомление о прибытии иностранного гражданина или лица без гражданства в место пребывания.</h1>
+  <p style="font-size: 9pt">Обязательные поля обозначены черым цветом, необязательные - <span style="color: grey">серым</span>.<br/>
+  После заполнения нажмите кноку "Печать" - получите PDF-файл, который надо распечатать с двух сторон листа формата A4.<br/>
+  Примеры заполнения можно увидеть, нажав кнопку "Пример (min)" (заполняются только обязательные поля) или "Пример (max)" (заполняются все поля)</p>
+  <form action="." method="post" name="myForm">
+   {{form.hidden_tag()}}
+   <p>
+    <button type="submit"> Печать </button>
+    <button type="reset"> Стереть </button>
+    <button type="button" onClick="populateFormMin()"> Пример (min) </button>
+    <button type="button" onClick="populateFormMax()"> Пример (max) </button>
+   </p>
+   {% if form.errors %}
+   <p class='err'> Есть ошибки! </p>
+   {% endif %}
+   <table>
+    <tr> <th colspan="2" class="sect"> 1. Сведения о лице, подлежащем постановке на учет по месту пребывания: </th> </tr>
+    {{ render_sfield(form.m_lastname, 'r', 35) }}
+    {{ render_sfield(form.m_firstname, 'r', 35) }}
+    {{ render_sfield(form.m_citizenship, 'r', 34) }}
+    {{ render_field(form.m_gender, 'r') }}
+    {{ render_field(form.m_aim, 'r') }}
+    {{ render_sfield(form.m_profession, 'o', 23) }}
+    {{ render_sfield(form.m_arrived, 'r', 10) }}
+    {{ render_sfield(form.m_expired, 'r', 10) }}
+    {{ render_sfield(form.m_agent, 'o', 38) }}
+    {{ render_sfield(form.m_prev_addr, 'o', 57) }}
+    <tr> <th colspan="2" class="subsect"> Дата и место рождения </th> </tr>
+    {{ render_sfield(form.m_birth_date, 'r', 10) }}
+    {{ render_sfield(form.m_birth_country, 'o', 33) }}
+    {{ render_sfield(form.m_birth_city, 'o', 33) }}
+    <tr> <th colspan="2" class="subsect"> Документ, удостоверяющий личность </th> </tr>
+    {{ render_field(form.m_doc_type, 'r') }}
+    {{ render_sfield(form.m_doc_series, 'o', 4) }}
+    {{ render_sfield(form.m_doc_no, 'r', 9) }}
+    {{ render_sfield(form.m_doc_date, 'r', 10) }}
+    {{ render_sfield(form.m_doc_expired, 'o', 10) }}
+    <tr> <th colspan="2" class="subsect"> Документ, подтверждающий право на пребывание (проживание) в Российской федерации </th> </tr>
+    {{ render_field(form.m_perm_type, 'o') }}
+    {{ render_sfield(form.m_perm_series, 'o', 4) }}
+    {{ render_sfield(form.m_perm_no, 'o', 9) }}
+    {{ render_sfield(form.m_perm_date, 'o', 10) }}
+    {{ render_sfield(form.m_perm_expired, 'o', 10) }}
+    <tr> <th colspan="2" class="subsect"> Миграционная карта </th> </tr>
+    {{ render_sfield(form.m_mk_series, 'o', 4) }}
+    {{ render_sfield(form.m_mk_no, 'o', 7) }}
+    <tr> <th colspan="2" class="sect"> 2. Сведения о месте пребывания: </th> </tr>
+    {{ render_sfield(form.addr_sf, 'o', 33) }}
+    {{ render_sfield(form.addr_region, 'o', 35) }}
+    {{ render_sfield(form.addr_city, 'r', 33) }}
+    {{ render_sfield(form.addr_street, 'r', 35) }}
+    {{ render_sfield(form.addr_house, 'r', 4) }}
+    {{ render_sfield(form.addr_housing, 'o', 4) }}
+    {{ render_sfield(form.addr_building, 'o', 4) }}
+    {{ render_sfield(form.addr_app, 'o', 4) }}
+    {{ render_sfield(form.addr_tel, 'o', 10) }}
+    <tr> <th colspan="2" class="sect"> 3. Сведения о принимающей стороне: </th> </tr>
+    {{ render_field(form.a_type, 'r') }}
+    {{ render_sfield(form.a_lastname, 'r', 35) }}
+    {{ render_sfield(form.a_firstname, 'r', 35) }}
+    {{ render_sfield(form.a_birth_date, 'r', 10) }}
+    <tr> <th colspan="2" class="subsect"> Документ, удостоверяющий личность </th> </tr>
+    {{ render_field(form.a_doc_type, 'r') }}
+    {{ render_sfield(form.a_doc_series, 'r', 4) }}
+    {{ render_sfield(form.a_doc_no, 'r', 9) }}
+    {{ render_sfield(form.a_doc_date, 'r', 10) }}
+    {{ render_sfield(form.a_doc_expired, 'o', 10) }}
+    <tr> <th colspan="2" class="subsect"> Регистрация </th> </tr>
+    {{ render_sfield(form.a_addr_sf, 'o', 33) }}
+    {{ render_sfield(form.a_addr_region, 'o', 35) }}
+    {{ render_sfield(form.a_addr_city, 'r', 33) }}
+    {{ render_sfield(form.a_addr_street, 'r', 35) }}
+    {{ render_sfield(form.a_addr_house, 'r', 4) }}
+    {{ render_sfield(form.a_addr_housing, 'o', 4) }}
+    {{ render_sfield(form.a_addr_building, 'o', 4) }}
+    {{ render_sfield(form.a_addr_app, 'o', 4) }}
+    {{ render_sfield(form.a_addr_tel, 'o', 10) }}
+    <tr> <th colspan="2" class="subsect"> Организация </th> </tr>
+    {{ render_sfield(form.a_org_name, 'o', 52) }}
+    {{ render_sfield(form.a_org_addr, 'o', 52) }}
+    {{ render_sfield(form.a_org_inn, 'o', 12) }}
+   </table>
+  </form>
+ </body>
+</html>

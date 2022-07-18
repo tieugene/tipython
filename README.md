@@ -13,3 +13,4 @@ tieugene's python projects (archive)
 - [solo](solo) - докумены для открытия ИП (web.py)
 - [fb2libre](fb2libre) - Web-based FB2 library (django), 2015-12-09
 - [kupa](kupa) - gift for friend (django), 2016-02-13
+- [uvedomlenie](uvedomlenie) - уведомления о прибытии иностранного гражданина в место пребывания (flask), 2016-06-18

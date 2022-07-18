@@ -1,0 +1,32 @@
+table {
+    border-collapse: collapse;
+}
+th, td {
+    border-bottom: 1px solid grey;
+    text-align: left;
+    font-weight: normal;
+    font-size: 9pt;
+}
+th {
+    font-family: sans-serif;
+}
+th.sect {
+    background-color: silver;
+    text-indent: 10pt;
+}
+th.subsect {
+    background-color: gainsboro;
+    text-indent: 20pt;
+}
+th.r > label {
+    font-style: normal;
+}
+th.o > label {
+    color: grey;
+}
+p.err {
+    color: red;
+}
+input {
+    font-family: monospace;
+}
