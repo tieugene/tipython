@@ -11,4 +11,5 @@ tieugene's python projects (archive)
 - [ltd](ltd) - дркументы для открытия ООО (django)
 - [sandbox](sandbox) - Testing RenameFileModel (django)
 - [solo](solo) - докумены для открытия ИП (web.py)
-- [fb2libre](fb2libre) - Web-based FB2 library (django) 2015-12-09
+- [fb2libre](fb2libre) - Web-based FB2 library (django), 2015-12-09
+- [kupa](kupa) - gift for friend (django), 2016-02-13

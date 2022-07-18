@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block jsready %}
+{% endblock %}
+{% block body_main %}
+
+<table border="0">
+ <form action="{% if object %} {% url 'medrec.views.client_edit' object.pk %} {% else %} {% url 'medrec.views.client_add' %} {% endif %}" method="POST">
+ {% csrf_token %}
+ {{ form.as_table }}
+ <p>
+  <button type="submit"> Ok </button>
+  <a href="{% if object %} {% url 'medrec.views.client_view' object.pk %} {% else %} {% url 'medrec.views.index' %} {% endif %}"> <button type="button"> Cancel </button> </a>
+ </p>
+ </form>
+</table>
+{% if object %}
+<table border="1" style="border-collapse: collapse;">
+ <caption> Всякое </caption>
+ <tbody>
+  <tr> <td> ФИО </td>		<td> {{ object.name }} </td> </tr>
+  <tr> <td> ДР </td>		<td> {{ object.birthday }} </td> </tr>
+  <tr> <td> Новый </td>		<td> {{ object.get_new }} </td> </tr>
+  <tr> <td> Дата пригл. </td>	<td> {{ object.invidate|date:"d.m.Y"|default:"---" }} </td> </tr>
+  <tr> <td> Текст пригл.</td>	<td> {{ object.invidesc }} </td> </tr>
+ </tbody>
+</table>
+{% endif %}
+{% endblock %}

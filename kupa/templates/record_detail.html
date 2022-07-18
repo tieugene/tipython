@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block jsready %}
+{% endblock %}
+{% block body_main %}
+  <table border="1" style="border-collapse: collapse;">
+   <caption>
+   <a href="{% url 'medrec.views.record_edit' object.pk %}"> {% include "svgbutton/edit.html" %} </a>
+   Основные
+   <a href="{% url 'medrec.views.record_del' object.pk %}" onclick="return confirm('Are you sure?');"> {% include "svgbutton/delete.html" %} </a>
+   </caption>
+   <tbody>
+    <tr> <td> Пользователь </td>	<td> {{ object.user }} </td> </tr>
+    <tr> <td> Клиент </td>		<td> <a href="{% url 'medrec.views.client_view' object.client.pk %}">{{ object.client }} </a> </td> </tr>
+    <tr> <td> Дата </td>		<td> <a href="{% url 'medrec.views.record_get_date' object.get_yymmdd %}"> {{ object.date|date:"d.m.Y" }} </a> </td> </tr>
+    <tr> <td> Время </td>		<td> {{ object.time|time:"H:i" }} </td> </tr>
+    <tr> <td> Длительность </td>	<td> {{ object.get_durat }} </td> </tr>
+    <tr> <td> Каммент </td>		<td> {{ object.comment }} </td> </tr>
+    <tr> <td> Медкарта </td>		<td> {{ object.medrec|linebreaksbr }} </td> </tr>
+   </tbody>
+  </table>
+  <p> Непонятно что: </p>
+  <ul>
+   <li> Код: {{ object.code }} </li>
+   <li> Состояние: {{ object.state }} </li>
+  </ul>
+{% endblock %}

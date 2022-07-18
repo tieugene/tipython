@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block js %}
+<script>
+// datepicker({showMonthAfterYear: false, showOn: 'both', buttonImage: 'media/img/calendar.png', buttonImageOnly: true, dateFormat:'d MM, y'}, $.datepicker.regional['ru']);
+$(document).ready(function() {
+    $('.datepicker').datepicker();
+});
+</script>
+{% endblock %}
+{% block body_main %}
+{% if user.is_authenticated %}
+<p>
+ <!--a href="{# url 'test' #}" class="nou"> <button type="button" class="plain" style="padding: 5pt 10pt"> Test </button> </a-->
+</p>
+<table border="0"> <tbody> <tr>
+<!-- Клиенты -->
+ <td valign="top">
+  <table border="1" style="border-collapse: collapse;>
+   <thead>
+    <tr> <td colspan="3">
+     {% include "paginator_clients.html" %}
+     <a href="{% url 'medrec.views.client_add' %}"> {% include "svgbutton/new.html" %} </a>
+    </td> </tr>
+    <tr> <td nowrap colspan="3">
+     {% for c in "*АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЭЮЯ" %} {# - ЪЬ #}
+      <a href="{% url 'medrec.views.client_set_filter_abc' forloop.counter0 %}" {% if request.session.abc = forloop.counter0 %} style="border: 1px solid black; background-color: silver" {% endif %}> {{ c }} </a>
+     {% endfor %}
+    </td> </tr>
+    <tr>
+     <th nowrap>
+      {% if request.session.sort = 1 %}
+       <a href="{% url 'medrec.views.client_set_sort' 2 %}"> # </a> {% include "svgbutton/down.html" %}
+      {% elif request.session.sort = 2 %}
+       <a href="{% url 'medrec.views.client_set_sort' 1 %}"> # </a> {% include "svgbutton/up.html" %}
+      {% else %}
+       <a href="{% url 'medrec.views.client_set_sort' 1 %}"> # </a>
+      {% endif %}
+     </th>
+     <th nowrap>
+      {% if request.session.sort = 3 %}
+       <a href="{% url 'medrec.views.client_set_sort' 4 %}"> ФИО </a> {% include "svgbutton/down.html" %}
+      {% elif request.session.sort = 4 %}
+       <a href="{% url 'medrec.views.client_set_sort' 3 %}"> ФИО </a> {% include "svgbutton/up.html" %}
+      {% else %}
+       <a href="{% url 'medrec.views.client_set_sort' 3 %}"> ФИО </a>
+      {% endif %}
+     </th>
+     <th nowrap> Дата </th>
+    </tr>
+   </thead>
+   <tbody>
+   {% for client in clients %}
+    <tr>
+     <td nowrap> {{ client.pk }} </td>
+     <td nowrap title="{{ client.comment }}"> <a href="{% url 'medrec.views.client_view' client.pk %}" class="nou"> {{ client.get_fio }} </a> </td>
+     <td>  </td>
+    </tr>
+   {% endfor %}
+   </tbody>
+  </table>
+ </td>
+<!-- Календарь -->
+ <td valign="top">
+  <table border="1" style="border-collapse: collapse;">
+   <caption>
+    <form action="{% url 'medrec.views.record_set_date' %}" method="POST">
+     {% csrf_token %}
+     <p>
+      {{ form.date.label_tag }}
+      {{ form.date }}
+      <button type="submit" title="Огонь"> Ok </button>
+      <br/>
+      {{ form.date.errors }}
+     </p>
+    </form>
+   </caption>
+   <tbody>
+   {% for hhmm, rec in records %}
+    <tr>
+     {% if rec %}
+      <td nowrap title="{{ rec.comment }}"> <a href="{% url 'medrec.views.record_view' rec.pk %}"> {{ hhmm }} </a> </td>
+      <td nowrap title="{{ rec.client.comment }}" {% if rec.durat %} rowspan="{{ rec.durat|add:'1' }}" {% endif %}> <a href="{% url 'medrec.views.client_view' rec.client.pk %}"> {{ rec.client }} </a> </td>
+     {% elif rec == 0 %}
+      <td nowrap > {{ hhmm }} </td>
+      <td/>
+     {% else %}
+      <td nowrap > {{ hhmm }} </td>
+     {% endif %}
+   {% endfor %}
+   </tbody>
+  </table>
+ </td>
+</tr> </tbody> </table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+<span class="pagination" align="right">
+	{% if clients.has_previous %}
+		<a href="?page=1" class="nou"> <button type="button" class="plain_mid"> |< </button> </a>
+		<a href="?page={{ clients.previous_page_number }}" class="nou"> <button type="button" class="plain_mid"> < </button> </a>
+	{% else %}
+		<button type="button" class="plain_mid" disabled="disabled"> |< </button>
+		<button type="button" class="plain_mid" disabled="disabled"> < </button>
+	{% endif %}
+	{{ clients.start_index }}..{{ clients.end_index }}/{{ clients.paginator.count }}
+	({{ clients.number }}/{{ clients.paginator.num_pages }})
+	{% if clients.has_next %}
+		<a href="?page={{ clients.next_page_number }}" class="nou"> <button type="button" class="plain_mid"> > </button> </a>
+		<a href="?page={{ clients.paginator.num_pages }}" class="nou"> <button type="button" class="plain_mid"> >| </button> </a>
+	{% else %}
+		<button type="button" class="plain_mid" disabled="disabled"> > </button>
+		<button type="button" class="plain_mid" disabled="disabled"> >| </button>
+	{% endif %}
+</span>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block jsready %}
+{% endblock %}
+{% block body_main %}
+<table border="0">
+<!-- Реквизиты -->
+ <td valign="top">
+  <table border="1" style="border-collapse: collapse;">
+   <caption>
+   <a href="{% url 'medrec.views.client_edit' object.pk %}"> {% include "svgbutton/edit.html" %} </a>
+   {% if prev %} <a href="{% url 'medrec.views.client_view' prev.pk %}"> {% include "svgbutton/prev.html" %} </a> {% endif %}
+   Основные
+   {% if next %} <a href="{% url 'medrec.views.client_view' next.pk %}"> {% include "svgbutton/next.html" %} </a> {% endif %}
+   <a href="{% url 'medrec.views.client_del' object.pk %}" onclick="return confirm('Are you sure?');"> {% include "svgbutton/delete.html" %} </a>
+   </caption>
+   <tbody>
+    <tr> <td> Фамилия </td>	<td> {{ object.lname }} </td> </tr>
+    <tr> <td> Имя </td>		<td> {{ object.fname }} </td> </tr>
+    <tr> <td> Отчество </td>	<td> {{ object.mname }} </td> </tr>
+    <tr> <td> Цена </td>	<td> {{ object.price }} </td> </tr>
+    <tr> <td> Пол </td>		<td> {{ object.get_gender }} </td> </tr>
+    <tr> <td> ДР </td>		<td> {{ object.birth|date:"d.m.Y"|default:"---" }} </td> </tr>
+    <tr> <td> Телефоны </td>	<td> {{ object.phone1 }} {% if object.phone2 %} <br/> {{ object.phone2 }} {% endif %} </td> </tr>
+    <tr> <td> Важно </td>	<td> {{ object.get_warning }} </td> </tr>
+    <tr> <td> Камменты </td>	<td> {{ object.comment }} </td> </tr>
+    <tr> <td> Подробности </td>	<td> {{ object.details }} </td> </tr>
+   </tbody>
+  </table>
+  <table border="1" style="border-collapse: collapse;">
+   <caption> Всякое </caption>
+   <tbody>
+    <tr> <td> ФИО </td>		<td> {{ object.name }} </td> </tr>
+    <tr> <td> ДР </td>		<td> {{ object.birthday }} </td> </tr>
+    <tr> <td> Новый </td>	<td> {{ object.get_new }} </td> </tr>
+    <tr> <td> Дата пригл. </td>	<td> {{ object.invidate|date:"d.m.Y"|default:"---" }} </td> </tr>
+    <tr> <td> Текст пригл.</td>	<td> {{ object.invidesc }} </td> </tr>
+   </tbody>
+  </table>
+  <table border="1" style="border-collapse: collapse;">
+   <caption> Фото </caption>
+   <thead>
+    <tr>
+     <form enctype="multipart/form-data" action="" method="POST">
+      <td>
+       {% csrf_token %}
+       {{ form.file }} <br/> {{ form.file.errors }}
+      </td>
+      <td>
+       <button type="submit" title="Огонь"> Ok </button>
+      </td>
+     </form>
+    </tr>
+   </thead>
+   <tbody>
+   {% for i in object.get_img_list %}
+    <tr>
+     <td> <a href="{% url 'medrec.views.img_view' object.get_img_rpath i %}"> {{ i }} </a> </td>
+     <td> <a href="{% url 'medrec.views.img_del' object.get_img_rpath i %}" onclick="return confirm('Are you sure?');"> {% include "svgbutton/delete.html" %} </a> </td>
+    </tr>
+   {% endfor %}
+   </tbody>
+  </table>
+ </td>
+<!-- Посещения -->
+ <td valign="top">
+  <table border="1" style="border-collapse: collapse;">
+   <caption> Посещения </caption>
+   <thead> <tr> <th> Дата </th> <th> Время </th> <th> Длит. </th> <th> Comment </th> </tr> </thead>
+   <tbody>
+    {% for rec in object.record_set.all %}
+     <tr>
+      <td> <a href="{% url 'medrec.views.record_get_date' rec.get_yymmdd %}"> {{ rec.date|date:"d.m.Y" }} </a> </td>
+      <td> <a href="{% url 'medrec.views.record_view' rec.pk %}"> {{ rec.time|time:"H:i" }} </a> </td>
+      <td> {{ rec.get_durat }} </td>
+      <td title="{{ rec.medrec }}"> {{ rec.comment }} </td>
+     </tr>
+    {% endfor %}
+   </tbody>
+  </table>
+ </td>
+</tr> </tbody> </table>
+{% endblock %}

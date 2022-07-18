@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block jsready %}
+{% endblock %}
+{% block body_main %}
+
+<table border="1" style="border-collapse: collapse;">
+ <form action="{% if object %} {% url 'medrec.views.record_edit' object.pk %} {% else %} {% url 'medrec.views.record_add' %} {% endif %}" method="POST">
+ {% csrf_token %}
+ {{ form.as_table }}
+ <p>
+  <button type="submit"> Ok </button>
+  <a href="{% if object %} {% url 'medrec.views.record_view' object.pk %} {% else %} {% url 'medrec.views.index' %} {% endif %}"> <button type="button"> Cancel </button> </a>
+ </p>
+ </form>
+</table>
+{% if object %}
+<table border="1" style="border-collapse: collapse;">
+ <caption> Всякое </caption>
+ <tbody>
+  <tr> <td> User </td>		<td> {{ object.user }} </td> </tr>
+  <tr> <td> Клиент </td>	<td> {{ object.client }} </td> </tr>
+  <tr> <td> Код </td>		<td> {{ object.code }} </td> </tr>
+  <tr> <td> Состояние </td>	<td> {{ object.state }} </td> </tr>
+ </tbody>
+</table>
+{% if msg %}
+<p style="color: red"> Косяки: <ul> {{ msg|safe }} </ul> </p>
+{% endif %}
+{% endif %}
+{% endblock %}
