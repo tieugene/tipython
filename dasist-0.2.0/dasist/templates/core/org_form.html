@@ -1,0 +1,14 @@
+{% extends "core/org_base.html" %}
+{% block js %}
+{{ form.media }}
+{% endblock %}
+{% block body_main %}
+   <form enctype="multipart/form-data" action="" method="POST">
+	{% csrf_token %}
+	<table border="1">
+		{{ form.as_table }}
+	</table>
+	<button type="submit" title="Записать" class="plain"> {% include "svgbutton/save.html" %} </button>
+	<a href="{% url 'org_view' object.pk %}"> <button type="button" title="Отказаться" class="plain"> {% include "svgbutton/cancel.html" %} </button> </a>
+   </form>
+{% endblock %}

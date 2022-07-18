@@ -1,0 +1,4 @@
+django-autocomplete-light
+file-magic
+Django
+Pillow

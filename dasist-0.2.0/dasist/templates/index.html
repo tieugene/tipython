@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block jsready %}
+$("#tm_index").addClass("active");
+{% endblock %}
+{% block body_main %}
+<center>
+{% if user.is_authenticated %}
+ <table border="0">
+  <tr>
+   <th> Счета: </th>
+   <td>
+    <a href="{% url 'invoice_list' %}" class="nou"> <button type="button" class="plain" style="padding: 5pt 10pt"> В работе </button> </a>
+    <button type="button" class="plain" style="padding: 5pt 10pt"> Архив </button>
+   </td>
+  </tr>
+  <tr>
+   <th> Договора: </th>
+   <td>
+    <a href="{% url 'contract_list' %}" class="nou"> <button type="button" class="plain" style="padding: 5pt 10pt"> В работе </button> </a>
+    <button type="button" class="plain" style="padding: 5pt 10pt"> Архив </button>
+  </td>
+  </tr>
+  <tr>
+   <th> Отчеты: </th>
+   <td>
+    <button type="button" class="plain" style="padding: 5pt 10pt"> Табличка </button>
+    <button type="button" class="plain" style="padding: 5pt 10pt"> Итого </button>
+   </td>
+  </tr>
+  <tr>
+   <th> Справочники: </th>
+   <td>
+    <a href="{% url 'org_list'  %}" class="nou"> <button type="button" class="plain" style="padding: 5pt 10pt"> Организации </button> </a> </td>
+    {% if user.is_superuser %}
+    <a href="{% url 'file_list' %}" class="nou"> {% include "svgbutton/file.html" %} </a>
+    <a href="{% url 'fileseq_list' %}" class="nou"> {% include "svgbutton/files.html" %} </a>
+    <a href="{% url 'chk' %}" class="nou"> {% include "svgbutton/chk.html" %} </a>
+    {% endif %}
+   </td>
+  </tr>
+ </table>
+{% else %}
+ <a href="{% url 'login' %}?next={% url 'index' %}" rel="nofollow" class="nou"> <button type="button" alt="Вход" title="Вход" class="plain" style="padding: 5pt 10pt"> Вход </button> </a>
+{% endif %}
+</center>
+{% endblock %}

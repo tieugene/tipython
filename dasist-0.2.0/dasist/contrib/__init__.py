@@ -1,0 +1,1 @@
+"""Contributing things common for misc business models"""

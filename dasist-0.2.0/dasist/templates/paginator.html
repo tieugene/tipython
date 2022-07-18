@@ -1,0 +1,20 @@
+{% if is_paginated %}
+<span class="pagination" align="right">
+	{% if page_obj.has_previous %}
+		<a href="?page=1" class="nou"> <button type="button" class="plain_mid"> |< </button> </a>
+		<a href="?page={{ page_obj.previous_page_number }}" class="nou"> <button type="button" class="plain_mid"> < </button> </a>
+	{% else %}
+		<button type="button" class="plain_mid" disabled="disabled"> |< </button>
+		<button type="button" class="plain_mid" disabled="disabled"> < </button>
+	{% endif %}
+	{{ page_obj.start_index }}..{{ page_obj.end_index }}/{{ paginator.count }}
+	({{ page_obj.number }}/{{ paginator.num_pages }})
+	{% if page_obj.has_next %}
+		<a href="?page={{ page_obj.next_page_number }}" class="nou"> <button type="button" class="plain_mid"> > </button> </a>
+		<a href="?page={{ paginator.num_pages|cut:" " }}" class="nou"> <button type="button" class="plain_mid"> >| </button> </a>
+	{% else %}
+		<button type="button" class="plain_mid" disabled="disabled"> > </button>
+		<button type="button" class="plain_mid" disabled="disabled"> >| </button>
+	{% endif %}
+</span>
+{% endif %}

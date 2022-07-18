@@ -1,0 +1,188 @@
+{% extends "invoice/base.html" %}
+{% block js %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('table.image-pack').magnificPopup({
+			delegate: 'a.image-link',
+			type: 'image',
+			image: { titleSrc: 'title', verticalFit: true },
+			gallery: { enabled: true },
+		});
+	});
+	function printimg(img, name) {
+		var mywindow = window.open('', name);
+		mywindow.document.write('<html><head><title>' + name + '</title>');
+		mywindow.document.write('</head><body>');
+		data = "<img src='" + img + "'/>"
+		mywindow.document.write(data);  // data = all image
+		mywindow.document.write('</body></html>');
+		mywindow.print();
+		mywindow.close();
+	}
+</script>
+{% endblock %}
+{% block css %}
+	fieldset {
+		background-color: gainsboro;
+		border-color: gainsboro;
+		border-radius: 5px;
+		padding: 5px;
+		vertical-align: top;
+	}
+	legend {
+		background-color: white;
+		border-radius: 5px;
+		padding: 0px 10px;
+	}
+	fieldset table {
+		background-color: white;
+	}
+{% endblock %}
+{% block body_main %}
+<fieldset> <legend> Счет </legend>
+<table border="1">
+<tbody>
+ <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
+ <tr> <th> Объект </th> <td> {{ object.place }} </td> </tr>
+ <tr> <th> ПодОбъект </th> <td> {{ object.subject|default:"---" }} </td> </tr>
+ <tr> <th> Направление </th> <td> {{ object.depart|default:"---" }} </td> </tr>
+ <tr> <th> Плательщик </th> <td> {{ object.payer|default:"---" }} </td> </tr>
+ <tr> <th> Поставщик </th> <td nowrap>
+	{% if object.shipper %}
+		{{ object.shipper.name }} <br/> ({{ object.shipper.fullname }}) <br/> ИНН: {{ object.shipper.inn }}
+	{% else %}
+		---
+	{% endif %}
+	</td> </tr>
+ <tr> <th> Счет </th> <td> № {{ object.billno }} от {{ object.billdate|date:"d.m.y" }} </td> </tr>
+ <tr> <th> Сумма счета </th> <td> {{ object.billsum }} </td> </tr>
+ <tr> <th> Оплачено </th> <td> {{ object.payedsum }} </td> </tr>
+ <tr> <th> К оплате </th> <td> {{ object.topaysum }} </td> </tr>
+ <tr> <th> Ответственный </th> <td> {{ object.assign.get_fio }} </td> </tr>
+ <tr> <th> Подписант </th> <td> {% if object.rpoint %} {% if object.rpoint.approve %} {{ object.rpoint.approve.get_fio }} {% else %} [{{ object.rpoint.role.name }}] {% endif %} {% else %} --- {% endif %} </td> </tr>
+ <tr> <th> Состояние </th> <td> <img src="{{ STATIC_URL }}img/svg/{{ object.state.get_icon }}" width="16px" height="16px"/> ({{ object.get_state_name }}) </td> </tr>
+ <tr> <th> Доплата </th> <td> {% if object.locked %} &radic; {% else %} - {% endif %} </td> </tr>
+ <tr> <th> Маршрут </th> <td>
+  <ol style="margin: 0">
+  {% for i in object.route_set.all %}
+   <li> <p style="margin: 0{% if i.order < object.rpoint.order %}; text-decoration: line-through{% endif %}"> {{ i.get_str }} </p> </li>
+  {% endfor %}
+  </ol>
+ </td> </tr>
+ <tr>
+  <td> Оригинал: </td>
+  <td> <table border="0" class="image-pack">
+   {% for img in object.fileseq.list_items.all %}
+    <tr> <td>
+     {{ img.order }}
+     <a href="{% url 'file_get' img.pk %}" title="{{ img.file.name }}" class="nou image-link"> {% include "svgbutton/preview.html" %} </a>
+     <a href="{% url 'file_get' img.pk %}" class="nou"> {% include "svgbutton/download.html" %} </a>
+     <img src="{{ STATIC_URL }}img/svg/print.svg" class="svgimg" title="Распечатать" onClick="printimg('{% url 'file_get' img.pk %}', '{{ img.pk }}');"/>
+     {% if button.edit %}
+     <a href="{% url 'invoice_img_rl' img.pk %}" class="nou"> {% include "svgbutton/rleft.html" %} </a>
+     <a href="{% url 'invoice_img_rr' img.pk %}" class="nou"> {% include "svgbutton/rright.html" %} </a>
+	<a href="{% url 'invoice_img_del' img.pk %}" class="nou"> {% include "svgbutton/delete.html" %} </a>
+     </td><td>
+	{% if not img.is_first %} <a href="{% url 'invoice_img_up' img.file.pk %}"> {% include "svgbutton/move-up.html" %} </a> <br/> {% endif %}
+	{% if not img.is_last  %} <a href="{% url 'invoice_img_dn' img.file.pk %}"> {% include "svgbutton/move-down.html" %} </a> {% endif %}
+     {% endif %}
+    </td> </tr>
+   {% endfor %}
+  </table> </td>
+ </tr>
+ </tbody>
+</table>
+</fieldset>
+
+<fieldset> <legend> История </legend>
+<table border="1">
+<thead>
+ <th> Ok </th>
+ <th> Когда </th>
+ <th> Кто </th>
+ <th> Комментарий </th>
+</thead>
+<tbody>
+  {% for i in object.event_set.all %}
+  <tr>
+   <td valign="top"> {% if i.resume %} {% include "svgbutton/agreed.html" %} {% else %} {% include "svgbutton/canceled.html" %} {% endif %} </td>
+   <td valign="top"> {{ i.ctime|date:"d.m.y H:i" }} </td>
+   <td valign="top"> {{ i.approve.get_fio }} </td>
+   <td valign="top"> {{ i.comment }} </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</fieldset>
+
+<p style="margin: 0">
+{% if button.arch %}	<a href="{% url 'invoice_toscan' object.pk %}" class="nou"> {% include "svgbutton/archive.html" %} </a> {% endif %}
+{% if button.edit %}
+ {% if object.state.pk == 1 %}
+  {% if object.locked %}
+	<a href="{% url 'invoice_reedit' object.pk %}" class="nou"> {% include "svgbutton/edit.html" %} </a>
+  {% else %}
+	<a href="{% url 'invoice_edit' object.pk %}" class="nou"> {% include "svgbutton/edit.html" %} </a>
+  {% endif %}
+ {% endif %}
+{% endif %}
+{% if button.del %}	<a href="{% url 'invoice_delete' object.pk %}" class="nou"> {% include "svgbutton/delete.html" %} </a> {% endif %}
+{% if button.restart %}	<a href="{% url 'invoice_restart' object.pk %}" class="nou"> {% include "svgbutton/restart.html" %} </a> {% endif %}
+{% if user.is_superuser %} <a href="{% url 'invoice_mail' object.pk %}" class="nou"> {% include "svgbutton/mailto.html" %} </a> {% endif %}
+</p>
+{% if upload_form %}
+<form enctype="multipart/form-data" action="" method="POST">
+	{% csrf_token %}
+	<table>
+	    <tr>
+		<td>
+		    <table border="0">
+			{{ upload_form.as_table }}
+		    </table>
+		</td>
+		<td>
+		    <button type="submit" class="plain"> {% include "svgbutton/upload.html" %} </button>
+		</td>
+		<input type="hidden" name="action" value="upload">
+	    </tr>
+	    <tr> <td>
+		<b> Внимание: </b>
+		<ul>
+		    <li> Первым должен быть счет </li>
+		    <li> Файлы счета желательно называть "Счет&lt;далее_по_вкусу&gt;" </li>
+		    <li> Изображения можно передвигать между собой вверх-вниз </li>
+		</ul>
+	    </td> </tr>
+	</table>
+</form>
+{% endif %}
+{% if form %} {# was if canaccept #}
+ <form action="" method="POST">
+	{% csrf_token %}
+	{{ form.as_p }}
+ <p style="margin: 0"> <i> (комментарий обязателен только при Отказе) </i> </p>
+ <p style="margin: 0">
+ {% if button.accept %}
+  <button type="submit" name="resume" value="accept" class="plain_big" style="background-color: chartreuse;">
+  {% if button.accept == 1 %}
+   {% include "svgbutton/fly.html" %}
+  {% elif button.accept == 2 %}
+   {% include "svgbutton/agree.html" %}
+  {% elif button.accept == 3 %}
+   {% include "svgbutton/onpay.html" %} <!-- В оплате -->
+  {% else %}
+   {% include "svgbutton/payed.html" %} <!-- Оплачено -->
+  {% endif %}
+  </button>
+ {% endif %}
+ {% if button.reject %}
+  <button type="submit" name="resume" value="reject" class="plain_big" style="background-color: red;">
+   {% include "svgbutton/disagree.html" %}
+  </button>
+ {% endif %}
+ </p>
+ <input type="hidden" name="action" value="resume">
+ </form>
+{% endif %}
+{% if err %} <p> <font color="red"> Error: {{ err }} <font> </p> {% endif %}
+{% endblock %}

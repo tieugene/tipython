@@ -1,0 +1,13 @@
+{% extends "core/org_base.html" %}
+{% block body_main %}
+<table width="auto" border="1">
+ <tbody>
+  <tr> <th> ИНН </th> <td> {{ object.inn }} </td> </tr>
+  <tr> <th> Кратко </th> <td> {{ object.name }} </td> </tr>
+  <tr> <th> Полностью </th> <td> {{ object.fullname }} </td> </tr>
+ </tbody>
+</table>
+{% if user.is_staff %}
+<a href="{% url 'org_edit' object.pk %}"> {% include "svgbutton/edit.html" %} </a>
+{% endif %}
+{% endblock %}

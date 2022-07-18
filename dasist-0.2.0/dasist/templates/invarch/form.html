@@ -1,0 +1,36 @@
+{% extends "invarch/base.html" %}
+{% block js %}
+{{ form.media }}
+{% include "handle_inn.html" %}
+<script type="text/javascript">
+        $(document).ready(function() {
+                $('.image-pack').magnificPopup({
+                        delegate: 'a.image-link',
+                        type:'image',
+                        gallery: { enabled: true },
+                        image: { verticalFit: false }
+                });
+        });
+</script>
+{% endblock %}
+{% block body_main %}
+   <form enctype="multipart/form-data" action="" method="POST">
+	{% csrf_token %}
+	<table border="1">
+		{{ form.as_table }}
+ <tr>
+  <td> Оригинал: </td>
+  <td> <ol style="margin: 0" class="image-pack">
+   {% for img in object.fileseq.fileseqitem_set.all %}
+    <li>
+     <a href="{% url 'file_get' img.pk %}" class="image-link" style="text-decoration: none"> {% include "svgbutton/preview.html" %} </a>
+     <a href="{% url 'file_get' img.pk %}" style="text-decoration: none"> {% include "svgbutton/download.html" %} </a>
+    </li>
+   {% endfor %}
+  </ol> </td>
+ </tr>
+	</table>
+	<button type="submit" title="Записать" class="plain"> {% include "svgbutton/save.html" %} </button>
+	<a href="{% url 'scan_view' object.pk %}"> <button type="button" title="Отказаться" class="plain"> {% include "svgbutton/cancel.html" %} </button> </a>
+   </form>
+{% endblock %}

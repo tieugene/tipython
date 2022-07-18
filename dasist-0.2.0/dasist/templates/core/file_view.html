@@ -1,0 +1,30 @@
+{% extends "core/file_base.html" %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+	$('a.image-link').magnificPopup({
+	    type: 'image',
+	    image: { titleSrc: 'title', verticalFit: false },
+	});
+    });
+</script>
+{% endblock %}
+
+{% block body_main %}
+<table width="auto" border="1">
+ <tbody>
+  <tr> <th> # </th> <td> {{ object.pk }} </td> </tr>
+  <tr> <th> Name </th> <td> {{ object.name }} </td> </tr>
+  <tr> <th> Mime </th> <td> {{ object.mime }} </td> </tr>
+  <tr> <th> Ctime </th> <td> {{ object.ctime }} </td> </tr>
+  <tr> <th> Size </th> <td> {{ object.size }} </td> </tr>
+  <tr> <th> MD5 </th> <td> {{ object.md5 }} </td> </tr>
+  <tr> <th> Fileseq </th> <td> {% if object.fileseqitem %} <a href="{% url 'fileseq_view' object.fileseqitem.fileseq.pk %}"> {{ object.fileseqitem.fileseq.pk }} </a> {% else %} - {% endif %} </td> </tr>
+ </tbody>
+</table>
+<a href="{% url 'file_get' object.pk %}" class="image-link" title="{{ object.file.name }}" style="text-decoration: none;"> {% include "svgbutton/preview.html" %} </a>
+<a href="{% url 'file_get' object.pk %}" style="text-decoration: none;"> {% include "svgbutton/download.html" %} </a>
+<a href="{% url 'file_preview' object.pk %}" style="text-decoration: none;"> {% include "svgbutton/expand.html" %} </a>
+<a href="{% url 'file_del' object.pk %}" style="text-decoration: none;"> {% include "svgbutton/delete.html" %} </a>
+{% endblock %}

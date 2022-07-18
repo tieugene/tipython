@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+left to right direction
+
+class Invoice {
+  job_id : Объект
+  contract_id : Договор
+  bank_id : Банк
+  Номер_счета
+  Дата_счета
+  Сумма
+  К_оплате
+}
+
+class Job {
+  id
+}
+note right: Объект\nДоговор с Заказчиком
+
+class Contract {
+  id
+  shipper_id
+}
+
+class Bank {
+  id
+}
+
+class Shipper {
+  id
+}
+
+Invoice::job_id --* Job::id
+Contract::shipper_id --* Shipper::id
+Invoice::contract_id --* Contract::id
+Invoice::bank_id --* Bank::id
+
+@enduml

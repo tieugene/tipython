@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+[*] -[dotted]-> Draft : Create
+Draft --> Draft : Edit
+Draft -[dotted]-> [*] : Delete
+Draft --> OnWay : Start
+OnWay --> OnWay : Approve
+OnWay --> Rejected : Reject
+Rejected --> Draft : Restart
+Rejected -[dotted]-> [*] : Delete
+OnWay --> Approved : Everybody\napproved
+Approved --> Rejected : Reject
+Approved --> OnPay : Pay
+OnPay -[dashed]-> InComplete : Partialy\npayed
+InComplete -[dashed]-> Draft : Repeate
+OnPay --> Complete : Fully\nPayed
+Complete --> Archived : Archive
+
+s1 -[dotted]-> s2 : Stage\n1
+s1 --> s2 : all
+s1 -[dashed]-> s2 : Stage\n2+
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+left to right direction
+
+actor Mgr
+actor Chief
+actor Lawyer
+actor Boss
+actor BookKeeper
+
+rectangle Bills {
+    usecase Create
+    usecase Edit
+    usecase Delete
+    usecase Start
+    usecase Restart
+    usecase Approve
+    usecase Reject
+    usecase Pay
+    usecase Payed
+    usecase Archive
+}
+
+Mgr --> Create
+Mgr --> Edit
+Mgr --> Delete
+Mgr --> Start
+Mgr --> Restart
+Mgr --> Archive
+Chief --> Approve
+Chief --> Reject
+Lawyer --> Approve
+Lawyer --> Reject
+Boss --> Approve
+Boss --> Reject
+BookKeeper --> Reject
+BookKeeper --> Pay
+BookKeeper --> Payed
+
+@enduml

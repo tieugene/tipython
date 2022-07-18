@@ -5,6 +5,7 @@ tieugene's python projects (archive)
 ## TOC
 
 - [dasist](dasist) - docflow (initial version) (django)
+- [dasist-0.2.0](dasist-0.2.0) - docflow (last version) (django), 2019-05-16
 - [doxgen](doxgen) - document generator (initial version) (django)
 - [ftreport](ftreport) - flowtools report (web.py)
 - [lansite](lansite) - template of intranet web application (ver.1) (django)
